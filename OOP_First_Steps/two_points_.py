@@ -24,13 +24,13 @@ import math
         The solution is also a numpy module.
         !!! This way demands the next formula np.linalg.norm(p1-p2): 
 '''
-'''
-# using zip+lc+formula
+
+## using zip+lc+formula (1)
 def dist(p1,p2):
     if len(p1) == len(p2):
         
         #1) дія1
-        zipped_list = list(zip(p1, p2)) # [x1, y1, z1], [x2, y2, z2] = [(x3 = x2 - x1), (y3 = y2 - y1), (z3 = z2 - z1)]
+        zipped_list = list(zip(p1, p2)) 
         return zipped_list
         
         #2) дія2
@@ -49,32 +49,3 @@ p1 = list(map(int, input('Type the coords of the first point, through space: ').
 p2 = list(map(int, input('Type the stcoords of the first point, through space: ').split()))
 
 print(dist(p1,p2))
-'''
-
-
-class Distance:
-
-	p1 = list(map(int, input('Type the coords of the first point, through space: ').split()))
-	p2 = list(map(int, input('Type the stcoords of the first point, through space: ').split()))
-
-
-	def __init__(self, p1, p2):
-		self.p1 = p1
-		self.p2 = p2
-
-	def calculation(self, p1, p2):
-		zipped_list = list(zip(p1, p2))
-
-
-
-p1 = list(map(int, input('Type the coords of the first point, through space: ').split()))
-p2 = list(map(int, input('Type the stcoords of the first point, through space: ').split()))
-
-zipped_list = list(zip(p1, p2))
-print(zipped_list)
-
-
-# [(40, 30), (30, 20), (20, 10)]
-for a, b in zipped_list:
-	a = (a - b)**2
-	print(a)
