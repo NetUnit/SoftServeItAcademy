@@ -27,6 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+################### coding with mitch #################
+# AUTH_USER_MODEL = 'account.Account'
+
+# AUTHENTICATION_BACKENDS = (
+#     # 'django.contrib.auth.backends.AllowAllUsersModelBackend', ## works withot user models
+#     # 'authentication.backends.CaseInsensitiveModelBackend',
+
+# )
+
+#################### coding with mitch #################
 
 # Application definition
 
@@ -40,6 +50,7 @@ INSTALLED_APPS = [
     # apps
     'products',
     'profiles',
+    'emails',
 ]
 
 MIDDLEWARE = [
