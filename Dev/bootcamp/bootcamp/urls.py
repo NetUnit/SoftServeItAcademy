@@ -14,8 +14,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from products.views import (
+    home_view,
+    product_detailed_view,
+    api_product_detailed_view
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('search/', home_view, name='search'),
+    path('admin/', admin.site.urls, name='admin'),
+
+    # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
+    # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2
+
+    ################### *** re_path *** #########################
+    ## can adjust the number of products viq quantifiers ##
+    # re_path(r'^products/(?P<pk>[1-9]{1,3})/$', views.product_detailed_view, name='detailed_view'), # same_1
+    # re_path(r'^api/products/(?P<pk>[1-9]{1,3})/$', views.api_product_detailed_view, name='detailed_view'), # same_2
+
+    ## reg.ex var2 ##
+    re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
+    re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='detailed_view'), # same_2
+
+
+
+
+    ################### *** examples *** ########################
+    #path('products/1/', views.product_detailed_view, name='product-1'),
+
 ]
