@@ -4,17 +4,17 @@ from django.contrib import admin
 from .models import Profile
 
 
-admin.site.register(Profile)
+# admin.site.register(Profile)
 
 ## transfer to authetication after
-# from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin
 
-# @admin.register(Profile)
-# class ProfileAdmin(admin.ModelAdmin):
-#     model = Profile
-#     ordering = ['id']
-#     content = ('id', 'content')
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    model = Profile
+    ordering = ['id']
+    content = ('id', 'content')
 
-#     add_fieldsets = UserAdmin.add_fieldsets + (
-#             (None, {'fields': ('id', 'content')}),
-#         )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+            (None, {'fields': ('id', 'content')}),
+        )
