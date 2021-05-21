@@ -14,14 +14,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import include
 from django.urls import path, re_path
+from products import views
 from products.views import (
     home_view,
     product_detailed_view,
-    api_product_detailed_view
+    api_product_detailed_view,
+    HomePageView
 )
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+################### *** exceptions:404, 500, 403 *** #########################
+handler404 = 'products.views.handler404'
+handler500 = 'products.views.handler500'
+handler403 = 'products.views.handler403'
+handler400 = 'products.views.handler400'
+
+
 urlpatterns = [
+    ############# *** HomepageView *** #############
+    ## create html for HomePageView in templates
+    path('', HomePageView.as_view(), name='home'), # add template
+
     path('search/', home_view, name='search'),
     path('admin/', admin.site.urls, name='admin'),
 
@@ -37,10 +55,7 @@ urlpatterns = [
     re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
     re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='detailed_view'), # same_2
 
-
-
-
     ################### *** examples *** ########################
     #path('products/1/', views.product_detailed_view, name='product-1'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
