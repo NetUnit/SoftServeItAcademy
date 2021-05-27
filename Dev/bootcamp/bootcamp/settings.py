@@ -44,11 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'errortemplates',
+    # 'errortemplates',                                         # custom error templates
     # apps
-    'products',
-    'profiles',
-    'emails',
+    'products',                                                 # app#1
+    'profiles',                                                 # app#2
+    'emails',                                                   # app#3
     
 ]
 
@@ -69,7 +69,9 @@ ROOT_URLCONF = 'bootcamp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates') ], # os.path.join(BASE_DIR, 'templates')
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                # os.path.join(BASE_DIR, 'products/templates'),                             # additional path in order to avoid app/'some_template.html'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,6 +79,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bootcamp.context_processors.products',                                         # custom context for products app
+                'bootcamp.context_processors.footer_app_name',                                  # custom context for products app (manual APP_NAME_1)
+                'bootcamp.context_processors.root',                                             # custom context for getting path to a webpage
+                # 'bootcamp.context_processors.appname',                                        # custom context for products app
+                # 'products.context_processors.appname',                                        # custom context for getting app_name
+                # 'products.context_processors.context_appname',
+                # 'bootcamp.context_processors.context_appname',
+                # 'bootcamp.context_processors.resolver_context_processor',
+                # 'products.context_processors.resolver_context_processor',
+                
             ],
         },
     },
@@ -133,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -157,3 +169,32 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+PRODUCTS_GROUP = 'THE PRODUCT STORE'
+PRODUCTS_TAGLINE = 'The latest incomes of products and prices updates'
+
+# setup as automated in context processors
+# ROOT_PAGE = 'root url'
+# ROOT_TAGLINE = 'root tagline'
+
+
+MAIN_PAGE = 'BOOTCAMP/MAIN PAGE'
+MAIN_PAGE_TAGLINE = 'bootcamp main page tagline'
+
+
+APP_NAME_1 = 'PRODUCTS'
+APP_NAME_1_TAGLINE = 'products tagline'
+
+
+APP_NAME_2 = 'EMAILS'
+APP_NAME_2_TAGLINE = 'emails tagline'
+
+
+APP_NAME_3 = 'PROFILES'
+APP_NAME_3_TAGLINE = 'profiles tagline'
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+CRISPY_FORMS_TEMPLATE_PACK = 'bootstrap4'

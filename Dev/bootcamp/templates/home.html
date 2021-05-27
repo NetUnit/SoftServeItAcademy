@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content%}
 
@@ -16,6 +16,7 @@
       color: #4287f5;
       text-align: left;
     }
+    
     .products_group {
       color: #f5ad42;
       font-weight: bold; 
@@ -33,7 +34,7 @@
       bottom: 765px; 
       width: 100%;
     }
-    
+
     .footer_root {
       color: #f5ad42;
       font-weight: bold;
@@ -48,7 +49,7 @@
 <body>
     <div class="main">
         <div class="column1">
-            <h2> Welcome to the homepage :) </h2>
+            <h2> Here are dynamically rendered objects: {{ object.id }} </h2>
         </div>
         <div class="products_group">
           custom context#1: {{ products_group }}
@@ -63,4 +64,5 @@
 </body>
 
 {% endblock %}
+
 
