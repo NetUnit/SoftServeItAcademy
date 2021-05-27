@@ -7,3 +7,6 @@ class Product(models.Model):
     content = models.TextField(null=True, blank=True)
     price = models.IntegerField(default=0)
     # location
+
+    class Meta:
+        ordering = ('id',)

@@ -1,0 +1,68 @@
+﻿{% extends 'base.html' %}
+
+{% block content%}
+
+
+<head>
+<style>
+    .main {
+      border: 1px solid #4287f5;
+      height: 185px;
+      width: 650px;
+      position: relative;
+    }
+
+    .column1 {
+      color: #4287f5;
+      text-align: left;
+    }
+    
+    .products_group {
+      color: #f5ad42;
+      font-weight: bold; 
+      position: fixed;     
+      text-align: left;    
+      bottom: 790px; 
+      width: 100%;
+    }
+    
+    .products_tagline {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 765px; 
+      width: 100%;
+    }
+
+    .footer_root {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 15px; 
+      width: 100%;
+    }
+
+</style>
+
+<body>
+    <div class="main">
+        <div class="column1">
+            <h2> Here are dynamically rendered objects: {{ object.id }} </h2>
+        </div>
+        <div class="products_group">
+          custom context#1: {{ products_group }}
+        </div>
+        <div class="products_tagline">
+          custom context#2: {{ products_tagline }}
+        </div>
+        <div class="footer_root">
+          root: {{ app_name_0 }}
+        </div>
+    </div>
+</body>
+
+{% endblock %}
+
+
