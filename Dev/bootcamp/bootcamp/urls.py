@@ -21,10 +21,13 @@ from django.urls import path, re_path
 from products import views
 from products.views import (
     home_view,
+    HomePageView,
     product_list_view,
+    ProductListView,
     product_detailed_view,
     api_product_detailed_view,
-    HomePageView
+    method_view,
+    product_create_view
 )
 
 from django.conf import settings
@@ -41,14 +44,15 @@ from django.conf.urls.static import static
 urlpatterns = [
     ############# *** HomepageView *** #############
     ## create html for HomePageView in templates
-    path('', HomePageView.as_view(), name='index'), # add template                                   # same_3
+    path('', HomePageView.as_view(), name='index'), # add template                                  # same_3
 
-    path('search/', home_view, name='search'),                                                       # same_3
+    path('search/', home_view, name='search'),                                                      # same_3
     path('admin/', admin.site.urls, name='admin'),
 
-    ############# *** ProductListView *** ############
-    re_path(r'^products/list/$', product_list_view, name='list_view'),
-
+    ############# *** ProductListView *** ############                                             
+    re_path(r'^products/list/$', product_list_view, name='list_view'),                             # same_4
+    re_path(r'^products/list2/$', ProductListView.as_view(), name='list_view'),                    # same_4  ## alternatively +++
+    #################################################################################
     # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
     # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2
 
@@ -64,6 +68,11 @@ urlpatterns = [
     ################### *** examples *** ########################
     #path('products/1/', views.product_detailed_view, name='product-1'),
 
+    ################### *** just for getting a method *** ########################
+    re_path(r'^methods/$', method_view, name='method_view'),
+
+    ################ *** Bad View Requests *** #################
+    re_path(r'^products/create/$', product_create_view, name='product_create_view'),
 
     # ## ** get current app_name --> context_processors ** ##
     # re_path(r'^', include('products.urls')),

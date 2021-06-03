@@ -1,10 +1,11 @@
 <head>
     <style> 
         .snippet {
-            color:  #b6f542;
+            color: rgb(245,	173, 6);
             font-weight: 5px; 
-            margin-top: 0px;
-            line-height: 2pt;
+            margin-top: 2px;
+            margin-left: 2px;
+            line-height: 20pt;
             display: flex;
             /* justify-content:center; */
             flex-direction: column;
@@ -17,19 +18,19 @@
 <div class="snippet">
     
     {% if object.title %}
-        <p> title: {{ object.title }} </p>
+        <text> title: <text style="color:rgb(182, 245, 66)"> {{ object.title }} </text>
     {% else %}
         <p style="color:rgb(236, 5, 43)"> not filled yet </p>
     {% endif %}
 
     {% if object.content %}
-        <p> description: {{ object.content }} </p>
+    <text> description: <text style="color:rgb(182, 245, 66)"> {{ object.content }} </text>
     {% else %}
         <p style="color:rgb(236, 5, 43)"> not filled yet </p>
     {% endif %}
 
     {% if object.price %}
-        <p> price: {{ object.price }} </p>
+    <text> price: <text style="color:rgb(182, 245, 66)"> {{ object.price }} </text> 
     {% else %}
         <p style="color:rgb(236, 5, 43)"> not filled yet </p>
     {% endif %}

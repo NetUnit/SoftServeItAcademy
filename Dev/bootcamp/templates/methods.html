@@ -1,0 +1,69 @@
+﻿{% extends 'base.html' %}
+
+{% block content%}
+
+
+<head>
+<style>
+    .main {
+      border: 1px solid #4287f5;
+      height: 285px;
+      width: 650px;
+      position: relative;
+    }
+
+    .column1 {
+      color: #66f542;
+      text-align: left;
+      font-weight: bold;
+    }
+    
+    .column2 {
+      color: #f5bc42;
+      text-align: left;
+    }
+    
+    .footer_method {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+    .footer_root {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+
+</style>
+
+<body>
+  <div class="main">
+      <div class="column1">
+        <h2> Here r the results of the request methods: </h2>
+          <div class="column2">
+            <p> GET: {{ result1 }} </p>
+            <p> POST: {{ result2 }} </p>
+            <p>  BOOL/GET: {{ result3 }} </p>
+            <p>  BOOL/POST: {{ result4 }} </p>
+          </div>
+      </div>
+      <div class="footer_method">
+        method: {{ method }}
+      </div>
+      <div class="footer_root">
+        root: {{ root }}
+      </div>
+  </div>
+</body>
+
+{% endblock %}
+
+
+
