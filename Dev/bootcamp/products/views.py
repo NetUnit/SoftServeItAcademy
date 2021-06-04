@@ -109,8 +109,8 @@ class ProductListView(ListView):
 ################ *** Methods *** #################
 
 def method_view(request, *args, **kwargs):
-    result1 = request.GET
-    result2 = request.POST
+    result1 = f'Django request dict: {request.GET} | python standart dict: {dict(request.GET)}'
+    result2 = f'Django request dict: {request.POST} | python standart dict: {dict(request.POST)}'
     result3 = request.method == 'GET'
     result4 = request.method == 'POST'
     context = {'result1': result1, 'result2': result2 , 'result3': result3, 'result4': result4}
@@ -125,20 +125,48 @@ def method_view(request, *args, **kwargs):
 ## для можливості виведення повідомлення статусу виконання команди в браузері
 from django.contrib import messages
 from products.forms import ProductCreationForm
+
 # def product_create_view(request, *args, **kwargs):
 #     context = {}
 #     print(request.POST)
 #     print(request.GET)
 #     return render (request, 'forms.html', context)
 
-
+## works
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm
     context = {'form': form}
 
     return render (request, 'products/create_product.html', context)
 
+# mine
+def product_create_view(request, id=0, *args, **kwargs):
 
+    if request.method == "GET":
+        if id == 0:
+            form = ProductCreationForm()
+        else:
+            product = Product.objects.get(pk=id)
+            form = ProductCreationForm(instance=product)
+            context = {'form': form}
+        
+        return render (request, 'products/create_product.html', context)
+
+    elif request.method == "POST":
+        if id == 0:
+            form = ProductCreationForm(request.POST)
+        
+        else:
+            product = Product.objects.get(pk=id)
+            form = ProductCreationForm(instance=product)
+            context =  {'form': form}
+
+        if form.is_valid():
+            form.save()
+        return redirect('/products/list/') 
+
+
+#############################################################
 
 ## dynamic id from url + error handling method#2
 # def product_detailed_view(request, id):

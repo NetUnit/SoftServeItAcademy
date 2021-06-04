@@ -37,6 +37,7 @@ def root(request, *args, **kwargs):
         'root': request.path
     }
 
+
 def detailed_method(request, *args, **kwargs):
     return {
         'method': settings.METHOD,

@@ -9,25 +9,29 @@
     .main {
       border: 1px solid #4287f5;
       height: 285px;
-      width: 1800px;
-      position: left;
+      width: 1000px;
+      position: relative;
     }
 
-    .column1 {
-      color: #4287f5;
-      text-align: left;
-    }
     .products_group {
-      color: rgb(245, 173, 66);
+      color: rgb(245, 173, 6);
       font-weight: bold; 
-      position: fixed;     
-      text-align: left;    
+      position: fixed;        
       bottom: 740px; 
-      width: 100%;
+      width: 40%;
+      margin-left: 25px;
+
+    }
+    .attributes {
+      color: 	rgb(182, 245, 66);
+      text-align: left;
+      margin: 50px;
+      width: 0%;
+      
     }
     
     .footer_app {
-      color: 	rgb(245, 173, 66);
+      color: 	rgb(245, 173, 6);
       font-weight: bold;
       position: fixed;     
       text-align: left;    
@@ -36,7 +40,7 @@
     }
     
     .footer_root {
-      color: rgb(245, 173, 66);
+      color: rgb(245, 173, 6);
       font-weight: bold;
       position: fixed;     
       text-align: left;    
@@ -51,16 +55,16 @@
       <table class="products_group">
           <thead>
               <tr>
-                  <th>Product ID: </th>
-                  <th>Title: </th>
-                  <th>Description: </th>
-                  <th>Price: </th>
+                  <th>Product ID:</th>
+                  <th>Title:</th>
+                  <th>Description:</th>
+                  <th>Price:</th>
               </tr>
           </thead>
-          <tbody>
+          <tbody class='attributes'>
               {% for product in product_list %}
               <tr>
-                  <td>{{product.id}}</td>
+                  <td style="color:rgb(245,	66,	191)">{{product.id}}</td>
                   <td>
                       {% if product.title %}
                         {{product.title}}
@@ -96,4 +100,5 @@
 </body>
 
 {% endblock %}
+
 

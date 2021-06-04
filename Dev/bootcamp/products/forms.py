@@ -12,8 +12,8 @@ class ProductCreationForm(forms.ModelForm):
             'content': 'Content',
             'price': 'Price'
         }
-        
-        required = ('title', 'price')
+
+        required = ('title', )
 
         widgets = {
 

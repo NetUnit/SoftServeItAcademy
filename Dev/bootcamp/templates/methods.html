@@ -7,7 +7,7 @@
 <style>
     .main {
       border: 1px solid #4287f5;
-      height: 285px;
+      height: 200px;
       width: 650px;
       position: relative;
     }
@@ -16,11 +16,20 @@
       color: #66f542;
       text-align: left;
       font-weight: bold;
+      margin-left: 5px;
     }
     
-    .column2 {
+    .check-method {
       color: #f5bc42;
       text-align: left;
+      margin-top: 10px;
+      line-height: 20pt;
+      margin-left: 25px;
+    }
+
+    .attributes {
+      white-space: nowrap;
+      color:rgb(182, 245, 66);
     }
     
     .footer_method {
@@ -47,15 +56,15 @@
   <div class="main">
       <div class="column1">
         <h2> Here r the results of the request methods: </h2>
-          <div class="column2">
-            <p> GET: {{ result1 }} </p>
-            <p> POST: {{ result2 }} </p>
-            <p>  BOOL/GET: {{ result3 }} </p>
-            <p>  BOOL/POST: {{ result4 }} </p>
+          <div class="check-method">
+            <p> GET: <text class="attributes"> {{ result1 }} </text> </p>
+            <p> POST: <text class="attributes"> {{ result2 }} </text> </p>
+            <p> BOOL/GET: <text class="attributes"> {{ result3 }} </text> </p>
+            <p> BOOL/POST: <text class="attributes"> {{ result4 }} </text> </p>
           </div>
       </div>
       <div class="footer_method">
-        method: {{ method }}
+        check_method: {{ method }}
       </div>
       <div class="footer_root">
         root: {{ root }}
