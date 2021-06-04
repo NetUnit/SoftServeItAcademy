@@ -1,20 +1,25 @@
-<head>
-    <style> 
-        .bootcamp-title {
-            color:  #b6f542;
-            font-weight: bold; 
-            margin-top: 10px;
-            display: flex;
-            /* justify-content:center; */
-            flex-direction: column;
-            text-align: left;
-            position: relative;
-        }
-  
-    </style>
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-<div class="bootcamp-title">
-    <h1> Django Bootcamp </h1>
-</div>
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
 
-</head>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'list_view' %}" 
+                style="font-family:Arial, Helvetica, sans-serif; color:rgb(255, 255, 255); font-size: 16px;"> Products <spanclass="sr-only"></span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+

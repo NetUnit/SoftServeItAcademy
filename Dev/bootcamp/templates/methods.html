@@ -1,0 +1,78 @@
+﻿{% extends 'base.html' %}
+
+{% block content%}
+
+
+<head>
+<style>
+    .main {
+      border: 1px solid #4287f5;
+      height: 200px;
+      width: 650px;
+      position: relative;
+    }
+
+    .column1 {
+      color: #66f542;
+      text-align: left;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    
+    .check-method {
+      color: #f5bc42;
+      text-align: left;
+      margin-top: 10px;
+      line-height: 20pt;
+      margin-left: 25px;
+    }
+
+    .attributes {
+      white-space: nowrap;
+      color:rgb(182, 245, 66);
+    }
+    
+    .footer_method {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+    .footer_root {
+      color: #f5ad42;
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+
+</style>
+
+<body>
+  <div class="main">
+      <div class="column1">
+        <h2> Here r the results of the request methods: </h2>
+          <div class="check-method">
+            <p> GET: <text class="attributes"> {{ result1 }} </text> </p>
+            <p> POST: <text class="attributes"> {{ result2 }} </text> </p>
+            <p> BOOL/GET: <text class="attributes"> {{ result3 }} </text> </p>
+            <p> BOOL/POST: <text class="attributes"> {{ result4 }} </text> </p>
+          </div>
+      </div>
+      <div class="footer_method">
+        check_method: {{ method }}
+      </div>
+      <div class="footer_root">
+        root: {{ root }}
+      </div>
+  </div>
+</body>
+
+{% endblock %}
+
+
+

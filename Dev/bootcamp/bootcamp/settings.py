@@ -49,12 +49,12 @@ INSTALLED_APPS = [
     'products',                                                 # app#1
     'profiles',                                                 # app#2
     'emails',                                                   # app#3
-    
+    'crispy_forms'                                              # crispy_forms for temapltes
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,6 +88,7 @@ TEMPLATES = [
                 # 'bootcamp.context_processors.context_appname',
                 # 'bootcamp.context_processors.resolver_context_processor',
                 # 'products.context_processors.resolver_context_processor',
+                'bootcamp.context_processors.detailed_method',
                 
             ],
         },
@@ -194,6 +195,8 @@ APP_NAME_2_TAGLINE = 'emails tagline'
 APP_NAME_3 = 'PROFILES'
 APP_NAME_3_TAGLINE = 'profiles tagline'
 
+
+METHOD = 'METHODS'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

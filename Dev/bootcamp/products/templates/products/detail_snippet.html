@@ -1,37 +1,45 @@
 <head>
     <style> 
         .snippet {
-            color:  #b6f542;
+            color: rgb(245,	173, 6);
             font-weight: 5px; 
-            margin-top: 0px;
-            line-height: 2pt;
+            margin-top: 2px;
+            margin-left: 2px;
+            line-height: 20pt;
             display: flex;
             /* justify-content:center; */
             flex-direction: column;
             text-align: left;
             position: relative;
         }
-  
+        
+        .attributes {
+            white-space: nowrap;
+            color:rgb(182, 245, 66);
+        }
+        .null-data {
+            color:rgb(236, 5, 43);
+        }
     </style>
 
 <div class="snippet">
     
     {% if object.title %}
-        <p> title: {{ object.title }} </p>
+        <text> title: <text> <text class='attributes'> {{ object.title }} </text>
     {% else %}
-        <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+        <p class='null-data'> not filled yet </p>
     {% endif %}
 
     {% if object.content %}
-        <p> description: {{ object.content }} </p>
+    <text> description: <text> <text class='attributes'> {{ object.content }} </text>
     {% else %}
-        <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+        <p class='null-data'> not filled yet </p>
     {% endif %}
 
     {% if object.price %}
-        <p> price: {{ object.price }} </p>
+    <text> price: <text> <text class='attributes'> {{ object.price }} </text> 
     {% else %}
-        <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+        <p class='null-data'> not filled yet </p>
     {% endif %}
 
 </div>

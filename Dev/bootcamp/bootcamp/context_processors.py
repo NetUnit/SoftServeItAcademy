@@ -38,6 +38,12 @@ def root(request, *args, **kwargs):
     }
 
 
+def detailed_method(request, *args, **kwargs):
+    return {
+        'method': settings.METHOD,
+    }
+
+
 ## disabled ---> auto setting through getting the name of app
 # from django.urls import (get_resolver, get_urlconf, resolve, reverse, NoReverseMatch)
 
