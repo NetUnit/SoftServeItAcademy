@@ -131,46 +131,71 @@ from django.contrib import messages
 from products.forms import ProductCreationForm
 
 def product_create_view(request, *args, **kwargs):
-    context = {}
-    # print(request)
-    # print(request.method)
-    # print(f'{request.POST} is a request method, type is: {type(request.POST)}')
-    # print(dict(request.POST))
-    # print(request.path)
+    
+    ## if its GET request nothing gonna happen to this form
+    ## so we just put here 'or none'
+    form = ProductCreationForm(request.POST or None)
+    context = {'form': form}
 
-    # request is a <WSGIRequest: POST '/products/create/'> wrapper that consists of 
-    # metadata about the object, create by HTTP Request, response to a webpage
-
-
-    if request.method == 'POST':
-        post_data = request.POST
-        if post_data != None:
-            ## instance of a class, that takes request.POST as the atribute (request.POST - > QueryDict)
-            ## form is HTML data
-            form = ProductCreationForm(request.POST)
-            ## check BOOL value, whether all fields in a form correspond to template <input fields> 
-            ## form is a frontend part or HTML structure of the page
-            print(form)
-            ## BOOL value
-            print(form.is_valid())
-            ## self cleaned data --> will return clean values from the form
-            print(form.cleaned_data)
-            ## will get values from cleaned data --> from instance of the class
-            title = form.cleaned_data.get('title')
-            content = form.cleaned_data.get('content')
-            price = form.cleaned_data.get('price')
-            ## self cleaned data --> will return a querydict 
-            print(f'This is a posted_data: {post_data} | {title} | {content}')
-            
-            ## will create the object and write it to a database
-            product = Product.objects.create(title=title, content=content, price=price) # content=content, price=price
-            if form.is_valid():
-                product.save()
-                ## messages --> виведуть в браузер статус повідомлення
-                messages.success(request, f"U have just created the next product: {product}")
-    # return render (request, 'forms.html', context)
+    if form.is_valid():
+        data = form.cleaned_data
+        Product.create(**data)
+    return render (request, 'products/create_product_form_as_p.html', context)
     # return render (request, 'products/create_product_input_tags.html', context)
-    return render (request, 'products/create_product_crispy_form_tags.html', context)
+    # return render (request, 'products/create_product_crispy_form_tags.html', context)
+
+######## створює об'єкт цілий час
+# def product_create_view(request, *args, **kwargs):
+#     context = {}
+
+#     # print(request)
+#     # print(request.method)
+#     # print(f'{request.POST} is a request method, type is: {type(request.POST)}')
+#     # print(dict(request.POST))
+#     # print(request.path)
+
+#     # request is a <WSGIRequest: POST '/products/create/'> wrapper that consists of 
+#     # metadata about the object, create by HTTP Request, response to a webpage
+
+
+#     if request.method == 'POST':
+#         post_data = request.POST or None
+#         if post_data != None:
+
+#             ## instance of a class, that takes request.POST as the atribute (request.POST - > QueryDict)
+#             ## form is HTML data
+#             form = ProductCreationForm(request.POST)
+
+#             ## check BOOL value, whether all fields in a form correspond to template <input fields> 
+#             ## form is a frontend part or HTML structure of the page
+#             # print(form)
+
+#             ## BOOL value
+#             # print(form.is_valid())
+
+#             ## self cleaned data --> will return clean values from the form
+#             ## will get values from cleaned data --> from instance of the class
+#             # print(form.cleaned_data)
+            
+#             if form.is_valid():
+#                 title = form.cleaned_data.get('title')
+#                 content = form.cleaned_data.get('content')
+#                 price = form.cleaned_data.get('price')
+
+#                 # виведе дані з cleaned_data
+#                 print(f'Clened data is: {title} | {content} | {price}')
+
+#                 ## will create the object and write it to a database
+#                 ## створення через @classmethod моделі
+#                 product = Product.create(title=title, content=content, price=price)
+#                 # product = Product.objects.create(title=title, content=content, price=price)
+
+#                 ## messages --> виведуть в браузер статус повідомлення
+#                 messages.success(request, f"U have just created the next product: {product}")
+#     #return render (request, 'forms.html', context)
+#     #return render (request, 'products/create_product_input_tags.html', context)
+#     #return render (request, 'products/create_product_form_as_p.html', context)
+#     #return render (request, 'products/create_product_crispy_form_tags.html', context)
 
 # # works
 # def product_create_view(request, *args, **kwargs):
@@ -205,7 +230,7 @@ def product_create_view(request, *args, **kwargs):
 #             # messages.info(request, f'Product is: {product.title}'
 #         if form.is_valid():
 #             form.save()
-#        return redirect('/products/list/') 
+#         return redirect('/products/list/') 
 
 
 # def book_form_view(request, book_id=0):
