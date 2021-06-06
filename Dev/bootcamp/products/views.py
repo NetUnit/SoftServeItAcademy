@@ -25,12 +25,16 @@ def home_view(request, *args, **kwargs):
     context = {'name': 'Andrii'}
     return render (request, 'home.html', context)
 
-#####################################################################
-
+################### *** product detailed view *** ###################
+# using python simple function get(pk=pk)
 # dynamic id from url + error handling method#1
 def product_detailed_view(request, pk, *args, **kwargs):
     try:
         obj = Product.objects.get(pk=pk)
+        # # ex2: using models: @staticmethod
+        # obj = Product.get_by_id(pk)
+        # ex3: using all() + filter
+        # obj = Product.objects.all().filter(pk=pk)[0]
     except Product.DoesNotExist:
         raise Http404 # this would render html page with HTTP status code
     
@@ -126,46 +130,101 @@ def method_view(request, *args, **kwargs):
 from django.contrib import messages
 from products.forms import ProductCreationForm
 
-# def product_create_view(request, *args, **kwargs):
-#     context = {}
-#     print(request.POST)
-#     print(request.GET)
-#     return render (request, 'forms.html', context)
-
-## works
 def product_create_view(request, *args, **kwargs):
-    form = ProductCreationForm
-    context = {'form': form}
+    context = {}
+    # print(request)
+    # print(request.method)
+    # print(f'{request.POST} is a request method, type is: {type(request.POST)}')
+    # print(dict(request.POST))
+    # print(request.path)
 
-    return render (request, 'products/create_product.html', context)
+    # request is a <WSGIRequest: POST '/products/create/'> wrapper that consists of 
+    # metadata about the object, create by HTTP Request, response to a webpage
+
+
+    if request.method == 'POST':
+        post_data = request.POST
+        if post_data != None:
+            ## instance of a class, that takes request.POST as the atribute (request.POST - > QueryDict)
+            ## form is HTML data
+            form = ProductCreationForm(request.POST)
+            ## check BOOL value, whether all fields in a form correspond to template <input fields> 
+            ## form is a frontend part or HTML structure of the page
+            print(form)
+            ## BOOL value
+            print(form.is_valid())
+            ## self cleaned data --> will return clean values from the form
+            print(form.cleaned_data)
+            ## will get values from cleaned data --> from instance of the class
+            title = form.cleaned_data.get('title')
+            content = form.cleaned_data.get('content')
+            price = form.cleaned_data.get('price')
+            ## self cleaned data --> will return a querydict 
+            print(f'This is a posted_data: {post_data} | {title} | {content}')
+            
+            ## will create the object and write it to a database
+            product = Product.objects.create(title=title, content=content, price=price) # content=content, price=price
+            if form.is_valid():
+                product.save()
+                ## messages --> виведуть в браузер статус повідомлення
+                messages.success(request, f"U have just created the next product: {product}")
+    # return render (request, 'forms.html', context)
+    # return render (request, 'products/create_product_input_tags.html', context)
+    return render (request, 'products/create_product_crispy_form_tags.html', context)
+
+# # works
+# def product_create_view(request, *args, **kwargs):
+#     form = ProductCreationForm
+#     context = {'form': form}
+
+#     if request.path == '/products/create/':
+#         time.sleep(3)
+#         return render (request, 'products/create_product.html', context)
+#     else:
+#         return redirect('/products/list/')
 
 # mine
-def product_create_view(request, id=0, *args, **kwargs):
+# def product_create_view(request, product_id=0):
 
-    if request.method == "GET":
-        if id == 0:
-            form = ProductCreationForm()
-        else:
-            product = Product.objects.get(pk=id)
-            form = ProductCreationForm(instance=product)
-            context = {'form': form}
+#     if request.method == "GET":
+#         if product_id == 0:
+#             form = ProductCreationForm()
+#         else:
+#             product = Product.get_by_id(product_id)
+#             form = ProductCreationForm(instance=product)
+#             context = {'form': form}
         
-        return render (request, 'products/create_product.html', context)
+#         return render (request, 'products/create_product_input_tags.html', context)
 
-    elif request.method == "POST":
-        if id == 0:
-            form = ProductCreationForm(request.POST)
-        
-        else:
-            product = Product.objects.get(pk=id)
-            form = ProductCreationForm(instance=product)
-            context =  {'form': form}
-
-        if form.is_valid():
-            form.save()
-        return redirect('/products/list/') 
+#     elif request.method == "POST":
+#         if product_id == 0:
+#             form = ProductCreationForm(request.POST)
+#         else:
+#             product = Product.get_by_id(product_id)
+#             form = ProductCreationForm(request.POST, instance=product)
+#             # messages.info(request, f'Product is: {product.title}'
+#         if form.is_valid():
+#             form.save()
+#        return redirect('/products/list/') 
 
 
+# def book_form_view(request, book_id=0):
+#     if request.method == 'GET':
+#         if book_id == 0:
+#             form = BookForm()
+#         else:
+#             book = Book.get_by_id(book_id)
+#             form = BookForm(instance=book)
+#         return render(request, 'book/create_book.html', {'form': form})
+#     elif request.method == 'POST':
+#         if book_id == 0:
+#             form = BookForm(request.POST)
+#         else:
+#             book = Book.get_by_id(book_id)
+#             form = BookForm(request.POST, instance=book)
+#         if form.is_valid():
+#             form.save()
+#         return redirect('/book/list/')
 #############################################################
 
 ## dynamic id from url + error handling method#2
