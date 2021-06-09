@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.http.request import HttpRequest
-from django.http import HttpResponse, JsonResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from .models import Product
 import time
 from django.core.exceptions import ObjectDoesNotExist
@@ -130,21 +130,43 @@ def method_view(request, *args, **kwargs):
 from django.contrib import messages
 from products.forms import ProductCreationForm
 
+# ## saving object from cleaned data  
 def product_create_view(request, *args, **kwargs):
     
     ## if its GET request nothing gonna happen to this form
     ## so we just put here 'or none'
-    form = ProductCreationForm(request.POST or None)
+    form = ProductCreationForm(request.POST or None) ## --> will avoid if post_data != None: and hard_coding all the staff
     context = {'form': form}
-
+    
     if form.is_valid():
         data = form.cleaned_data
-        Product.create(**data)
-    return render (request, 'products/create_product_form_as_p.html', context)
-    # return render (request, 'products/create_product_input_tags.html', context)
-    # return render (request, 'products/create_product_crispy_form_tags.html', context)
+   
+        # standart Django method - create an object I
+        # Product.create(**data) ## will avoid product = Product.create(title=title, content=content, price=price
+        # models classmethod @create - create an object II
+        # **data - means that it'll be keyword args from form: form = {title: 'value', content:'value', price: 'value'}
+        # and etc.
+        product = Product.objects.create(**data)
+        messages.success(request, f"U have just created the next product: {product.title}")
+        # clean up the form while we renew the page
+        form = ProductCreationForm() 
+        #form.save()
+        if product != None:
+            #messages.success(request, f"U have just created the next product: {product.title}")
+            time.sleep(3)
+            return redirect('/products/list/')
+    
+    
+    # form = ProductCreationForm()
+    # form.save()
+    # return render (request, 'forms.html', context) # +
+    # return render (request, 'products/create_product_input_tags.html', context) # +
+    ## !!required fields demand!!
+    # return render (request, 'products/create_product_form_as_p.html', context) # +
+    # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+    return render (request, 'products/create_product_form_crispy.html', context) # +
 
-######## створює об'єкт цілий час
+# ## var2 longer version cleaned data + terminal status check
 # def product_create_view(request, *args, **kwargs):
 #     context = {}
 
@@ -176,14 +198,15 @@ def product_create_view(request, *args, **kwargs):
 #             ## self cleaned data --> will return clean values from the form
 #             ## will get values from cleaned data --> from instance of the class
 #             # print(form.cleaned_data)
-            
+
+              ## validated data: means
 #             if form.is_valid():
 #                 title = form.cleaned_data.get('title')
 #                 content = form.cleaned_data.get('content')
 #                 price = form.cleaned_data.get('price')
 
 #                 # виведе дані з cleaned_data
-#                 print(f'Clened data is: {title} | {content} | {price}')
+#                 print(f'Cleaned data is: {title} | {content} | {price}')
 
 #                 ## will create the object and write it to a database
 #                 ## створення через @classmethod моделі
@@ -192,10 +215,17 @@ def product_create_view(request, *args, **kwargs):
 
 #                 ## messages --> виведуть в браузер статус повідомлення
 #                 messages.success(request, f"U have just created the next product: {product}")
-#     #return render (request, 'forms.html', context)
-#     #return render (request, 'products/create_product_input_tags.html', context)
-#     #return render (request, 'products/create_product_form_as_p.html', context)
-#     #return render (request, 'products/create_product_crispy_form_tags.html', context)
+#                 time.sleep(2)
+#                 return redirect('/products/list/')
+                  # return HttpResponseRedirect('/products/list/') --> same option of page redirect
+                  # 
+
+#     return render (request, 'forms.html', context) # +
+#     # return render (request, 'products/create_product_input_tags.html', context) # +
+#     # # !!required fields demand!!
+#     # return render (request, 'products/create_product_form_as_p.html', context) # +
+#     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#     # return render (request, 'products/create_product_form_crispy.html', context) # +
 
 # # works
 # def product_create_view(request, *args, **kwargs):
