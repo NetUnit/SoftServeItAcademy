@@ -17,6 +17,12 @@
       width: 212px;
     }
 
+    .message {
+        color:limegreen;
+        font-weight: bold;
+        width: 212px;
+    }
+
   </style>
 
   <form method='POST' action='.'>
@@ -32,10 +38,12 @@
       <input type="number" id="price" name="price" style="width: 500px; height: 40px"/>
       <br/><br/>
       <div>
-      {% for message in messages %}
-        <p class="card-title" id='messages' style="width: 500px; height: 40px"> {{ message }}</p>
-      {% endfor %}
-      </div>
+        <br>
+        {% for message in messages %}
+            <p class="card-title" id='messages'> U have just created the next product:  <text class='message'>{{ message }}</p>
+        {% endfor %}
+        <br>
+    </div>
       <button type="submit" class="btn btn-success" style="display: block; margin-top: 5px; background-color:limegreen">Create</button>
 
     </div>

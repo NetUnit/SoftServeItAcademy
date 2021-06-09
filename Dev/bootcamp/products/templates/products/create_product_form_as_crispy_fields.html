@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
 
+{% load static %}
+
 {%block title%} Product Create {%endblock%}
 
 {%load crispy_forms_tags%}
@@ -23,6 +25,10 @@
     }
     textarea {
         width: 100%;
+    }
+    .message {
+        color:limegreen;
+        font-weight: bold;
     }
 
     .footer_app {
@@ -53,9 +59,11 @@
             {{form|crispy}}
 
             <div>
+                <br>
                 {% for message in messages %}
-                    <p class="card-title" id='messages'> {{ message }}</p>
+                    <p class="card-title" id='messages'> U have just created the next product:  <text class='message'>{{ message }}</p>
                 {% endfor %}
+                <br>
             </div>
             <button type="submit" class="btn btn-success" style="display: block; margin-top: 5px; background-color:limegreen"> Create </button>
         </form>

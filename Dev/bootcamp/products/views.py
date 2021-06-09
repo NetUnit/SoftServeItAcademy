@@ -130,41 +130,61 @@ def method_view(request, *args, **kwargs):
 from django.contrib import messages
 from products.forms import ProductCreationForm
 
-# ## saving object from cleaned data  
+
+## saving object from cleaned data  --> save
 def product_create_view(request, *args, **kwargs):
-    
-    ## if its GET request nothing gonna happen to this form
-    ## so we just put here 'or none'
-    form = ProductCreationForm(request.POST or None) ## --> will avoid if post_data != None: and hard_coding all the staff
-    context = {'form': form}
-    
+    form = ProductCreationForm(request.POST or None)
+
     if form.is_valid():
-        data = form.cleaned_data
-   
-        # standart Django method - create an object I
-        # Product.create(**data) ## will avoid product = Product.create(title=title, content=content, price=price
-        # models classmethod @create - create an object II
-        # **data - means that it'll be keyword args from form: form = {title: 'value', content:'value', price: 'value'}
-        # and etc.
-        product = Product.objects.create(**data)
-        messages.success(request, f"U have just created the next product: {product.title}")
-        # clean up the form while we renew the page
-        form = ProductCreationForm() 
-        #form.save()
-        if product != None:
-            #messages.success(request, f"U have just created the next product: {product.title}")
-            time.sleep(3)
-            return redirect('/products/list/')
+        product = form.save(commit=False)
+        product.save()
+        messages.success(request, f'{product.title}')
+        return redirect ('/products/create/')
+        
+    form = ProductCreationForm()
+    context = {'form': form}
+    time.sleep(1.5)
     
-    
-    # form = ProductCreationForm()
-    # form.save()
-    # return render (request, 'forms.html', context) # +
-    # return render (request, 'products/create_product_input_tags.html', context) # +
-    ## !!required fields demand!!
-    # return render (request, 'products/create_product_form_as_p.html', context) # +
-    # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#     return render (request, 'forms.html', context) # +
+#     return render (request, 'products/create_product_input_tags.html', context) # +
+#     ## !!required fields demand!!
+#     return render (request, 'products/create_product_form_as_p.html', context) # +
+#     return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
     return render (request, 'products/create_product_form_crispy.html', context) # +
+
+
+# # retrieving cleaned data --> Product.objects.create() 
+# def product_create_view(request, *args, **kwargs):
+    
+#     ## if its GET request nothing gonna happen to this form
+#     ## so we just put here 'or none'
+#     form = ProductCreationForm(request.POST or None) ## --> will avoid if post_data != None: and hard_coding all the staff
+#     context = {'form': form}
+    
+#     if form.is_valid():
+#         data = form.cleaned_data
+   
+#         # standart Django method - create an object I
+#         # Product.create(**data) ## will avoid product = Product.create(title=title, content=content, price=price
+#         # models classmethod @create - create an object II
+#         # **data - means that it'll be keyword args from form: form = {title: 'value', content:'value', price: 'value'}
+#         # and etc.
+#         product = Product.objects.create(**data)
+#         messages.success(request, f"U have just created the next product: {product.title}")
+#         # clean up the form while we renew the page
+#         form = ProductCreationForm() 
+#         if product != None:
+#             #messages.success(request, f"U have just created the next product: {product.title}")
+#             time.sleep(3)
+#             return redirect('/products/list/')
+    
+    
+#     # return render (request, 'forms.html', context) # +
+#     # return render (request, 'products/create_product_input_tags.html', context) # +
+#     ## !!required fields demand!!
+#     # return render (request, 'products/create_product_form_as_p.html', context) # +
+#     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#     return render (request, 'products/create_product_form_crispy.html', context) # +
 
 # ## var2 longer version cleaned data + terminal status check
 # def product_create_view(request, *args, **kwargs):
