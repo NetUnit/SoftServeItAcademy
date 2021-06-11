@@ -27,7 +27,8 @@ from products.views import (
     product_detailed_view,
     api_product_detailed_view,
     method_view,
-    product_create_view
+    product_create_view,
+    product_list_frontend_logic
 )
 
 from django.conf import settings
@@ -40,6 +41,7 @@ from django.conf.urls.static import static
 # handler403 = 'products.views.handler403'
 # handler400 = 'products.views.handler400'
 ###################################################################################
+app_name = 'products'
 
 urlpatterns = [
     ############# *** HomepageView *** #############
@@ -52,6 +54,7 @@ urlpatterns = [
     ############# *** ProductListView *** ############                                             
     re_path(r'^products/list/$', product_list_view, name='list_view'),                             # same_4
     re_path(r'^products/list2/$', ProductListView.as_view(), name='list_view'),                    # same_4  ## alternatively +++
+    re_path(r'^products/list3/$', product_list_frontend_logic, name='list_view2'),                 # same_4 (fancy template)
     #################################################################################
     # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
     # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2

@@ -89,6 +89,7 @@ TEMPLATES = [
                 # 'bootcamp.context_processors.resolver_context_processor',
                 # 'products.context_processors.resolver_context_processor',
                 'bootcamp.context_processors.detailed_method',
+                #'bootcamp.context_processors.get_app_from_urls'                              # custom app_info_1 grabbed from urls.py
                 
             ],
         },

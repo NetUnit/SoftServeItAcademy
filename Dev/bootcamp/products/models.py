@@ -7,8 +7,8 @@ class Product(models.Model):
     content = models.TextField(null=True, blank=True)
     price = models.IntegerField(default=0)
 
-    # class Meta:
-    #     ordering = ('id',)
+    class Meta:
+        ordering = ('id',)
 
     # def __str__(self):
     #     """
@@ -23,7 +23,8 @@ class Product(models.Model):
         :return: class, id
         """
         return f'{self.__class__.__name__}(id={self.id})'
-    
+
+
     @staticmethod
     def create(title, content, price):
         """
@@ -61,4 +62,16 @@ class Product(models.Model):
             # LOGGER.error("User does not exist"
             pass
         return False
-        
+
+    @staticmethod
+    def get_all():
+        """
+            returns data for json request with QuerySet of all books
+            use iteration to render separately in a template
+        """
+        try:
+            all_products = Product.objects.all()
+            return list(all_products)
+        except (IndexError, TypeError, Product.DoesNotExist):
+            pass
+        return False

@@ -1,3 +1,4 @@
+from django.http import request
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -53,6 +54,21 @@ def api_product_detailed_view(request, pk, *args, **kwargs):
         # return JsonResponse({"message": "Not found"}, status=404) # will 
         # return JSON response with HTTP status code of 404
     return JsonResponse({'id': obj.id})
+
+
+################ *** Product Create View *** #################
+# from model
+def product_list_frontend_logic(request, *args, **kwargs):
+    products = Product.get_all()
+    context = {'product_list': products}
+
+    return render (request, 'products/list_fancy_works.html', context)
+### remake as product_list_view
+# class BookListView(generic.ListView):
+#     model = Book
+#     paginate = 10
+#     model.objects.all().order_by('id')
+
 
 
 ## getthe list of items in every object
@@ -317,17 +333,10 @@ def product_create_view(request, *args, **kwargs):
 #     return HttpResponse(f"Here is product detailed view of: {obj.id}")
 
 
-### remake as product_list_view
-# class BookListView(generic.ListView):
-#     model = Book
-#     paginate = 10
-#     model.objects.all().order_by('id')
+
 
 # class BookDetailView(generic.DetailView):
 #     model = Book
-
-
-
 
 
 
