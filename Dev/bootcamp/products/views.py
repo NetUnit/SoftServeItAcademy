@@ -147,7 +147,10 @@ from django.contrib import messages
 from products.forms import ProductCreationForm
 
 
-## saving object from cleaned data  --> save
+############################## **** Validation Form **** ###############################
+# !!!!!!! implement validation through views, setup min length for required fields
+#from products.forms import ProductValidationForm
+# ## saving object from cleaned data  --> save
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm(request.POST or None)
 
@@ -156,18 +159,19 @@ def product_create_view(request, *args, **kwargs):
         product.save()
         messages.success(request, f'{product.title}')
         return redirect ('/products/create/')
-        
+
+
     form = ProductCreationForm()
     context = {'form': form}
-    time.sleep(1.5)
+    time.sleep(1.0)
     
-#     return render (request, 'forms.html', context) # +
-#     return render (request, 'products/create_product_input_tags.html', context) # +
+#    return render (request, 'forms.html', context) # +
+#     # return render (request, 'products/create_product_input_tags.html', context) # +
 #     ## !!required fields demand!!
-#     return render (request, 'products/create_product_form_as_p.html', context) # +
-#     return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#     # return render (request, 'products/create_product_form_as_p.html', context) # +
+#     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
     return render (request, 'products/create_product_form_crispy.html', context) # +
-
+########################################################################################
 
 # # retrieving cleaned data --> Product.objects.create() 
 # def product_create_view(request, *args, **kwargs):

@@ -58,3 +58,21 @@ class ProductCreationForm(forms.ModelForm):
 
         for field in self.Meta.required:
             self.fields[field].required = True
+
+
+## works with * templates
+# class ProductCraetionForm(forms.ModelForm):
+#     class Meta:
+#         model = Product
+#         fields = ('title', 'content', 'price')
+        
+
+#     def title_length(self):
+
+#         title_length = self.cleaned_data.get('title')
+#         min_title_length = len(title_length) > 1
+
+#         if not min_title_length:
+#             raise forms.ValidationError('This is not long enough, at least 2')
+#         return title_length
+
