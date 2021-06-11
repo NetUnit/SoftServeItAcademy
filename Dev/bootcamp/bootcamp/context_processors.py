@@ -63,4 +63,11 @@ def detailed_method(request, *args, **kwargs):
 #         'namespace': request.resolver_match.namespace,
 #         'url_name': request.resolver_match.url_name
 #     }
-########################################################################
+####################  *** get app_name from urls.py *** #########################
+# from products.urls import app_name as product_app
+
+## disabled --->
+# def get_app_from_urls(request, *args, **kwargs):
+#     return {
+#         'app_info_1': product_app
+#     }

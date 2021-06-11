@@ -27,7 +27,8 @@ from products.views import (
     product_detailed_view,
     api_product_detailed_view,
     method_view,
-    product_create_view
+    product_create_view,
+    product_list_frontend_logic
 )
 
 from django.conf import settings
@@ -52,6 +53,7 @@ urlpatterns = [
     ############# *** ProductListView *** ############                                             
     re_path(r'^products/list/$', product_list_view, name='list_view'),                             # same_4
     re_path(r'^products/list2/$', ProductListView.as_view(), name='list_view'),                    # same_4  ## alternatively +++
+    re_path(r'^products/list3/$', product_list_frontend_logic, name='list_view2'),                 # same_4 (fancy template)
     #################################################################################
     # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
     # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2
@@ -63,7 +65,7 @@ urlpatterns = [
 
     ## reg.ex var2 ##
     re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
-    re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='detailed_view'), # same_2
+    re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='api_detailed_view'), # same_2
 
     ################### *** examples *** ########################
     #path('products/1/', views.product_detailed_view, name='product-1'),
@@ -73,9 +75,9 @@ urlpatterns = [
 
     ################ *** Bad View Requests *** #################
     re_path(r'^products/create/$', product_create_view, name='product_create_view'),
-
+    
     # ## ** get current app_name --> context_processors ** ##
-    # re_path(r'^', include('products.urls')),
+    re_path(r'^', include('products.urls')),
     # re_path(r'^', include('emails.urls')),
     # re_path(r'^', include('profiles.urls')),
 

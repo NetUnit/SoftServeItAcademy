@@ -1,0 +1,118 @@
+{% extends 'base.html' %} 
+
+{% block title %} Products List {% endblock %}
+
+{% block content %}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+
+    form button {
+        margin-top: 10px;
+    }
+
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .picture {
+      border: 1px solid #4287f5;
+      height: 100px;
+      width: 150px;
+      padding-top: 10px;
+      text-align: center;
+      text-orientation: initial;
+    }
+    #messages {
+        background-color: rgb(172, 169, 169);
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="card w-25 my_margin" id="productTitle">
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0">Available products: </h5>
+        <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
+
+        <a href="{%url 'products:product_create_view'%}" class="btn btn-primary" style=background-color:mediumpurple>Create</a>
+    </div>
+</div>
+
+{%for product in product_list%}
+<div class="card w-25 my_margin">
+    <div class="card-body" style="display: flex; justify-content: space-between">
+        <div style="display: flex; align-items: stretch; width: 100%">
+            <div>
+                <h6 class="card-title" style="margin: 0; line-height: 1.5; padding-right: 5px">{{forloop.counter}}.</h6>
+            </div>
+
+            <div style="width: 100%">
+                <p>{{product.title}}</p>
+                <!--  <p>Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+                <div style="padding-top: 5px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{product.id}}"
+                        style="width: 100px;"
+
+                    >
+                        Info
+                    </button>
+                    <div class="collapse" id="collapseDesc{{product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px">
+                            {% if product.content %}
+                                {{product.content}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top: 5px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{product.id}}"
+                        style="width: 100px;"
+                    >
+                        Price
+                    </button>
+                    <div class="collapse" id="collapseDesc{{product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px">
+                            {% if product.price %}
+                                {{product.price}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top: 5px">
+                    <a href="{%url 'detailed_view' product.id%}" 
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                    >
+                        Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class='picture'>
+           >picture here<
+        </div>
+    </div>
+</div>
+{%endfor%}
+{%endblock%}
