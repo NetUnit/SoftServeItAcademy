@@ -47,14 +47,15 @@ INSTALLED_APPS = [
     # 'errortemplates',                                         # custom error templates
     # apps
     'products',                                                 # app#1
-    'profiles',                                                 # app#2
-    'emails',                                                   # app#3
+    'manufacturer',                                              # app#2
+    'profiles',                                                 # app#3
+    'emails',                                                   # app#4
     'crispy_forms'                                              # crispy_forms for temapltes
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
+    'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
