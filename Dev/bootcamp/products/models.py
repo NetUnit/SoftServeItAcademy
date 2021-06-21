@@ -53,7 +53,7 @@ class Product(models.Model):
         return False
 
     @staticmethod
-    def create(title, content, price):
+    def create(title, content, price, manufacturers=None):
         """
             param name: Describes name of the product
             type name: str max_length=220
@@ -67,6 +67,11 @@ class Product(models.Model):
         # allows to create objects with not all attrs input obligatory
         product = Product(title=title, content=content, price=price)
         try:
+            product.save()
+            manufacturer_exists = manufacturers is not None
+            if manufacturer_exists:
+                for manufacturer in manufacturers:
+                    product.manufacturers.add(manufacturer)
             product.save()
             return product
         except (IntegrityError, AttributeError, DataError):

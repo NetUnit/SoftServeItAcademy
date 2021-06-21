@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.http.request import HttpRequest
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
-from .models import Product
+from .models import Product, Manufacturer
 import time
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -174,8 +174,8 @@ def product_create_view(request, *args, **kwargs):
 #     # return render (request, 'products/create_product_input_tags.html', context) # +
 #     ## !!required fields demand!!
 #     # return render (request, 'products/create_product_form_as_p.html', context) # +
-#     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
-    return render (request, 'products/create_product_form_crispy.html', context) # +
+    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#    return render (request, 'products/create_product_form_crispy.html', context) # +
 ########################################################################################
 # def product_create_view(request, *args, **kwargs):
 #     form = ProductCreationForm(request.POST or None)

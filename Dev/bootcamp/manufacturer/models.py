@@ -15,15 +15,14 @@ class Manufacturer(models.Model):
         param year: depicts the foundation year year of a company
         type: date
 
-
     '''
 
-    name = models.CharField(max_length=40, blank=False)
+    title = models.CharField(max_length=40, blank=False)
     country = models.CharField(max_length=20, blank=True)
     year = models.DateField()
 
     class Meta:
-        ordering = ('name',) 
+        ordering = ('title',) 
 
     def __str__(self):
         '''
@@ -32,7 +31,7 @@ class Manufacturer(models.Model):
             :return manufacturer.id,  manufacturer.name,  manufacturer.country,  manufacturer.year
 
         '''
-        return f' {self.id} {self.name} {self.country} {self.year}'
+        return f' {self.id} {self.title} {self.country} {self.year}'
 
     
     def __repr__(self):
@@ -41,7 +40,7 @@ class Manufacturer(models.Model):
             of a certain product object
             :return: class, id
         '''
-        return f' {self.__class__.name}(id={self.id})'
+        return f' {self.__class__.title}(id={self.id})'
 
     @staticmethod
     def get_by_id(manufacturer_id):
@@ -65,8 +64,8 @@ class Manufacturer(models.Model):
             :return Manufacturer queryset of all objects or empty list if nothing has been found
             in the DB
         '''
-        qs = Manufacturer.objects.all()
-        return list(qs)
+        manufacturers = Manufacturer.objects.all()
+        return list(manufacturers)
 
 
 
@@ -87,7 +86,7 @@ class Manufacturer(models.Model):
             # LOGGER.error("User does not exist")
     
     @staticmethod
-    def create(name, country, year):
+    def create(title, country, year):
         '''
             This method is created in order to create manufacturer object
             to be saved into a DB
@@ -99,21 +98,21 @@ class Manufacturer(models.Model):
             type: date
         '''
         try:
-            manufacturer = Manufacturer.objects.create(name=name, country=country, year=year)
+            manufacturer = Manufacturer.objects.create(title=title, country=country, year=year)
             manufacturer.save()
             return manufacturer 
         except(IntegrityError, DataError, AttributeError):
             pass
             # LOGGER.error("User does not exist")
     
-    def update(self, name=None, country=None, year=None):
+    def update(self, title=None, country=None, year=None):
         '''
             This method is created in order to upadate manufacturer object
             :params: same as in create method, if param is None - no update done
             :return None
         '''
-        if name:
-            self.name = name
+        if title:
+            self.title = title
         if country:
             self.country = country
         if year:

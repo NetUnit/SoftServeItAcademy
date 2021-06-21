@@ -1,5 +1,11 @@
-from products.models import Product
+from products.models import Product, Manufacturer
 from django import forms
+
+
+# this class created only for menu product creation purpose
+class CustomMMCF(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, manufacturer):
+        return f'"{manufacturer.title}" ({manufacturer.country})'
 
 
 # class ProductCreationForm(forms.Form):
@@ -43,15 +49,22 @@ class ProductCreationForm(forms.ModelForm):
         labels = {
             'title': 'Title',
             'content': 'Content',
-            'price': 'Price'
+            'price': 'Price',
         }
 
-        required = ('title', )
+        required = ('title', 'content', 'price')
 
         widgets = {
 
-            'price': forms.NumberInput()
+            'price': forms.NumberInput(),
+
         }
+
+    manufacturers = CustomMMCF(
+        label='Manufacturers',
+        queryset=Manufacturer.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
