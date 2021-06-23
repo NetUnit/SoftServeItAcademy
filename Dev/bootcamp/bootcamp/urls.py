@@ -85,7 +85,7 @@ urlpatterns = [
     
     # ## ** get current app_name --> context_processors ** ##
     re_path(r'^', include('products.urls')),
-    #re_path(r'^', include('manufacturer.urls')),
+    re_path(r'^', include('manufacturer.urls')),
     # re_path(r'^', include('emails.urls')),
     # re_path(r'^', include('profiles.urls')),
 

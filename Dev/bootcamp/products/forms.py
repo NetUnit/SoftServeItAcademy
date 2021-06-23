@@ -1,4 +1,4 @@
-from products.models import Product, Manufacturer
+from .models import Product, Manufacturer
 from django import forms
 
 

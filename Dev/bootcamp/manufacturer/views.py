@@ -1,15 +1,17 @@
-from django.shortcuts import render
+from django.http import request
+from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.shortcuts import render, redirect
-from .models import Manufacturer
-from .forms import ManufacturerCreationForm
-# from manufacturer import manufacturers_list
-
-from django.contrib import messages
+from django.http.request import HttpRequest
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
+from manufacturer.forms import ManufacturerCreationForm
 
 import time
+from django.core.exceptions import ObjectDoesNotExist
 
+# exception handling
+from django.template import RequestContext
+from django.contrib import messages
 
 def manufacturer_create_view(request, *args, **kwargs):
     form = ManufacturerCreationForm(request.POST or None)
@@ -26,13 +28,18 @@ def manufacturer_create_view(request, *args, **kwargs):
         else:
             get_title = form.cleaned_data.get('title')
             messages.error(request, f'{get_title} isn\'t enough long')
-            return redirect ('/manufacturers/create/')
+            return redirect ('/products/create/')
 
     form = ManufacturerCreationForm()
     context = {'form': form}
     time.sleep(1.0)
-
-    return render (request, 'manufacturer/create_manufacturer_crispy_form.html', context)
+    
+#    return render (request, 'forms.html', context) # +
+#     # return render (request, 'products/create_product_input_tags.html', context) # +
+#     ## !!required fields demand!!
+#     # return render (request, 'products/create_product_form_as_p.html', context) # +
+    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#    return render (request, 'products/create_product_form_crispy.html', context) # +
 
 # def manufacturer_list_view(request):
 #     pass

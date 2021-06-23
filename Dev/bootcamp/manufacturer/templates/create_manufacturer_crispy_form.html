@@ -57,7 +57,7 @@
         <form action="" method="post">
             {%csrf_token%}
             
-            {{form.title|as_crispy_field}} {{form.country|as_crispy_field}} {{form.year|as_crispy_field}}
+            {{ form|crispy }}
 
             <div>
                 <br>
