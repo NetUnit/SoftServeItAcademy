@@ -198,6 +198,10 @@ APP_NAME_3 = 'PROFILES'
 APP_NAME_3_TAGLINE = 'profiles tagline'
 
 
+APP_NAME_4 = 'MANUFACTURERS'
+APP_NAME_4_TAGLINE = 'manufacturers tagline'
+
+
 METHOD = 'METHODS'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

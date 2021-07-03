@@ -12,6 +12,7 @@ app_name = 'manufacturer'
 
 urlpatterns = [
     
+    
     # ################### *** Detailed View *** ########################
     # # path('products/1/', views.product_detailed_view, name='product-1'),
     # # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
@@ -34,7 +35,7 @@ urlpatterns = [
     # #################################################################################
 
 
-    # ################ *** Create View *** #################
-    #re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
+    ################ *** Create View *** #################
+    re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
 
 ]

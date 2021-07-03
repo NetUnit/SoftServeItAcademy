@@ -159,12 +159,15 @@ def product_create_view(request, *args, **kwargs):
         # print(min_title_length)
         if min_title_length:
             product.save()
-            messages.success(request, f'{product.title}')
+            messages.success(request, f'U\'ve just created the next product: {product.title}')
             return redirect ('/products/create/')
         else:
             get_title = form.cleaned_data.get('title')
             messages.error(request, f'{get_title} isn\'t enough long')
             return redirect ('/products/create/')
+    # fix this later (watch Denis video)
+    else:
+        messages.error(request, f'make sure U r entering all data in the correct order')
 
     form = ProductCreationForm()
     context = {'form': form}

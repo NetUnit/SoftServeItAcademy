@@ -27,6 +27,8 @@ def footer_app_name(request, *args, **kwargs):
         'app_name_2_tagline': settings.APP_NAME_2_TAGLINE,
         'app_name_3': settings.APP_NAME_3,
         'app_name_3_tagline': settings.APP_NAME_3_TAGLINE,
+        'app_name_4': settings.APP_NAME_4,
+        'app_name_4_tagline': settings.APP_NAME_4_TAGLINE,
 
     }
 
