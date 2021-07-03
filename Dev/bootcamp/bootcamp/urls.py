@@ -78,8 +78,8 @@ urlpatterns = [
     re_path(r'^methods/$', method_view, name='method_view'),
 
 
-    ################ *** CREATE MANUFACTURING *** #################
-    re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
+    # ################ *** CREATE MANUFACTURING *** #################
+    # re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
 
     ################ *** Bad View Requests *** #################
     

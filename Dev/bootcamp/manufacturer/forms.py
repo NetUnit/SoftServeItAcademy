@@ -1,4 +1,4 @@
-from .models import Product, Manufacturer
+from .models import Manufacturer
 from django import forms
 
 
@@ -52,7 +52,7 @@ class ManufacturerCreationForm(forms.ModelForm):
             'year': 'Year',
         }
 
-        required = ('title', 'country', 'year')
+        required = ('title',)
 
         widgets = {
 
