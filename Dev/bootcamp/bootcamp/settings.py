@@ -47,14 +47,15 @@ INSTALLED_APPS = [
     # 'errortemplates',                                         # custom error templates
     # apps
     'products',                                                 # app#1
-    'profiles',                                                 # app#2
-    'emails',                                                   # app#3
+    'manufacturer',                                              # app#2
+    'profiles',                                                 # app#3
+    'emails',                                                   # app#4
     'crispy_forms'                                              # crispy_forms for temapltes
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
+    'whitenoise.middleware.WhiteNoiseMiddleware',               # customized (added)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,7 +90,7 @@ TEMPLATES = [
                 # 'bootcamp.context_processors.resolver_context_processor',
                 # 'products.context_processors.resolver_context_processor',
                 'bootcamp.context_processors.detailed_method',
-                #'bootcamp.context_processors.get_app_from_urls'                              # custom app_info_1 grabbed from urls.py
+                #'bootcamp.context_processors.get_app_from_urls'                                # custom app_info_1 grabbed from urls.py
                 
             ],
         },

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.http.request import HttpRequest
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
-from .models import Product
+from .models import Product, Manufacturer
 import time
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -148,18 +148,23 @@ from products.forms import ProductCreationForm
 
 
 ############################## **** Validation Form **** ###############################
-# !!!!!!! implement validation through views, setup min length for required fields
-#from products.forms import ProductValidationForm
-# ## saving object from cleaned data  --> save
+
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm(request.POST or None)
 
     if form.is_valid():
         product = form.save(commit=False)
-        product.save()
-        messages.success(request, f'{product.title}')
-        return redirect ('/products/create/')
-
+        
+        min_title_length = len(str(form.cleaned_data.get('title'))) > 1
+        # print(min_title_length)
+        if min_title_length:
+            product.save()
+            messages.success(request, f'{product.title}')
+            return redirect ('/products/create/')
+        else:
+            get_title = form.cleaned_data.get('title')
+            messages.error(request, f'{get_title} isn\'t enough long')
+            return redirect ('/products/create/')
 
     form = ProductCreationForm()
     context = {'form': form}
@@ -169,10 +174,34 @@ def product_create_view(request, *args, **kwargs):
 #     # return render (request, 'products/create_product_input_tags.html', context) # +
 #     ## !!required fields demand!!
 #     # return render (request, 'products/create_product_form_as_p.html', context) # +
-#     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
-    return render (request, 'products/create_product_form_crispy.html', context) # +
+    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#    return render (request, 'products/create_product_form_crispy.html', context) # +
 ########################################################################################
+# def product_create_view(request, *args, **kwargs):
+#     form = ProductCreationForm(request.POST or None)
 
+#     if form.is_valid():
+#         product = form.save(commit=False)
+        
+#         min_title_length = len(str(form.cleaned_data.get('title'))) > 1
+#         # print(min_title_length)
+#         if min_title_length:
+#             product.save()
+#             messages.success(request, f'{product.title}')
+#             return redirect ('/products/create/')
+
+#     form = ProductCreationForm()
+#     context = {'form': form}
+#     time.sleep(1.0)
+    
+# #    return render (request, 'forms.html', context) # +
+# #     # return render (request, 'products/create_product_input_tags.html', context) # +
+# #     ## !!required fields demand!!
+# #     # return render (request, 'products/create_product_form_as_p.html', context) # +
+# #     # return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#     return render (request, 'products/create_product_form_crispy.html', context) # +
+
+########################################################################################
 # # retrieving cleaned data --> Product.objects.create() 
 # def product_create_view(request, *args, **kwargs):
     

@@ -3,9 +3,9 @@ from django import forms
 
 
 # this class created only for menu product creation purpose
-class CustomMMCF(forms.ModelMultipleChoiceField):
-    def label_from_instance(self, manufacturer):
-        return f'"{manufacturer.title}" ({manufacturer.country})'
+# class CustomMMCF(forms.ModelMultipleChoiceField):
+#     def label_from_instance(self, manufacturer):
+#         return f'"{manufacturer.title}" ({manufacturer.country})'
 
 
 # class ProductCreationForm(forms.Form):
@@ -42,29 +42,24 @@ class CustomMMCF(forms.ModelMultipleChoiceField):
 
 
 ## works with * templates
-class ProductCreationForm(forms.ModelForm):
+class ManufacturerCreationForm(forms.ModelForm):
     class Meta:
-        model = Product
-        fields = ('title', 'content', 'price')
+        model = Manufacturer
+        fields = ('title', 'country', 'year')
         labels = {
             'title': 'Title',
-            'content': 'Content',
-            'price': 'Price',
+            'country': 'Country',
+            'year': 'Year',
         }
 
-        required = ('title', 'content', 'price')
+        required = ('title', 'country', 'year')
 
         widgets = {
 
-            'price': forms.NumberInput(),
+            'year': forms.DateInput(),
 
         }
 
-    manufacturers = CustomMMCF(
-        label='Manufacturers',
-        queryset=Manufacturer.objects.all(),
-        widget=forms.CheckboxSelectMultiple
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
