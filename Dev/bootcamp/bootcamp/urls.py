@@ -22,9 +22,9 @@ from products import views
 from products.views import (
     home_view,
     HomePageView,
-    product_list_view,
-    product_detailed_view,
-    api_product_detailed_view,
+    ProductListView,
+    # product_detailed_view,
+    # api_product_detailed_view,
     method_view,
 
 )
@@ -49,10 +49,8 @@ urlpatterns = [
     path('search/', home_view, name='search'),                                                      # same_3
     path('admin/', admin.site.urls, name='admin'),
 
-    ############# *** ProductListView *** ############                                             
-    re_path(r'^products/list2/$', product_list_view, name='product_list_view'),                             # same_4
-    #re_path(r'^products/list3/$', ProductListView.as_view(), name='product_list_view'),                    # same_4  ## alternatively +++
-    #re_path(r'^products/list3/$', product_list_frontend_logic, name='product_list_view2'),                 # same_4 (fancy template)
+    ############# *** Generic ProductListView *** ############                                             
+    re_path(r'^products/list3/$', ProductListView.as_view(), name='product_list_view'),             # same_4  # alternatively to FBV
     #################################################################################
     # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
     # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2
@@ -63,8 +61,8 @@ urlpatterns = [
     # re_path(r'^api/products/(?P<pk>[1-9]{1,3})/$', views.api_product_detailed_view, name='detailed_view'), # same_2
 
     ## reg.ex var2 ##
-    re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
-    re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='api_detailed_view'), # same_2
+    # re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
+    # re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='api_detailed_view'), # same_2
 
     ################### *** examples *** ########################
     #path('products/1/', views.product_detailed_view, name='product-1'),

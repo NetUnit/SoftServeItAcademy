@@ -13,7 +13,7 @@ from django.template import RequestContext
 
 
 ################# *** Django Generic HomePageView *** #############
-from django.views.generic import TemplateView # Import TemplateView
+from django.views.generic import TemplateView, ListView # Import TemplateView
 
 ## main page
 ## Class-based View
@@ -29,9 +29,9 @@ def home_view(request, *args, **kwargs):
 ################### *** product detailed view *** ###################
 # using python simple function get(pk=pk)
 # dynamic id from url + error handling method#1
-def product_detailed_view(request, pk, *args, **kwargs):
+def product_detailed_view(request, product_id, *args, **kwargs):
     try:
-        obj = Product.objects.get(pk=pk)
+        obj = Product.objects.get(pk=product_id)
         # # ex2: using models: @staticmethod
         # obj = Product.get_by_id(pk)
         # ex3: using all() + filter
@@ -46,14 +46,14 @@ def product_detailed_view(request, pk, *args, **kwargs):
 
 
 # JSON response of product#2 # example just for url
-def api_product_detailed_view(request, pk, *args, **kwargs):
+def api_product_detailed_view(request, product_id, *args, **kwargs):
     try:
-        obj = Product.objects.get(pk=pk)
+        obj = Product.objects.get(pk=product_id)
     except Product.DoesNotExist: # 
         raise Http404
         # return JsonResponse({"message": "Not found"}, status=404) # will 
         # return JSON response with HTTP status code of 404
-    return JsonResponse({'id': obj.id})
+    return JsonResponse({'id': obj.id, 'title': obj.title, 'content': obj.content, 'price': obj.price})
 
 
 ################ *** Product Create View *** #################
@@ -62,14 +62,7 @@ def product_list_frontend_logic(request, *args, **kwargs):
     products = Product.get_all()
     context = {'product_list': products}
 
-    return render (request, 'products/list_fancy_works.html', context)
-
-### remake as product_list_view
-# class BookListView(generic.ListView):
-#     model = Book
-#     paginate = 10
-#     model.objects.all().order_by('id')
-###############################################################
+    return render (request, 'products/list_main.html', context)
 
 
 ## getthe list of items in every object
@@ -149,7 +142,6 @@ from products.forms import ProductCreationForm
 
 
 ############################## **** Create+Validation Form **** ###############################
-
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm(request.POST or None)
 
@@ -180,6 +172,14 @@ def product_create_view(request, *args, **kwargs):
 #     # return render (request, 'products/create_product_form_as_p.html', context) # +
     return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
 #    return render (request, 'products/create_product_form_crispy.html', context) # +
+
+
+############################## **** Update View **** ###############################
+def product_update_view(request, *args, **kwargs):
+    pass
+
+
+
 ########################################################################################
 # def product_create_view(request, *args, **kwargs):
 #     form = ProductCreationForm(request.POST or None)
@@ -368,14 +368,5 @@ def product_create_view(request, *args, **kwargs):
 # def product_detailed_view(request, *args, **kwargs):
 #     obj = Product.objects.get(id=1)
 #     return HttpResponse(f"Here is product detailed view of: {obj.id}")
-
-
-##
-
-# class BookDetailView(generic.DetailView):
-#     model = Book
-
-
-
 
 
