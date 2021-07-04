@@ -1,6 +1,5 @@
 from django.db import models, IntegrityError, DataError
 from django.forms.models import model_to_dict
-from django.http.response import Http404
 
 # Create your models here.
 class Manufacturer(models.Model):
@@ -16,8 +15,6 @@ class Manufacturer(models.Model):
         param year: depicts the foundation year year of a company
         type: date
 
-        NOTE: Manufacturer model is more customized than Product
-            in order to avoid less code in views
     '''
 
     title = models.CharField(max_length=40, blank=False)
@@ -27,16 +24,14 @@ class Manufacturer(models.Model):
     class Meta:
         ordering = ('title',) 
 
-    # def __str__(self):
-    #     '''
-    #         This magic method is created  in order to show all
-    #         info about a class Manufacturer
-    #         :return manufacturer.id,  manufacturer.name,  manufacturer.country,  manufacturer.year
+    def __str__(self):
+        '''
+            This magic method is created  in order to show all
+            info about a class Manufacturer
+            :return manufacturer.id,  manufacturer.name,  manufacturer.country,  manufacturer.year
 
-    #     '''
-    #     #return str(self.to_dict())[1:-1]
-    #     return Manufacturer
-        #return f'{self.id} {self.title} {self.country} {self.year}'
+        '''
+        return f' {self.id} {self.title} {self.country} {self.year}'
 
     
     def __repr__(self):
@@ -48,19 +43,18 @@ class Manufacturer(models.Model):
         return f' {self.__class__.title}(id={self.id})'
 
     @staticmethod
-    def get_by_id(manufacturer_id=None):
+    def get_by_id(manufacturer_id):
         '''
             This method is created in order to get manufacturer object
             found in the DB
             :return Manufacturer object or None if such a manufacturer does not exist in the DB
-            (None will raise 404 status)
         '''
         try:
             manufacturer = Manufacturer.objects.get(pk=manufacturer_id)
             return manufacturer 
         except Manufacturer.DoesNotExist:
-            raise Http404
-            # LOGGER.error("Manufacturer does not exist")
+            pass
+            # LOGGER.error("User does not exist")
     
     @staticmethod
     def get_all():
@@ -70,12 +64,10 @@ class Manufacturer(models.Model):
             :return Manufacturer queryset of all objects or empty list if nothing has been found
             in the DB
         '''
-        try:
-            manufacturers = Manufacturer.objects.all()
-            return list(manufacturers)
-        except Manufacturer.DoesNotExist:
-            raise Http404
-            # LOGGER.error("Manufacturers does not exist")
+        manufacturers = Manufacturer.objects.all()
+        return list(manufacturers)
+
+
 
     @staticmethod
     def delete_by_id(manufacturer_id):
@@ -102,7 +94,7 @@ class Manufacturer(models.Model):
             type: str max_length = 40
             param country: Depicts the manufacturer's country of origin
             type: str max_length = 20
-            param year: depicts the foundation year of a company
+            param year: depicts the foundation year year of a company
             type: date
         '''
         try:

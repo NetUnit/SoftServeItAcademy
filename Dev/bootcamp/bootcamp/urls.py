@@ -23,17 +23,12 @@ from products.views import (
     home_view,
     HomePageView,
     product_list_view,
-    ProductListView,
     product_detailed_view,
     api_product_detailed_view,
     method_view,
-    product_list_frontend_logic
+
 )
 
-
-from manufacturer.views import (
-    manufacturer_create_view
-)
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -55,9 +50,9 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
 
     ############# *** ProductListView *** ############                                             
-    re_path(r'^products/list/$', product_list_view, name='product_list_view'),                             # same_4
-    re_path(r'^products/list2/$', ProductListView.as_view(), name='product_list_view'),                    # same_4  ## alternatively +++
-    re_path(r'^products/list3/$', product_list_frontend_logic, name='product_list_view2'),                 # same_4 (fancy template)
+    re_path(r'^products/list2/$', product_list_view, name='product_list_view'),                             # same_4
+    #re_path(r'^products/list3/$', ProductListView.as_view(), name='product_list_view'),                    # same_4  ## alternatively +++
+    #re_path(r'^products/list3/$', product_list_frontend_logic, name='product_list_view2'),                 # same_4 (fancy template)
     #################################################################################
     # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
     # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2

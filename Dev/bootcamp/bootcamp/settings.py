@@ -175,7 +175,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 PRODUCTS_GROUP = 'THE PRODUCT STORE'
-PRODUCTS_TAGLINE = 'The latest incomes of products and prices updates'
+PRODUCTS_TAGLINE = 'The latest incomes of products/manufacturers/prices/updates'
 
 # setup as automated in context processors
 # ROOT_PAGE = 'root url'
