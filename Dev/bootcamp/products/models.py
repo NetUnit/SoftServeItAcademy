@@ -1,5 +1,6 @@
 from django.db import models, IntegrityError, DataError
 from manufacturer.models import Manufacturer
+from django.http.response import Http404
 
 # Create your models here.
 class Product(models.Model):
@@ -17,6 +18,7 @@ class Product(models.Model):
     #     Magic method is redefined to show all information about a Product
     #     :return: product id, product title, product title, product price
     #     """
+    #     return f'{self.id} {self.title} {self.price} {self.manufacturers}'
     #     return str(self.to_dict())[1:-1]
 
     def __repr__(self):
@@ -36,7 +38,7 @@ class Product(models.Model):
             product = Product.objects.get(pk=product_id)
             return product
         except Product.DoesNotExist:
-            pass
+            raise Http404
             # LOGGER.error("Product does not exist")
 
     @staticmethod

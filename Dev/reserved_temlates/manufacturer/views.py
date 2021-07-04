@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.http.request import HttpRequest
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
-from manufacturer.forms import ManufacturerCreationForm
+from manufacturers.forms import ManufacturerCreationForm
 
 import time
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,7 +15,7 @@ from django.template import RequestContext
 from django.contrib import messages
 
 
-############################## **** Create Manufacturer+Custom Validation **** ###############################
+############################## **** Create+Validation Form **** ###############################
 '''
     This view was made for self-development
     purposes in order to create custom validation
@@ -32,7 +32,7 @@ from django.contrib import messages
 '''
 import re
 import datetime
-from manufacturer.dates_range import Dates
+from manufacturers.dates_range import Dates
 def manufacturer_create_view(request, *args, **kwargs):
     form = ManufacturerCreationForm(request.POST or None)
 
@@ -82,33 +82,28 @@ def manufacturer_create_view(request, *args, **kwargs):
     context = {'form': form}
     time.sleep(1.0)
     
-    return render (request, 'manufacturer/create_manufacturer_form_crispy.html', context) #
+    return render (request, 'manufacturers/create_manufacturer_form_crispy.html', context) #
 
 
-############################## *** Datailed View + API *** ###############################
-from .models import Manufacturer
-def manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
-    '''
-        Compare to the products app models were altered: 
-        :return: manufacturer object or raise 404 status automatically when object is None
-    '''
-    manufacturer = Manufacturer.get_by_id(manufacturer_id)
-    context = {'object': manufacturer}
-    return render (request, 'manufacturer/detail.html', context)
-
-
-def api_manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
-    manufacturer = Manufacturer.get_by_id(manufacturer_id)
-    return JsonResponse({'id': manufacturer.id})
-
-
-############################## *** Full List*** ###############################
+############################## **** Create Manufacturer **** ###############################
+from manufacturers.models import Manufacturer
 def manufacturer_list_view(request, *args, **kwargs):
-    qs = Manufacturer.get_all()
+
+    try:
+        qs = Manufacturer.get_all()
+    except Manufacturer.DoesNotExist:
+        raise Http404
+
     context = {'manufacturer_list': qs}
-    return render (request, 'manufacturer/manufacturer_list.html', context)
+    return render (request, 'manufacturers/manufacturer_list.html', context)
 
-def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
-    manufacturer = Manufacturer.get_by_id()
-    pass
 
+############################## **** Datailed View **** ###############################
+def manufacturer_deatiled_view(request, manufacturer_id, *args, **kwargs):
+    try:
+        manufacturer = Manufacturer.get_by_id(manufacturer_id)
+    except Manufacturer.DoesNotExist:
+        raise Http404
+    
+    context = {'manufacturer': manufacturer}
+    return render (request, 'manufacturers/manufacturer_detailed_view.html', context)

@@ -63,12 +63,13 @@ def product_list_frontend_logic(request, *args, **kwargs):
     context = {'product_list': products}
 
     return render (request, 'products/list_fancy_works.html', context)
+
 ### remake as product_list_view
 # class BookListView(generic.ListView):
 #     model = Book
 #     paginate = 10
 #     model.objects.all().order_by('id')
-
+###############################################################
 
 
 ## getthe list of items in every object
@@ -147,7 +148,7 @@ from django.contrib import messages
 from products.forms import ProductCreationForm
 
 
-############################## **** Validation Form **** ###############################
+############################## **** Create+Validation Form **** ###############################
 
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm(request.POST or None)
@@ -369,7 +370,7 @@ def product_create_view(request, *args, **kwargs):
 #     return HttpResponse(f"Here is product detailed view of: {obj.id}")
 
 
-
+##
 
 # class BookDetailView(generic.DetailView):
 #     model = Book
