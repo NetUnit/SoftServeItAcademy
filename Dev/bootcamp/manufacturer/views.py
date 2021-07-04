@@ -99,7 +99,8 @@ def manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
 
 def api_manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
     manufacturer = Manufacturer.get_by_id(manufacturer_id)
-    return JsonResponse({'id': manufacturer.id})
+    obj = manufacturer
+    return JsonResponse({'id': obj.id, 'title': obj.title, 'country': obj.country, 'year': obj.year})
 
 
 ############################## *** Full List*** ###############################
