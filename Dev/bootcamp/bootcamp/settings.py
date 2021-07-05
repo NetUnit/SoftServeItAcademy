@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     # 'errortemplates',                                         # custom error templates
     # apps
     'products',                                                 # app#1
-    'manufacturer',                                              # app#2
+    'manufacturer',                                             # app#2
+    'accounts',                                                 # app#5
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
     'crispy_forms'                                              # crispy_forms for temapltes

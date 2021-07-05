@@ -103,13 +103,16 @@ def api_manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
     return JsonResponse({'id': obj.id, 'title': obj.title, 'country': obj.country, 'year': obj.year})
 
 
-############################## *** Full List*** ###############################
+############################## *** Full List *** ###############################
 def manufacturer_list_view(request, *args, **kwargs):
     qs = Manufacturer.get_all()
     context = {'manufacturer_list': qs}
-    return render (request, 'manufacturer/manufacturer_list.html', context)
+    return render (request, 'manufacturer/list_main.html', context)
+    #return render (request, 'manufacturer/manufacturer_list.html', context)
 
+
+############################## *** Update Product *** ###########################
 def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
-    manufacturer = Manufacturer.get_by_id()
+    manufacturer = Manufacturer.get_by_id(manufacturer_id)
     pass
-
+    

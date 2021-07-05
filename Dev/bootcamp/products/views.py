@@ -57,17 +57,17 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
 
 
 ################ *** Product Create View *** #################
-# from model
-def product_list_frontend_logic(request, *args, **kwargs):
+# try/except blocks will be excessive as model has it already 
+def product_list_view(request, *args, **kwargs):
     products = Product.get_all()
     context = {'product_list': products}
 
     return render (request, 'products/list_main.html', context)
 
-
+############################## *** Full List *** ###############################
 ## getthe list of items in every object
 ## will get the list of all individual instances of this model
-def product_list_view(request, *args, **kwargs):
+def product_list_view2(request, *args, **kwargs):
     try:
         qs = Product.objects.all()  # list of objects [obj1, obj2, obj3]
     except Product.DoesNotExist:
@@ -176,8 +176,8 @@ def product_create_view(request, *args, **kwargs):
 
 ############################## **** Update View **** ###############################
 def product_update_view(request, *args, **kwargs):
-    pass
-
+    #product = Manufacturer.get_by_id(product_id)
+    return HttpResponse('<h2> This is update form </h2>')
 
 
 ########################################################################################

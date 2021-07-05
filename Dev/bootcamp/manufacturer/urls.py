@@ -14,16 +14,16 @@ from django.conf import settings
 app_name = 'manufacturer'
 
 urlpatterns = [
+    
+    ############# *** ManufacturerDeatailedView + API *** ###############
+    re_path(r'^manufacturers/(?P<manufacturer_id>\d+)/$', manufacturer_detailed_view, name='detailed_view'),
+    re_path(r'^api/manufacturers/(?P<manufacturer_id>\d+)/$', api_manufacturer_detailed_view, name='api_detailed_view'),
+
+    ############# *** ManufacturerListView *** ###############
+    re_path(r'^manufacturers/list/$', manufacturer_list_view, name='manufacturer_list_view'),
 
     ################ *** Create View *** #################
     re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
-
-    ############# *** ManufacturerListView *** ###############
-    re_path(r'^manufacturers/list/$', manufacturer_list_view, name='manufacurer_list_view'),
-
-    ############# *** ManufacturerDeatailedView + API *** ###############
-    re_path(r'^manufacturers/(?P<manufacturer_id>\d+)/$', manufacturer_detailed_view, name='manufacturer_detailed_view'),
-    re_path(r'^api/manufacturers/(?P<manufacturer_id>\d+)/$', api_manufacturer_detailed_view, name='api_manufacurer_list_view'),
 
     ############# *** ManufacturerUpdateView *** ###############
     re_path(r'^manufacturers/update/$', manufacturer_update_view, name='manufacturer_detailed_view'),
