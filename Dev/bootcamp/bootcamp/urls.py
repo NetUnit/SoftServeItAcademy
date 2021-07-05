@@ -23,12 +23,8 @@ from products.views import (
     home_view,
     HomePageView,
     ProductListView,
-    # product_detailed_view,
-    # api_product_detailed_view,
     method_view,
-
 )
-
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -43,43 +39,21 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     ############# *** HomepageView *** #############
-    ## create html for HomePageView in templates
-    path('', HomePageView.as_view(), name='index'), # add template                                  # same_3
+    #!! create html for HomePageView in templates
+    path('', HomePageView.as_view(), name='index'), # add template                                  # same_1
 
-    path('search/', home_view, name='search'),                                                      # same_3
+    path('search/', home_view, name='search'),                                                      # same_1
     path('admin/', admin.site.urls, name='admin'),
 
     ############# *** Generic ProductListView *** ############                                             
-    re_path(r'^products/list3/$', ProductListView.as_view(), name='product_list_view'),             # same_4  # alternatively to FBV
-    #################################################################################
-    # path('products/<int:pk>/', views.product_detailed_view, name='detailed_view'),                # same_1
-    # path('api/products/<int:pk>/', views.product_api_detailed_view, name='api_detailed_view')     # same_2
-
-    ################### *** re_path *** #########################
-    ## can adjust the number of products via quantifiers ##
-    # re_path(r'^products/(?P<pk>[1-9]{1,3})/$', views.product_detailed_view, name='detailed_view'), # same_1
-    # re_path(r'^api/products/(?P<pk>[1-9]{1,3})/$', views.api_product_detailed_view, name='detailed_view'), # same_2
-
-    ## reg.ex var2 ##
-    # re_path(r'^products/(?P<pk>\d+)/$', product_detailed_view, name='detailed_view'), # same_1
-    # re_path(r'^api/products/(?P<pk>\d+)/$', api_product_detailed_view, name='api_detailed_view'), # same_2
-
-    ################### *** examples *** ########################
-    #path('products/1/', views.product_detailed_view, name='product-1'),
+    re_path(r'^products/list3/$', ProductListView.as_view(), name='product_list_view'),             # same_3
 
     ################### *** just for getting a method *** ########################
     re_path(r'^methods/$', method_view, name='method_view'),
-
-
-    # ################ *** CREATE MANUFACTURING *** #################
-    # re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
-
-    ################ *** Bad View Requests *** #################
     
-    # ## ** get current app_name --> context_processors ** ##
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),
-    # re_path(r'^', include('emails.urls')),
-    # re_path(r'^', include('profiles.urls')),
+    re_path(r'^', include('emails.urls')),
+    re_path(r'^', include('accounts.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

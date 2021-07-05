@@ -1,17 +1,13 @@
 # from django.conf.urls.static import static
-# from django.conf.urls import include
-# from django.urls import path, re_path
-# from accounts.views import (
-#     login_page,
-#     register_page,
-#     authentication
-# )
+from django.urls import path, re_path
+from emails.views import (
+    emails_list_view
+    )
 
-# urlpatterns = [
+app_name = 'emails'
 
+urlpatterns = [
 
-#     re_path(r'^accounts/register', register_page, name='register'),
-#     re_path(r'^accounts/login', login_page, name='login'),
-#     re_path(r'^accounts/authentication', authentication, name='authentication')
+    re_path(r'^emails/list/$', emails_list_view, name='emails_list_view'),
 
-# ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
