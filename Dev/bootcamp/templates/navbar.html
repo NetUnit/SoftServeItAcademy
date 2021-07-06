@@ -1,47 +1,102 @@
 {% load static %}
 
-<!-- <style>
-    /* .nav-item-products {
-        float:right;
-    } */
+<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
-    /* .nav-item-manufacturers {
-        float: right;
-    } */
+<style>
+    .topnav a:hover {
+    border-bottom: 2px solid limegreen;
+}
 
-    
-</style> -->
+</style>
 
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<div class="container">
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{%url 'panda_link' %}">PANDA HARDWARE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-    >
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-            
-            <li class="nav-item-home">
-                <a class="nav-link" href="{% url 'index' %}" 
-                style="font-family:Arial, Helvetica, sans-serif; color:rgb(255, 255, 255); font-size: 16px;"> Home <spanclass="sr-only"></span></a>
-            </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto topnav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url  'products:product_list_view' %}">Shop Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'manufacturer:manufacturer_list_view' %}">Shop Manufacturers</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Resources
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Carfax</a>
+                        <a class="dropdown-item" href="#">Carproof</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Omnivic</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'contact'  %}">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login' %}" >Login</a>                  
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white" type="button" href="{%url 'accounts:register' %}" >Register</a>
+                </li>
+            </ul>
+        </div>
 
-            <li class="nav-item-products">
-                <a class="nav-link" href="{% url 'products:product_list_view' %}" 
-                style="font-family:Arial, Helvetica, sans-serif; color:rgb(255, 255, 255); font-size: 16px;"> Products <spanclass="sr-only"></span></a>
-            </li>
-            <li class="nav-item-manufacturers">
-                <a class="nav-link" href="{% url 'manufacturer:manufacturer_list_view' %}" 
-                style="font-family:Arial, Helvetica, sans-serif; color:rgb(255, 255, 255); font-size: 16px; float: right;"> Manufacturers <spanclass="sr-only"></span></a>
-            </li>
-        </ul>
+            <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Customer Sign In</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form>
+                        <label class="sr-only" for="username">Username</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+
+
+                        <label class="sr-only" for="Password">Name</label>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-key"></i></span>
+                            </div>
+                            <input id="Password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" >Sign In</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
     </div>
-</nav>
+            
 
+    </nav>
+</div>

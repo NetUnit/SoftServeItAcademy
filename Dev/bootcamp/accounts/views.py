@@ -3,16 +3,20 @@ from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirec
 
 from .models import Accounts
 
+################# *** Panda Hardware *** ###################
+def panda_link_view(request, *args, **kwargs):
+    return HttpResponse('<h2> This is Panda website </h2>')
+
+
 ############################## *** Full List *** ########################
 def accounts_list_view(request, *args, **kwargs):
     return HttpResponse('<h2> Accounts list should be here  </h2>')
 
 
 ################# *** Registration *** ####################
-## custom view
-# def register_page(request, *args, **kwargs):
+def register_view(request, *args, **kwargs):
+    return HttpResponse('<h2> This is a registartion page </h2>')
 #     return render (request, 'accounts/register.html')
-
 
 ### will use this on the lesson#5 authentication
 
@@ -29,10 +33,12 @@ from django.views.generic import CreateView
 #############################################################
 
 
-################# *** Authentication *** ####################
-## custom view
-# def login_page(request, *args, **kwargs):
+################# *** Authentication (Login) *** ####################
+def login_view(request, *args, **kwargs):
+    return HttpResponse('<h2> This is login </h2>')
 #     return render (request, 'accounts/login.html')
 
 
-#############################################################
+################# *** Contact *** ###################
+def contact_view(request, *args, **kwargs):
+    return HttpResponse('<h2> This is DEV contact: NetUnit -> (093) 013 18 25 </h2>')
