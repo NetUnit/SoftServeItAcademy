@@ -26,6 +26,12 @@ from products.views import (
     method_view,
 )
 
+from accounts.views import (
+    panda_link_view,
+    contact_view
+)
+
+
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -38,6 +44,10 @@ from django.conf.urls.static import static
 ###################################################################################
 
 urlpatterns = [
+
+    re_path('panda-hardware/', panda_link_view, name='panda_link'),
+    re_path('contact/', contact_view, name='contact'),
+
     ############# *** HomepageView *** #############
     #!! create html for HomePageView in templates
     path('', HomePageView.as_view(), name='index'), # add template                                  # same_1
