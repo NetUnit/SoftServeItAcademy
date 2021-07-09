@@ -25,7 +25,7 @@ class Manufacturer(models.Model):
     year = models.DateField()
 
     class Meta:
-        ordering = ('title',) 
+        ordering = ('id',) 
 
     # def __str__(self):
     #     '''
@@ -45,7 +45,7 @@ class Manufacturer(models.Model):
             of a certain product object
             :return: class, id
         '''
-        return f' {self.__class__.title}(id={self.id})'
+        return f'{self.__class__.__name__}(id={self.id})'
 
     @staticmethod
     def get_by_id(manufacturer_id=None):

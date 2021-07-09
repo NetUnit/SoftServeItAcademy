@@ -13,8 +13,6 @@ app_name = 'accounts'
 
 urlpatterns = [
 
-
-
     re_path(r'^accounts/list/$', accounts_list_view, name='accounts_list_view'),
     re_path(r'^accounts/register$', register_view, name='register'),
     re_path(r'^accounts/login$', login_view, name='login'),
