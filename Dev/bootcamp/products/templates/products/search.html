@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+    .search-heading {
+        color: honeydew;
+    }
+
+    .message {
+        color:limegreen;
+        font-weight: bold;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+      margin-left: 10px;
+    }
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+      margin-left: 10px;
+    }
+
+</style>
+
+<center>
+    <h2 class="search-heading"> You searched for: </h1>
+    <div>
+        <br>
+        {% for message in messages %}
+            <p class="card-title" id='messages'>  <text class='message'>{{ message }}</p>
+        {% endfor %}
+        <br>
+    </div>
+</center>
+
+<div class="footer_app">
+    app: {{ app_name_1 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{% endblock %}

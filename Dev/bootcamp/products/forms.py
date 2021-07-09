@@ -89,3 +89,8 @@ class ProductCreationForm(forms.ModelForm):
 #             raise forms.ValidationError('This is not long enough, at least 2')
 #         return title_length
 
+
+## search form to drag a keyword matched to the DB
+class ItemSearchForm(forms.Form):
+    keyword = forms.CharField(max_length=220)
+

@@ -24,6 +24,7 @@ from products.views import (
     HomePageView,
     ProductListView,
     method_view,
+    search_view
 )
 
 from accounts.views import (
@@ -52,7 +53,7 @@ urlpatterns = [
     #!! create html for HomePageView in templates
     path('', HomePageView.as_view(), name='index'), # add template                                  # same_1
 
-    path('search/', home_view, name='search'),                                                      # same_1
+    path('home/', home_view, name='search'),                                                      # same_1
     path('admin/', admin.site.urls, name='admin'),
 
     ############# *** Generic ProductListView *** ############                                             
@@ -61,6 +62,10 @@ urlpatterns = [
     ################### *** just for getting a method *** ########################
     re_path(r'^methods/$', method_view, name='method_view'),
     
+    ################### *** search view *** ########################
+    re_path(r'^search/$', search_view, name='search_view'),             # same_3
+
+
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),
     re_path(r'^', include('emails.urls')),
