@@ -1,0 +1,58 @@
+{%extends 'base.html'%}
+
+{% block content %}
+
+<style>
+
+    .search-heading {
+        color:rgb(3, 4, 31);
+    }
+
+    .searched {
+        color: limegreen;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+      margin-left: 10px;
+    }
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+      margin-left: 10px;
+    }
+
+</style>
+
+<center>
+    <div class="card w-50 my_margin">
+        {% if searched %}
+        <div class="card-body">
+            <h3 class="search-heading"> The result of your search is: </h3>
+        </div>
+    </div>
+    <div class="card w-50 my_margin">
+        <div class="card-body">
+            <h3 class="searched"> {{ searched }} </h3>
+        </div>
+        {% endif %}
+    </div>
+</center>
+
+<div class="footer_app">
+    app: {{ app_name_1 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{% endblock %}

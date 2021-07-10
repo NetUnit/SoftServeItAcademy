@@ -13,6 +13,11 @@
         font-weight: bold;
     }
 
+    .messages-success {
+        color:rgb(200, 50, 205);
+        font-weight: bold;
+    }
+
     .footer_app {
       color: rgb(245, 173, 6);
       font-weight: bold;
@@ -35,12 +40,13 @@
 </style>
 
 <center>
-    <h2 class="search-heading"> You searched for: </h1>
     <div>
         <br>
-        {% for message in messages %}
-            <p class="card-title" id='messages'>  <text class='message'>{{ message }}</p>
-        {% endfor %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="messages-success" id='messages'> {{ message }} </p>  <text class='message'> {{ searched }} </text>
+            {% endfor %}
+        {% endif %}
         <br>
     </div>
 </center>
