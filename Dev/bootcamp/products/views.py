@@ -158,6 +158,7 @@ def product_create_view(request, *args, **kwargs):
             get_title = form.cleaned_data.get('title')
             messages.error(request, f'{get_title} isn\'t enough long')
             return redirect ('/products/create/')
+    
     # fix this later (watch Denis video)
     else:
         messages.error(request, f'make sure U r entering all data in the correct order')
@@ -183,51 +184,104 @@ def product_update_view(request, *args, **kwargs):
 ############################## **** Search View **** ###############################
 # from products.forms import ItemSearchForm
 
+
 def search_view(request, *args, **kwargs):
-    # # manuafcturer section from DB
-    # manufacturer_qs = Manufacturer.get_all()
-    # print(manufacturer_qs)
-    # context = {'manufacturer_list': manufacturer_qs }
-    # #return render (request, 'products/search.html', context)
+    #global searched
+    if request.method == 'POST':
+        searched = request.POST.get('searched')
+
+        if len(searched) > 0:
+            messages.success(request, f'Correct: {searched}')
+            time.sleep(0.5)
+            return redirect ('/search/')
+
+        else:
+            messages.error(request, f'Here is the empty search')
+            time.sleep(0.5)
+            return redirect ('/search/')
+
+    return render (request, 'products/search_messages.html', context = {})
+ 
+
+## work +++ 
+# def search_view(request, *args, **kwargs):
+#     if request.method == 'POST':
+#         searched = request.POST.get('searched')
+#         #print(request.POST)
+#         #print(len(searched))
+
+#         if len(searched) > 0:
+#             context = {'searched': searched}
+#             return render (request, 'products/search2_simple.html', context)
+
+#         else:
+#             searched = 'Data does not exist'
+#             context = {'searched': searched}
+#             return render (request, 'products/search2_simple.html', context)
+
+#     else:
+#         messages.error(request, f'make sure U r entering searched data in the correct order')
+
+
+#     return render (request, 'products/search2_simple.html', context = {})
+
+
+# # form +++ (doesn't work)
+# def search_view(request, *args, **kwargs):
+#     system_messages = messages.get_messages(request)
+#     # print(list(messages.get_messages(request)))
+#     print(request.method)
+#     # # manuafcturer section from DB
+#     # manufacturer_qs = Manufacturer.get_all()
+#     # print(manufacturer_qs)
+#     # context = {'manufacturer_list': manufacturer_qs }
+#     # #return render (request, 'products/search.html', context)
     
-    # # product section from DB
-    # product_qs = Product.get_all()
-    # print(product_qs)
-    # context = {'manufacturer_list': manufacturer_qs }
-    # return render (request, 'products/search.html', context)
+#     # # product section from DB
+#     # product_qs = Product.get_all()
+#     # print(product_qs)
+#     # context = {'manufacturer_list': manufacturer_qs }
+#     # return render (request, 'products/search.html', context)
 
-    # keyword = request.POST.get('keyword')
-    # print(keyword)
+#     # keyword = request.POST.get('keyword')
+#     # print(keyword)
 
-    # getting keyword from 
-    # try:
-    #     item = request.POST.__dict__
-    #     print(item)
-    # except:
+#     # getting keyword from 
+#     # try:
+#     #     item = request.POST.__dict__
+#     #     print(item)
+#     # except:
+#     #     pass
+
+#     # form = ItemSearchForm(request.POST or None)
+#     # #keyword = form.cleaned_data.get('keyword')
+#     # #print(keyword)
+#     # print(form.is_valid())
+#     # if form.is_valid():
+#     #     keyword = form.cleaned_data.get('keyword')
+#     #     context = {'keyword': keyword}
+#     #     return render (request, 'products/search.html', context)
+#     # pass
+    
+
+# def search_view(request, *args, **kwargs):
+    # if request.method == 'POST':
+    #     searched = request.POST.get('searched')
+    #     print(searched)
+    #     messages.add_message(request, messages.INFO, 'U searched for: ')
+    #     context = {'searched': searched}
+    #     #messages.clear()
+        
+    # else:
+    #     time.sleep(0.5)
+    #     messages.error(request, 'There is no such item in the database')
+    #     return redirect ('/search/')
+
+    # storage = messages.get_messages(request)
+    # for _ in storage:
     #     pass
 
-    # form = ItemSearchForm(request.POST or None)
-    # #keyword = form.cleaned_data.get('keyword')
-    # #print(keyword)
-    # print(form.is_valid())
-    # if form.is_valid():
-    #     keyword = form.cleaned_data.get('keyword')
-    #     context = {'keyword': keyword}
-    #     return render (request, 'products/search.html', context)
-    # pass
-
-    if request.method == 'POST':
-        keyword = request.POST.get('keyword')
-        print(keyword)
-        messages.success(f'The next item has been found: {keyword}')
-        context = {'searched': keyword}
-
-    else:
-        time.sleep(0.5)
-        messages.error('Ther is no such item in the database')
-        return redirect ('/search/')
-
-    return render (request, 'products/search.html', context)
+    # return render (request, 'products/search_messages.html', context)
 
 # def product_create_view(request, *args, **kwargs):
 #     form = ProductCreationForm(request.POST or None)
