@@ -49,16 +49,17 @@ class ProductCreationForm(forms.ModelForm):
         labels = {
             'title': 'Title',
             'content': 'Content',
-            'price': 'Price',
+            'price': 'Price, $:',
         }
 
-        required = ('title', 'content', 'price', 'manufacturers')
+        required = ('title', 'price', 'manufacturers')
 
-        widgets = {
+        # widgets = {
 
-            'price': forms.NumberInput(),
-
-        }
+        #     'title': forms.TextInput(attrs={'placeholder': 'title..'}),
+        #     'content': forms.Textarea(attrs={'placeholder': 'type some content here..'}),
+        #     'price': forms.NumberInput(attrs={'min':1,'max': 1000000,'type': 'number', 'placeholder': 'price..'})
+        # }
 
     manufacturers = CustomMMCF(
         label='Manufacturers',
