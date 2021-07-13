@@ -55,9 +55,9 @@ class ManufacturerCreationForm(forms.ModelForm):
         required = ('title',)
 
         widgets = {
-
-            'year': forms.DateInput(),
-
+            'title': forms.TextInput(attrs={'placeholder': 'title..'}),
+            'country': forms.TextInput(attrs={'placeholder': 'country..'}),
+            'year': forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD'}),
         }
 
 

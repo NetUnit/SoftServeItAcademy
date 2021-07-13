@@ -5,7 +5,8 @@
 <style>
 
     .search-heading {
-        color: honeydew;
+        /* color: honeydew; */
+        color:rgb(3, 4, 31);
     }
 
     .message {
@@ -40,16 +41,37 @@
 </style>
 
 <center>
+    <div class="card w-25 my_margin">
+        <div class="card-body">
+            <h3 class="search-heading"> The result of your search is: </h3>
+        </div>
+    </div>
+    <div class="card w-25 my_margin">
+        <div class="card-body">
+            {% for message in messages %}
+                <p class="messages-success" id='messages'> {{ message }} </p>  
+            {% endfor %}
+        </div>
+    </div>
+</center>
+
+<!-- <center>
     <div>
         <br>
         {% if messages %}
             {% for message in messages %}
-                <p class="messages-success" id='messages'> {{ message }} </p>  <text class='message'> {{ searched }} </text>
+                <p class="messages-success" id='messages'> {{ message }} </p>  
+            {% endfor %}
+        {% endif %}
+            
+        {% if searched %}
+            {% for item in searched %}
+                <text class='message'> {{ item }} </text>
             {% endfor %}
         {% endif %}
         <br>
     </div>
-</center>
+</center> -->
 
 <div class="footer_app">
     app: {{ app_name_1 }}

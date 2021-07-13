@@ -160,21 +160,19 @@ def product_create_view(request, *args, **kwargs):
             return redirect ('/products/create/')
     
     # fix this later (watch Denis video)
-    else:
-        messages.error(request, f'make sure U r entering all data in the correct order')
+    # else:
+    #     messages.error(request, f'make sure U r entering all data in the correct order')
 
     form = ProductCreationForm()
     context = {'form': form}
     time.sleep(1.0)
     
 #    return render (request, 'forms.html', context) # +
-#     # return render (request, 'products/create_product_input_tags.html', context) # +
+    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
 #     ## !!required fields demand!!
 #     # return render (request, 'products/create_product_form_as_p.html', context) # +
-    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # +
+#    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
 #    return render (request, 'products/create_product_form_crispy.html', context) # +
-
-
 ############################## **** Update View **** ###############################
 def product_update_view(request, *args, **kwargs):
     #product = Manufacturer.get_by_id(product_id)
@@ -191,19 +189,19 @@ def search_view(request, *args, **kwargs):
         searched = request.POST.get('searched')
 
         if len(searched) > 0:
-            messages.success(request, f'Correct: {searched}')
+            messages.success(request, f'{searched}')
             time.sleep(0.5)
             return redirect ('/search/')
 
         else:
-            messages.error(request, f'Here is the empty search')
+            messages.error(request, f'Nothing has been found')
             time.sleep(0.5)
             return redirect ('/search/')
 
     return render (request, 'products/search_messages.html', context = {})
  
 
-## work +++ 
+# work +++ 
 # def search_view(request, *args, **kwargs):
 #     if request.method == 'POST':
 #         searched = request.POST.get('searched')
