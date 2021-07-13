@@ -18,8 +18,8 @@ class Product(models.Model):
     #     Magic method is redefined to show all information about a Product
     #     :return: product id, product title, product title, product price
     #     """
-    #     return f'{self.id} {self.title} {self.price} {self.manufacturers}'
-    #     return str(self.to_dict())[1:-1]
+    #     # return f'{self.id} {self.title} {self.price} {self.manufacturers}'
+    #     # return str(self.to_dict())[1:-1]
 
     def __repr__(self):
         """

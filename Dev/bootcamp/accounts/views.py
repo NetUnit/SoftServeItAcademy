@@ -5,7 +5,7 @@ from .models import Accounts
 
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
-    return HttpResponse('<h2> This is Panda website </h2>')
+    return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
 
 
 ############################## *** Full List *** ########################
@@ -29,8 +29,7 @@ from django.views.generic import CreateView
 #     success_url = '/login/'
 
 ## make the same function view
-
-#############################################################
+#####################################################################
 
 
 ################# *** Authentication (Login) *** ####################
@@ -41,4 +40,4 @@ def login_view(request, *args, **kwargs):
 
 ################# *** Contact *** ###################
 def contact_view(request, *args, **kwargs):
-    return HttpResponse('<h2> This is DEV contact: NetUnit -> (093) 013 18 25 </h2>')
+    return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
