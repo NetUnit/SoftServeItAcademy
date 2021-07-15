@@ -168,10 +168,10 @@ def product_create_view(request, *args, **kwargs):
     time.sleep(1.0)
     
 #    return render (request, 'forms.html', context) # +
-    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
+#    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
 #     ## !!required fields demand!!
 #     # return render (request, 'products/create_product_form_as_p.html', context) # +
-#    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
+    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
 #    return render (request, 'products/create_product_form_crispy.html', context) # +
 ############################## **** Update View **** ###############################
 def product_update_view(request, *args, **kwargs):
@@ -181,10 +181,19 @@ def product_update_view(request, *args, **kwargs):
 
 ############################## **** Search View **** ###############################
 # from products.forms import ItemSearchForm
-
-
 def search_view(request, *args, **kwargs):
-    #global searched
+
+    ## manuafcturer section from DB
+    manufacturer_qs = Manufacturer.get_all()
+    print(manufacturer_qs)
+    # return render (request, 'products/search.html', context = {'manufacturer_list': manufacturer_qs })
+    
+    ## product section from DB
+    product_qs = Product.get_all()
+    print(product_qs)
+    # return render (request, 'products/search.html', context = {'manufacturer_list': product_qs })
+
+    
     if request.method == 'POST':
         searched = request.POST.get('searched')
 

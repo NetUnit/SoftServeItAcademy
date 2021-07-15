@@ -34,9 +34,9 @@ class Manufacturer(models.Model):
     #         :return manufacturer.id,  manufacturer.name,  manufacturer.country,  manufacturer.year
 
     #     '''
-    #     #return str(self.to_dict())[1:-1]
-    #     return Manufacturer
-        #return f'{self.id} {self.title} {self.country} {self.year}'
+    #     # return str(self.to_dict())[1:-1]
+    #     #return Manufacturer
+    #     return f'{self.id} {self.title} {self.country} {self.year}'
 
     
     def __repr__(self):

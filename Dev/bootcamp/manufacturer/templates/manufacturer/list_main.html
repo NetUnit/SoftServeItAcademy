@@ -8,9 +8,10 @@
     form div label {
         margin: 5px 0 2px;
     }
-
+    
+    /* moving search button upside and down */
     form button {
-        margin-top: 10px;
+        margin-top: 0px;
     }
 
     input[type='text'] {
@@ -30,6 +31,25 @@
         color: #fff;
         padding: 10px;
         margin-top: 10px;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+      margin-left: 10px;
+    }
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+      margin-left: 10px;
     }
 </style>
 
@@ -95,4 +115,11 @@
     </div>
 </div>
 {%endfor%}
+
+<div class="footer_app">
+    app: {{ app_name_4 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
 {%endblock%}
