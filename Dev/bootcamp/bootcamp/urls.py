@@ -24,7 +24,8 @@ from products.views import (
     HomePageView,
     ProductListView,
     method_view,
-    search_view
+    search_view,
+    search_venues,
 )
 
 from accounts.views import (
@@ -64,7 +65,7 @@ urlpatterns = [
     
     ################### *** search view *** ########################
     re_path(r'^search/$', search_view, name='search_view'),             # same_3
-
+    re_path(r'^search-venues/$', search_venues, name='search_venues'),  # same_3
 
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),

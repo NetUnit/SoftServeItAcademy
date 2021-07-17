@@ -22,11 +22,13 @@
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="{%url 'panda_link' %}">PANDA HARDWARE</a>
         
-        <form class="form-inline" method='POST' action="{% url 'search_view' %}">
+        <!-- <form class="form-inline" method='POST' action="{% url 'search_view' %}"> -->
+        <form class="form-inline" method='POST' action="{% url 'search_venues' %}">
 
             {% csrf_token %}
             
-            <input class="form-control mr-sm-2" type="search" placeholder="Search Items" name="searched" aria-label="Search"/>
+            <!-- !!! name is eesential in  aform as we would get it to reference a variable then -->
+            <input class="form-control mr-sm-2" type="search" placeholder="Search Items" name="searched"  aria-label="Search"/>
             <button class="btn btn-outline-primary" type='submit'>Search</button>
             <!-- <button class="btn btn-outline-secondary" type='submit'>Search</button> -->
         </form>
