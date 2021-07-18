@@ -50,12 +50,49 @@
             <h3 class="search-heading"> The result of your search is: </h3>
         </div>
     </div>
-    {% if object %}
-    <div class="card w-25 my_margin">
-        <div class="card-body">
-            <p class="manufacturer-found" id='manufacturer-found'> {{ object }} </p>
+    {% if searched %}
+        <div class="card w-25 my_margin">
+            <div class="card-body">
+                <p class="product-found" id='product-found'>
+                    {% for object in obj_prod_filter %}
+                        {% if object in obj_prod_filter %}
+                            
+                            {{ object }}
+
+                            <div style="padding-top: 5px">
+                                <a href="{%url 'products:detailed_view' object.id%}" 
+                                    class="btn btn-info btn-sm"
+                                    type="button"
+                                    style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                                >
+                                    Details
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="card-body">
+                <p class="manufacturer-found" id='manufacturer-found'></p>
+                    {% for object in obj_man_filter %}
+                        {% if object %}
+                            
+                        {{ object }}
+
+                            <div style="padding-top: 5px">
+                                <a href="{%url 'manufacturer:detailed_view' object.id%}" 
+                                    class="btn btn-info btn-sm"
+                                    type="button"
+                                    style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                                >
+                                    Details
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </div>
     {% else %}
     <div class="card w-25 my_margin">
         <div class="card-body">

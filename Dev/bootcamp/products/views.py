@@ -188,15 +188,33 @@ def search_venues(request, *args, **kwargs):
 
     if request.method == "POST":
         searched = request.POST.get('searched')
+        print(searched)
+
+        objects_man = Product.get_all()
+        objects_prod = Manufacturer.get_all()
         
+        ## will get an object from the db based on the word separately
+        obj_man_filter = [
+            obj for obj in objects_man if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+            ]
+        obj_prod_filter = [
+            obj for obj in objects_prod if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+        ]
 
+        print(obj_man_filter)
+        print(obj_prod_filter)
+        # alternatively
+        # filter_product = Product.objects.filter(name__contains=searched)
+        # print(filter_product)
+        
+        context = {'searched': searched, 'obj_prod_filter': obj_prod_filter, 'obj_man_filter': obj_man_filter}
 
-        # form = None
-        # context = {'form': form}
-        return render (request, 'search_venues.html', context = {})
+        messages.success(request, f'Please select what r U gonna search')
+        return render (request, 'products/search_venues.html', context)
     
     else:
-        return render (request, 'search_venues.html', context = {})
+        messages.success(request, 'Nothing has been found')
+        return render (request, 'products/search_venues.html', context = {})
         
 
 
@@ -246,9 +264,11 @@ def search_view(request, *args, **kwargs):
         item = request.POST.get('searched')
 
         for obj in objects:
-
-            object_attrs = ' '.join([str(i) for i in list(obj.__dict__.values())])
-            object_found = item in object_attrs or item in list(obj.__dict__.values())
+            
+            # we're gonna filter database manually to find matches by words 
+            object_words = ' '.join([str(i) for i in list(obj.__dict__.values())])
+            object_attrs = list(obj.__dict__.values())
+            object_found = item in object_words or item in object_attrs
             min_length = len(item) > 1
             
             if object_found:
