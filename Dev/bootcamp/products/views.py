@@ -193,12 +193,12 @@ def search_venues(request, *args, **kwargs):
         objects_man = Product.get_all()
         objects_prod = Manufacturer.get_all()
         
-        ## will get an object from the db based on the word separately
+        ## will get an object from the db based on the word separately + case insensitive
         obj_man_filter = [
-            obj for obj in objects_man if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+            obj for obj in objects_man if searched.lower() in ' '.join([str(i).lower() for i in list(obj.__dict__.values())])
             ]
         obj_prod_filter = [
-            obj for obj in objects_prod if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+            obj for obj in objects_prod if searched.lower() in ' '.join([str(i).lower() for i in list(obj.__dict__.values())])
         ]
 
         print(obj_man_filter)
