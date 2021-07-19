@@ -9,6 +9,10 @@
         color:rgb(3, 4, 31);
     }
 
+    .manufacturer-found{
+        color:rgb(68, 205, 50);
+    }
+
     .message {
         color:limegreen;
         font-weight: bold;
@@ -46,13 +50,22 @@
             <h3 class="search-heading"> The result of your search is: </h3>
         </div>
     </div>
+    {% if object %}
+    <div class="card w-25 my_margin">
+        <div class="card-body">
+            <p class="manufacturer-found" id='manufacturer-found'> {{ form.searched }} </p>
+        </div>
+    </div>
+    {% else %}
     <div class="card w-25 my_margin">
         <div class="card-body">
             {% for message in messages %}
-                <p class="messages-success" id='messages'> {{ message }} </p>  
+                <p class="messages-success" id='messages'> {{ message }} </p>
+                <!-- <p> {{ object }} </p> -->
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </center>
 
 <!-- <center>

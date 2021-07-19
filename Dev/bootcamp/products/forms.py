@@ -93,5 +93,13 @@ class ProductCreationForm(forms.ModelForm):
 
 ## search form to drag a keyword matched to the DB
 class ItemSearchForm(forms.Form):
-    keyword = forms.CharField(max_length=220)
+    
+    searched = forms.CharField(max_length=220)
 
+    widgets = {
+
+        'searched': forms.TextInput(attrs={'placeholder': 'Search Items...'}),
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(ItemSearchForm, self).__init__(*args, **kwargs)

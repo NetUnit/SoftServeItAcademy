@@ -179,38 +179,119 @@ def product_update_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is update form </h2>')
 
 
+# rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
+from django.core.management.commands import makemessages
+from django.urls import reverse, reverse_lazy
+
+def search_venues(request, *args, **kwargs):
+
+    if request.method == "POST":
+        searched = request.POST.get('searched')
+        print(searched)
+
+        objects_man = Product.get_all()
+        objects_prod = Manufacturer.get_all()
+        
+        ## will get an object from the db based on the word separately
+        obj_man_filter = [
+            obj for obj in objects_man if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+            ]
+        obj_prod_filter = [
+            obj for obj in objects_prod if searched in ' '.join([str(i) for i in list(obj.__dict__.values())])
+        ]
+
+        print(obj_man_filter)
+        print(obj_prod_filter)
+        # alternatively
+        # filter_product = Product.objects.filter(name__contains=searched)
+        # print(filter_product)
+        
+        context = {'searched': searched, 'obj_prod_filter': obj_prod_filter, 'obj_man_filter': obj_man_filter}
+
+        messages.success(request, f'Please select what r U gonna search')
+        return render (request, 'products/search_venues.html', context)
+    
+    else:
+        messages.success(request, 'Nothing has been found')
+        return render (request, 'products/search_venues.html', context = {})
+        
+
+
+
+
+# ## search widget with form
 # from products.forms import ItemSearchForm
+# def search_view(request, *args, **kwargs):
+    
+#     form = ItemSearchForm(request.POST or None)
+
+#     print(form.is_valid())
+
+#     if form.is_valid():
+#         min_title_length = len(str(form.cleaned_data.get('searched'))) > 1
+#         print(min_title_length)
+#         if min_title_length:
+            
+#             searched = form.cleaned_data.get('searched')
+#             messages.success(request, f'{searched}')
+            
+#             # зробити логіку яка буде брати класметод з моделі: пошук по параметрах (title, country, year)
+            
+
+
+#             return redirect ('/search/')
+#         else:
+#             get_title = form.cleaned_data.get('searched')
+#             messages.error(request, f'{get_title} isn\'t enough long')
+#             return redirect ('/search/')
+    
+
+#     form = ItemSearchForm()
+#     context = {'form': form}
+#     time.sleep(0.01)
+#     return render (request, 'products/search_messages.html', context)
+
+# search widget withjout form
+# works but show only messages
 def search_view(request, *args, **kwargs):
 
-    ## manuafcturer section from DB
-    manufacturer_qs = Manufacturer.get_all()
-    print(manufacturer_qs)
-    # return render (request, 'products/search.html', context = {'manufacturer_list': manufacturer_qs })
+    objects = Manufacturer.get_all() + Product.get_all()
+    print(objects)
     
-    ## product section from DB
-    product_qs = Product.get_all()
-    print(product_qs)
-    # return render (request, 'products/search.html', context = {'manufacturer_list': product_qs })
 
-    
     if request.method == 'POST':
-        searched = request.POST.get('searched')
+        item = request.POST.get('searched')
 
-        if len(searched) > 0:
-            messages.success(request, f'{searched}')
-            time.sleep(0.5)
-            return redirect ('/search/')
+        for obj in objects:
+            
+            # we're gonna filter database manually to find matches by words 
+            object_words = ' '.join([str(i) for i in list(obj.__dict__.values())])
+            object_attrs = list(obj.__dict__.values())
+            object_found = item in object_words or item in object_attrs
+            min_length = len(item) > 1
+            
+            if object_found:
+                messages.success(request, f'{obj}')
+                time.sleep(0.25)
+                return redirect ('/search/')
 
+            if not min_length:
+                messages.error(request, f'Oh wow. It\'s definitely too short {item}')
+                return redirect ('/search/')
+    
         else:
-            messages.error(request, f'Nothing has been found')
-            time.sleep(0.5)
+            messages.error(request, f'Nothing has been found through: {item}')
+            time.sleep(0.25)
             return redirect ('/search/')
-
-    return render (request, 'products/search_messages.html', context = {})
+    
+    storage = messages.get_messages(request)
+    # storage = storage.__dict__['storages']
+    # print(storage[0].__dict__['signer'].__dict__)
+    return render (request, 'products/search_messages.html')
  
 
-# work +++ 
+# ### work +++ 
 # def search_view(request, *args, **kwargs):
 #     if request.method == 'POST':
 #         searched = request.POST.get('searched')
