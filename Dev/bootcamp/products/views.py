@@ -181,8 +181,8 @@ def product_update_view(request, *args, **kwargs):
 
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
-from django.core.management.commands import makemessages
-from django.urls import reverse, reverse_lazy
+# from django.core.management.commands import makemessages
+# from django.urls import reverse, reverse_lazy
 
 def search_venues(request, *args, **kwargs):
 
@@ -203,6 +203,9 @@ def search_venues(request, *args, **kwargs):
 
         print(obj_man_filter)
         print(obj_prod_filter)
+        
+        # make as one item
+
         # alternatively
         # filter_product = Product.objects.filter(name__contains=searched)
         # print(filter_product)
