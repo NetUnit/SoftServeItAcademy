@@ -31,6 +31,27 @@
         padding: 10px;
         margin-top: 10px;
     }
+
+    .footer_app {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+    
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
 </style>
 
 <div class="card w-25 my_margin" id="productTitle">
@@ -115,4 +136,11 @@
     </div>
 </div>
 {%endfor%}
+
+<div class="footer_app">
+    app: {{ app_name_1 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
 {%endblock%}
