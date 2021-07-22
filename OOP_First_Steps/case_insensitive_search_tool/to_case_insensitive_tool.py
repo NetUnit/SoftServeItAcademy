@@ -1,7 +1,7 @@
 import sys
 sys.path.append(".")
 
-from items import Database
+from db_items import Database
 import copy
 import re
 from functools import reduce
@@ -12,7 +12,7 @@ def case_insensitive_input(db_fields, user_input, *args, **kwargs):
 
     '''
         Using RegEx
-        :getting the class attrs through __dict__ method ()
+        :getting the class attrs through __dict__ method
         :getting the class attrs through (getattr() func alternatively)
         :returns list of items but only matched of one word
     '''
@@ -35,9 +35,8 @@ def case_insensitive_input(db_fields, user_input, *args, **kwargs):
 # db_fields = Database()
 # db_fields = getattr(db_fields, 'db_fields')
 
-
+## 2 getting the class attrs through __dict__ method
 db_fields = dict(Database.__dict__).get('db_fields')
-print(db_fields)
 
 # make a trial and enjoy a search *_*V)
 if __name__ == "__main__":
@@ -61,7 +60,7 @@ def case_insensitive_input(user_input, *args, **kwargs):
         ' '.join(list(map(str, args))).lower().split())
     # getting database attrs
     obj_db_fields = dict(Database.__dict__).get('db_fields')
-
+    return obj_db_fields
     db_fields = lowercase_and_list(obj_db_fields)
     user_input = lowercase_and_split(user_input)
     

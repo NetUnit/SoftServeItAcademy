@@ -40,13 +40,14 @@ def parse_string2(*args, **kwargs):
     '''
 
     # convert and find xlsx file
-    xlsx_file = Path('/home/netunit/Desktop/reestr', 'reestr.xlsx')
+    xlsx_file = Path('/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register', 'reestr.xlsx')
     wb_obj = open.load_workbook(xlsx_file)
     
     sheet = wb_obj.active
 
     # will print A2 -value
-    ##print(sheet['A2'].value)
+    # return (sheet['A']) # will return the whole sheet column: (<Cell 'Sheet1'.A1>, <Cell 'Sheet1'.A2>, <Cell 'Sheet1'.A3>)
+    # return print(sheet['A2'].value)
 
     # convert arline var to int indices for better reading
     airline = 0 

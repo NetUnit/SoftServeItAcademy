@@ -7,6 +7,7 @@
     .search-heading {
         /* color: honeydew; */
         color:rgb(3, 4, 31);
+        /* color:limegreen; */
     }
 
     .manufacturer-found{
@@ -51,57 +52,29 @@
         </div>
     </div>
     {% if searched %}
-        <div class="card w-25 my_margin">
-            <div class="card-body">
-                <p class="product-found" id='product-found'>
-                    {% for object in obj_prod_filter %}
-                        {% if object in obj_prod_filter %}
-                            
-                            {{ object }}
+        {% for object in objects_list %}
+        <div>
+            {% if object in obj_prod_filter %}
+                {% include 'products/search_snippet.html'%}
+            {% endif %}
 
-                            <div style="padding-top: 5px">
-                                <a href="{%url 'products:detailed_view' object.id%}" 
-                                    class="btn btn-info btn-sm"
-                                    type="button"
-                                    style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
-                                >
-                                    Details
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </p>
-            </div>
-            <div class="card-body">
-                <p class="manufacturer-found" id='manufacturer-found'></p>
-                    {% for object in obj_man_filter %}
-                        {% if object %}
-                            
-                        {{ object }}
+            {% if object in obj_man_filter %}
+                {% include 'manufacturer/search_snippet.html'%}
+            {% endif %}
 
-                            <div style="padding-top: 5px">
-                                <a href="{%url 'manufacturer:detailed_view' object.id%}" 
-                                    class="btn btn-info btn-sm"
-                                    type="button"
-                                    style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
-                                >
-                                    Details
-                                </a>
-                            </div>
-                        {% endif %}
+        </div>
+        {% endfor %}
+
+        <div>
+            {% if messages %}
+            <div class="card w-25 my_margin">
+                <div class="card-body">
+                    {% for message in messages %}
+                        <p class="messages-success" id='messages'> {{ message }} </p>  
                     {% endfor %}
                 </div>
-            </div>
+            {% endif %}
         </div>
-    {% else %}
-    <div class="card w-25 my_margin">
-        <div class="card-body">
-            {% for message in messages %}
-                <p class="messages-success" id='messages'> {{ message }} </p>
-                <!-- <p> {{ object }} </p> -->
-            {% endfor %}
-        </div>
-    </div>
     {% endif %}
 </center>
 

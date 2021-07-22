@@ -181,46 +181,113 @@ def product_update_view(request, *args, **kwargs):
 
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
-# from django.core.management.commands import makemessages
-# from django.urls import reverse, reverse_lazy
+# this part of a view contains logic itself
+# def search_venues(request, *args, **kwargs):
 
+#     if request.method == "POST":
+#         searched = request.POST.get('searched')
+#         print(searched)
+
+#         objects_prod = Product.get_all()
+#         objects_man = Manufacturer.get_all()
+        
+#         ## will get an object from the db based on the word separately + case insensitive
+#         filter_model = lambda model: [
+#             obj for obj in model if searched.lower() in ' '.join([str(attr).lower() for attr in list(obj.__dict__.values())])
+#             ]
+#         obj_man_filter = filter_model(objects_prod)
+#         obj_prod_filter = filter_model(objects_man)
+
+#         objects_list = obj_man_filter + obj_prod_filter
+
+#         # print(objects_list)
+#         # print(obj_man_filter)
+#         # print(obj_prod_filter)
+        
+#         # alternatively
+#         # filter_product = Product.objects.filter(name__contains=searched)
+#         # print(filter_product)
+        
+#         context = {
+#             'searched': searched,
+#             'objects_list': objects_list,
+#             'obj_prod_filter': obj_prod_filter,
+#             'obj_man_filter': obj_man_filter
+#             }
+    
+#         if any(objects_list):
+#             messages.success(request, f'☆彡(ノ^ ^)ノ Congrat\'s ヘ(^ ^ヘ)☆彡 Item\'s found')
+#             return render (request, 'products/search_venues.html', context)
+
+#         else:
+#             print('fuck')
+#             messages.success(request, '¯\_(⊙︿⊙)_/¯ Nothing has been found')
+#             return render (request, 'products/search_venues.html', context)
+        
+# this part of a view get main logic from  a model
 def search_venues(request, *args, **kwargs):
 
     if request.method == "POST":
         searched = request.POST.get('searched')
-        print(searched)
+        #print(searched)
+        # convert user_input to lowercase and split to a single word
+        lowercase_and_split = lambda *args: (
+            ' '.join(list(map(str, args))).lower().split())
 
-        objects_man = Product.get_all()
-        objects_prod = Manufacturer.get_all()
+        # # convert db_field to lowercase and split to a single word
+        lowercase_and_list = lambda *args: (
+            ' '.join([' '.join(i) for i in args]).lower().split())
+
+        # db_fields = Product.get_all() + Manufacturer.get_all()
+        # [Product(id=1), Product(id=2), Product(id=3), Product(id=4)]
+
+        user_input = lowercase_and_split(searched)
+        print(user_input)
+
+        ## 
+
+        all_prod = Product.get_all()
+        all_manuf = Manufacturer.get_all()
+
+        ## ['Raspberry Pi', 'Turing Pi', 'PocketBeagle', 'Pine64']
+        product_fields = [dict(obj.__dict__).get('title') for obj in all_prod]
+        print(product_fields)
         
-        ## will get an object from the db based on the word separately + case insensitive
-        obj_man_filter = [
-            obj for obj in objects_man if searched.lower() in ' '.join([str(i).lower() for i in list(obj.__dict__.values())])
-            ]
-        obj_prod_filter = [
-            obj for obj in objects_prod if searched.lower() in ' '.join([str(i).lower() for i in list(obj.__dict__.values())])
-        ]
-
-        print(obj_man_filter)
-        print(obj_prod_filter)
+        ## ['Sony', 'Octavo Systems']
+        manufacturer_fields = [dict(obj.__dict__).get('title') for obj in all_manuf]
+        print(manufacturer_fields)
         
-        # make as one item
+        # create method id model to cover this
+        db_fields = product_fields + manufacturer_fields
 
-        # alternatively
-        # filter_product = Product.objects.filter(name__contains=searched)
-        # print(filter_product)
+        match = [word for word in user_input if word in lowercase_and_list(db_fields)]
+        print(match)
+
+        matched_items = list()
+
+        for obj in Product.get_all() + Manufacturer.get_all() :
+            for word in match: # match --->  user input
+                if word.capitalize() in obj.__dict__.get('title'):
+                    matched_items.append(obj)
+
+        matched_items = list(set(matched_items))
+        print(matched_items)
         
-        context = {'searched': searched, 'obj_prod_filter': obj_prod_filter, 'obj_man_filter': obj_man_filter}
-
-        messages.success(request, f'Please select what r U gonna search')
-        return render (request, 'products/search_venues.html', context)
+        context = {
+            'searched': searched,
+            'objects_list': matched_items,
+            'obj_prod_filter': all_prod,
+            'obj_man_filter': all_manuf
+            }
     
-    else:
-        messages.success(request, 'Nothing has been found')
-        return render (request, 'products/search_venues.html', context = {})
-        
+        if any(matched_items):
+            messages.success(request, f'☆彡(ノ^ ^)ノ Congrat\'s ヘ(^ ^ヘ)☆彡 Item\'s found')
+            return render (request, 'products/search_venues.html', context)
 
-
+        else:
+            print('fuck')
+            messages.success(request, '¯\_(⊙︿⊙)_/¯ Nothing has been found')
+            return render (request, 'products/search_venues.html', context)
 
 
 # ## search widget with form
