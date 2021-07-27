@@ -123,8 +123,8 @@ def parse_string(*args, **kwargs):
             i += 1
             pattern = re.compile('Прибуток палива')
             ## find appropriate cell condition to write daily fuel suppply 
-            condition = pattern.match(str(cell.value)) is not None
-            if condition:
+            result = pattern.match(str(cell.value)) is not None
+            if result:
                 oblik_sheet[f'E{i}'].value = fuel_arrived 
                 oblik_obj.save('Звіт 23.07.2021 Jet A-1.xlsx')
 
@@ -142,10 +142,11 @@ def parse_string(*args, **kwargs):
     try:
         yest = datetime.date.today() - datetime.timedelta(days=1)
         yest = datetime.date.strftime(yest, '%d.%m.%Y')
+        today = datetime.date.strftime(today, '%d.%m.%Y')
+        print(today)
         ## variable value will be added for todays residue calculation
-        fuel_residue = int(input(f'Введіть залишок палива КГ, на дату {yest} 23:59: '))
-        ## awoid errors when blanc field of fuel supply (no fuel supply daily)
-        condition = fuel_residue is not None
+        oblik_sheet[f'B{3}'].value = today
+        oblik_obj.save('Звіт 23.07.2021 Jet A-1.xlsx')
         #print(fuel_residue) if condition else 'Nothing'
     except (TypeError, ValueError) as input_error:
         pass
@@ -153,10 +154,32 @@ def parse_string(*args, **kwargs):
 
     ## up-to-date fuel residue calculation (at the end of a current date)
     try:
+        fuel_residue = int(input(f'Введіть залишок палива КГ, на дату {yest} 23:59: '))
+        ## avoid errors when blanc field of fuel supply (no fuel supply daily)
+        condition = fuel_residue is not None
+        # E23
         daily_amount = sum([i for i in items.values()])
-        print(daily_amount) ### E23 field
+        
+        # E26
         residue_today = fuel_residue + fuel_arrived - daily_amount
-        print(residue_today) ### FIELD E26 field
+        pattern1 = re.compile('Всього видано на пероні')
+        pattern2 = re.compile('Залишок на складі ПММ')
+
+        i = 0
+        for cell in oblik_sheet[f'C']:
+            i += 1
+            search1 = pattern1.match(str(cell.value)) is not None
+            search2 = pattern2.match(str(cell.value)) is not None
+
+            if search1:
+                ### FIELD E23 field
+                oblik_sheet[f'E{i}'].value = daily_amount
+                oblik_obj.save('Звіт 23.07.2021 Jet A-1.xlsx')
+
+            if search2:
+                ### FIELD E26 field
+                oblik_sheet[f'E{i}'].value = residue_today
+                oblik_obj.save('Звіт 23.07.2021 Jet A-1.xlsx')
     except:
         pass 
 
