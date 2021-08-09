@@ -67,7 +67,7 @@ def parse_string(*args, **kwargs):
             cell.value = None
         else:
             continue
-
+    
     oblik_obj.save(report)
 
     ## convert lambda function for date convert- ---> allows to convert date's if sheet was changed
