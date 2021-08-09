@@ -1,5 +1,3 @@
-# garbage collector
-
 import copy
 from os import write
 import re
