@@ -240,7 +240,7 @@ def search_venues(request, *args, **kwargs):
 
         # db_fields = Product.get_all() + Manufacturer.get_all()
         # [Product(id=1), Product(id=2), Product(id=3), Product(id=4)]
-
+        
         user_input = lowercase_and_split(searched)
         print(user_input)
 

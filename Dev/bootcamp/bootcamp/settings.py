@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'accounts',                                                 # app#5
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
+    #'orders',                                                  # app#5
     'crispy_forms'                                              # crispy_forms for temapltes
 ]
 
