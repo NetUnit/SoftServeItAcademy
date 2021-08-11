@@ -31,7 +31,7 @@ class Order(models.Model):
         Magic method is redefined to show all information about an order
         :return: order id, created at, user_id, product_id
         '''
-        return f'{self.id}{self.product}{self.created_at}' ## {self.user}
+        return f'{self.product}{self.created_at}' ## {self.user}
 
     def __repr__(self):
         '''
@@ -49,3 +49,12 @@ class Order(models.Model):
         except (IntegrityError, AttributeError, DataError, ValueError):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
+    
+    @staticmethod
+    def get_all():
+        condition = len([
+            product for product in Product.get_all()
+            ]) > 0
+        return [
+            order for order in Order.objects.all()
+            ] if condition else 0

@@ -19,7 +19,7 @@
 <div class="card w-25 my_margin">
     <div class="card-body">
         <h5 class="card-title">Create Order</h5>
-        <form action="" name='product_order' method="post">
+        <form method='POST' action='.'>
             {%csrf_token%}
         
             <div class='form-widgets'>
@@ -39,4 +39,12 @@
 
     </div>
 </div>
+
+<div class="footer_app">
+    app: {{ app_name_5 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
 {%endblock%}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+<title> {% block title %} Cart {% endblock title %} </title>
+
+{% block content%}
+
+<head>
+<style>
+    .main {
+      border: 1px solid #4287f5;
+      height: 285px;
+      width: 1000px;
+      position: relative;
+    }
+
+    .products_group {
+      color: rgb(245, 173, 6);
+      font-weight: bold; 
+      position: fixed;        
+      bottom: 740px; 
+      width: 40%;
+      margin-left: 25px;
+
+    }
+    .attributes {
+      color: 	rgb(182, 245, 66);
+      text-align: left;
+      margin: 50px;
+      width: 0%;
+      
+    }
+    
+    .footer_app {
+      color: 	rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+    
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+</style>
+
+<body>
+  <div class="main">
+      <table class="products_group">
+          <thead>
+              <tr>
+                  <th>Product ID:</th>
+                  <th>Title:</th>
+                  <th>Description:</th>
+                  <th>Price:</th>
+              </tr>
+          </thead>
+          <tbody class='attributes'>
+              {% for product in object_list %}
+              <tr>
+                  <td style="color:rgb(245,	66,	191)">{{product.id}}</td>
+                  <td>
+                      {% if product.title %}
+                        {{product.title}}
+                      {% else %}
+                        <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+                      {% endif %}
+                   </td>
+                  <td>
+                    {% if product.content %}
+                      {{product.content}}
+                    {% else %}
+                      <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if product.price %}
+                      {{product.price}}
+                    {% else %}
+                      <p style="color:rgb(236, 5, 43)"> not filled yet </p>
+                    {% endif %}
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      <div class="footer_app">
+        app: {{ app_name_1 }}
+      </div>
+      <div class="footer_root">
+        root: {{ root }}
+      </div>
+  </div>
+</body>
+
+{% endblock %}
+
+

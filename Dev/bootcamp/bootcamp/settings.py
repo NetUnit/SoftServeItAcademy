@@ -204,7 +204,7 @@ APP_NAME_4 = 'MANUFACTURERS'
 APP_NAME_4_TAGLINE = 'manufacturers tagline'
 
 APP_NAME_5 = 'ORDERS'
-APP_NAME_4_TAGLINE = 'orders tagline'
+APP_NAME_5_TAGLINE = 'orders tagline'
 
 METHOD = 'METHODS'
 

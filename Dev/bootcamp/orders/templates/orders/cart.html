@@ -1,0 +1,143 @@
+{% extends 'base.html' %} 
+
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+    /* moving search button upside and down */
+    form button {
+        margin-top: 0px;
+    }
+
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .picture {
+      border: 1px solid #4287f5;
+      height: 100px;
+      width: 150px;
+      padding-top: 10px;
+      text-align: center;
+      text-orientation: initial;
+    }
+    #messages {
+        background-color: rgb(172, 169, 169);
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .footer_app {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+    
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+</style>
+
+<div class="card w-25 my_margin" id="productTitle">
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0">Cart </h5>
+    </div>
+</div>
+
+{%for order in cart%}
+<div class="card w-25 my_margin">
+    <div class="card-body" style="display: flex; justify-content: space-between">
+        <div style="display: flex; align-items: stretch; width: 100%">
+            <div>
+                <h6 class="card-title" style="margin: 0; line-height: 1.5; padding-right: 5px">{{forloop.counter}}.</h6>
+            </div>
+
+            <div style="width: 100%">
+                <p>{{order.product.title}}</p>
+                <!--  <p>Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+                <div style="padding-top: 5px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{order.product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{order.product.id}}"
+                        style="width: 100px;"
+
+                    >
+                        Info
+                    </button>
+                    <div class="collapse" id="collapseDesc{{product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px">
+                            {% if order.product.content %}
+                                {{order.product.content}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top: 5px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{order.product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{order.product.id}}"
+                        style="width: 100px;"
+                    >
+                        Price
+                    </button>
+                    <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px">
+                            {% if order.product.price %}
+                                {{order.product.price}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top: 5px">
+                    <a href="{%url 'orders:detailed_view' order.product.id%}" 
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                    >
+                        Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class='picture'>
+           >picture here<
+        </div>
+    </div>
+</div>
+{%endfor%}
+
+<!-- <div class="footer_app">
+    app: {{ app_name_1 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div> -->
+{%endblock%}

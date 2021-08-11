@@ -1,6 +1,7 @@
 from django.conf.urls import include
 from django.urls import path, re_path
 from orders.views import (
+    order_detailed_view,
     order_create_view,
     cart_view
 )
@@ -14,7 +15,7 @@ urlpatterns = [
     re_path(r'order/cart/', cart_view, name='cart_view'),
 
     # ############# *** ManufacturerDeatailedView + API *** ###############
-    # re_path(r'^manufacturers/(?P<manufacturer_id>\d+)/$', manufacturer_detailed_view, name='detailed_view'),
+    re_path(r'^order/(?P<order_id>\d+)/$', order_detailed_view, name='detailed_view'),
     # re_path(r'^api/manufacturers/(?P<manufacturer_id>\d+)/$', api_manufacturer_detailed_view, name='api_detailed_view'),
 
     # ############# *** ManufacturerListView *** ###############
