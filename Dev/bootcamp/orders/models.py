@@ -1,7 +1,9 @@
 from django.db import models, DataError, IntegrityError
 
+import datetime
+from products.models import Product
+from manufacturer.models import Manufacturer
 
-from .models import Product, Manufacturer
 # Create your models here.
 class Order(models.Model):
         
@@ -29,7 +31,7 @@ class Order(models.Model):
         Magic method is redefined to show all information about an order
         :return: order id, created at, user_id, product_id
         '''
-        # return f'{self.id} {self.product} {self.created_at}' ## {self.user}
+        return f'{self.id}{self.product}{self.created_at}' ## {self.user}
 
     def __repr__(self):
         '''
@@ -39,5 +41,11 @@ class Order(models.Model):
         return f'{self.__class__.__name__}(id={self.id})'
 
     @staticmethod
-    def create(created_at, product):
-        order = Order(product=product, created_at=created_at)
+    def create(product):
+        order = Order(product=product)
+        try:
+            order.save()
+            return order
+        except (IntegrityError, AttributeError, DataError, ValueError):
+            # LOGGER.error("Wrong attributes or relational integrity error")
+            pass
