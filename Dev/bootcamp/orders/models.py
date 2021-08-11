@@ -26,12 +26,12 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
-    def __str__(self):
-        '''
-        Magic method is redefined to show all information about an order
-        :return: order id, created at, user_id, product_id
-        '''
-        return f'{self.product}{self.created_at}' ## {self.user}
+    # def __str__(self):
+    #     '''
+    #     Magic method is redefined to show all information about an order
+    #     :return: order id, created at, user_id, product_id
+    #     '''
+    #     return f'----{self.product}{self.created_at}' ## {self.user}
 
     def __repr__(self):
         '''
@@ -44,7 +44,7 @@ class Order(models.Model):
     def create(product):
         order = Order(product=product)
         try:
-            order.save()
+            #order.save(commit=False)
             return order
         except (IntegrityError, AttributeError, DataError, ValueError):
             # LOGGER.error("Wrong attributes or relational integrity error")
@@ -58,3 +58,6 @@ class Order(models.Model):
         return [
             order for order in Order.objects.all()
             ] if condition else 0
+
+
+# Order.objects.all().delete()

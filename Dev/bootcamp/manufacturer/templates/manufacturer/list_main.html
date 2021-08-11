@@ -55,7 +55,7 @@
 
 <div class="card w-25 my_margin" id="manufacturerTitle">
     <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
-        <h5 class="card-title" style="margin-bottom: 0">Manufacturers: </h5>
+        <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">Manufacturers: </h5>
         <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
 
         <a href="{%url 'manufacturer:manufacturer_create_view'%}" class="btn btn-primary" style=background-color:mediumpurple>Create</a>
@@ -88,7 +88,7 @@
                         Country
                     </button>
                     <div class="collapse" id="collapseDesc{{manufacturer.id}}" style="padding-top: 5px">
-                        <div class="card card-body" style="padding: 5px 10px">
+                        <div class="card card-body" style="padding: 5px 10px; width: 200px">
                             {% if manufacturer.country %}
                                 {{manufacturer.country}}
                             {% else %}
