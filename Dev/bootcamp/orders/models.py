@@ -26,6 +26,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
+
     # def __str__(self):
     #     '''
     #     Magic method is redefined to show all information about an order
@@ -60,4 +61,5 @@ class Order(models.Model):
             ] if condition else 0
 
 
+#delete all objects
 # Order.objects.all().delete()
