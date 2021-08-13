@@ -51,6 +51,8 @@ class Order(models.Model):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
     
+    '''
+    '''
     @staticmethod
     def get_all():
         condition = len([
@@ -60,6 +62,19 @@ class Order(models.Model):
             order for order in Order.objects.all()
             ] if condition else 0
 
+    '''
+    '''
 
-#delete all objects
-# Order.objects.all().delete()
+    @staticmethod
+    def delete_all():
+        condition = len([
+            product for product in Product.get_all()
+            ]) > 0
+        return Order.objects.all().delete() if condition else 0
+
+    # add calculate basket here
+    ## 1) calculate number of items
+    ## 2) calculate discount
+    ## 3) calculate total nember of items
+    ## !!! get all of these things from basket views
+   

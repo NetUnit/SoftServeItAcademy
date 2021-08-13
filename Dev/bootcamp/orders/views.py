@@ -28,18 +28,26 @@ def cart_view(request, *args, **kwargs):
         # переробити на request.method - POST - створення ордеру
         if request.method == 'GET':
             request_type = request.method
+            print(request_type) ## 'GET'
+
             product = Product.get_by_id(3)
             order = Order.create(product)
+
+            ## get all products title in Order
             products = [order.product.title for order in Order.get_all()]
-            price = sum([order.product.price for order in Order.get_all()])
+            
+            ## get all order in Order
             orders = [order for order in Order.get_all()]
             zipped = dict(zip(products, orders))
 
+            ## empty basket
             basket = {}
             for i in range(len(zipped)):
                 basket[list(zipped.values())[i]] = []
 
+            print(basket)
 
+            ## fill the basket
             try:
                 iteration = i <= len(basket) - 1
                 for i in range(len(products)):
@@ -49,17 +57,81 @@ def cart_view(request, *args, **kwargs):
 
             except (IndexError, ValueError, TypeError):
                 pass
-
+                
             print(basket)
+            
+            items = [i.product.title for i in list(basket.keys())] ## +++ context1
+            print(items)
+
 
             products_amount = 0
             for order, products in basket.items():
                 basket[order] = len(products)
                 products_amount += len(products)
+
+            print(products_amount) ## +++ context2 quantity
+
+            ## +++ context3 total_value_price
+            total_value = sum([order.product.price for order in Order.get_all()])
             
-            # add total amount of price
-            print(basket, products_amount)
-            print(price)
+            ## discount calculate: 1) disc_ratio discount +++ context4 2) discounted price +++ context5
+            ##  - write tests on this part
+            products_amount=50 # in order to check correct
+            disc_ratio = ((products_amount//5)*5)/100
+            max_disc = int(disc_ratio*100) not in range(0, 50)
+            print(max_disc) ## bool true
+            disc_ratio = disc_ratio if not max_disc else 0.5
+            print(disc_ratio)
+
+            discount = int(disc_ratio * 100)
+            print(discount)
+
+            discounted = total_value - total_value * disc_ratio
+            print(discounted)
+            
+            ## this block will return the list of products in orders
+            # context = {'cart': basket}
+            #context = {'cart': orders}
+            # return render (request, 'orders/cart.html', context)
+
+            # context = {'items': items, 'products_amount': products_amount, 'total_value': total_value, 'discount': discount, 'discounted': discounted}
+
+            context = {'items': items,
+                'products_amount': products_amount,
+                'total_value': total_value,
+                'discount': discount,
+                'discounted': discounted
+            }
+            
+            return render (request, 'orders/cart2.html', context)
+
+            return HttpResponse(
+                f'<h2> This is a products_cart. Request method is: {context}.<h2>'
+                )
+
+            # return HttpResponse(
+            #     f'<h2> This is a products_cart. Request method is: {request_type}. \n\
+            #     Product: {order.product.title}. \n\
+            #     Cart: {basket}</h2>'
+            #     )
+        # elif request.method == 'DELETE':
+        #     pass
+        #return render (request, 'orders/create_order.html', context={})
+
+        
+
+# bootstrap for pictures
+# https://www.quackit.com/bootstrap/bootstrap_5/tutorial/bootstrap_cards.cfm#:~:text=By%20default%2C%20the.card-body%20class%20has%20padding.%20This%20provides,up%20flush%20against%20the%20sides%20of%20the%20card.
+
+
+            
+
+        ## view cart: some unused logic
+            # print(basket)
+        
+            
+            # print(products_amount)
+            # print(price)
             
 
             # # correct
@@ -119,25 +191,3 @@ def cart_view(request, *args, **kwargs):
             #print(products)
             #cart = set(cart)
             #print(orders)
-            ## зробити тут set 
-            ## вирахувати кількість однакових об'єктів + створити context numbers
-            ## total 
-            ## discount
-
-            context = {'cart': orders}
-            #print(context)
-            return render (request, 'orders/cart.html', context)
-
-            # return HttpResponse(
-            #     f'<h2> This is a products_cart. Request method is: {request_type}. \n\
-            #     Product: {order.product.title} \n\
-            #     Cart: {cart}</h2>'
-            #     )
-        # elif request.method == 'DELETE':
-        #     pass
-        #return render (request, 'orders/create_order.html', context={})
-
-        
-
-# bootstrap for pictures
-# https://www.quackit.com/bootstrap/bootstrap_5/tutorial/bootstrap_cards.cfm#:~:text=By%20default%2C%20the.card-body%20class%20has%20padding.%20This%20provides,up%20flush%20against%20the%20sides%20of%20the%20card.
