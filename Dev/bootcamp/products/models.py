@@ -116,3 +116,6 @@ class Product(models.Model):
             pass
         return False
 
+## update
+    # >>> setattr(prod, 'content', 'cool thing')
+    # >>> prod.save()

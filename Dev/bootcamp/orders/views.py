@@ -76,9 +76,10 @@ def cart_view(request, *args, **kwargs):
             
             ## discount calculate: 1) disc_ratio discount +++ context4 2) discounted price +++ context5
             ##  - write tests on this part
-            products_amount=50 # in order to check correct
+            #products_amount=50 # in order to check correct
             disc_ratio = ((products_amount//5)*5)/100
             max_disc = int(disc_ratio*100) not in range(0, 50)
+
             print(max_disc) ## bool true
             disc_ratio = disc_ratio if not max_disc else 0.5
             print(disc_ratio)
@@ -96,7 +97,8 @@ def cart_view(request, *args, **kwargs):
 
             # context = {'items': items, 'products_amount': products_amount, 'total_value': total_value, 'discount': discount, 'discounted': discounted}
 
-            context = {'items': items,
+            context = {'basket': basket,
+                'items': items,
                 'products_amount': products_amount,
                 'total_value': total_value,
                 'discount': discount,
@@ -105,9 +107,9 @@ def cart_view(request, *args, **kwargs):
             
             return render (request, 'orders/cart2.html', context)
 
-            return HttpResponse(
-                f'<h2> This is a products_cart. Request method is: {context}.<h2>'
-                )
+            # return HttpResponse(
+            #     f'<h2> This is a products_cart. Request method is: {request_type}. Data: {context}. {basket} <h2>'
+            #     )
 
             # return HttpResponse(
             #     f'<h2> This is a products_cart. Request method is: {request_type}. \n\

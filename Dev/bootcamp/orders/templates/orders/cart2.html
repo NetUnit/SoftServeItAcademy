@@ -17,11 +17,17 @@
         width: 100%;
     }
 
-    .card {
+    /* .basket {
+        position: unset;
+        background-color: rgb(238, 238, 238);
+        border-radius: 5px;
+    } */
+
+    /* .card {
         position: relative;
         top: 50%;
-        left: 74%;
-    }
+        left: 74%; 
+    } */
 
     .cart_title {
         position: relative;
@@ -65,63 +71,119 @@
         margin-top: 10px;
     }
 
-    .footer_app {
-      padding: 10px;
-      color: rgb(245, 173, 6);
-      font-weight: bold;
-      position: fixed;     
-      text-align: left;    
-      bottom: 10px; 
-      width: 100%;
-    }
-    
     .footer_root {
       padding: 10px;
       color: rgb(245, 173, 6);
       font-weight: bold;
-      position: fixed;     
-      text-align: left;    
-      bottom: 35px; 
+      text-align: left;
+      top: 1px; 
+      bottom: 5px; 
       width: 100%;
+      position: relative;
     }
 
 </style>
 
-<right>
-    <div class="card w-25 my_margin" id="cardTitle">
-        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
-            <div class='picture_cart'>
-                >picture here<
-            </div>
-            <h5 class="cart_title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+<div class='card-deck'>
+  <div class='basket'>
+    <div class="card w-100 my_margin" id="cardTitle">
+      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <div class='picture_cart'>
+          >picture here<
         </div>
+        <h5 class="cart_title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+      </div>
     </div>
 
-    {%for item in items %}
-    <div class="card w-25 my_margin">
-        <div class="card-body" style="display: flex; justify-content: space-between">
+    <div class="card w-100 h-25 my_margin" id="cardTitle">
+      <div class="card-body" style="justify-content: space-between">
+        <p class="card-text" style="color: rgb(245, 173, 6); font-weight: bold">context#1</p>
+        <p class='card-text' style="color: limegreen; font-weight: bold">context#2</p>
+        <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold">context#3</p>
+        <p class='order_title' style="color: limegreen; font-weight: bold">context#4</p>
+      </div>
+    </div>
 
-            <div class='picture'>
-                >picture here<
-            </div>
-
-            <div style="display: flex; width: 100%; margin-left: 40px;">
-                <div style="width: 100%">
-                    <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{item}}</p>
-                    <!--  <p> Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
-                    <div>
-                        <h6 class='quantity' style="padding-top: 5px; color: limegreen; font-weight: bold"> Quantity:  </h6>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div class='basket'>
+    {%for order, number in basket.items %}
+    <div class="card w-100 my_margin">
+      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <div class='picture'>
+          >picture here<
         </div>
+
+        <div style="display: flex; width: 100%; margin-left: 40px;">
+          <div style="width: 100%">
+            <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{order.product.title}}</p>
+            <!--  <p> Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+            <div>
+                <h6 class='quantity' style="padding-top: 5px; color: limegreen; font-weight: bold"> Quantity: {{number}}</h6>
+            </div>
+            <div style="padding-top: 5px">
+              <button
+                class="btn btn-info btn-sm"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseDesc{{order.product.id}}"
+                aria-expanded="false"
+                aria-controls="collapseDesc{{order.product.id}}"
+                style="width: 100px;"
+                >
+                Info
+              </button>
+
+              <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px"> 
+                <div class="card_card_body">
+                  {% if order.product.content %}
+                    {{order.product.content}}
+                  {% else %}
+                    not filled yet
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div style="padding-top: 5px">
+              <button
+                class="btn btn-info btn-sm"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseDesc{{order.product.id}}"
+                aria-expanded="false"
+                aria-controls="collapseDesc{{order.product.id}}"
+                style="width: 100px;"
+              >
+                Price
+              </button>
+              <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px">
+                <div class="card_card_body">
+                  {% if order.product.price %}
+                    {{order.product.price}}
+                  {% else %}
+                    not filled yet
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div style="padding-top: 5px">
+              <a href="{%url 'products:detailed_view' order.product.id%}" 
+                class="btn btn-info btn-sm"
+                type="button"
+                style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                >
+                Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     {%endfor%}
-<right>
-<div class="footer_app">
+  </div>
+  <div class="footer_root">
+    root: {{ root }} 
+  </br>
     app: {{ app_name_5 }}
-</div>
-<div class="footer_root">
-    root: {{ root }}
+  </div>
 </div>
 {%endblock%}

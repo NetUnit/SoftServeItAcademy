@@ -31,7 +31,7 @@ def home_view(request, *args, **kwargs):
 # dynamic id from url + error handling method#1
 def product_detailed_view(request, product_id, *args, **kwargs):
     try:
-        obj = Product.objects.get(pk=product_id)
+        obj = Product.objects.get(pk=product_id) ### !!!
         # # ex2: using models: @staticmethod
         # obj = Product.get_by_id(pk)
         # ex3: using all() + filter
