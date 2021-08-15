@@ -17,11 +17,12 @@
         width: 100%;
     }
 
-    /* .basket {
-        position: unset;
-        background-color: rgb(238, 238, 238);
-        border-radius: 5px;
-    } */
+    .basket {
+      position: unset;
+      /* background-color: rgb(238, 238, 238); */
+      /*border-radius: 5px; */
+      margin-left: 5px;
+    } 
 
     /* .card {
         position: relative;
@@ -105,7 +106,7 @@
     </div>
 
   </div>
-  <div class='basket'>
+  <div class='basket' >
     {%for order, number in basket.items %}
     <div class="card w-100 my_margin">
       <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
