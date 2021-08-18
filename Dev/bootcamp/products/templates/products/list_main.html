@@ -17,14 +17,49 @@
         width: 100%;
     }
 
+    .card {
+        margin: 5px;
+    }
+
+    .btn-info {
+        display: inline-block;
+        width: 100px; 
+        color: white;
+        margin-top: 5px;
+        text-align: center;
+    }
+    
+    .btn-warning {
+        width: 80px;
+        height: 35px;
+        color:rgb(3, 4, 31);
+        margin-top: 10px;
+        margin-left: 6px;
+        text-align: center;
+        position: relative;
+        background-color: orange;
+        border: 1px solid rgb(3, 4, 31);
+    }
+
+    .btn-warning:hover { 
+        background-color: gainsboro;
+        color:rgb(3, 4, 31);
+    }
+
     .picture {
       border: 1px solid #4287f5;
       height: 100px;
-      width: 150px;
+      width: 120px;
       padding-top: 10px;
       text-align: center;
       text-orientation: initial;
     }
+
+    .column {
+        display: table-column;
+        text-align: center;
+    }
+
     #messages {
         background-color: rgb(172, 169, 169);
         color: #fff;
@@ -36,7 +71,7 @@
       padding: 10px;
       color: rgb(245, 173, 6);
       font-weight: bold;
-      position: fixed;     
+      position: relative;
       text-align: left;    
       bottom: 10px; 
       width: 100%;
@@ -46,7 +81,7 @@
       padding: 10px;
       color: rgb(245, 173, 6);
       font-weight: bold;
-      position: fixed;     
+      position: relative;   
       text-align: left;    
       bottom: 35px; 
       width: 100%;
@@ -54,7 +89,7 @@
 
 </style>
 
-<div class="card w-25 my_margin" id="productTitle">
+<div class="card w-25 my_margin" id="productTitle" style=margin-bottom:10px>
     <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
         <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">Available products: </h5>
         <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
@@ -119,20 +154,32 @@
                         </div>
                     </div>
                 </div>
-                <div style="padding-top: 5px">
+                <div>
                     <a href="{%url 'products:detailed_view' product.id%}" 
-                        class="btn btn-info btn-sm"
+                        class="btn-info btn-sm"
                         type="button"
-                        style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                        style="background-color:limegreen"
+                        
                     >
                         Details
                     </a>
                 </div>
             </div>
         </div>
-        <div class='picture'>
-           >picture here<
+        
+        <div class="column">
+            <div class='picture'>
+                >picture here<
+            </div>
+
+            <a href="{%url 'orders:order_create_view' product.id%}"
+                class="btn btn-warning"
+                type="button"
+            >
+                To Cart
+            </a>
         </div>
+    
     </div>
 </div>
 {%endfor%}

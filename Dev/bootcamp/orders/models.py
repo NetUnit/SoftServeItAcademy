@@ -66,11 +66,15 @@ class Order(models.Model):
     '''
 
     @staticmethod
-    def delete_all():
+    def delete_by_id():
+        pass
+
+    @staticmethod
+    def delete_all(user_id):
         condition = len([
             product for product in Product.get_all()
             ]) > 0
-        return Order.objects.all().delete() if condition else 0
+        return Order.objects.all().filter(id=user_id).delete() if condition else 0
 
     # add calculate basket here
     ## 1) calculate number of items
