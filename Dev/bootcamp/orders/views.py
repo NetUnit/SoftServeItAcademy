@@ -12,9 +12,16 @@ def order_create_view(request, product_id, *args, **kwargs):
     order.save()
     return redirect ('/order/cart/')
 
+def order_remove_view(request, order_id, *args, **kwargs):
 
-def order_remove_view(request, product_id, *args, **kwargs):
-    pass
+    ## order = Order.objects.get(pk=order_id) ## same1
+    # removed = Order.delete_by_id(order_id) ## same1
+    #print(removed)
+    Order.delete_by_id(order_id)
+    return redirect ('/order/cart/')
+    # return HttpResponse (
+    #     f'<h3>  {order_id} {Order.delete_by_id(order_id)}  <h3>'
+    # )
 
 def cart_clean_view(request, product_id, user_id, *args, **kwargs):
     condition = user_id is not None

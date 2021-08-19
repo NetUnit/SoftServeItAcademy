@@ -68,8 +68,8 @@
 
     .picture {
       border: 1px solid #4287f5;
-      height: 100px;
-      width: 150px;
+      height: 95px;
+      width: 115px;
       padding-top: 10px;
       text-align: center;
       text-orientation: upright;
@@ -111,9 +111,9 @@
       </div>
     </div>
 
-    <div class="card w-100 h-25 my_margin" id="cardTitle">
+    <div class="card w-100 h-55 my_margin" id="cardTitle">
       <div class="card-body" style="justify-content: space-between">
-        <p style = "color:rgb(3, 4, 31); font-weight: bold; border-bottom: 3px solid #f7f7f7; margin-bottom: 20px;">Total</p>
+        <p style = "color:rgb(3, 4, 31); font-weight: bold; border-bottom: 3px solid #f7f7f7; margin-bottom: 20px; margin-top: 5px;">Total</p>
         <p class="card-text" style="color:rgb(3, 4, 31); font-weight: bold">Products number: {{products_amount}} pcs</p>
         <p class='card-text' style="color: rgb(245, 173, 6); font-weight: bold">Total value: {{total_value}} usd</p>
         <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold">Discount: {{discount}}%</p>
@@ -122,7 +122,7 @@
           <a href="orders:cart_clean_view order.user.id" 
             class="btn btn-info btn-sm"
             type="button"
-            style="width: 100px; color: white; margin-top: 5px; background-color: rgb(220, 48, 71); margin-top: 25px"
+            style="width: 100px; color: white; background-color: rgb(220, 48, 71); margin-top: 23px;  margin-bottom: 5px"
             >
             Clean
           </a>
@@ -133,96 +133,102 @@
   </div>
   <div class='basket'>
     {%for order, number in basket.items %}
-    <div class="card" style="margin-left: 30px">
-      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
-        <div class="column">
-          <div class='picture'>
-            >picture here<
-          </div>
-          <div>
-            <h6 class='quantity' style="padding-top: 5px; color: limegreen; font-weight: bold"> Quantity: {{number}}</h6>
-          </div>
-          <a href="{%url 'orders:order_create_view' order.product.id%}"
-            class="btn btn-info btn-sm"
-            type="button"
-            style="width: 50px; color: white; margin-top: 5px; background-color: limegreen; font-weight: bold"
-          >
-            +
-          </a>
-          <a href="{%url 'orders:order_remove_view' order.product.id%}"
-            class="btn btn-info btn-sm"
-            type="button"
-            style="width: 50px; color: white; margin-top: 5px; background-color: rgb(220, 48, 71); font-weight: bold"
-          >
-            -
-          </a>
-        </div>
-
-        <div style="display: flex; width: 100%; margin-left: 40px;">
-          <div style="width: 100%">
-            <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{order.product.title}}</p>
-            <!--  <p> Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+      {% for manufacturer in order.product.manufacturers.all %}
+      <div class="card" style="margin-left: 30px">
+        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+          <div class="column">
+            <div class='picture'>
+              >picture here<
+            </div>
             <div>
-              <h6 class='quantity' style="padding-top: 5px; color: limegreen; font-weight: bold"> {{order.product.manufacturer}}</h6>
+              <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold"> Quantity: {{number}} <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}}</h7> </h6>
             </div>
-            <div style="padding-top: 5px">
-              <button
-                class="btn btn-info btn-sm"
-                type="button"
-                data-toggle="collapse"
-                data-target="#collapseDesc{{order.product.id}}"
-                aria-expanded="false"
-                aria-controls="collapseDesc{{order.product.id}}"
-                style="width: 100px;"
-                >
-                Info
-              </button>
+            <a href="{%url 'orders:order_create_view' order.product.id%}"
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 45px; color: white; background-color: limegreen; font-weight: bold; display: inline-block;"
+            >
+              +
+            </a>
+            <a href="{%url 'orders:order_remove_view' order.id%}"
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 45px; color: white; background-color: rgb(220, 48, 71); font-weight: bold; display: inline-block;"
+            >
+              -
+            </a>
+          </div>
 
-              <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px"> 
-                <div class="card_card_body">
-                  {% if order.product.content %}
-                    {{order.product.content}}
-                  {% else %}
-                    not filled yet
-                  {% endif %}
+          <div style="display: flex; width: 100%; margin-left: 40px;">
+            <div style="width: 100%">
+              <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{order.product.title}}</p>
+              <!--  <p> Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+              <div>
+                <h6 class='quantity' id="{{order.product.id}}" style="padding-top: 5px; color: limegreen; font-weight: bold"> Country: {{manufacturer.country}}</h6>
+                <!-- {% for manufacturer in order.product.manufacturers.all %}
+                  <h6 class='manufacturer' id="{{order.product.id}}" style="padding-top: 5px; color: limegreen; font-weight: bold">Country: {{manufacturer.country}}</h6>
+                {% endfor %}
+              -->
+              </div>
+              <div style="padding-top: 5px">
+                <button
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapseDesc{{order.product.id}}"
+                  aria-expanded="false"
+                  aria-controls="collapseDesc{{order.product.id}}"
+                  style="width: 100px;"
+                  >
+                  Info
+                </button>
+
+                <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px"> 
+                  <div class="card_card_body">
+                    {% if order.product.content %}
+                      {{order.product.content}}
+                    {% else %}
+                      not filled yet
+                    {% endif %}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div style="padding-top: 5px">
-              <button
-                class="btn btn-info btn-sm"
-                type="button"
-                data-toggle="collapse"
-                data-target="#collapseDesc{{order.product.id}}"
-                aria-expanded="false"
-                aria-controls="collapseDesc{{order.product.id}}"
-                style="width: 100px;"
-              >
-                Price
-              </button>
-              <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px">
-                <div class="card_card_body">
-                  {% if order.product.price %}
-                    {{order.product.price}}
-                  {% else %}
-                    not filled yet
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-            <div style="padding-top: 5px">
-              <a href="{%url 'products:detailed_view' order.product.id%}" 
-                class="btn btn-info btn-sm"
-                type="button"
-                style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+              <div style="padding-top: 5px">
+                <button
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapseDesc{{order.product.id}}"
+                  aria-expanded="false"
+                  aria-controls="collapseDesc{{order.product.id}}"
+                  style="width: 100px;"
                 >
-                Details
-              </a>
+                  Price
+                </button>
+                <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px">
+                  <div class="card_card_body">
+                    {% if order.product.price %}
+                      {{order.product.price}}
+                    {% else %}
+                      not filled yet
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div style="padding-top: 5px">
+                <a href="{%url 'products:detailed_view' order.product.id%}" 
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                  >
+                  Details
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {%endfor%}
     {%endfor%}
   </div>
   <div class="footer_root">

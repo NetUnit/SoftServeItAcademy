@@ -79,6 +79,7 @@ class Product(models.Model):
         except (IntegrityError, AttributeError, DataError):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
+        
     
     def update(self, title=None, content=None, price=None):
         """

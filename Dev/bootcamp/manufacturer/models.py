@@ -48,7 +48,7 @@ class Manufacturer(models.Model):
         return f'{self.__class__.__name__}(id={self.id})'
 
     @staticmethod
-    def get_by_id(manufacturer_id=None):
+    def get_by_id(manufacturer_id):
         '''
             This method is created in order to get manufacturer object
             found in the DB

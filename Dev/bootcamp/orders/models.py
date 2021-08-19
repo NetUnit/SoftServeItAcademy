@@ -66,8 +66,15 @@ class Order(models.Model):
     '''
 
     @staticmethod
-    def delete_by_id():
-        pass
+    def delete_by_id(order_id):
+        try:
+            order = Order.objects.get(pk=order_id)
+            order.delete()
+            return True
+        except Order.DoesNotExist:
+            # LOGGER.error("User does not exist"
+            pass
+        return False
 
     @staticmethod
     def delete_all(user_id):

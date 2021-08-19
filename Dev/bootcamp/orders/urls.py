@@ -26,7 +26,7 @@ urlpatterns = [
     ################ *** Create View *** #################
     re_path(r'^order/create/(?P<product_id>\d+)/$', order_create_view, name='order_create_view'),
 
-    re_path(r'^order/delete/(?P<product_id>\d+)/$', order_remove_view, name='order_remove_view'),
+    re_path(r'^order/delete/(?P<order_id>\d+)/$', order_remove_view, name='order_remove_view'),
 
     # ############# *** OrderCartViews *** ###############
     re_path(r'^order/clean-cart/$', cart_clean_view, name='cart_clean_view')
