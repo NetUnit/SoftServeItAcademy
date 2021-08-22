@@ -109,7 +109,7 @@
             <div style="width: 100%">
                 <p>{{product.title}}</p>
                 <!--  <p>Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
-                <div style="padding-top: 5px">
+                <div style="margin-top: 1px">
                     <button
                         class="btn btn-info btn-sm"
                         type="button"
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-                <div style="padding-top: 5px">
+                <div style="margin-top: 1px">
                     <button
                         class="btn btn-info btn-sm"
                         type="button"
@@ -140,7 +140,7 @@
                         data-target="#collapseDesc{{product.id}}"
                         aria-expanded="false"
                         aria-controls="collapseDesc{{product.id}}"
-                        style="width: 100px;"
+                        style="width: 100px"
                     >
                         Price
                     </button>
@@ -154,11 +154,11 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div style="margin-top: 5px">
                     <a href="{%url 'products:detailed_view' product.id%}" 
                         class="btn-info btn-sm"
                         type="button"
-                        style="background-color:limegreen"
+                        style="background-color:limegreen;"
                         
                     >
                         Details

@@ -21,6 +21,7 @@ class Order(models.Model):
     NOTE: Manufacturer model is more customized than Product
           in order to avoid less code in views
     '''
+
     #id is the autofield
     #user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -34,6 +35,7 @@ class Order(models.Model):
     #     '''
     #     return f'----{self.product}{self.created_at}' ## {self.user}
 
+
     def __repr__(self):
         '''
         This magic method is redefined to show class and id of the Order object.
@@ -41,20 +43,29 @@ class Order(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
+
     @staticmethod
     def create(product):
+        '''
+        This magic method is redefined to create order based on particular product 
+        and saved to db
+        :return: order object
+        '''
         order = Order(product=product)
         try:
-            #order.save(commit=False)
+            order.save()
             return order
         except (IntegrityError, AttributeError, DataError, ValueError):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
     
-    '''
-    '''
+
     @staticmethod
     def get_all():
+        '''
+            This method gets all orders from the db
+            return: queryset of product objects converted to a list
+        '''
         condition = len([
             product for product in Product.get_all()
             ]) > 0
@@ -62,26 +73,57 @@ class Order(models.Model):
             order for order in Order.objects.all()
             ] if condition else 0
 
-    '''
-    '''
+
+    @staticmethod
+    def get_by_id(order_id):
+        '''
+            param order_id: SERIAL: the id of an Order to be found in the DB
+            return: product object or None if the order with such ID does not exist
+        '''
+        try:
+            order = Order.objects.get(pk=order_id)
+            return order
+        except Order.DoesNotExist:
+            # LOGGER.error("User does not exist")
+            pass
+        return False
+
 
     @staticmethod
     def delete_by_id(order_id):
+        '''
+            param user_id: SERIAL: the id of an authenticated user
+            return: delete all objects found in the db (clean the db)
+        '''
         try:
             order = Order.objects.get(pk=order_id)
             order.delete()
             return True
         except Order.DoesNotExist:
-            # LOGGER.error("User does not exist"
+            # LOGGER.error("User does not exist")
             pass
         return False
 
+
     @staticmethod
-    def delete_all(user_id):
-        condition = len([
+    def delete_all():
+        '''
+            param user_id: SERIAL: the id of an Order to be found in the DB
+            return: delete all objects found in the db (clean the db)
+        '''
+        product_exist = len([
             product for product in Product.get_all()
             ]) > 0
-        return Order.objects.all().filter(id=user_id).delete() if condition else 0
+        order_exist = len([
+            order for order in Order.get_all()
+            ]) > 0
+
+        if product_exist and order_exist:
+            return Order.objects.all().delete()
+
+        # return Order.objects.all().filter(id=user_id).delete() if condition else 0 # for user_id - when having a user
+
+    
 
     # add calculate basket here
     ## 1) calculate number of items

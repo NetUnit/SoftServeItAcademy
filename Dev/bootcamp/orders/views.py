@@ -4,37 +4,41 @@ from orders.models import Order
 from products.models import Product
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 
-# Create your views here.
+# Create your views here
 def order_create_view(request, product_id, *args, **kwargs):
-        
     product = Product.get_by_id(product_id)
-    order = Order.create(product)
-    order.save()
+    Order.create(product)
+
+    # return HttpResponse (
+    #     f'<h3>  {order}  <h3>'
+    # )
+    
     return redirect ('/order/cart/')
 
 def order_remove_view(request, order_id, *args, **kwargs):
-
-    ## order = Order.objects.get(pk=order_id) ## same1
-    # removed = Order.delete_by_id(order_id) ## same1
-    #print(removed)
     Order.delete_by_id(order_id)
     return redirect ('/order/cart/')
+
     # return HttpResponse (
     #     f'<h3>  {order_id} {Order.delete_by_id(order_id)}  <h3>'
     # )
 
-def cart_clean_view(request, product_id, user_id, *args, **kwargs):
-    condition = user_id is not None
-    deleted = Order.delete_all()
-    return deleted if condition else 0
+
+from django.contrib import messages
+
+def cart_clean_view(request, *args, **kwargs): # add these later: product_id, user_id,
+    #condition = user_id is not None
+    Order.delete_all()
+    messages.success(request, f'Your cart is empty now (-ˍ-。)')
+    return redirect ('/order/cart/')
 
 def cart_view(request, *args, **kwargs):
 
         # переробити на request.method - POST - створення ордеру
         if request.method == 'GET':
             request_type = request.method
-            print(request_type) ## 'GET'
-            print(request.path)
+            #print(request_type) ## 'GET'
+            #print(request.path)
 
             ## get all products title in Order
             products = [order.product.title for order in Order.get_all()]
@@ -49,11 +53,14 @@ def cart_view(request, *args, **kwargs):
                 basket[list(zipped.values())[i]] = []
 
             #print(basket) ## +++ context1
-
+            #print(len(basket))
             ## fill the basket
+            print(products)
+
             try:
-                iteration = i <= len(basket) - 1
                 for i in range(len(products)):
+                    iteration = i <= len(basket) - 1
+                    print(iteration)
                     for product in products if iteration else 0:
                         similar_product = product == list(basket.keys())[i].product.title
                         list(basket.values())[i].append(product) if similar_product else 0
@@ -61,7 +68,7 @@ def cart_view(request, *args, **kwargs):
             except (IndexError, ValueError, TypeError):
                 pass
                 
-            #print(basket)
+            # print(basket)
             
             # lust or product in basket  (not necessarily as we iterate dict in template)
             # items = [i.product.title for i in list(basket.keys())] ## +++ context1
@@ -79,6 +86,7 @@ def cart_view(request, *args, **kwargs):
                 order.product.price for order in Order.get_all()
                 ]))
             
+            #print(total_value)
             ## discount calculate: 1) disc_ratio discount +++ context4 2) discounted price +++ context5
             ##  - write tests on this part
             #products_amount=50 # in order to check correct
@@ -89,9 +97,11 @@ def cart_view(request, *args, **kwargs):
             disc_ratio = disc_ratio if not max_disc else 0.5
             #print(disc_ratio)
 
+            ## +++ context4 discount
             discount = int(disc_ratio * 100)
             #print(discount)
 
+            ## +++ context5 discounted
             discounted = total_value - total_value * disc_ratio
             #print(discounted)
 
@@ -108,6 +118,22 @@ def cart_view(request, *args, **kwargs):
             # return HttpResponse(
             #     f'<h2> This is a products_cart. Request method is: {request_type}. Data: {context}. {basket} <h2>'
             #     )
+
+
+
+# try:
+#     iteration = i <= len(basket) - 1
+#     print(iteration)
+#     for i in range(len(products)):
+#         for product in products if iteration else 0:
+#             similar_product = product == list(basket.keys())[i].product.title
+#             list(basket.values())[i].append(product) if similar_product else 0
+
+# except:
+#     print('This is error')
+
+
+
 
 
 

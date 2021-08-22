@@ -119,7 +119,7 @@
         <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold">Discount: {{discount}}%</p>
         <p class='order_title' style="color: limegreen; font-weight: bold">Discounted value: {{discounted}} usd</p>
         <div style="padding-top: 5px">
-          <a href="orders:cart_clean_view order.user.id" 
+          <a href="{%url 'orders:cart_clean_view'%}" 
             class="btn btn-info btn-sm"
             type="button"
             style="width: 100px; color: white; background-color: rgb(220, 48, 71); margin-top: 23px;  margin-bottom: 5px"
@@ -141,7 +141,8 @@
               >picture here<
             </div>
             <div>
-              <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold"> Quantity: {{number}} <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}}</h7> </h6>
+              <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold; margin-top: 13px;"> Quantity: {{number}}  </h6>
+              <!-- <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}} {{order.product.id}}</h7> -->
             </div>
             <a href="{%url 'orders:order_create_view' order.product.id%}"
               class="btn btn-info btn-sm"
@@ -183,7 +184,7 @@
                   Info
                 </button>
 
-                <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px"> 
+                <div class="collapse" id="collapseDesc{{order.product.id}}"> 
                   <div class="card_card_body">
                     {% if order.product.content %}
                       {{order.product.content}}
@@ -205,7 +206,7 @@
                 >
                   Price
                 </button>
-                <div class="collapse" id="collapseDesc{{order.product.id}}" style="padding-top: 5px">
+                <div class="collapse" id="collapseDesc{{order.product.id}}">
                   <div class="card_card_body">
                     {% if order.product.price %}
                       {{order.product.price}}
