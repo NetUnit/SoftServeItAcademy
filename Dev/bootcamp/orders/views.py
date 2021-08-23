@@ -29,7 +29,7 @@ from django.contrib import messages
 def cart_clean_view(request, *args, **kwargs): # add these later: product_id, user_id,
     #condition = user_id is not None
     Order.delete_all()
-    messages.success(request, f'Your cart is empty now (-ˍ-。)')
+    #messages.success(request, f'Your cart is empty now (-ˍ-。)')
     return redirect ('/order/cart/')
 
 def cart_view(request, *args, **kwargs):
@@ -42,32 +42,32 @@ def cart_view(request, *args, **kwargs):
 
             ## get all products title in Order
             products = [order.product.title for order in Order.get_all()]
+            ## print(products) ++
             
             ## get all order in Order
             orders = [order for order in Order.get_all()]
+            print(orders)
             zipped = dict(zip(products, orders))
 
-            ## empty basket
+            ## form empty basket: key - order, value - list of products
             basket = {}
             for i in range(len(zipped)):
                 basket[list(zipped.values())[i]] = []
 
-            #print(basket) ## +++ context1
-            #print(len(basket))
-            ## fill the basket
-            print(products)
+            print(basket) ## +++ context1
 
             try:
                 for i in range(len(products)):
                     iteration = i <= len(basket) - 1
                     print(iteration)
-                    for product in products if iteration else 0:
+                    for product in products if iteration else None:
                         similar_product = product == list(basket.keys())[i].product.title
-                        list(basket.values())[i].append(product) if similar_product else 0
+                        list(basket.values())[i].append(product) if similar_product else None
 
-            except (IndexError, ValueError, TypeError):
-                pass
+            except Exception as err:
+                print(err)
                 
+
             # print(basket)
             
             # lust or product in basket  (not necessarily as we iterate dict in template)
