@@ -64,7 +64,7 @@ def manufacturer_create_view(request, *args, **kwargs):
         
         else:
             manufacturer.save()
-            messages.success(request, f'U\'ve just added the next company:{title}')
+            messages.success(request, f'U\'ve just added the next company: {title}')
             return redirect ('/manufacturers/create/')
 
     # fix this later (watch Denis video)
@@ -73,7 +73,7 @@ def manufacturer_create_view(request, *args, **kwargs):
         year = form.cleaned_data.get('year')
         if year is None:
             #messages.error(request, f'{manufacturer.year} isn\'t correct')
-            messages.error(request, f'Year input isn\'t correct')
+            messages.error(request, f'Date input isn\'t correct')
             return redirect ('/manufacturers/create/')
     except:
         pass

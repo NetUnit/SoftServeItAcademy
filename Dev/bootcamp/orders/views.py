@@ -29,43 +29,42 @@ from django.contrib import messages
 def cart_clean_view(request, *args, **kwargs): # add these later: product_id, user_id,
     #condition = user_id is not None
     Order.delete_all()
-    #messages.success(request, f'Your cart is empty now (-ˍ-。)')
+    messages.success(request, f'Your cart is empty now (-ˍ-。)')
     return redirect ('/order/cart/')
 
 def cart_view(request, *args, **kwargs):
 
         # переробити на request.method - POST - створення ордеру
         if request.method == 'GET':
-            request_type = request.method
-            #print(request_type) ## 'GET'
-            #print(request.path)
+            # # request_type = request.method
+            # # print(request_type) ## 'GET'
+            # # print(request.path)
 
-            ## get all products title in Order
-            products = [order.product.title for order in Order.get_all()]
-            ## print(products) ++
+            # # # get all products title in Order
+            # # products = [order.product.title for order in Order.get_all()]
+            # # ## print(products) ++
             
-            ## get all order in Order
-            orders = [order for order in Order.get_all()]
-            print(orders)
-            zipped = dict(zip(products, orders))
+            # # ## get all order in Order
+            # # orders = [order for order in Order.get_all()]
+            # # print(orders)
+            # # zipped = dict(zip(products, orders))
 
-            ## form empty basket: key - order, value - list of products
-            basket = {}
-            for i in range(len(zipped)):
-                basket[list(zipped.values())[i]] = []
+            # # ## form empty basket: key - order, value - list of products
+            # # basket = {}
+            # # for i in range(len(zipped)):
+            # #     basket[list(zipped.values())[i]] = []
 
-            print(basket) ## +++ context1
+            # # print(basket) ## +++ context1
 
-            try:
-                for i in range(len(products)):
-                    iteration = i <= len(basket) - 1
-                    print(iteration)
-                    for product in products if iteration else None:
-                        similar_product = product == list(basket.keys())[i].product.title
-                        list(basket.values())[i].append(product) if similar_product else None
-
-            except Exception as err:
-                print(err)
+            # # try:
+            # #     for i in range(len(products)):
+            # #         iteration = i <= len(basket) - 1
+            # #         print(iteration)
+            # #         for product in products if iteration else 0:
+            # #             similar_product = product == list(basket.keys())[i].product.title
+            # #             list(basket.values())[i].append(product) if similar_product else 0
+            # # except TypeError as err:
+            # #     print(err)
                 
 
             # print(basket)
@@ -74,12 +73,26 @@ def cart_view(request, *args, **kwargs):
             # items = [i.product.title for i in list(basket.keys())] ## +++ context1
             # print(items)
 
-            products_amount = 0
-            for order, products in basket.items():
-                basket[order] = len(products)
-                products_amount += len(products)
+            # context1
+            basket = Order.create_cart()
+            #print(basket)
 
-            #print(products_amount) ## +++ context2 quantity
+            ### --- create_cart --- ###
+
+            ########################### ***** ##############################
+            # products_amount = 0
+            # for order, products in basket.items():
+            #     basket[order] = len(products)
+            #     products_amount += len(products)
+            # print(products_amount) ## +++ context2 quantity
+            
+            x = Order.cart_items_amount()
+            print(x)
+            print(sum(list(x.values())))
+
+            ########################### ***** ##############################
+
+
 
             ## +++ context3 total_value_price
             total_value = float(sum([

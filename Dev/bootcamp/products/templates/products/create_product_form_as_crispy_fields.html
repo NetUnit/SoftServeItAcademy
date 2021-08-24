@@ -11,8 +11,6 @@
 <style>
     form ul {
         padding: 0 20px 0 20px;
-        width: 500px;
-        height: 500px;
     }
     form ul li {
         display: block;
@@ -31,6 +29,8 @@
         padding-top: 10px;
         width: 100px;
         height: 100px;
+        position: relative;
+        z-index: 1000;
     }
 
     .message {
@@ -57,27 +57,32 @@
     }
 
 </style>
-<div class="card w-25 my_margin">
+<div class="card w-25 my_margin" style='display: flex'>
     <div class="card-body">
         <h5 class="card-title">Create Product</h5>
         <form action="" method="post">
             {%csrf_token%}
             
             {{form.title|as_crispy_field}} {{form.content|as_crispy_field}} {{form.price|as_crispy_field}}
-
-            <div class="manufacturer-block">
+            
+            
+            <div class="card-body" style="display: flex; justify-content: space-between; align-items: right">
                 <label for="">Manufacturers:</label>
                 {{form.manufacturers}}
             </div>
-            <div>
-                <br>
-                {% for message in messages %}
-                    <p class="card-title" id='messages'>  <text class='message'>{{ message }}</p>
-                {% endfor %}
-                <br>
-            </div>
+            {% if messages %}
+                <div>
+                    <br>
+                    {% for message in messages %}
+                        <p class="card-title" id='messages'>  <text class='message'>{{ message }}</p>
+                    {% endfor %}
+                    <br>
+                </div>
+            {% endif %}
             <button type="submit" class="btn btn-success" style="display: block; margin-top: 5px; background-color:limegreen"> Create </button>
+            <!-- position: relative; z-index: 1000 -->
         </form>
+
     </div>
 
     <script>

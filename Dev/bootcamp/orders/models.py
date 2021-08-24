@@ -20,6 +20,11 @@ class Order(models.Model):
 
     NOTE: Manufacturer model is more customized than Product
           in order to avoid less code in views
+
+    '2 Scope of Dajngo: Fat Models, Helper Modules, Thin Views, Stupid Templates'
+
+
+
     '''
 
     #id is the autofield
@@ -120,6 +125,51 @@ class Order(models.Model):
 
         if product_exist and order_exist:
             return Order.objects.all().delete()
+
+    @staticmethod
+    def create_cart():  ## add user_id later
+
+        products = [order.product.title for order in Order.get_all()]
+        orders = Order.get_all()
+        zipped = dict(zip(products, orders))
+
+        ## form empty basket: key - order, value - list of products
+        basket = {}
+        for i in range(len(zipped)):
+            basket[list(zipped.values())[i]] = []
+
+        ## fill the dict-type basket
+        try:
+            for i in range(len(products)):
+                iteration = i <= len(basket) - 1
+                for product in products if iteration else 0:
+                    similar_product = product == list(basket.keys())[i].product.title
+                    list(basket.values())[i].append(product) if similar_product else 0
+        except TypeError as err:
+            # LOGGER.error(f'{err}')
+            pass
+        
+        return basket
+    
+    @staticmethod
+    def cart_items_amount():  ## add user_id late
+        basket = Order.create_cart()
+        #products_amount = 0
+        for order, products in basket.items():
+            basket[order] = len(products)
+            #products_amount += len(products)
+        
+        return basket
+
+
+    @staticmethod
+    def total_amount():  ## add user_id late
+        basket = Order.cart_items_amount()
+        return sum(list(basket.values()))
+        
+
+
+
 
         # return Order.objects.all().filter(id=user_id).delete() if condition else 0 # for user_id - when having a user
 

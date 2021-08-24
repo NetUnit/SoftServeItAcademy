@@ -41,6 +41,11 @@
         margin-bottom: 0;
     }
 
+    .message {
+      color: limegreen;
+      font-weight: bold;
+    }
+
     .card_card_body {
         padding: 5px 10px;
         width: 200px;
@@ -55,6 +60,15 @@
 
     .btn-info {
       border: none;
+    }
+
+    #messages {
+      /* color:rgb(200, 50, 205); */
+      color: limegreen;
+      font-weight: bold;
+      /* background-color: rgb(172, 169, 169); */
+      /* padding: 10px; */
+      margin-top: 10px;
     }
 
     .picture_cart {
@@ -80,13 +94,6 @@
         font-weight: bold;
     }
 
-    #messages {
-        background-color: rgb(172, 169, 169);
-        color: #fff;
-        padding: 10px;
-        margin-top: 10px;
-    }
-
     .footer_root {
       padding: 10px;
       color: rgb(245, 173, 6);
@@ -103,7 +110,7 @@
 <div class='card-deck'>
   <div class='basket'>
     <div class="card w-100 my_margin" id="cardTitle">
-      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
         <div class='picture_cart'>
           >picture here<
         </div>
@@ -116,8 +123,14 @@
         <p style = "color:rgb(3, 4, 31); font-weight: bold; border-bottom: 3px solid #f7f7f7; margin-bottom: 20px; margin-top: 5px;">Total</p>
         <p class="card-text" style="color:rgb(3, 4, 31); font-weight: bold">Products number: {{products_amount}} pcs</p>
         <p class='card-text' style="color: rgb(245, 173, 6); font-weight: bold">Total value: {{total_value}} usd</p>
-        <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold">Discount: {{discount}}%</p>
-        <p class='order_title' style="color: limegreen; font-weight: bold">Discounted value: {{discounted}} usd</p>
+        <p class='order_title' style="color: limegreen; font-weight: bold">Discount: {{discount}}%</p>
+        <p class='order_title' style="color: rgb(3, 4, 31); font-weight: bold">Discounted value: {{discounted}} usd</p>
+        <div>
+
+          {% for message in messages %}
+            <p class="card-title" style="margin-top: 20px" id="messages"> <text class="message">{{ message }}</p>
+          {% endfor %}
+        </div>
         <div style="padding-top: 5px">
           <a href="{%url 'orders:cart_clean_view'%}" 
             class="btn btn-info btn-sm"
