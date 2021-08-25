@@ -5,7 +5,7 @@ from orders.views import (
     cart_view,
     order_remove_view,
     cart_clean_view,
-
+    process_payment_view,
 )
 
 from django.conf import settings
@@ -29,8 +29,8 @@ urlpatterns = [
     # ############# *** Clean the Cart View *** ###############
     re_path(r'^order/clean-cart/$', cart_clean_view, name='cart_clean_view'),
 
-    # ############# *** Some additional View *** ###############
-    # re_path(r'^manufacturers/list/$', manufacturer_list_view, name='manufacturer_list_view')
+    # ############# *** Order Pay View *** ###############
+    re_path(r'^order/payment/$', process_payment_view, name='process_payment_view')
 
     # re_path(r'^manufacturers/update/$', manufacturer_update_view, name='manufacturer_detailed_view'),
 

@@ -163,11 +163,30 @@ class Order(models.Model):
 
 
     @staticmethod
-    def total_amount():  ## add user_id late
+    def products_amount():  ## add user_id late
         basket = Order.cart_items_amount()
         return sum(list(basket.values()))
         
 
+    @staticmethod
+    def total_value():
+        try:
+            total_value = float(sum([
+                order.product.price for order in Order.get_all()
+                ]))
+            return total_value
+        except Exception as err:
+            # LOGGER.error(f'{err}')
+            pass
+    
+    @staticmethod
+    def get_discount():
+        products_amount = Order.products_amount()
+        disc_ratio = ((products_amount//5)*5)/100
+        max_disc = int(disc_ratio*100) not in range(0, 50)
+                    
+        disc_ratio = disc_ratio if not max_disc else 0.5
+        return disc_ratio
 
 
 

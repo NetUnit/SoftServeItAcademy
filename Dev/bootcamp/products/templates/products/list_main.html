@@ -67,24 +67,14 @@
         margin-top: 10px;
     }
 
-    .footer_app {
-      padding: 10px;
-      color: rgb(245, 173, 6);
-      font-weight: bold;
-      position: relative;
-      text-align: left;    
-      bottom: 10px; 
-      width: 100%;
-    }
-    
     .footer_root {
       padding: 10px;
       color: rgb(245, 173, 6);
       font-weight: bold;
-      position: relative;   
-      text-align: left;    
-      bottom: 35px; 
+      text-align: left;
+      /* top: 350px; */
       width: 100%;
+      position: relative;
     }
 
 </style>
@@ -183,11 +173,13 @@
     </div>
 </div>
 {%endfor%}
-
-<div class="footer_app">
-    app: {{ app_name_1 }}
-</div>
-<div class="footer_root">
-    root: {{ root }}
-</div>
 {%endblock%}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_1 }}
+</div>
+{% endblock %}
+

@@ -1,7 +1,9 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from orders.models import Order
-from products.models import Product
+from django.urls import reverse_lazy
+# from orders.models import Order
+from .models import Product, Order
+from django.contrib import messages
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 
 # Create your views here
@@ -24,8 +26,6 @@ def order_remove_view(request, order_id, *args, **kwargs):
     # )
 
 
-from django.contrib import messages
-
 def cart_clean_view(request, *args, **kwargs): # add these later: product_id, user_id,
     #condition = user_id is not None
     Order.delete_all()
@@ -34,116 +34,130 @@ def cart_clean_view(request, *args, **kwargs): # add these later: product_id, us
 
 def cart_view(request, *args, **kwargs):
 
-        # переробити на request.method - POST - створення ордеру
-        if request.method == 'GET':
-            # # request_type = request.method
-            # # print(request_type) ## 'GET'
-            # # print(request.path)
+    x= [order.product.price for order in Order.get_all()]
+    print(x)
 
-            # # # get all products title in Order
-            # # products = [order.product.title for order in Order.get_all()]
-            # # ## print(products) ++
+    ## context#1
+    basket = Order.cart_items_amount()
+    try:
+        print(list(basket.keys())[4].product.manufacturers.all())
+    except Exception as err:
+        print(err)
+    ## context#2
+    products_amount = Order.products_amount() 
+    #print(products_amount)
+
+    ## context#3 total_value_price
+    total_value = Order.total_value()
+    #print(total_value)
+
+    ## context#4 discount
+    disc_ratio = Order.get_discount()
+    discount = int(disc_ratio * 100)
+
+    ## context#5 price after discount
+    discounted = total_value - total_value * disc_ratio
+
+    context = {'basket': basket,
+        'products_amount': products_amount,
+        'total_value': total_value,
+        'discount': discount,
+        'discounted': discounted
+    }
+    
+    return render (request, 'orders/cart.html', context)
+
+# implement this later + change template 'order_pay.html' (redirect to payment system)
+def process_payment_view(request, *args, **kwargs):
+    pass
+
+
+# order cart view - WHOLE
+# def cart_view(request, *args, **kwargs):
+
+#         # переробити на request.method - POST - створення ордеру
+#         if request.method == 'GET':
+#             request_type = request.method
+#             #print(request_type) ## 'GET'
+#             #print(request.path)
+
+#             ## get all products title in Order
+#             products = [order.product.title for order in Order.get_all()]
+#             ## print(products) ++
             
-            # # ## get all order in Order
-            # # orders = [order for order in Order.get_all()]
-            # # print(orders)
-            # # zipped = dict(zip(products, orders))
+#             ## get all order in Order
+#             orders = [order for order in Order.get_all()]
+#             print(orders)
+#             zipped = dict(zip(products, orders))
 
-            # # ## form empty basket: key - order, value - list of products
-            # # basket = {}
-            # # for i in range(len(zipped)):
-            # #     basket[list(zipped.values())[i]] = []
+#             ## form empty basket: key - order, value - list of products
+#             basket = {}
+#             for i in range(len(zipped)):
+#                 basket[list(zipped.values())[i]] = []
 
-            # # print(basket) ## +++ context1
+#             print(basket) ## +++ context1
 
-            # # try:
-            # #     for i in range(len(products)):
-            # #         iteration = i <= len(basket) - 1
-            # #         print(iteration)
-            # #         for product in products if iteration else 0:
-            # #             similar_product = product == list(basket.keys())[i].product.title
-            # #             list(basket.values())[i].append(product) if similar_product else 0
-            # # except TypeError as err:
-            # #     print(err)
+#             try:
+#                 for i in range(len(products)):
+#                     iteration = i <= len(basket) - 1
+#                     print(iteration)
+#                     for product in products if iteration else 0:
+#                         similar_product = product == list(basket.keys())[i].product.title
+#                         list(basket.values())[i].append(product) if similar_product else 0
+#             except TypeError as err:
+#                 print(err)
                 
 
-            # print(basket)
+#             # print(basket)
             
-            # lust or product in basket  (not necessarily as we iterate dict in template)
-            # items = [i.product.title for i in list(basket.keys())] ## +++ context1
-            # print(items)
+#             # lust or product in basket  (not necessarily as we iterate dict in template)
+#             # items = [i.product.title for i in list(basket.keys())] ## +++ context1
+#             # print(items)
 
-            # context1
-            basket = Order.create_cart()
-            #print(basket)
+#             products_amount = 0
+#             for order, products in basket.items():
+#                 basket[order] = len(products)
+#                 products_amount += len(products)
 
-            ### --- create_cart --- ###
+#             #print(products_amount) ## +++ context2 quantity
 
-            ########################### ***** ##############################
-            # products_amount = 0
-            # for order, products in basket.items():
-            #     basket[order] = len(products)
-            #     products_amount += len(products)
-            # print(products_amount) ## +++ context2 quantity
+#             ## +++ context3 total_value_price
+#             total_value = float(sum([
+#                 order.product.price for order in Order.get_all()
+#                 ]))
             
-            x = Order.cart_items_amount()
-            print(x)
-            print(sum(list(x.values())))
+#             #print(total_value)
+#             ## discount calculate: 1) disc_ratio discount +++ context4 2) discounted price +++ context5
+#             ##  - write tests on this part
+#             #products_amount=50 # in order to check correct
+#             disc_ratio = ((products_amount//5)*5)/100
+#             max_disc = int(disc_ratio*100) not in range(0, 50)
 
-            ########################### ***** ##############################
+#             #print(max_disc) ## bool true
+#             disc_ratio = disc_ratio if not max_disc else 0.5
+#             #print(disc_ratio)
+
+#             ## +++ context4 discount
+#             discount = int(disc_ratio * 100)
+#             #print(discount)
+
+#             ## +++ context5 discounted
+#             discounted = total_value - total_value * disc_ratio
+#             #print(discounted)
 
 
-
-            ## +++ context3 total_value_price
-            total_value = float(sum([
-                order.product.price for order in Order.get_all()
-                ]))
+#             context = {'basket': basket,
+#                 'products_amount': products_amount,
+#                 'total_value': total_value,
+#                 'discount': discount,
+#                 'discounted': discounted
+#             }
             
-            #print(total_value)
-            ## discount calculate: 1) disc_ratio discount +++ context4 2) discounted price +++ context5
-            ##  - write tests on this part
-            #products_amount=50 # in order to check correct
-            disc_ratio = ((products_amount//5)*5)/100
-            max_disc = int(disc_ratio*100) not in range(0, 50)
+#             return render (request, 'orders/cart.html', context)
 
-            #print(max_disc) ## bool true
-            disc_ratio = disc_ratio if not max_disc else 0.5
-            #print(disc_ratio)
-
-            ## +++ context4 discount
-            discount = int(disc_ratio * 100)
-            #print(discount)
-
-            ## +++ context5 discounted
-            discounted = total_value - total_value * disc_ratio
-            #print(discounted)
-
-
-            context = {'basket': basket,
-                'products_amount': products_amount,
-                'total_value': total_value,
-                'discount': discount,
-                'discounted': discounted
-            }
-            
-            return render (request, 'orders/cart.html', context)
-
-            # return HttpResponse(
-            #     f'<h2> This is a products_cart. Request method is: {request_type}. Data: {context}. {basket} <h2>'
-            #     )
-
-
-
-# try:
-#     iteration = i <= len(basket) - 1
-#     print(iteration)
-#     for i in range(len(products)):
-#         for product in products if iteration else 0:
-#             similar_product = product == list(basket.keys())[i].product.title
-#             list(basket.values())[i].append(product) if similar_product else 0
-
-# except:
-#     print('This is error')
+#             # return HttpResponse(
+#             #     f'<h2> This is a products_cart. Request method is: {request_type}. Data: {context}. {basket} <h2>'
+#             #     )
 
 
 

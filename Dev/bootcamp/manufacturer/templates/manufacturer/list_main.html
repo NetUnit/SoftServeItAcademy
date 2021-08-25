@@ -37,7 +37,7 @@
         margin-top: 10px;
     }
 
-    .footer_app {
+    /* .footer_app {
       padding: 10px;
       color: rgb(245, 173, 6);
       font-weight: bold;
@@ -55,8 +55,19 @@
       text-align: left;    
       bottom: 35px; 
       width: 100%;
+    } */
+
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      text-align: left;
+      /* top: 350px; */
+      width: 100%;
+      position: relative;
+      margin-top: 80px;
     }
-    
+
 </style>
 
 <div class="card w-25 my_margin" id="manufacturerTitle" style=margin-bottom:10px>
@@ -121,11 +132,12 @@
     </div>
 </div>
 {%endfor%}
+{% endblock %}
 
-<div class="footer_app">
-    app: {{ app_name_4 }}
-</div>
+{% block footer %}
 <div class="footer_root">
-    root: {{ root }}
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_5 }}
 </div>
-{%endblock%}
+{% endblock %}
