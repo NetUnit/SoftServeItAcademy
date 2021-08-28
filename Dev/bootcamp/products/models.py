@@ -7,7 +7,7 @@ class Product(models.Model):
     # id = models.AutoField()
     title = models.CharField(max_length=220)
     content = models.TextField(null=True, blank=True)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(null=True, default=0)
     manufacturers = models.ManyToManyField(Manufacturer, related_name='products')
 
     class Meta:

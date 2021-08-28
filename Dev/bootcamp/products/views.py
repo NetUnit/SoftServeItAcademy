@@ -31,9 +31,9 @@ def home_view(request, *args, **kwargs):
 # dynamic id from url + error handling method#1
 def product_detailed_view(request, product_id, *args, **kwargs):
     try:
-        obj = Product.objects.get(pk=product_id) ### !!!
+        #obj = Product.objects.get(pk=product_id) ### !!!
         # # ex2: using models: @staticmethod
-        # obj = Product.get_by_id(pk)
+        obj = Product.get_by_id(product_id)
         # ex3: using all() + filter
         # obj = Product.objects.all().filter(pk=pk)[0]
     except Product.DoesNotExist:
@@ -165,7 +165,7 @@ def product_create_view(request, *args, **kwargs):
 
     form = ProductCreationForm()
     context = {'form': form}
-    time.sleep(1.0)
+    #time.sleep(1.0)
     
 #    return render (request, 'forms.html', context) # +
 #    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
@@ -174,11 +174,50 @@ def product_create_view(request, *args, **kwargs):
     return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
 #    return render (request, 'products/create_product_form_crispy.html', context) # +
 ############################## **** Update View **** ###############################
-def product_update_view(request, *args, **kwargs):
-    #product = Manufacturer.get_by_id(product_id)
-    return HttpResponse('<h2> This is update form </h2>')
+def product_update_view(request, product_id,  *args, **kwargs):
 
+    # # context = {'product': product}
+    # # return HttpResponse(f'<h2> This is update view {product.title} {product.content} {product.price} </h2>')
+    product = Product.get_by_id(product_id)
+    form = ProductCreationForm(request.POST or None)
 
+    # reverse form fields to non-required 
+    #x = [False for item in form.fields if form.fields[item].required]
+
+    for item in form.fields:
+        form.fields[item].required = False if form.fields[item] != 'title' else 0
+        
+    try:
+        for item in form.fields:
+            print(form.fields[item].required)
+    except Exception as err2:
+        print(err2)
+
+    try:
+        print(form.is_valid())
+        form.save(commit=False)
+    except Exception as err3:
+        print(err3)
+
+    if form.is_valid():
+        #product = form.save(commit=False)
+        title = form.cleaned_data.get('title')
+        content = form.cleaned_data.get('content')
+        price = form.cleaned_data.get('price')
+        manufacturers = form.cleaned_data.get('manufacturers')
+        print(title, content, price, manufacturers)
+        #product.__dict__.update(title=title, content=content, price=price, manufacturers=manufacturers)
+
+        
+    context = {'form': form}
+    return render (request, 'products/product_update_form_as_crispy_fields.html', context)
+    
+def product_delete_view(request, product_id, *args, **kwargs):
+    product = Product.get_by_id(product_id)
+    Product.delete_by_id(product_id)
+    messages.success(request, f'U\'ve just deleted the next product: {product.title}') if True else None
+    print(messages.__dict__)
+    return redirect ('/products/list/')
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
 # this part of a view contains logic itself

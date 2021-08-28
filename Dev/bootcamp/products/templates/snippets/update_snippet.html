@@ -1,0 +1,35 @@
+<head>
+<style> 
+    .snippet {
+        margin-top: 1px;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        position: relative
+    }
+
+    #update_btn { 
+        text-decoration: none;
+        background-color:  rgb(245, 173, 6);
+    }
+
+    #update_btn:hover { 
+        background-color: gainsboro;
+        color:rgb(3, 4, 31);
+    }
+    
+
+</style>
+
+<div class="snippet">
+    <a href="{%url 'products:product_update_view' product.id%}" 
+    class="btn-info btn-sm"
+    type="button"
+    id='update_btn'
+    >
+        Update
+    </a>
+
+</div>
+
+</head>

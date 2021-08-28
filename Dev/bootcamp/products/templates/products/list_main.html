@@ -29,6 +29,17 @@
         text-align: center;
     }
     
+    #detail_btn {
+        background-color: limegreen;
+        text-decoration: none;
+    }
+
+    #detail_btn:hover { 
+        background-color:gainsboro;
+        color:rgb(3, 4, 31);
+        border: 1px;
+    }
+
     .btn-warning {
         width: 80px;
         height: 35px;
@@ -61,10 +72,8 @@
     }
 
     #messages {
-        background-color: rgb(172, 169, 169);
-        color: #fff;
-        padding: 10px;
-        margin-top: 10px;
+        color:limegreen;
+        font-weight: bold;
     }
 
     .footer_root {
@@ -83,10 +92,19 @@
     <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
         <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">Available products: </h5>
         <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
-
         <a href="{%url 'products:product_create_view'%}" class="btn btn-primary" style=background-color:mediumpurple>Create</a>
     </div>
 </div>
+
+{% if messages %}
+<div class="card w-25 my_margin">
+    <div class="card-body">
+        {% for message in messages %}
+            <p class="messages-success" id='messages'> {{ message }} </p>  
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 {%for product in product_list%}
 <div class="card w-25 my_margin">
@@ -148,11 +166,18 @@
                     <a href="{%url 'products:detailed_view' product.id%}" 
                         class="btn-info btn-sm"
                         type="button"
-                        style="background-color:limegreen;"
+                        id="detail_btn"
                         
                     >
                         Details
                     </a>
+                </div>
+                <!-- add if user.is_authenticated  #e7bc0d -->
+                <div>
+                    {% include 'snippets/update_snippet.html'%}
+                </div>
+                <div>
+                    {% include 'snippets/delete_snippet.html'%}
                 </div>
             </div>
         </div>
@@ -161,7 +186,7 @@
             <div class='picture'>
                 >picture here<
             </div>
-
+            <!-- ## no snippet here -->
             <a href="{%url 'orders:order_create_view' product.id%}"
                 class="btn btn-warning"
                 type="button"

@@ -1,0 +1,34 @@
+<head>
+<style> 
+    .snippet {
+        margin-top: 1px;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        position: relative;
+    }
+    
+    #delete_btn { 
+        text-decoration: none;
+        background-color: rgb(220, 48, 71);
+    }
+
+    #delete_btn:hover { 
+        background-color: red;
+        color:rgb(3, 4, 31);
+        border: 1px;
+    }
+    
+</style>
+
+<div class="snippet">
+    <a href="{%url 'products:product_delete_view' product.id%}" 
+    class="btn-info btn-sm"
+    id='delete_btn'
+    type="button"
+    >
+        Delete
+    </a>
+</div>
+
+</head>

@@ -34,9 +34,6 @@ def cart_clean_view(request, *args, **kwargs): # add these later: product_id, us
 
 def cart_view(request, *args, **kwargs):
 
-    x= [order.product.price for order in Order.get_all()]
-    print(x)
-
     ## context#1
     basket = Order.cart_items_amount()
     try:

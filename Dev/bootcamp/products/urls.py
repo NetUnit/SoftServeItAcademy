@@ -7,6 +7,7 @@ from products.views import (
     product_detailed_view,
     api_product_detailed_view,
     product_update_view,
+    product_delete_view,
 )
 
 from .models import Product
@@ -42,6 +43,9 @@ urlpatterns = [
     re_path(r'^products/create/$', product_create_view, name='product_create_view'),
 
     ################## *** Update View *** #################
-    re_path(r'^products/update/$', product_update_view, name='product_update_view'),
+    re_path(r'^products/update/(?P<product_id>\d+)/$', product_update_view, name='product_update_view'),
+
+        ################## *** Delete View *** #################
+    re_path(r'^products/delete/(?P<product_id>\d+)/$', product_delete_view, name='product_delete_view'),
 
 ]
