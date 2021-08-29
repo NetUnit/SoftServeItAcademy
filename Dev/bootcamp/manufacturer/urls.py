@@ -6,7 +6,8 @@ from manufacturer.views import (
     manufacturer_list_view,
     manufacturer_detailed_view,
     api_manufacturer_detailed_view,
-    manufacturer_update_view
+    manufacturer_update_view,
+    manufacturer_delete_view,
 )
 
 from django.conf import settings
@@ -26,6 +27,9 @@ urlpatterns = [
     re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
 
     ############# *** ManufacturerUpdateView *** ###############
-    re_path(r'^manufacturers/update/$', manufacturer_update_view, name='manufacturer_detailed_view'),
+    re_path(r'^manufacturers/update/(?P<manufacturer_id>\d+)/$', manufacturer_update_view, name='manufacturer_update_view'),
+
+    ############# *** ManufacturerDeleteView *** ###############
+    re_path(r'^manufacturers/delete/(?P<manufacturer_id>\d+)/$', manufacturer_delete_view, name='manufacturer_delete_view'),
 
 ]

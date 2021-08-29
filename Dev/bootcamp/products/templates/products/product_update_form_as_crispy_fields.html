@@ -33,11 +33,6 @@
         z-index: 1000;
     }
 
-    .message {
-        color:limegreen;
-        font-weight: bold;
-    }
-
     .footer_app {
       color: rgb(245, 173, 6);
       font-weight: bold;
@@ -56,6 +51,13 @@
       width: 100%;
     }
 
+    #update_btn {
+        display: block;
+        background-color: rgb(245, 173, 6);
+        color: rgb(3, 4, 31);
+        border-color: darkorange;
+    }
+
 </style>
 <div class="card w-25 my_margin" style='display: flex'>
     <div class="card-body">
@@ -71,15 +73,11 @@
                 {{form.manufacturers}}
             </div>
             {% if messages %}
-                <div>
-                    <br>
-                    {% for message in messages %}
-                        <p class="card-title" id='messages'>  <text class='message'>{{ message }}</p>
-                    {% endfor %}
-                    <br>
-                </div>
+
+            {% include 'snippets/update_message.html'%}
+            
             {% endif %}
-            <button type="submit" class="btn btn-success" style="display: block; background-color:limegreen"> Update </button>
+            <button type="submit" class="btn btn-success" id="update_btn">Update</button>
             <!-- position: relative; z-index: 1000 -->
         </form>
 

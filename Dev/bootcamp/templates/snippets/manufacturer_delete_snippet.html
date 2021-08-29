@@ -1,0 +1,26 @@
+<head>
+<style> 
+    
+    #delete_btn { 
+        text-decoration: none;
+        background-color: rgb(220, 48, 71);
+        border: none;
+        
+    }
+
+    #delete_btn:hover { 
+        background-color: gainsboro;
+        color:rgb(3, 4, 31);
+    }
+    
+</style>
+
+<a href="{%url 'manufacturer:manufacturer_delete_view' manufacturer.id%}" 
+    class="btn btn-info btn-sm"
+    type="button"
+    id='delete_btn'
+    >
+    Delete
+</a>
+
+</head>

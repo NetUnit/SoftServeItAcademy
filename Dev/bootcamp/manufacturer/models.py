@@ -113,17 +113,25 @@ class Manufacturer(models.Model):
             pass
             # LOGGER.error("User does not exist")
     
-    def update(self, title=None, country=None, year=None):
+    @staticmethod
+    def update_by_id(manufacturer_id, title=None, country=None, year=None):
         '''
-            This method is created in order to upadate manufacturer object
+            This method is created in order to update manufacturer object
             :params: same as in create method, if param is None - no update done
             :return None
         '''
-        if title:
-            self.title = title
-        if country:
-            self.country = country
-        if year:
-            self.year = year
-        self.save()
-    
+        try:
+            manufacturer = Manufacturer.get_by_id(manufacturer_id)
+            update_data = {
+                    'title': title,
+                    'country': country,
+                    'year': year
+                    }
+            manufacturer.__dict__.update(**update_data)
+            manufacturer.save()
+            return manufacturer
+
+        except Exception as error:
+            print(error)
+            return False
+            

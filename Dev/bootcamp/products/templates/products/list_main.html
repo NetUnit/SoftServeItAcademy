@@ -96,15 +96,9 @@
     </div>
 </div>
 
-{% if messages %}
-<div class="card w-25 my_margin">
-    <div class="card-body">
-        {% for message in messages %}
-            <p class="messages-success" id='messages'> {{ message }} </p>  
-        {% endfor %}
-    </div>
+<div>
+    {% include 'snippets/list_message_snippet.html'%}
 </div>
-{% endif %}
 
 {%for product in product_list%}
 <div class="card w-25 my_margin">
@@ -173,11 +167,11 @@
                     </a>
                 </div>
                 <!-- add if user.is_authenticated  #e7bc0d -->
-                <div>
-                    {% include 'snippets/update_snippet.html'%}
+                <div style="padding-top: 5px">
+                    {%include 'snippets/product_update_snippet.html'%}
                 </div>
-                <div>
-                    {% include 'snippets/delete_snippet.html'%}
+                <div style="padding-top: 1px">
+                    {%include 'snippets/product_delete_snippet.html'%}
                 </div>
             </div>
         </div>

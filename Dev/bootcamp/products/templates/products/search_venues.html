@@ -62,11 +62,11 @@
         {% for object in objects_list %}
         <div>
             {% if object in obj_prod_filter %}
-                {% include 'products/search_snippet.html'%}
+                {% include 'snippets/product_search_snippet.html'%}
             {% endif %}
 
             {% if object in obj_man_filter %}
-                {% include 'manufacturer/search_snippet.html'%}
+                {% include 'snippets/manufacturer_search_snippet.html'%}
             {% endif %}
 
         </div>

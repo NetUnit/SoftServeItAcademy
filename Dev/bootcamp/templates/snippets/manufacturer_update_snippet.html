@@ -1,0 +1,25 @@
+<head>
+<style> 
+    
+    #update_btn { 
+        text-decoration: none;
+        background-color:  rgb(245, 173, 6);
+        border: none;
+    }
+
+    #update_btn:hover { 
+        background-color: gainsboro;
+        color:rgb(3, 4, 31);
+    }
+    
+</style>
+
+<a href="{%url 'manufacturer:manufacturer_update_view' manufacturer.id%}" 
+    class="btn btn-info btn-sm"
+    type="button"
+    id='update_btn'
+    >
+    Update
+</a>
+
+</head>

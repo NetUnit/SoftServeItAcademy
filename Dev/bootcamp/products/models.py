@@ -117,6 +117,21 @@ class Product(models.Model):
             pass
         return False
 
-## update
-    # >>> setattr(prod, 'content', 'cool thing')
-    # >>> prod.save()
+    @staticmethod
+    def update_by_id(product_id, data=None):
+        '''
+            This method is created in order to update manufacturer object
+            :params: same as in create method, if param is None - no update done
+            :return None
+        '''
+        try:
+            product = Product.get_by_id(product_id)
+            product.__dict__.update(data)
+            product.save()
+            return product
+
+        except Exception as error:
+            # LOGGER.error(f"{error}}"
+            pass
+        return False
+            

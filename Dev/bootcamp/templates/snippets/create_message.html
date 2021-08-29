@@ -1,0 +1,19 @@
+<head>
+<style> 
+    
+    .message {
+        color: limegreen;
+        font-weight: bold;
+    }
+
+</style>
+
+<div>
+    <br>
+    {% for message in messages %}
+        <p class="card-title" id='messages'> <text class='message'>{{ message }}</p>
+    {% endfor %}
+    <br>
+</div>
+
+</head>

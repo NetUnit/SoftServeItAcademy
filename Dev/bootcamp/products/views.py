@@ -152,7 +152,10 @@ def product_create_view(request, *args, **kwargs):
         # print(min_title_length)
         if min_title_length:
             product.save()
-            messages.success(request, f'U\'ve just created the next product: {product.title}')
+            messages.success(
+                request,
+                f'U\'ve just created the next product: {product.title} (^_-)≡☆'
+                )
             return redirect ('/products/create/')
         else:
             get_title = form.cleaned_data.get('title')
@@ -174,49 +177,70 @@ def product_create_view(request, *args, **kwargs):
     return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
 #    return render (request, 'products/create_product_form_crispy.html', context) # +
 ############################## **** Update View **** ###############################
+# def product_update_view(request, product_id,  *args, **kwargs):
+
+#     # # context = {'product': product}
+#     # # return HttpResponse(f'<h2> This is update view {product.title} {product.content} {product.price} </h2>')
+    
+#     product = Product.get_by_id(product_id)
+#     form = ProductCreationForm(request.POST or None)
+    
+#     for item in form.fields:
+#         not_title = form.fields[item] != 'title'
+#         form.fields[item].required = False if not_title else 0
+    
+#     if form.is_valid():
+#         title = form.cleaned_data.get('title')
+#         content = form.cleaned_data.get('content')
+#         price = form.cleaned_data.get('price')
+#         manufacturers = form.cleaned_data.get('manufacturers')
+#         print(title, content, price, manufacturers)
+#         product.__dict__.update(
+#             title=title,
+#             content=content or None,
+#             price=price or 0,
+#             manufacturers=manufacturers or None)
+#         product.save()
+#         messages.success(
+#             request,
+#             f'U\'ve just updated the next product: \'{product.title}\' (ﾉ･_-)☆'
+#             )
+    
+#     context = {'form': form}
+#     return render (request, 'products/product_update_form_as_crispy_fields.html', context)
+    
 def product_update_view(request, product_id,  *args, **kwargs):
-
-    # # context = {'product': product}
-    # # return HttpResponse(f'<h2> This is update view {product.title} {product.content} {product.price} </h2>')
-    product = Product.get_by_id(product_id)
-    form = ProductCreationForm(request.POST or None)
-
-    # reverse form fields to non-required 
-    #x = [False for item in form.fields if form.fields[item].required]
-
-    for item in form.fields:
-        form.fields[item].required = False if form.fields[item] != 'title' else 0
-        
     try:
+        form = ProductCreationForm(request.POST or None)
+        
         for item in form.fields:
-            print(form.fields[item].required)
-    except Exception as err2:
-        print(err2)
+            not_title = form.fields[item] != 'title'
+            form.field[item].required = False if not_title else 0
 
-    try:
-        print(form.is_valid())
-        form.save(commit=False)
-    except Exception as err3:
-        print(err3)
+        if form.is_valid():
+            data = form.cleaned_data
+            product = Product.update_by_id(product_id, data)
 
-    if form.is_valid():
-        #product = form.save(commit=False)
-        title = form.cleaned_data.get('title')
-        content = form.cleaned_data.get('content')
-        price = form.cleaned_data.get('price')
-        manufacturers = form.cleaned_data.get('manufacturers')
-        print(title, content, price, manufacturers)
-        #product.__dict__.update(title=title, content=content, price=price, manufacturers=manufacturers)
+            messages.success(request,
+                f'U\'ve just updated the next company: \n\
+                \'{product.title}\' (ﾉ･_-)☆'
+                )
 
-        
+    except Exception as error:
+        print(error)
+        pass
+    
     context = {'form': form}
     return render (request, 'products/product_update_form_as_crispy_fields.html', context)
     
+
+
+
 def product_delete_view(request, product_id, *args, **kwargs):
     product = Product.get_by_id(product_id)
     Product.delete_by_id(product_id)
-    messages.success(request, f'U\'ve just deleted the next product: {product.title}') if True else None
-    print(messages.__dict__)
+    messages.success(request, f'\'{product.title}\' has been removed') if True else None
+    #print(messages.__dict__)
     return redirect ('/products/list/')
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################

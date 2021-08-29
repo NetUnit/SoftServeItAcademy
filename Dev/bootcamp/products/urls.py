@@ -45,7 +45,7 @@ urlpatterns = [
     ################## *** Update View *** #################
     re_path(r'^products/update/(?P<product_id>\d+)/$', product_update_view, name='product_update_view'),
 
-        ################## *** Delete View *** #################
+    ################## *** Delete View *** #################
     re_path(r'^products/delete/(?P<product_id>\d+)/$', product_delete_view, name='product_delete_view'),
 
 ]
