@@ -11,7 +11,6 @@ from django.core.exceptions import ObjectDoesNotExist
 # exception handling
 from django.template import RequestContext
 
-
 ################# *** Django Generic HomePageView *** #############
 from django.views.generic import TemplateView, ListView # Import TemplateView
 
@@ -234,14 +233,13 @@ def product_update_view(request, product_id,  *args, **kwargs):
     return render (request, 'products/product_update_form_as_crispy_fields.html', context)
     
 
-
-
 def product_delete_view(request, product_id, *args, **kwargs):
     product = Product.get_by_id(product_id)
     Product.delete_by_id(product_id)
     messages.success(request, f'\'{product.title}\' has been removed') if True else None
-    #print(messages.__dict__)
+    # print(messages.__dict__)
     return redirect ('/products/list/')
+    
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
 # this part of a view contains logic itself

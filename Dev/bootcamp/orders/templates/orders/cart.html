@@ -100,9 +100,9 @@
       color: rgb(245, 173, 6);
       font-weight: bold;
       text-align: left;
-      /* top: 350px; */
       width: 100%;
-      position: relative;
+      position: absolute;
+      margin-bottom: 35px;
     }
 
 </style>
@@ -125,12 +125,9 @@
         <p class='card-text' style="color: rgb(245, 173, 6); font-weight: bold">Total value: {{total_value}} usd</p>
         <p class='order_title' style="color: limegreen; font-weight: bold">Discount: {{discount}}%</p>
         <p class='order_title' style="color: rgb(3, 4, 31); font-weight: bold">Discounted value: {{discounted}} usd</p>
-        <div>
-
-          {% for message in messages %}
-            <p class="card-title" id="messages"> <text class="message">{{ message }}</p>
-          {% endfor %}
-        </div>
+        
+        {% include 'snippets/cart_message_snippet.html'%}
+      
         <div style="padding-top: 5px">
           <a href="{%url 'orders:cart_clean_view'%}" 
             class="btn btn-info btn-sm"
@@ -254,9 +251,7 @@
       {%endfor%}
     {%endfor%}
   </div>
-  <!-- <div class='basket'>
 
-  </div> -->
 </div>
 {%endblock%}
 

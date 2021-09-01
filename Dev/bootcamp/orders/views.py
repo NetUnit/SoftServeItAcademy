@@ -9,7 +9,7 @@ from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirec
 # Create your views here
 def order_create_view(request, product_id, *args, **kwargs):
     product = Product.get_by_id(product_id)
-    Order.create(product)
+    Order.create(product) if product else None
 
     # return HttpResponse (
     #     f'<h3>  {order}  <h3>'
@@ -36,10 +36,7 @@ def cart_view(request, *args, **kwargs):
 
     ## context#1
     basket = Order.cart_items_amount()
-    try:
-        print(list(basket.keys())[4].product.manufacturers.all())
-    except Exception as err:
-        print(err)
+    
     ## context#2
     products_amount = Order.products_amount() 
     #print(products_amount)
