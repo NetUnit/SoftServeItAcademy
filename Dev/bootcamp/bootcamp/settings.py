@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'accounts',                                                 # app#5
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
+    'orders',                                                  # app#5
     'crispy_forms'                                              # crispy_forms for temapltes
 ]
 
@@ -202,6 +203,8 @@ APP_NAME_3_TAGLINE = 'profiles tagline'
 APP_NAME_4 = 'MANUFACTURERS'
 APP_NAME_4_TAGLINE = 'manufacturers tagline'
 
+APP_NAME_5 = 'ORDERS'
+APP_NAME_5_TAGLINE = 'orders tagline'
 
 METHOD = 'METHODS'
 
