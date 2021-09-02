@@ -126,6 +126,7 @@ class Order(models.Model):
         if product_exist and order_exist:
             return Order.objects.all().delete()
 
+
     @staticmethod
     def create_cart():  ## add user_id later
 
@@ -179,6 +180,7 @@ class Order(models.Model):
             # LOGGER.error(f'{err}')
             pass
     
+
     @staticmethod
     def get_discount():
         products_amount = Order.products_amount()

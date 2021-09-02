@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 
-from .models import Accounts
+from .models import CustomUser
 
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
