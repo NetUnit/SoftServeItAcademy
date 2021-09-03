@@ -79,34 +79,54 @@ class CustomUser(models.Model):
         values = (self.email, self.password, self.nickname, self.name, self.surname)
         return self.__dict__.fromkeys(fields, values)
 
+    ## +++
     @staticmethod
     def get_user_by_email(email=None):
         '''
             This method is getting a user by it's email
             :return: user object via email
         '''
-        user = CustomUser.objects.all().filter(email=email).get()
-        return user if user else 0
+        try:
+            user = CustomUser.objects.all().filter(email=email).get()
+            # user = CustomUser.objects.get(email)
+            return user
+        except  CustomUser.DoesNotExist:
+            return False
 
+    ## +++
     @staticmethod
     def get_user_by_nickname(nickname=None):
         '''
             This method is getting a user by it's nickname
             :return: user object via nickname
         '''
-        user = CustomUser.objects.all().filter(nickname=nickname).get()
-        return user if user else 0
-
+        try:
+            user = CustomUser.objects.all().filter(nickname=nickname).get()
+            # user = CustomUser.objects.get(nickname)
+            return user
+        except CustomUser.DoesNotExist:
+            return False
+    
+    ## +++
     @staticmethod
-    def user_already_exists(email=None, nickname=None):
+    def user_exists(data):
         '''
             This method is redefined to check if user with 
             similar email/nickname is present in the db
             :return: True if user exists, False if opposite
         '''
-        user_by_email = CustomUser.get_user_by_email(email)
-        user_by_nickname = CustomUser.get_user_by_nickname(nickname)
-        user_exists = bool(user_by_email) + bool(user_by_nickname) > 0
+        # data is a dict that comes from form (cleaned_data)
+        # dict has pairs of key-value  
+        # getting Value from the dict to match with the db
+
+        user_by_email = data.get('email') # will return the query-object when match the Value from the form 
+        user_by_nickname =data.get('nickname')
+        
+        # qurying the db via data from the form (email, nickname)
+        match_by_email = CustomUser.get_user_by_email(user_by_email)
+        match_by_nickname = CustomUser.get_user_by_nickname(user_by_nickname)
+
+        user_exists = bool(match_by_email) + bool(match_by_nickname) > 0
         return True if user_exists else False
     
     # def get_role_name(self):
