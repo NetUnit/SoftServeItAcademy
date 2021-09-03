@@ -7,7 +7,7 @@ class Product(models.Model):
     # id = models.AutoField()
     title = models.CharField(max_length=220)
     content = models.TextField(null=True, blank=True)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(null=True, default=0)
     manufacturers = models.ManyToManyField(Manufacturer, related_name='products')
 
     class Meta:
@@ -44,7 +44,7 @@ class Product(models.Model):
     @staticmethod
     def get_all():
         """
-            returns data for json request with QuerySet of all books
+            returns data for json request with QuerySet of all bookmanus
             use iteration to render separately in a template
         """
         try:
@@ -79,6 +79,7 @@ class Product(models.Model):
         except (IntegrityError, AttributeError, DataError):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
+        
     
     def update(self, title=None, content=None, price=None):
         """
@@ -116,3 +117,21 @@ class Product(models.Model):
             pass
         return False
 
+    @staticmethod
+    def update_by_id(product_id, data=None):
+        '''
+            This method is created in order to update manufacturer object
+            :params: same as in create method, if param is None - no update done
+            :return None
+        '''
+        try:
+            product = Product.get_by_id(product_id)
+            product.__dict__.update(data)
+            product.save()
+            return product
+
+        except Exception as error:
+            # LOGGER.error(f"{error}}"
+            pass
+        return False
+            

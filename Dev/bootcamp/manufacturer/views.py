@@ -64,7 +64,7 @@ def manufacturer_create_view(request, *args, **kwargs):
         
         else:
             manufacturer.save()
-            messages.success(request, f'U\'ve just added the next company:{title}')
+            messages.success(request, f'U\'ve just added the next company: {title}')
             return redirect ('/manufacturers/create/')
 
     # fix this later (watch Denis video)
@@ -73,7 +73,7 @@ def manufacturer_create_view(request, *args, **kwargs):
         year = form.cleaned_data.get('year')
         if year is None:
             #messages.error(request, f'{manufacturer.year} isn\'t correct')
-            messages.error(request, f'Year input isn\'t correct')
+            messages.error(request, f'Date input isn\'t correct')
             return redirect ('/manufacturers/create/')
     except:
         pass
@@ -105,14 +105,94 @@ def api_manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
 
 ############################## *** Full List *** ###############################
 def manufacturer_list_view(request, *args, **kwargs):
-    qs = Manufacturer.get_all()
-    context = {'manufacturer_list': qs}
-    return render (request, 'manufacturer/list_main.html', context)
-    #return render (request, 'manufacturer/manufacturer_list.html', context)
-
+    try:
+        qs = Manufacturer.get_all()
+        context = {'manufacturer_list': qs}
+        return render (request, 'manufacturer/list_main.html', context)
+        #return render (request, 'manufacturer/manufacturer_list.html', context)
+    except Exception as err:
+        print(err)
+        return False
 
 ############################## *** Update Product *** ###########################
+# def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
+#     try:
+#         manufacturer = Manufacturer.get_by_id(manufacturer_id)
+#         form = ManufacturerCreationForm(request.POST or None)
+#         # return manufacturer # +++
+
+#         #setup not required fields
+#         for item in form.fields:
+#             not_title = form.fields[item].required != 'title'
+#             form.fields[item].required = False if not_title else 0
+
+#         # geting attrs from the form
+#         if form.is_valid():
+#             title = form.cleaned_data.get('title')
+#             country = form.cleaned_data.get('country')
+#             year = form.cleaned_data.get('year')
+
+#             # get data to write from a form
+#             update_data = {
+#                 'title': title,
+#                 'country': country or None,
+#                 'year': year or None
+#                 }
+#             manufacturer.__dict__.update(**update_data)
+#             manufacturer.save()
+#             messages.success(
+#             request,
+#             f'U\'ve just updated the next company: \'{manufacturer.title}\' (ﾉ･_-)☆'
+#             )
+
+#     except Exception as error:
+#         print(error)
+
+#     context = {'form': form}
+#     return render (request, 'manufacturer/manufacturer_update_form_crispy.html', context)
+
 def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
-    manufacturer = Manufacturer.get_by_id(manufacturer_id)
-    pass
+    try:
+        form = ManufacturerCreationForm(request.POST or None)
+
+        for item in form.fields:
+            not_title = form.fields[item].required != 'title'
+            form.fields[item].required = False if not_title else 0
+
+        # geting attrs from the form
+        if form.is_valid():
+            title = form.cleaned_data.get('title')
+            country = form.cleaned_data.get('country')
+            year = form.cleaned_data.get('year')
+
+            manufacturer = Manufacturer.update_by_id(
+                manufacturer_id, title,
+                country, year)
+            
+            messages.success(request,
+                f'U\'ve just updated the next company: \n\
+                \'{manufacturer.title}\' (ﾉ･_-)☆'
+                )
+
+    except Exception as error:
+        print(error)
+
+    context = {'form': form}
+    return render (request, 'manufacturer/manufacturer_update_form_crispy.html', context)
+
+############################## *** Update Product *** ###########################
+def manufacturer_delete_view(request, manufacturer_id, *args, **kwargs):
+    try:
+        manufacturer = Manufacturer.get_by_id(manufacturer_id)
+        Manufacturer.delete_by_id(manufacturer_id)
+        messages.success(
+            request, f'\'{manufacturer.title}\' has been removed'
+        ) if True else 0
+        #print(messages.__dict__)
+        return redirect ('/manufacturers/list/')
+
+    except Exception as err:
+        print(err)
+    
+
     

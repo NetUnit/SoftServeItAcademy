@@ -69,6 +69,7 @@ urlpatterns = [
 
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),
+    re_path(r'^', include('orders.urls')),
     re_path(r'^', include('emails.urls')),
     re_path(r'^', include('accounts.urls')),
 

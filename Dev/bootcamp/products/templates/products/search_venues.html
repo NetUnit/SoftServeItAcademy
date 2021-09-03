@@ -19,6 +19,13 @@
         font-weight: bold;
     }
 
+    .card {
+      width: 500px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 5px;
+      margin: 5px;
+    }
+    
     .messages-success {
         color:rgb(200, 50, 205);
         font-weight: bold;
@@ -55,11 +62,11 @@
         {% for object in objects_list %}
         <div>
             {% if object in obj_prod_filter %}
-                {% include 'products/search_snippet.html'%}
+                {% include 'snippets/product_search_snippet.html'%}
             {% endif %}
 
             {% if object in obj_man_filter %}
-                {% include 'manufacturer/search_snippet.html'%}
+                {% include 'snippets/manufacturer_search_snippet.html'%}
             {% endif %}
 
         </div>

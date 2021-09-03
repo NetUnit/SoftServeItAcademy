@@ -1,0 +1,96 @@
+{%extends 'base.html'%}
+
+{%block title%} Manufacturer Create {%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+
+<style>
+    form ul {
+        padding: 0 20px 0 20px;
+        width: 500px;
+        height: 500px;
+    }
+    form ul li {
+        display: block;
+    }
+    form div label {
+        margin: 5px 0 2px;
+    }
+    input[type='text'] {
+        width: 100%;
+    }
+    textarea {
+        width: 100%;
+    }
+
+    #update_btn {
+        display: block;
+        background-color: rgb(245, 173, 6);
+        color: rgb(3, 4, 31);
+        border-color: darkorange;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+    
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+</style>
+<div class="card w-25 my_margin">
+    <div class="card-body">
+        <h5 class="card-title">Update Company</h5>
+        <form action="" method="post">
+            {%csrf_token%}
+            
+            {{ form|crispy }}
+
+            {% include 'snippets/update_message.html'%}
+            <button type="submit" class="btn btn-success" id="update_btn">Update</button>
+        </form>
+    </div>
+
+    <script>
+
+        /* Placeholder's values were selested in forms.py: vanilla Javascript is optionally
+        // Not included: 
+            We can start indexing at one because CSRF_token is considered the input field
+         
+            */
+            //Query All input fields: need to setup correct elements for form|crispy to render palceholders properly
+        var form_fields = document.getElementsByTagName('add_tag_here')
+        form_fields[2].placeholder = 'title..';
+        form_fields[3].placeholder = 'country..';
+        form_fields[4].placeholder = 'YYYY-MM-DD..';
+        
+        
+        for (var field in form_fields) {
+            form_fields[field].ManufacturerCreationForm += 'form-control'
+        }
+    </script>   
+
+</div>
+
+<div class="footer_app">
+    app: {{ app_name_4 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{%endblock%}
+

@@ -1,0 +1,84 @@
+{%extends 'base.html'%}
+
+{%block title%} Payment {%endblock%} 
+
+{%load crispy_forms_tags%} 
+
+{%block content%}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+    form button {
+        margin-top: 10px;
+    }
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      text-align: left;
+      top: 1px; 
+      bottom: 5px; 
+      width: 100%;
+      position: relative;
+    }
+
+</style>
+<div class='card-deck'>
+    <div class='basket'>
+      <div class="card w-100 my_margin" id="cardTitle">
+        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+          <div class='picture_cart'>
+            >picture here<
+          </div>
+          <h5 class="cart_title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+        </div>
+      </div>
+  
+      <div class="card w-100 h-55 my_margin" id="cardTitle">
+        <div class="card-body" style="justify-content: space-between">
+          <p style = "color:rgb(3, 4, 31); font-weight: bold; border-bottom: 3px solid #f7f7f7; margin-bottom: 20px; margin-top: 5px;">Total</p>
+          <p class="card-text" style="color:rgb(3, 4, 31); font-weight: bold">Products number: {{products_amount}} pcs</p>
+          <p class='card-text' style="color: rgb(245, 173, 6); font-weight: bold">Total value: {{total_value}} usd</p>
+          <p class='order_title' style="color: limegreen; font-weight: bold">Discount: {{discount}}%</p>
+          <p class='order_title' style="color: rgb(3, 4, 31); font-weight: bold">Discounted value: {{discounted}} usd</p>
+          <div>
+            {% for message in messages %}
+              <p class="card-title" style="margin-top: 20px" id="messages"> <text class="message">{{ message }}</p>
+            {% endfor %}
+          </div>
+          <div style="padding-top: 5px">
+            <a href="{%url 'orders:cart_clean_view'%}" 
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 100px; color: white; background-color: rgb(220, 48, 71); margin-top: 23px;  margin-bottom: 5px"
+              >
+              Clean
+            </a>
+          </div>
+          <div style="padding-top: 5px">
+            <a href="https://www.liqpay.ua/en/"
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 100px; color: white; background-color: rgb(74, 46, 235); margin-top: 5px;  margin-bottom: 5px"
+              >
+              Process
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="footer_root">
+    root: {{ root }} 
+  </br>
+    app: {{ app_name_5 }}
+</div>
+
+{%endblock%}

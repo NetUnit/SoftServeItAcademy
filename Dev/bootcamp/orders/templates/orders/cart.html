@@ -1,0 +1,265 @@
+{% extends 'base.html' %} 
+
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+    /* moving search button upside and down */
+    form button {
+        margin-top: 0px;
+    }
+
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .basket {
+      position: unset;
+      /* background-color: rgb(238, 238, 238); */
+      /*border-radius: 5px; */
+      margin-left: 5px;
+    } 
+
+    .card {
+      width: 500px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 5px;
+      margin: 5px;
+    }
+
+    .cart_title {
+        position: relative;
+        padding-top: 17px;
+        padding-right: 65px;
+        height: 50px;
+        color:rgb(3, 4, 31);
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    .message {
+      color: limegreen;
+      font-weight: bold;
+    }
+
+    .card_card_body {
+        padding: 5px 10px;
+        width: 200px;
+        border: 0.5px groove grey;
+        border-radius: 4px;
+    }
+
+    .column {
+        display: table-column;
+        text-align: center;
+    }
+
+    .btn-info {
+      border: none;
+    }
+
+    #messages {
+      /* color:rgb(200, 50, 205); */
+      color: limegreen;
+      font-weight: bold;
+      /* background-color: rgb(172, 169, 169); */
+      /* padding: 10px; */
+      margin-top: 20px;
+      margin-bottom: 0px;
+    }
+
+    .picture_cart {
+      border: 1px solid #4287f5;
+      height: 100px;
+      width: 100px;
+      padding-top: 10px;
+      text-align: center;
+      text-orientation: initial;
+    }
+
+    .picture {
+      border: 1px solid #4287f5;
+      height: 95px;
+      width: 115px;
+      padding-top: 10px;
+      text-align: center;
+      text-orientation: upright;
+    }
+    
+    .cart_clean {
+        color:rgb(3, 4, 31);
+        font-weight: bold;
+    }
+
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      text-align: left;
+      width: 100%;
+      position: absolute;
+      margin-bottom: 35px;
+    }
+
+</style>
+
+<div class='card-deck'>
+  <div class='basket'>
+    <div class="card w-100 my_margin" id="cardTitle">
+      <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class='picture_cart'>
+          >picture here<
+        </div>
+        <h5 class="cart_title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+      </div>
+    </div>
+
+    <div class="card w-100 h-55 my_margin" id="cardTitle">
+      <div class="card-body" style="justify-content: space-between">
+        <p style = "color:rgb(3, 4, 31); font-weight: bold; border-bottom: 3px solid #f7f7f7; margin-bottom: 20px; margin-top: 5px;">Total</p>
+        <p class="card-text" style="color:rgb(3, 4, 31); font-weight: bold">Products number: {{products_amount}} pcs</p>
+        <p class='card-text' style="color: rgb(245, 173, 6); font-weight: bold">Total value: {{total_value}} usd</p>
+        <p class='order_title' style="color: limegreen; font-weight: bold">Discount: {{discount}}%</p>
+        <p class='order_title' style="color: rgb(3, 4, 31); font-weight: bold">Discounted value: {{discounted}} usd</p>
+        
+        {% include 'snippets/cart_message_snippet.html'%}
+      
+        <div style="padding-top: 5px">
+          <a href="{%url 'orders:cart_clean_view'%}" 
+            class="btn btn-info btn-sm"
+            type="button"
+            style="width: 100px; color: white; background-color: rgb(220, 48, 71); margin-top: 23px"
+            >
+            Clean
+          </a>
+        </div>
+        <div style="padding-top: 5px">
+          <a href="https://www.liqpay.ua/en/"
+            class="btn btn-info btn-sm"
+            type="button"
+            style="width: 100px; color: white; background-color: limegreen; margin-top: 2px;  margin-bottom: 5px"
+            >
+            Process
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class='basket'>
+    {%for order, number in basket.items %}
+      {% for manufacturer in order.product.manufacturers.all %}
+      <div class="card" style="margin-left: 30px">
+        <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+          <div class="column">
+            <div class='picture'>
+              >picture here<
+            </div>
+            <div>
+              <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold; margin-top: 13px;"> Quantity: {{number}}  </h6>
+              <!-- <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}} {{order.product.id}}</h7> -->
+            </div>
+            <a href="{%url 'orders:order_create_view' order.product.id%}"
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 45px; color: white; background-color: limegreen; font-weight: bold; display: inline-block;"
+            >
+              +
+            </a>
+            <a href="{%url 'orders:order_remove_view' order.id%}"
+              class="btn btn-info btn-sm"
+              type="button"
+              style="width: 45px; color: white; background-color: rgb(220, 48, 71); font-weight: bold; display: inline-block;"
+            >
+              -
+            </a>
+          </div>
+
+          <div style="display: flex; width: 100%; margin-left: 40px;">
+            <div style="width: 100%">
+              <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{order.product.title}}</p>
+              <!--  <p> Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+              <div>
+                <h6 class='quantity' id="{{order.product.id}}" style="padding-top: 5px; color: limegreen; font-weight: bold"> Country: {{manufacturer.country}}</h6>
+                <!-- {% for manufacturer in order.product.manufacturers.all %}
+                  <h6 class='manufacturer' id="{{order.product.id}}" style="padding-top: 5px; color: limegreen; font-weight: bold">Country: {{manufacturer.country}}</h6>
+                {% endfor %}
+              -->
+              </div>
+              <div style="padding-top: 5px">
+                <button
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapseDesc{{order.product.id}}"
+                  aria-expanded="false"
+                  aria-controls="collapseDesc{{order.product.id}}"
+                  style="width: 100px;"
+                  >
+                  Info
+                </button>
+
+                <div class="collapse" id="collapseDesc{{order.product.id}}"> 
+                  <div class="card_card_body">
+                    {% if order.product.content %}
+                      {{order.product.content}}
+                    {% else %}
+                      not filled yet
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div style="padding-top: 5px">
+                <button
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapseDesc{{order.product.id}}"
+                  aria-expanded="false"
+                  aria-controls="collapseDesc{{order.product.id}}"
+                  style="width: 100px;"
+                >
+                  Price
+                </button>
+                <div class="collapse" id="collapseDesc{{order.product.id}}">
+                  <div class="card_card_body">
+                    {% if order.product.price %}
+                      {{order.product.price}}
+                    {% else %}
+                      not filled yet
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div style="padding-top: 5px">
+                <a href="{%url 'products:detailed_view' order.product.id%}" 
+                  class="btn btn-info btn-sm"
+                  type="button"
+                  style="width: 100px; color: white; margin-top: 5px; background-color:limegreen"
+                  >
+                  Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    {%endfor%}
+  </div>
+
+</div>
+{%endblock%}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_5 }}
+</div>
+{% endblock %}
+

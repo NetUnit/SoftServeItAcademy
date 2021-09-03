@@ -1,0 +1,31 @@
+<head>
+
+<style> 
+    .snippet {
+        color: rgb(245,	173, 6);
+        font-weight: 5px; 
+        margin-top: 2px;
+        margin-left: 2px;
+        line-height: 20pt;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        position: relative;
+    }
+
+    #messages {
+        color:limegreen;
+        font-weight: bold;
+    }
+
+</style>
+
+<div class="snippet">
+    {% if messages %}
+        {% for message in messages %}
+            <p class="messages-success" id='messages'> {{ message }} </p>  
+        {% endfor %}
+    {% endif %}
+</div>
+
+</head>
