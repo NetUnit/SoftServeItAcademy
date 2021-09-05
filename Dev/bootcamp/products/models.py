@@ -100,6 +100,26 @@ class Product(models.Model):
             self.price = price
         self.save()
 
+    def to_dict(self):
+        '''
+            :return: product title, content, price
+            :Example:
+            | {
+            |   'title': 'Raspberry Pi',
+            |   'content': 'some content',
+            |   'price': 'some price',
+        '''
+        try:
+            # setup your index here
+            index = 2
+            keys = list(self.__dict__.keys())[index:]
+            values = list(self.__dict__.values())[index:]
+            api_data = dict(zip(keys, values))
+            return api_data
+        except IndexError as error:
+            # LOGGER.error("This is index error")
+            pass
+
     @staticmethod
     def delete_by_id(product_id):
         """
@@ -113,7 +133,7 @@ class Product(models.Model):
             product.delete()
             return True
         except Product.DoesNotExist:
-            # LOGGER.error("User does not exist"
+            # LOGGER.error("User does not exist")
             pass
         return False
 

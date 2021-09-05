@@ -2,14 +2,16 @@ from django.db import models
 from django.db import models, IntegrityError, DataError
 from django.http.response import Http404
 
-    # Create your models here.
+# Create your models here.
+
+
 class CustomUser(models.Model):
     # id = models.AutoField()
-    email = models.EmailField(max_length = 200)
+    email = models.EmailField(max_length=200)
     password = models.CharField(max_length=200, blank=False)
     nickname = models.CharField(max_length=200, blank=True)
     name = models.CharField(max_length=200, blank=True)
-    surname = models.CharField(max_length=200, blank=True)    
+    surname = models.CharField(max_length=200, blank=True)
 
     class Meta:
         ordering = ('id',)
@@ -28,6 +30,9 @@ class CustomUser(models.Model):
         '''
         return f'{self.__class__.name}(id={self.id})'
 
+    def __del__(self):
+	    print('Got rid of the next params: %s %s' % (self.id, self._state ))
+
     @staticmethod
     def get_user_by_id(user_id=None):
         user = CustomUser.objects.get(pk=user_id)
@@ -38,7 +43,7 @@ class CustomUser(models.Model):
         all_users = CustomUser.objects.all()
         users_exist = len(user for user in all_users) > 0
         return all_users if users_exist else 0
-    
+
     @staticmethod
     def delete_user_by_id(user_id=None):
         user = CustomUser.objects.all().filter(pk=user_id)
@@ -56,30 +61,27 @@ class CustomUser(models.Model):
         user = CustomUser.get_by_id(user_id)
         updated_user = user.__dict__.update(data)
         return updated_user
-    
+
     # make api info from this
     def to_dict(self):
         '''
-            :return: user id, user first_name, user middle_name, user last_name,
-                    user email, user password, user updated_at, user created_at, user is_active
+            :return: user email, user password, user nickname, user created_at, user is_active
             :Example:
             | {
-            |   'id': 8,
-            |   'first_name': 'fn',
-            |   'middle_name': 'mn',
-            |   'last_name': 'ln',
-            |   'email': 'ln@mail.com',
-            |   'created_at': 1509393504,
-            |   'updated_at': 1509402866,
-            |   'role': 0
-            |   'is_active:' True
+            |   'email': John@Dillinger.yahoo.com,
+            |   'nickname': 'Johny D',
+            |   'name': 'John',
+            |   'surname': 'Dillinger',
             | }
         '''
-        fields = ('email', 'password', 'nickname', 'name', 'surname')
-        values = (self.email, self.password, self.nickname, self.name, self.surname)
-        return self.__dict__.fromkeys(fields, values)
 
-    ## +++
+        fields = str(dict(self.__dict__.items()))
+        index = fields.find('email') - 1
+        result = '{' + f'{fields[index:]}'
+        api_data = eval(result)
+        return api_data
+
+    # +++
     @staticmethod
     def get_user_by_email(email=None):
         '''
@@ -90,10 +92,10 @@ class CustomUser(models.Model):
             user = CustomUser.objects.all().filter(email=email).get()
             # user = CustomUser.objects.get(email)
             return user
-        except  CustomUser.DoesNotExist:
+        except CustomUser.DoesNotExist:
             return False
 
-    ## +++
+    # +++
     @staticmethod
     def get_user_by_nickname(nickname=None):
         '''
@@ -106,8 +108,8 @@ class CustomUser(models.Model):
             return user
         except CustomUser.DoesNotExist:
             return False
-    
-    ## +++
+
+    # +++
     @staticmethod
     def user_exists(data):
         '''
@@ -116,22 +118,22 @@ class CustomUser(models.Model):
             :return: True if user exists, False if opposite
         '''
         # data is a dict that comes from form (cleaned_data)
-        # dict has pairs of key-value  
+        # dict has pairs of key-value
         # getting Value from the dict to match with the db
 
-        user_by_email = data.get('email') # will return the query-object when match the Value from the form 
-        user_by_nickname =data.get('nickname')
-        
+        # will return the query-object when match the Value from the form
+        user_by_email = data.get('email')
+        user_by_nickname = data.get('nickname')
+
         # qurying the db via data from the form (email, nickname)
         match_by_email = CustomUser.get_user_by_email(user_by_email)
         match_by_nickname = CustomUser.get_user_by_nickname(user_by_nickname)
 
         user_exists = bool(match_by_email) + bool(match_by_nickname) > 0
         return True if user_exists else False
-    
+
     # def get_role_name(self):
     #     '''
     #         returns str role name
     #     '''
     #     return self.get_role_display()
-        
