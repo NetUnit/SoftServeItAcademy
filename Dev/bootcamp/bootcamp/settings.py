@@ -192,8 +192,8 @@ APP_NAME_1 = 'PRODUCTS'
 APP_NAME_1_TAGLINE = 'products tagline'
 
 
-APP_NAME_2 = 'EMAILS'
-APP_NAME_2_TAGLINE = 'emails tagline'
+APP_NAME_2 = 'ACCOUNTS'
+APP_NAME_2_TAGLINE = 'accounts tagline'
 
 
 APP_NAME_3 = 'PROFILES'

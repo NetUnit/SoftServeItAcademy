@@ -1,0 +1,107 @@
+{%extends 'base.html'%}
+
+{% load static %}
+
+{%block title%} Register User {%endblock%}
+
+{%load crispy_forms_tags%}
+
+{%block content%}
+
+<style>
+    form ul {
+        padding: 0 20px 0 20px;
+    }
+    form ul li {
+        display: block;
+    }
+    form div label {
+        margin: 5px 0 2px;
+    }
+    input[type='text'] {
+        width: 100%;
+    }
+    textarea {
+        width: 100%;
+    }
+
+    .manufacturer-block {
+        padding-top: 10px;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .message {
+        color:limegreen;
+        font-weight: bold;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+    
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+
+</style>
+<div class="card w-25 my_margin" style='display: flex'>
+    <div class="card-body">
+        <h5 class="card-title">Register</h5>
+        <form action="" method="post">
+            {%csrf_token%}
+            
+            {{form.email|as_crispy_field}} {{form.password|as_crispy_field}} {{form.nickname|as_crispy_field}} {{form.name|as_crispy_field}} {{form.surname|as_crispy_field}}
+
+            {% if messages %}
+                {% include 'snippets/create_message.html'%}
+            {% endif %}
+            
+            <button type="submit" class="btn btn-success" style="display: block; background-color:limegreen; margin-top: 5px"> Submit </button>
+        </form>
+
+    </div>
+
+    <script>
+
+        /* Because i didnt set placeholder values in forms.py they will be set here using vanilla Javascript
+        //We start indexing at one because CSRF_token is considered and input field
+        // https://stackoverflow.com/questions/19233415/how-to-make-type-number-to-positive-numbers-only/19233458 - make absolute numbers
+         
+        */
+        //Query All input fields
+        var form_fields = document.getElementsByTagName('input')
+        form_fields[2].placeholder = 'email..';
+        form_fields[3].placeholder = 'password..';
+        form_fields[4].placeholder = 'nickname..';
+        form_fields[5].placeholder = 'name..';
+        form_fields[5].placeholder = 'surname..';
+
+
+        for (var field in form_fields) {
+            form_fields[field].CustomUserCreationForm += ' form-control'
+        }
+    </script>   
+</div>
+
+<div class="footer_app">
+    app: {{ app_name_1 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{%endblock%}
+
