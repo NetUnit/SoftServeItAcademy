@@ -1,11 +1,13 @@
 # from django.conf.urls.static import static
-# from django.conf.urls import include
+from django.conf.urls import include
+
 from django.urls import path, re_path
 from accounts.views import (
     login_view,
     register_view,
     # authentication,
     accounts_list_view,
+    #RegisterView
 
 )
 
@@ -16,8 +18,5 @@ urlpatterns = [
     re_path(r'^accounts/list/$', accounts_list_view, name='accounts_list_view'),
     re_path(r'^accounts/register$', register_view, name='register'),
     re_path(r'^accounts/login$', login_view, name='login'),
-    # re_path(r'^accounts/authentication', authentication, name='authentication')
-
-    
-    
+    # re_path(r'^accounts/register2', RegisterView.as_view(), name='register2')
 ]

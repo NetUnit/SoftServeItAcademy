@@ -30,8 +30,8 @@ class CustomUser(models.Model):
         '''
         return f'{self.__class__.name}(id={self.id})'
 
-    def __del__(self):
-	    print('Got rid of the next params: %s %s' % (self.id, self._state ))
+    # def __del__(self):
+	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
 
     @staticmethod
     def get_user_by_id(user_id=None):

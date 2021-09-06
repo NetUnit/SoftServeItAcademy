@@ -24,31 +24,31 @@ def parse_string(*args, **kwargs):
     ## [.....] ADD WIDGET HERE
 
     ## Jet A-1 
-    # registry = 'Реєстр Укртатнафта Jet A-1.xlsx'
-    # reestr_lsx_file = Path(
-    #     '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
-    #     'Реєстр Укртатнафта Jet A-1.xlsx')
-    
-    ## RT 
-    registry = 'Реєстр Укртатнафта РТ.xlsx'
+    registry = 'Реєстр Укртатнафта Jet A-1.xlsx'
     reestr_lsx_file = Path(
         '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
-        'Реєстр Укртатнафта РТ.xlsx')
+        'Реєстр Укртатнафта Jet A-1.xlsx')
+    
+    # ## RT 
+    # registry = 'Реєстр Укртатнафта РТ.xlsx'
+    # reestr_lsx_file = Path(
+    #     '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
+    #     'Реєстр Укртатнафта РТ.xlsx')
 
     reestr_obj = open.load_workbook(reestr_lsx_file)
     
     
     ## Jet A-1
-    # report = 'Звіт Jet A-1.xlsx'
-    # oblik_lsx_file = Path(
-    #     '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
-    #     'Звіт Jet A-1.xlsx')
+    report = 'Звіт Jet A-1.xlsx'
+    oblik_lsx_file = Path(
+        '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
+        'Звіт Jet A-1.xlsx')
     
     ## RT
-    report = 'Звіт РТ.xlsx'
-    oblik_lsx_file = Path(
-    '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
-    report)
+    # report = 'Звіт РТ.xlsx'
+    # oblik_lsx_file = Path(
+    # '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register',
+    # report)
 
     oblik_obj = open.load_workbook(oblik_lsx_file)
 
