@@ -40,6 +40,7 @@
     .btn-success {
         display: block; 
         background-color:limegreen;
+        margin-top: 35px;
     }
 
     .footer_app {
@@ -67,23 +68,17 @@
         <h5 class="card-title">User Registration</h5>
         <form action="" method="post">
             {%csrf_token%}
-            {{form.email|as_crispy_field}} {{form.password|as_crispy_field}} {{form.nickname|as_crispy_field}} {{form.name|as_crispy_field}} {{form.surname|as_crispy_field}}
-
-            <div>
-                <br>
-                {% for message in messages %}
-                    <p class="card-title" id='messages'> <text class='message'>{{ message }}</p>
-                {% endfor %}
-                <br>
-            </div>
-
-            <!-- customize messages -> include create message snippet -->
+            {{form.email|as_crispy_field}} {{form.password1|as_crispy_field}} {{form.password2|as_crispy_field}} {{form.nickname|as_crispy_field}} {{form.name|as_crispy_field}} {{form.surname|as_crispy_field}}
+            
+            {% if messages %}
+                {% include 'snippets/create_message.html'%}
+            {% endif %}
 
             <button type="submit" class="btn btn-success">Submit</button>
         </form>
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
-            <div class="d-flex justify-content-center links">
+            <div class="d-flex justify-content-center links" >
                 Already have an account? <a href="{% url 'accounts:login' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Login</a>
             </div>
         </div>

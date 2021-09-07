@@ -50,8 +50,8 @@ class CustomUser(models.Model):
         user.delete() if user else 0
 
     # data here will be a dict(**kwargs from UI)
-    def create_user(self, data=None):
-        user = CustomUser.objects.create(data) if data != None else 0
+    def create_user(self, data):
+        user = CustomUser.objects.create(**data) if data != None else 0
         user.save()
         return user
 
