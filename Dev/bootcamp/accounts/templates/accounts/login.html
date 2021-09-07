@@ -1,0 +1,100 @@
+{%extends 'base.html'%}
+
+{%block title%} User Login {%endblock%} 
+
+{% load static %}
+{%load crispy_forms_tags%} 
+
+{%block content%}
+<style>
+    form ul {
+        padding: 0 20px 0 20px;
+        padding-left: 15px;
+    }
+    form ul li {
+        display: block;
+    }
+    form div label {
+        margin: 5px 0 2px;
+    }
+    input[type='text'] {
+        width: 100%;
+    }
+
+    input[type='email'] {
+        width: 100%;
+    }
+
+    input[type='password'] {
+        width: 100%;
+    }
+    
+    
+    #messages {
+        background-color: rgb(172, 169, 169);
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    } 
+    
+    .btn-success {
+        display: block; 
+        background-color:limegreen;
+    }
+
+    .footer_app {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 10px; 
+      width: 100%;
+    }
+
+    .footer_root {
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      position: fixed;     
+      text-align: left;    
+      bottom: 35px; 
+      width: 100%;
+    }
+    
+</style>
+<div class="card w-25 my_margin">
+    <div class="card-body" >
+        <h5 class="card-title">Login</h5>
+        <form action="" method="post">
+            {%csrf_token%}
+            {{form.email|as_crispy_field}} {{form.password|as_crispy_field}}
+            
+            
+            <div>
+                <br>
+                {% for message in messages %}
+                    <p class="card-title" id='messages'> <text class='message'>{{ message }}</p>
+                {% endfor %}
+                <br>
+            </div>
+            
+            <!-- customize messages -> include create message snippet -->
+
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+
+        <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
+            <div class="d-flex justify-content-center links" >
+                Don't have an account? <a href="{% url 'accounts:register' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer_app">
+    app: {{ app_name_2 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{%endblock%}
