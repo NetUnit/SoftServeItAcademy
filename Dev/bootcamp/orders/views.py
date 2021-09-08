@@ -1,10 +1,20 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse_lazy, reverse
+
 # from orders.models import Order
 from .models import Product, Order
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
+from django.views.generic import TemplateView, ListView 
+
+# payment
+from django.conf import settings
+from decimal import Decimal
+from django.views.generic import FormView
+
+# https://www.gravityforms.com/pricing/ - 59 usd
+from paypal.standard.forms import PayPalPaymentsForm
 
 # Create your views here
 def order_create_view(request, product_id, *args, **kwargs):
@@ -61,9 +71,61 @@ def cart_view(request, *args, **kwargs):
     
     return render (request, 'orders/cart.html', context)
 
-# implement this later + change template 'order_pay.html' (redirect to payment system)
-def process_payment_view(request, *args, **kwargs):
-    pass
+# payment process view
+# def process_payment_view(request, *args, **kwargs):
+#     try:
+#         form = PayPalPaymentsForm()
+          # print(form.__dict__) ## will return form fields that we need to fulfill 
+#         order_id = request.session.get('order_id')
+#         order = get_object_or_404(Order, id=order_id)
+#         host = request.get_host()
+
+#         paypal_dict = {
+
+#             'business': settings.PAYPAL_RECEIVER_EMAIL,
+#             'amount': '%.2f' % order.get_total_cost().quantize(Decimal('.01')),
+#             'item_name': f'Order {order.id}',
+#             'invoice': str(order.id),
+#             'currencey_code': 'USD',
+#             'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
+#             'cancel_return': 'http://{}{}'.format(host, reverse('orders:paypal-cancel')),
+#         }
+
+#         form = PayPalPaymentsForm(initial=paypal_dict)
+#         context = {'form': form, 'order': order}
+#         return render (request, 'orders/payment_process.html', context)
+    
+#     except Exception as err:
+#         print(err)
+#         pass
+
+
+
+class PaypalFormView(FormView):
+    template_name = 'orders/paypal_form.html'
+    form_class = PayPalPaymentsForm
+
+    def get_initial(self):
+        return {
+            "business": 'andriyproniyk@gmail.com',
+            "amount": 20, # Order.get_amount()
+            "currency_code": "EUR", 
+            "item_name": 'Example item',
+            "invoice": 1234,
+            "notify_url": self.request.build_absolute_uri(reverse('paypal-ipn')),
+            "return_url": self.request.build_absolute_uri(reverse('paypal-return')),
+            "cancel_return": self.request.build_absolute_uri(reverse('paypal-cancel')),
+            "lc": 'EN',
+            "no_shipping": '1',
+        }
+
+
+class PaypalReturnView(TemplateView):
+    template_name = 'orders/payment_done.html'
+
+class PaypalCancelView(TemplateView):
+    template_name = 'orders/payment_cancelled.html'
+
 
 
 # order cart view - WHOLE

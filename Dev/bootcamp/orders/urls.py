@@ -5,10 +5,16 @@ from orders.views import (
     cart_view,
     order_remove_view,
     cart_clean_view,
-    process_payment_view,
+    #process_payment_view,
+    PaypalReturnView,
+    PaypalCancelView,
+    PaypalFormView,
+
 )
 
 from django.conf import settings
+from django.views.generic import TemplateView, ListView # Import TemplateView
+
 
 app_name = 'orders'
 
@@ -30,8 +36,16 @@ urlpatterns = [
     re_path(r'^order/clean-cart/$', cart_clean_view, name='cart_clean_view'),
 
     # ############# *** Order Pay View *** ###############
-    re_path(r'^order/payment/$', process_payment_view, name='process_payment_view')
+    ## set 1 
+    # re_path(r'^order/payment/$', process_payment_view, name='process_payment_view'),
+    # re_path(r'^order/payment-done/$', TemplateView.as_view(template_name="orders/payment_done.html"), name='payment_done'),
+    # re_path(r'^order/payment-canceled/$', TemplateView.as_view(template_name="orders/payment_canceled.html"), name='payment_canceled'),
 
-    # re_path(r'^manufacturers/update/$', manufacturer_update_view, name='manufacturer_detailed_view'),
+    ## set 2
+    # ############# *** Order Pay View *** ###############
+
+    path('paypal-return/', PaypalReturnView.as_view(), name='paypal-return'),
+    path('paypal-cancel/', PaypalCancelView.as_view(), name='paypal-cancel'),
+    path('paypal-view/', PaypalFormView.as_view(), name='paypal-view'),
 
 ]
