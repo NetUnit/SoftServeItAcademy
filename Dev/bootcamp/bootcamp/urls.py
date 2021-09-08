@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.urls import path, re_path
 from products import views
+#from django.views.generic import api_views
 from products.views import (
     home_view,
     HomePageView,
     ProductListView,
+    TemplateView,
     method_view,
     search_view,
     search_venues,
@@ -73,4 +75,7 @@ urlpatterns = [
     re_path(r'^', include('emails.urls')),
     re_path(r'^', include('accounts.urls')),
 
+    ################### *** payments views *** ########################
+    path('paypal/', include('paypal.standard.ipn.urls')),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

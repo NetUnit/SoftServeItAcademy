@@ -51,8 +51,9 @@ INSTALLED_APPS = [
     'accounts',                                                 # app#5
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
-    'orders',                                                  # app#5
-    'crispy_forms'                                              # crispy_forms for temapltes
+    'orders',                                                   # app#5
+    'crispy_forms',                                             # crispy_forms for temapltes
+    'paypal.standard.ipn',                                      # paypal gateaway
 ]
 
 MIDDLEWARE = [
@@ -208,6 +209,12 @@ APP_NAME_5_TAGLINE = 'orders tagline'
 
 METHOD = 'METHODS'
 
+#django-paypal settings
+PAYPAL_RECEIVER_EMAIL = 'andriyproniyk@gmail.com'
+PAYPAL_TEST = True
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 CRISPY_FORMS_TEMPLATE_PACK = 'bootstrap4'
+
+

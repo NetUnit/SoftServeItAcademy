@@ -2,7 +2,7 @@ from django.db import models, DataError, IntegrityError
 
 import datetime
 from products.models import Product
-from manufacturer.models import Manufacturer
+from accounts.models import CustomUser
 
 # Create your models here.
 class Order(models.Model):
@@ -18,13 +18,7 @@ class Order(models.Model):
     param user: outlines the user that is adding a product to a cart
     type: Foreign Key - constraint that references to a primary key of User.id fields
 
-    NOTE: Manufacturer model is more customized than Product
-          in order to avoid less code in views
-
     '2 Scope of Dajngo: Fat Models, Helper Modules, Thin Views, Stupid Templates'
-
-
-
     '''
 
     #id is the autofield
@@ -32,15 +26,15 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
+    # 1
+    def __str__(self):
+        '''
+        Magic method is redefined to show all information about an order
+        :return: order id, created at, user_id, product_id
+        '''
+        return f'{self.product}{self.created_at}' ## {self.user}
 
-    # def __str__(self):
-    #     '''
-    #     Magic method is redefined to show all information about an order
-    #     :return: order id, created at, user_id, product_id
-    #     '''
-    #     return f'----{self.product}{self.created_at}' ## {self.user}
-
-
+    # 2
     def __repr__(self):
         '''
         This magic method is redefined to show class and id of the Order object.
@@ -48,7 +42,7 @@ class Order(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
-
+    # 3
     @staticmethod
     def create(product):
         '''
@@ -64,7 +58,7 @@ class Order(models.Model):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
     
-
+    # 3
     @staticmethod
     def get_all():
         '''
@@ -78,7 +72,7 @@ class Order(models.Model):
             order for order in Order.objects.all()
             ] if condition else 0
 
-
+    # 4
     @staticmethod
     def get_by_id(order_id):
         '''
@@ -93,7 +87,7 @@ class Order(models.Model):
             pass
         return False
 
-
+    # 5
     @staticmethod
     def delete_by_id(order_id):
         '''
@@ -109,7 +103,7 @@ class Order(models.Model):
             pass
         return False
 
-
+    # 6
     @staticmethod
     def delete_all():
         '''
@@ -126,7 +120,8 @@ class Order(models.Model):
         if product_exist and order_exist:
             return Order.objects.all().delete()
 
-
+    ## *** CART FUNCTIONALITY *** ##
+    # 7
     @staticmethod
     def create_cart():  ## add user_id later
 
@@ -152,6 +147,7 @@ class Order(models.Model):
         
         return basket
     
+    # 8
     @staticmethod
     def cart_items_amount():  ## add user_id late
         basket = Order.create_cart()
@@ -162,13 +158,13 @@ class Order(models.Model):
         
         return basket
 
-
+    # 9
     @staticmethod
     def products_amount():  ## add user_id late
         basket = Order.cart_items_amount()
         return sum(list(basket.values()))
         
-
+    # 10
     @staticmethod
     def total_value():
         try:
@@ -180,7 +176,7 @@ class Order(models.Model):
             # LOGGER.error(f'{err}')
             pass
     
-
+    # 11
     @staticmethod
     def get_discount():
         products_amount = Order.products_amount()
@@ -201,4 +197,3 @@ class Order(models.Model):
     ## 2) calculate discount
     ## 3) calculate total nember of items
     ## !!! get all of these things from basket views
-   
