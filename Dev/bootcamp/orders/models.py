@@ -4,7 +4,7 @@ import datetime
 from products.models import Product
 from accounts.models import CustomUser
 
-# Create your models here.
+    # Create your models here.
 class Order(models.Model):
         
     '''
@@ -27,12 +27,12 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
     # 1
-    def __str__(self):
-        '''
-        Magic method is redefined to show all information about an order
-        :return: order id, created at, user_id, product_id
-        '''
-        return f'{self.product}{self.created_at}' ## {self.user}
+    # def __str__(self):
+    #     '''
+    #     Magic method is redefined to show all information about an order
+    #     :return: order id, created at, user_id, product_id
+    #     '''
+    #     return f'{self.product}{self.created_at}' ## {self.user}
 
     # 2
     def __repr__(self):
@@ -58,7 +58,7 @@ class Order(models.Model):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
     
-    # 3
+    # 4
     @staticmethod
     def get_all():
         '''
@@ -72,7 +72,7 @@ class Order(models.Model):
             order for order in Order.objects.all()
             ] if condition else 0
 
-    # 4
+    # 5
     @staticmethod
     def get_by_id(order_id):
         '''
@@ -87,7 +87,7 @@ class Order(models.Model):
             pass
         return False
 
-    # 5
+    # 6
     @staticmethod
     def delete_by_id(order_id):
         '''
@@ -103,7 +103,7 @@ class Order(models.Model):
             pass
         return False
 
-    # 6
+    # 7
     @staticmethod
     def delete_all():
         '''
@@ -121,7 +121,7 @@ class Order(models.Model):
             return Order.objects.all().delete()
 
     ## *** CART FUNCTIONALITY *** ##
-    # 7
+    # 8
     @staticmethod
     def create_cart():  ## add user_id later
 
@@ -147,7 +147,7 @@ class Order(models.Model):
         
         return basket
     
-    # 8
+    # 9
     @staticmethod
     def cart_items_amount():  ## add user_id late
         basket = Order.create_cart()
@@ -158,13 +158,13 @@ class Order(models.Model):
         
         return basket
 
-    # 9
+    # 10
     @staticmethod
     def products_amount():  ## add user_id late
         basket = Order.cart_items_amount()
         return sum(list(basket.values()))
         
-    # 10
+    # 11
     @staticmethod
     def total_value():
         try:
@@ -176,7 +176,7 @@ class Order(models.Model):
             # LOGGER.error(f'{err}')
             pass
     
-    # 11
+    # 12
     @staticmethod
     def get_discount():
         products_amount = Order.products_amount()
@@ -185,8 +185,6 @@ class Order(models.Model):
                     
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
-
-
 
         # return Order.objects.all().filter(id=user_id).delete() if condition else 0 # for user_id - when having a user
 
