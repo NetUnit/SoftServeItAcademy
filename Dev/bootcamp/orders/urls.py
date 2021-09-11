@@ -8,7 +8,6 @@ from orders.views import (
     #process_payment_view,
     PaypalReturnView,
     PaypalCancelView,
-    PaypalFormView,
 
 )
 
@@ -44,8 +43,7 @@ urlpatterns = [
     ## set 2
     # ############# *** Order Pay View *** ###############
 
-    path('paypal-return/', PaypalReturnView.as_view(), name='paypal-return'),
-    path('paypal-cancel/', PaypalCancelView.as_view(), name='paypal-cancel'),
-    path('paypal-view/', PaypalFormView.as_view(), name='paypal-view'),
-
+    path('paypal-done/', PaypalReturnView.as_view(), name='paypal-return'),
+    path('paypal-cancelled/', PaypalCancelView.as_view(), name='paypal-cancel'),
+    
 ]

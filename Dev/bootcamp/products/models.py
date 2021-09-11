@@ -44,7 +44,7 @@ class Product(models.Model):
     @staticmethod
     def get_all():
         """
-            returns data for json request with QuerySet of all bookmanus
+            returns data for json request with QuerySet of all products
             use iteration to render separately in a template
         """
         try:

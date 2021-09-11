@@ -1,7 +1,7 @@
 from django import forms
 from .models import Order
 
-# bad form import - build a template foem here 
+# bad form import - build a template from here 
 
 from django.utils.html import format_html
 from paypal.standard.forms import PayPalPaymentsForm
