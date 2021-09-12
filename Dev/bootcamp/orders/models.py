@@ -18,7 +18,7 @@ class Order(models.Model):
     param user: outlines the user that is adding a product to a cart
     type: Foreign Key - constraint that references to a primary key of User.id fields
 
-    '2 Scope of Dajngo: Fat Models, Helper Modules, Thin Views, Stupid Templates'
+    '2 Scopes of Dajngo: Fat Models, Helper Modules, Thin Views, Stupid Templates'
     '''
 
     #id is the autofield
@@ -91,7 +91,7 @@ class Order(models.Model):
     @staticmethod
     def delete_by_id(order_id):
         '''
-            param user_id: SERIAL: the id of an authenticated user
+            param user_id: SERIAL: id of the authenticated user
             return: delete all objects found in the db (clean the db)
         '''
         try:
@@ -123,7 +123,7 @@ class Order(models.Model):
     ## *** CART FUNCTIONALITY *** ##
     # 8
     @staticmethod
-    def create_cart():  ## add user_id later
+    def create_cart():
 
         products = [order.product.title for order in Order.get_all()]
         orders = Order.get_all()
@@ -160,7 +160,7 @@ class Order(models.Model):
 
     # 10
     @staticmethod
-    def products_amount():  ## add user_id late
+    def products_amount():
         basket = Order.cart_items_amount()
         return sum(list(basket.values()))
         
