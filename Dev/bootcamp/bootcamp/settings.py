@@ -44,17 +44,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
     # 'errortemplates',                                         # custom error templates
     # apps
     'products',                                                 # app#1
     'manufacturer',                                             # app#2
-    'accounts',                                                 # app#5
+    #'accounts',                                                # app#5
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
     'orders',                                                   # app#5
     'crispy_forms',                                             # crispy_forms for temapltes
     'paypal.standard.ipn',                                      # paypal gateaway
 ]
+
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_URL = '/login/'
+LOGIN_URL_REDIRECT = '/'
+LOGOUT_URL = '/logout/'
+
+
+
+# Add to test email:
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Application definition
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,7 +135,7 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_bootcamp',                                     
+        'NAME': 'panda_hardware',                                     
         'USER': 'postgres',
         'PASSWORD': '7875',                                  
         'HOST': 'localhost',
@@ -204,8 +222,10 @@ APP_NAME_3_TAGLINE = 'profiles tagline'
 APP_NAME_4 = 'MANUFACTURERS'
 APP_NAME_4_TAGLINE = 'manufacturers tagline'
 
+
 APP_NAME_5 = 'ORDERS'
 APP_NAME_5_TAGLINE = 'orders tagline'
+
 
 METHOD = 'METHODS'
 
