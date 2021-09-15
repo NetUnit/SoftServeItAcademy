@@ -10,9 +10,8 @@ class CustomUserAdmin(admin.ModelAdmin):
     ordering = ['id']
     list_display = ('id', 'email',
                     'password', 'nickname',
-                    'name', 'surname')
+                    'first_name', 'last_name')
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('id', 'email', 'password', 'nickname', 'name', 'surname')}),
+        (None, {'fields': ('id', 'email', 'password', 'nickname')}),
     )
-    

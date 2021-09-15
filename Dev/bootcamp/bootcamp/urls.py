@@ -49,6 +49,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
+    # accounts
     re_path('panda-hardware/', panda_link_view, name='panda_link'),
     re_path('contact/', contact_view, name='contact'),
 
@@ -73,6 +74,7 @@ urlpatterns = [
     re_path(r'^', include('manufacturer.urls')),
     re_path(r'^', include('orders.urls')),
     re_path(r'^', include('emails.urls')),
+    ## accounts
     re_path(r'^', include('accounts.urls')),
 
     ################### *** payments views *** ########################

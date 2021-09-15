@@ -1,18 +1,21 @@
 from django.db import models
 from django.db import models, IntegrityError, DataError
 from django.http.response import Http404
-
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy
 # Create your models here.
 
 
-class CustomUser(models.Model):
+class CustomUser(AbstractUser):
     # id = models.AutoField()
-    email = models.EmailField(max_length=200)
+    email = models.EmailField(gettext_lazy('email address'), unique=True)
     password = models.CharField(max_length=200, blank=False)
     nickname = models.CharField(max_length=200, blank=True)
-    name = models.CharField(max_length=200, blank=True)
-    surname = models.CharField(max_length=200, blank=True)
 
+    #username = None
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
     class Meta:
         ordering = ('id',)
 

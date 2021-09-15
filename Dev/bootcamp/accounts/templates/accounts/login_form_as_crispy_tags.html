@@ -66,9 +66,8 @@
         <h5 class="card-title">Login</h5>
         <form action="" method="post">
             {%csrf_token%}
-            {{form.email|as_crispy_field}} {{form.password|as_crispy_field}}
-            
-            
+            {{form.username|as_crispy_field}} {{form.password|as_crispy_field}}
+
             <div>
                 <br>
                 {% for message in messages %}
