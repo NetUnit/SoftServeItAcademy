@@ -50,13 +50,18 @@ class CustomUserCreationForm(UserCreationForm):
     #         user.save()
     #     return user
 
-
-class CustomUserLoginForm(AuthenticationForm):
+## function-based view authenticate
+class CustomUserLoginForm(forms.ModelForm):
     
     class Meta:
         model = get_user_model()
         fields = ('username', 'password')
         required = ('username', 'password')
+
+        labels = {
+            'username': 'Email',
+            'password': 'Password',
+        }
 
         widgets = {
             'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
@@ -69,10 +74,34 @@ class CustomUserLoginForm(AuthenticationForm):
         for field in self.Meta.required:
             self.fields[field].required = True
 
+## class-based view authenticate
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Email / Username')
+    #username = forms.CharField(label='Email / Username')
+    email = forms.EmailInput(attrs={'placeholder': 'type email..'})
+    
 
+class CustomUserUpdateForm(CustomUserCreationForm):
+    
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password1', 'password2', 'nickname', 'first_name', 'last_name')
+        required = ('username', 'password1', 'password2', 'nickname')
 
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'type username..'}),
+            'password1': forms.PasswordInput(attrs={'placeholder': 'type password..1'}),
+            'password2': forms.PasswordInput(attrs={'placeholder': 'repeat the password..'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'type name..'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'type surname..'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserUpdateForm, self).__init__(*args, **kwargs)
+
+        for field in self.Meta.required:
+            if not field in ('password1', 'password2'):
+                self.fields[field].required = False
+        
 ################################################################################################
 # class CustomUserCreationForm(forms.ModelForm):
     

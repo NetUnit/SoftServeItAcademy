@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 
 from .models import CustomUser
 from accounts.forms import CustomUserCreationForm, LoginForm
-from accounts.forms import CustomUserLoginForm
+from accounts.forms import CustomUserLoginForm, CustomUserUpdateForm
 # from accounts.forms import RegisterForm
 from django.views.generic import CreateView, FormView, DetailView, View, UpdateView
 from django.contrib import messages
@@ -30,6 +30,7 @@ def accounts_list_view(request, *args, **kwargs):
 
 
 ################# *** Registration *** ####################
+## Function-based View
 def register_user_view(request, *args, **kwargs):
     try:
         form = CustomUserCreationForm(request.POST or None)
@@ -59,8 +60,7 @@ def register_user_view(request, *args, **kwargs):
 
         form = CustomUserCreationForm()
         context = {'form': form}
-        return render (request, 'accounts/register.html', context)
-    # return render (request, 'accounts/create_user_form_as_crispy_fields.html', context)
+        return render (request, 'accounts/register_user_form_as_crispy_fields.html', context)
 
     except Exception as err:
         print(err)
@@ -71,77 +71,100 @@ def register_user_view(request, *args, **kwargs):
 from django.views.generic import CreateView
 class RegisterView(CreateView):
     form_class =  CustomUserCreationForm
-    template_name = 'accounts/register.html'
-    success_url = '/products/list/'
+    template_name = 'accounts/register_user_form_as_crispy_fields.html'
+    success_url = '/accounts/login/'
     # success_url = reverse_lazy('/products/list/')
 
-#########################################################
+####################### *** Auth *** #######################
+## Class-based View
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
 
-
+## Function-based View
 def login_user_view(request, *args, **kwargs):
     try:
         form = CustomUserLoginForm(request.POST or None)
-        print(form.is_valid())
+        print('Form is valid') if form.is_valid() else 'Form is NOT valid'
 
         if form.is_valid():
             user = form.cleaned_data
-            print(user)
 
-            # update db data - Custom.user(update)
+            email = user.get('username')
+            password = user.get('password')
 
-            user = form.save(commit=False)
+            # user.set_password('password') ## !!! password should be encrypted
+            
+            user = authenticate(request, username=email, password=password)
+            print(request.user.is_authenticated)
+
             messages.success(
                 request,
-                f'U\'ve just logined with the next username {user}(^_-)≡☆'
+                f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
                 )
-            return redirect ('/products/list/')
+            return redirect ('/accounts/login/')
         
         form = CustomUserLoginForm()
         context = {'form': form}
 
     #    return HttpResponse('<h2> This is login </h2>')
-        return render (request, 'accounts/login_form_as_crispy_tags.html', context)
-    #    return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
+        return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
+    #    return render (request, 'accounts/login_form_as_p.html', context)
 
     except Exception as err:
         print(err)
         pass
 
-################# *** Authentication (Login) *** ####################
-# def login_user_view(request, *args, **kwargs):
-#     try:
-#         form = CustomUserLoginForm(request.POST or None)
-#         print(form)
 
-#         if form.is_valid():
-#             print(form.is_valid())
+####################### *** Profile *** #######################
 
-#             user = form.cleaned_data
-#             print(user)
+def profile_user_view(request, *args, **kwargs):
+    user = request.user
+    auth = request.user.is_authenticated
+    
+    context = {'user': user, 'auth': auth}
 
-#             # update db data - Custom.user(update)
+    # return render (request, 'accounts/profile.html', context)
+    return render (request, 'accounts/user_detail.html', context)
+    # return HttpResponse(f'<h2> {user}, user is_authenticated: {auth} <h2>')
 
-#             user = form.save(commit=False)
-#             messages.success(
-#                 request,
-#                 f'U\'ve just logined with the next username {user}(^_-)≡☆'
-#                 )
-#             return redirect ('/products/list/')
-        
-#         form = CustomUserLoginForm()
-#         context = {'form': form}
+####################### *** Update User*** #######################
 
-#     #    return HttpResponse('<h2> This is login </h2>')
-#         return render (request, 'accounts/login.html', context)
-#     #    return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
+def profile_update_view(request, user_id, *args, **kwargs):
+    try:
+        form = CustomUserUpdateForm(request.POST or None)
+        print(form.is_valid())
+        if form.is_valid():
+            data = form.cleaned_data
+            print(data)
+            #user = CustomUser.get_user_by_id(user_id)
+            #return HttpResponse(f'<h2> This is updated user: {user} with {data} </h2>')
 
-#     except Exception as err:
-#         print(err)
-#         pass
+            
+            # username = data.get('username')
+            # email = data.get('email')
+            # messages.success(
+            #     request,
+            #     f'U\'ve just updated profile with: {username}, password: {email} (^_-)≡☆'
+            # )
 
+            # return redirect ('/accounts/profile/')
+
+
+        form = CustomUserUpdateForm()
+        context = {'form': form}
+        return render (request, 'accounts/update_user_form_as_crispy_fields.html', context)
+
+    except Exception as err:
+        print(err)
+        pass
+
+    # user = CustomUser.update_user_by_id(user_id, data)
+####################### *** Delete User*** #######################
+
+def profile_delete_view(request, user_id, *args, **kwargs):
+    user = CustomUser.delete_user_by_id(user_id)
+    return HttpResponse(f'{user}')
 
 ################# *** Contact *** ###################
 def contact_view(request, *args, **kwargs):

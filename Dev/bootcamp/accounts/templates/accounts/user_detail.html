@@ -1,0 +1,123 @@
+{% extends 'base.html' %} 
+
+{% block title %} User Profile {% endblock %}
+
+{% block content %}
+
+<style>
+  form div label {
+      margin: 5px 0 2px;
+      text-align: center;
+  }
+  
+  /* moving search button upside and down */
+  form button {
+      margin-top: 0px;
+  }
+
+  input[type='text'] {
+      width: 100%;
+  }
+
+  .card {
+    margin: 5px;
+  }
+
+  .picture {
+    border: 1px solid #4287f5;
+    height: 100px;
+    width: 150px;
+    padding-top: 10px;
+    text-align: center;
+    text-orientation: initial;
+    margin-left: 145px;
+  }
+
+  #update_btn {
+    margin-left: 25px;
+    margin-bottom: 2px;
+    background-color: rgb(245, 173, 6);
+    color: rgb(3, 4, 31);
+    width: 100px;
+    border-color: darkorange;
+  }
+
+  #update_btn:hover {			
+    background-color: gainsboro;		
+  }			
+
+  #delete_btn {
+    margin-left: 25px;
+    margin-bottom: 25px;
+    background-color: rgb(220, 48, 71);
+    color: rgb(255,255,255);
+    width: 100px;
+    border-color: rgb(3, 4, 31);
+  }
+
+  #delete_btn:hover {			
+    background-color: gainsboro;		
+  }	
+
+  .footer_root {
+    padding: 10px;
+    color: rgb(245, 173, 6);
+    font-weight: bold;
+    text-align: left;
+    /* top: 350px; */
+    width: 100%;
+    position: absolute;
+    margin-top: 730px;
+    /* margin-bottom: 35px; */
+  }
+
+</style>
+
+<div class="card w-25 my_margin" id="userTitle" style="margin-bottom:10px; text-align: center">
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">
+          USER PROFILE | your id is: 
+          <text style="color: darkorange; font-weight: bold">{{user.id}}</text>
+        </h5>
+    </div>
+</div>
+
+<div class="card w-25 my_margin">
+  <div class="card-body" style="display: flex; justify-content: space-between">
+    <div style="display: flex; align-items: stretch; width: 100%">
+      <div>
+        {% include 'snippets/user_detail_snippet.html' %}
+      </div>
+      <div class='picture'>
+        >picture here<
+      </div>
+    </div>
+  </div>
+  <div style="padding-top: 5px">
+    <a href="{%url 'accounts:profile_update_view' user.id%}" 
+      class="btn btn-success"
+      type="button"
+      id="update_btn"
+      >
+        Update
+    </a>
+  </div>
+  <div style="padding-top: 5px">
+    <a href="{%url 'accounts:profile_delete_view' user.id%}" 
+      class="btn btn-success"
+      type="button"
+      id="delete_btn"
+      >
+        Delete
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_2 }}
+</div>
+{% endblock %}

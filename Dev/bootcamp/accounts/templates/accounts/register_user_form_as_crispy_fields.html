@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 
-{%block title%} User Login {%endblock%} 
+{%block title%} User Registration {%endblock%} 
 
 {% load static %}
 {%load crispy_forms_tags%} 
@@ -29,13 +29,9 @@
         width: 100%;
     }
     
-    
-    #messages {
-        background-color: rgb(172, 169, 169);
-        color: #fff;
-        padding: 10px;
-        margin-top: 10px;
-    } 
+    .card {
+        margin: 5px;
+    }
     
     .btn-success {
         display: block; 
@@ -59,31 +55,27 @@
       bottom: 35px; 
       width: 100%;
     }
+
     
 </style>
 <div class="card w-25 my_margin">
     <div class="card-body" >
-        <h5 class="card-title">Login</h5>
+        <h5 class="card-title">User Registration</h5>
         <form action="" method="post">
             {%csrf_token%}
-            {{form.username|as_crispy_field}} {{form.password|as_crispy_field}}
 
-            <div>
-                <br>
-                {% for message in messages %}
-                    <p class="card-title" id='messages'> <text class='message'>{{ message }}</p>
-                {% endfor %}
-                <br>
-            </div>
-            
-            <!-- customize messages -> include create message snippet -->
+            {{form.email|as_crispy_field}} {{form.password1|as_crispy_field}}
+            {{form.password2|as_crispy_field}} {{form.nickname|as_crispy_field}}
+            {{form.first_name|as_crispy_field}} {{form.last_name|as_crispy_field}}
 
-            <button type="submit" class="btn btn-success">Login</button>
+            {% include 'snippets/create_message.html' %}
+
+            <button type="submit" class="btn btn-success">Submit</button>
         </form>
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
-            <div class="d-flex justify-content-center links" >
-                Don't have an account? <a href="{% url 'accounts:register' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
+            <div class="d-flex justify-content-center links">
+                Already have an account? <a href="{% url 'accounts:login' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Login</a>
             </div>
         </div>
     </div>

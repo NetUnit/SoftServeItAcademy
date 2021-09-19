@@ -3,6 +3,7 @@ from django.db import models, IntegrityError, DataError
 from django.http.response import Http404
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy
+from django.shortcuts import get_object_or_404
 # Create your models here.
 
 
@@ -38,7 +39,7 @@ class CustomUser(AbstractUser):
 
     @staticmethod
     def get_user_by_id(user_id=None):
-        user = CustomUser.objects.get(pk=user_id)
+        user = get_object_or_404(CustomUser, pk=user_id)
         return user
 
     @staticmethod
@@ -49,8 +50,8 @@ class CustomUser(AbstractUser):
 
     @staticmethod
     def delete_user_by_id(user_id=None):
-        user = CustomUser.objects.all().filter(pk=user_id)
-        user.delete() if user else 0
+        user = get_object_or_404(CustomUser, pk=user_id)
+        return user
 
     # data here will be a dict(**kwargs from UI)
     def create_user(self, data):
@@ -135,6 +136,7 @@ class CustomUser(AbstractUser):
         user_exists = bool(match_by_email) + bool(match_by_nickname) > 0
         return True if user_exists else False
 
+    # in the case of AbstractBaseUser
     # def get_role_name(self):
     #     '''
     #         returns str role name
