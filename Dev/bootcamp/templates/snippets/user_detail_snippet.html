@@ -1,0 +1,41 @@
+<style>
+    .card-text {
+        color:rgb(3, 4, 31);
+        font-weight: bold;
+        padding-top: 1px;
+    }
+
+</style>
+
+<div style="padding-top: 5px">
+    <p class="card-text">
+        {% if user.username %}
+        Username: {{ user.username }}
+        {% else %}
+        not filled yet
+        {% endif %}
+    </p>
+    <p class="card-text">
+        {% if user.email %}
+        Email: {{ user.email }}
+        {% else %}
+        not filled yet
+        {% endif %}
+    </p>
+
+    <p class="card-text">
+        {% if user.first_name %}
+            Firstname: {{ user.first_name }}
+        {% else %}
+            not filled yet
+        {% endif %}
+    </p>
+
+    <p class="card-text">
+        {% if user.last_name %}
+        Lastname: {{ user.last_name }}
+        {% else %}
+        not filled yet
+        {% endif %}
+    </p>
+</div>
