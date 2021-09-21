@@ -1,3 +1,4 @@
+from django.views import generic
 from .models import CustomUser
 from django import forms
 
@@ -80,28 +81,9 @@ class LoginForm(AuthenticationForm):
     email = forms.EmailInput(attrs={'placeholder': 'type email..'})
     
 
-class CustomUserUpdateForm(CustomUserCreationForm):
-    
-    class Meta:
-        model = get_user_model()
-        fields = ('username', 'password1', 'password2', 'nickname', 'first_name', 'last_name')
-        required = ('username', 'password1', 'password2', 'nickname')
-
-        widgets = {
-            'username': forms.TextInput(attrs={'placeholder': 'type username..'}),
-            'password1': forms.PasswordInput(attrs={'placeholder': 'type password..1'}),
-            'password2': forms.PasswordInput(attrs={'placeholder': 'repeat the password..'}),
-            'first_name': forms.TextInput(attrs={'placeholder': 'type name..'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'type surname..'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(CustomUserUpdateForm, self).__init__(*args, **kwargs)
-
-        for field in self.Meta.required:
-            if not field in ('password1', 'password2'):
-                self.fields[field].required = False
-        
+class CustomUserUpdateForm:
+    pass
+ 
 ################################################################################################
 # class CustomUserCreationForm(forms.ModelForm):
     
@@ -215,3 +197,35 @@ class CustomUserUpdateForm(CustomUserCreationForm):
 #         if commit:
 #             user.save()
 #        return user
+
+### not valid form
+# class CustomUserUpdateForm(CustomUserCreationForm):
+    
+#     new_password = forms.CharField(label='New Password', widget=forms.PasswordInput)
+
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('username', 'new_password', 'password1', 'password2', 'first_name', 'last_name')
+#         required = ('username', 'new_password', 'password1', 'password2')
+
+#         labels = {
+#             'username': 'Username',
+#             'password1': 'Password1..',
+#             'password2': 'Password2..',
+#         }
+
+#         widgets = {
+#             'username': forms.TextInput(attrs={'placeholder': 'type username..'}),
+#             'password1': forms.PasswordInput(attrs={'placeholder': 'type password..1'}),
+#             'password2': forms.PasswordInput(attrs={'placeholder': 'repeat the password..'}),
+#             'first_name': forms.TextInput(attrs={'placeholder': 'type name..'}),
+#             'last_name': forms.TextInput(attrs={'placeholder': 'type surname..'}),
+#         }
+
+#     def __init__(self, new_password = new_password, *args, **kwargs):
+#         super(CustomUserUpdateForm, self).__init__(*args, **kwargs)
+
+#         for field in self.Meta.required:
+#             self.fields[field].required = True
+        
+#         self.new_password = new_password

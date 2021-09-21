@@ -46,29 +46,45 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'manufacturer:manufacturer_list_view' %}">Shop Manufacturers</a>
                 </li>
+
+                {% if user.is_authenticated %}
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Resources
+                        Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Carfax</a>
-                        <a class="dropdown-item" href="#">Carproof</a>
+                        <a class="dropdown-item" href="{% url 'accounts:profile'%}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'accounts:edit_profile_page_view' user.id%}">Edit Profie CBW</a>
+                        <a class="dropdown-item" href="{% url 'accounts:profile_update_view' user.id%}">Edit Profie FBW</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Omnivic</a>
+                        <a class="dropdown-item" href="#">Something Else</a>
                     </div>
                 </li>
+
+                {% endif %}
+
                 <li class="cart">
                     <a class="nav-link" href="{%url 'orders:cart_view' %}">Shop Cart</a>
                 </li>
                 <li class="contact">
                     <a class="nav-link" href="{%url 'contact'  %}">Contact</a>
                 </li>
+
+                <li class="logout">
+                    <a class="nav-link btn btn-primary text-white" type="button" href="{%url  'accounts:logout' %}">Log Out</a>
+                </li>
+
+                {% if not user.is_authenticated %}
+
                 <li class="login">
                     <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login' %}">Login</a>                  
                 </li>
                 <li class="register">
                     <a class="nav-link btn btn-danger text-white" type="button" href="{%url 'accounts:register' %}">Register</a>
                 </li>
+                {% endif %}
+
             </ul>
         </div>
 
