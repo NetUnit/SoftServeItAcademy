@@ -1,0 +1,35 @@
+{%extends 'base.html'%}
+
+{%block title%} User Update {%endblock%} 
+
+{%block content%}
+
+{% if user.is_authenticated  %}
+
+    <h1> Edit Profile ... </h1>
+    <br/><br/>
+        
+    <div class="form-group">
+<form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {{form.as_p}}
+
+            <button class="btn btn-secondary">Update</button>
+    </div>
+
+{% else %}
+
+    U're not allowed here
+
+{% endif %}
+
+
+<div class="footer_app">
+    app: {{ app_name_2 }}
+</div>
+<div class="footer_root">
+    root: {{ root }}
+</div>
+
+{%endblock%}

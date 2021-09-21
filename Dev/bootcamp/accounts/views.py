@@ -11,7 +11,8 @@ from django.contrib.auth import get_user_model
 
 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
+
 
 
 from django.contrib.auth import views as auth_views
@@ -115,6 +116,12 @@ def login_user_view(request, *args, **kwargs):
         print(err)
         pass
 
+################# *** Contact *** ################### +++
+def logout_view(request, *args, **kwargs):
+    logout(request)
+    context = {}
+    messages.success(request, f'U\'ve been successfully logged out')
+    return render(request, 'accounts/logout.html', context)
 
 ####################### *** Profile *** #######################
 
@@ -129,20 +136,31 @@ def profile_user_view(request, *args, **kwargs):
     # return HttpResponse(f'<h2> {user}, user is_authenticated: {auth} <h2>')
 
 ####################### *** Update User*** #######################
-
+## form isn't valid
 def profile_update_view(request, user_id, *args, **kwargs):
     try:
         form = CustomUserUpdateForm(request.POST or None)
         print(form.is_valid())
         if form.is_valid():
             data = form.cleaned_data
-            print(data)
+
+            # get user old password
+            db_password = CustomUser.get_user_by_id(user_id).password
+            print(db_password)
+
+            input_password = data.get('new_password')
+            print(input_password)
+            #db_password = user.password
+            #input_password = data.get('password')
+            #print(db_password==input_password)
+
+
             #user = CustomUser.get_user_by_id(user_id)
-            #return HttpResponse(f'<h2> This is updated user: {user} with {data} </h2>')
+            #print(user)
+            #updated_user = CustomUser.update_user_by_id(user_id, data)
+            return HttpResponse(f'<h2> This is updated user with {data} | {db_password} {input_password} </h2>')
 
             
-            # username = data.get('username')
-            # email = data.get('email')
             # messages.success(
             #     request,
             #     f'U\'ve just updated profile with: {username}, password: {email} (^_-)≡☆'
@@ -159,12 +177,28 @@ def profile_update_view(request, user_id, *args, **kwargs):
         print(err)
         pass
 
-    # user = CustomUser.update_user_by_id(user_id, data)
-####################### *** Delete User*** #######################
+## CBW edit Profile
+from django.views.generic import UpdateView
+class  EditProfilePageView(generic.UpdateView):
+    model = get_user_model()
+    template_name = 'accounts/edit_profile_page_CBW.html'
+    success_url = '/accounts/login/'
+    fields = ('email', 'username', 'password', 'first_name', 'last_name')
 
+def set_password(request, *args, **kwargs):
+    user = request.user
+    auth = request.user.is_authenticated
+    password = 'Passw0rd20022016_'
+
+    #user.set_password(password)
+
+    context = {'user': user, 'auth': auth, 'password': password}
+    return HttpResponse(f'<h2> {context} <h2>')
+    
+
+####################### *** Delete User*** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
-    user = CustomUser.delete_user_by_id(user_id)
-    return HttpResponse(f'{user}')
+    return CustomUser.delete_user_by_id(user_id)
 
 ################# *** Contact *** ###################
 def contact_view(request, *args, **kwargs):
