@@ -46,5 +46,4 @@ urlpatterns = [
     ## update 2
     path('<int:pk>/edit_profile_page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),        ## ++
     
-
 ]

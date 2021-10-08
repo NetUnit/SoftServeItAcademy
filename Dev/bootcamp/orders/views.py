@@ -70,6 +70,7 @@ def cart_view(request, *args, **kwargs):
     }
     
     return render (request, 'orders/cart.html', context)
+    
 
 # payment process view
 def process_payment_view(request, *args, **kwargs):

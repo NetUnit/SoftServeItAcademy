@@ -96,7 +96,7 @@ def login_user_view(request, *args, **kwargs):
 
             # user.set_password('password') ## !!! password should be encrypted
             
-            user = authenticate(request, username=email, password=password)
+            user = authenticate(request, username=email, password=password) ## None
             print(request.user.is_authenticated)
 
             messages.success(

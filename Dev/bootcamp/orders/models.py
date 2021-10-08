@@ -70,7 +70,7 @@ class Order(models.Model):
             ]) > 0
         return [
             order for order in Order.objects.all()
-            ] if condition else 0
+            ] if condition else list()
 
     # 5
     @staticmethod

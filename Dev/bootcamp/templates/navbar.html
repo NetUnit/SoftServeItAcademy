@@ -62,8 +62,6 @@
                     </div>
                 </li>
 
-                {% endif %}
-
                 <li class="cart">
                     <a class="nav-link" href="{%url 'orders:cart_view' %}">Shop Cart</a>
                 </li>
@@ -75,7 +73,7 @@
                     <a class="nav-link btn btn-primary text-white" type="button" href="{%url  'accounts:logout' %}">Log Out</a>
                 </li>
 
-                {% if not user.is_authenticated %}
+                {% else %}
 
                 <li class="login">
                     <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login' %}">Login</a>                  
