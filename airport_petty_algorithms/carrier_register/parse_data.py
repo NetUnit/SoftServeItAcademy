@@ -104,8 +104,8 @@ def parse_string(*args, **kwargs):
                 
                 ## this condition will avoid adding Nones to nested dict values
                 ## avoid: TypeError: unsupported operand type(s) for +: 'int' and 'NoneType'
-                condition3 = reestr_sheet[f'F{i}'].value != None
-                items[reestr_sheet[f'L{i}'].value.lower()].append(reestr_sheet[f'F{i}'].value) if condition3 else 0
+                not_nones_cells = reestr_sheet[f'L{i}'].value != None and reestr_sheet[f'F{i}'].value != None
+                items[reestr_sheet[f'L{i}'].value.lower()].append(reestr_sheet[f'F{i}'].value) if not_nones_cells else 0
                     
     ## getting collected amount values from sheet reestr by carrier
     ## returns dict with the next data: key - carrier, value - daily amount in kgs
