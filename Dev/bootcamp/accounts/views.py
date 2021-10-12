@@ -81,6 +81,8 @@ class RegisterView(CreateView):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
+    success_url = '/accounts/login-success/'
+    # success_url = reverse_lazy('/products/list/')
 
 ## Function-based View
 def login_user_view(request, *args, **kwargs):
@@ -96,7 +98,8 @@ def login_user_view(request, *args, **kwargs):
 
             # user.set_password('password') ## !!! password should be encrypted
             
-            user = authenticate(request, username=email, password=password) ## None
+            user = authenticate(request, email=email, password=password) ## None
+            print(user)
             print(request.user.is_authenticated)
 
             messages.success(
@@ -116,12 +119,18 @@ def login_user_view(request, *args, **kwargs):
         print(err)
         pass
 
-################# *** Contact *** ################### +++
+################# *** Login/Logout Views HTMLS*** ################### +++
 def logout_view(request, *args, **kwargs):
     logout(request)
     context = {}
     messages.success(request, f'U\'ve been successfully logged out')
-    return render(request, 'accounts/logout.html', context)
+    return render(request, 'accounts/logout_success.html', context)
+
+
+def login_view(request, *args, **kwargs):
+    context = {}
+    messages.success(request, f'U\'ve been successfully logged in')
+    return render(request, 'accounts/login_success.html', context)
 
 ####################### *** Profile *** #######################
 
