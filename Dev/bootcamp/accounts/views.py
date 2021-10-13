@@ -81,8 +81,10 @@ class RegisterView(CreateView):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
-    success_url = '/accounts/login-success/'
-    # success_url = reverse_lazy('/products/list/')
+    #get_redirect_url('/accounts/login-success/')
+    
+    #success_url = '/accounts/login-success/'
+    #get_success_url = '/accounts/login-success/'
 
 ## Function-based View
 def login_user_view(request, *args, **kwargs):
@@ -93,12 +95,12 @@ def login_user_view(request, *args, **kwargs):
         if form.is_valid():
             user = form.cleaned_data
 
-            email = user.get('username')
+            email = user.get('email')
             password = user.get('password')
 
             # user.set_password('password') ## !!! password should be encrypted
             
-            user = authenticate(request, email=email, password=password) ## None
+            user = authenticate(request, username=email, password=password) ## None
             print(user)
             print(request.user.is_authenticated)
 
@@ -106,7 +108,7 @@ def login_user_view(request, *args, **kwargs):
                 request,
                 f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
                 )
-            return redirect ('/accounts/login/')
+            return redirect ('/accounts/login2/')
         
         form = CustomUserLoginForm()
         context = {'form': form}
@@ -207,7 +209,19 @@ def set_password(request, *args, **kwargs):
 
 ####################### *** Delete User*** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
-    return CustomUser.delete_user_by_id(user_id)
+    user = get_object_or_404(CustomUser, pk=user_id)
+    #return redirect ('/accounts/register/')
+    #CustomUser.delete_user_by_id(user_id)
+    # return HttpResponse(f'<h2> {user}, user will be deleted <h2>')
+    context = {'user': user}
+    return render (request, 'accounts/delete_inquiry.html', context)
+
+import time
+def profile_delete_submit(request, user_id, *args, **kwargs):
+    CustomUser.delete_user_by_id(user_id)
+    time.sleep(1.5)
+    return redirect ('/')
+
 
 ################# *** Contact *** ###################
 def contact_view(request, *args, **kwargs):

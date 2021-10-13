@@ -214,7 +214,7 @@ def product_update_view(request, product_id,  *args, **kwargs):
         
         for item in form.fields:
             not_title = form.fields[item] != 'title'
-            form.field[item].required = False if not_title else 0
+            form.fields[item].required = False if not_title else 0
 
         if form.is_valid():
             data = form.cleaned_data
