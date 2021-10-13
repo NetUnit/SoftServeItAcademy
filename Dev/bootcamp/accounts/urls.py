@@ -11,7 +11,6 @@ from accounts.views import (
     #########
     login_user_view,
     LoginView,
-    set_password,
     ##########
     logout_view,
     login_view,
@@ -21,6 +20,8 @@ from accounts.views import (
     ########
     profile_delete_view,
     profile_delete_submit,
+    ########
+    show_info,
 )
 
 app_name = 'accounts'
@@ -30,14 +31,13 @@ urlpatterns = [
     re_path(r'^accounts/list/$', accounts_list_view, name='accounts_list_view'),
     
     ######################### *** REGISTER FBV + CBV *** #########################
-    re_path(r'^accounts/register/$', register_user_view, name='register'),
-    re_path(r'^accounts/register2/$', RegisterView.as_view(), name='register2'), ## CreateView
+    re_path(r'^accounts/register/$', register_user_view, name='register'),                                   ## +++ FB Registration
+    re_path(r'^accounts/register2/$', RegisterView.as_view(), name='register2'),                             ## +++ CreateView
 
     ######################### *** LOGIN FBV + CBV *** #######################
     re_path(r'^accounts/login/$', LoginView.as_view(), name='login'),
-    re_path(r'^accounts/login2/$', login_user_view, name='login-fbw'),                                       ## authenticate doesn't work - set_apssword()
-    re_path(r'^accounts/set-password/$', set_password, name='set_password'), 
-    re_path(r'^accounts/login-success/$', login_view, name='login-success'),
+    re_path(r'^accounts/login2/$', login_user_view, name='login-fbw'),                                       ##  -- authenticate doesn't work - set_apssword()
+    re_path(r'^accounts/login-success/$', login_view, name='login-success'),                                 ## +++ 
     
     ######################### *** LOGOUT CBV *** #######################
     re_path(r'^accounts/log-out/', logout_view, name='logout'),                                              ## ++
@@ -52,5 +52,8 @@ urlpatterns = [
     ######################### *** UPDATE CBV *** #######################
     path(r'<int:pk>/edit-profile-page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),        ## ++
     re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'),  ## -- redefine forms.Form
+
+    ######### *** show info *** #########
+    re_path(r'^accounts/show-info/$', show_info, name='show_info'),
     
 ]
