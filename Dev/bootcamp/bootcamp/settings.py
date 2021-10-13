@@ -60,7 +60,7 @@ INSTALLED_APPS = [
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_URL = '/login/'
-LOGIN_URL_REDIRECT = '/'
+LOGIN_REDIRECT_URL = '/accounts/login-success/'
 LOGOUT_URL = '/logout/'
 
 

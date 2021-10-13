@@ -56,6 +56,7 @@ class CustomUser(AbstractUser):
     # data here will be a dict(**kwargs from UI)
     def create_user(self, data):
         user = CustomUser.objects.create(**data) if data != None else 0
+        user.set_password(user.password)
         user.save()
         return user
 

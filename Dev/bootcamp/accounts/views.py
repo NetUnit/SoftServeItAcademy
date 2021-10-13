@@ -34,14 +34,14 @@ def accounts_list_view(request, *args, **kwargs):
 ## Function-based View
 def register_user_view(request, *args, **kwargs):
     try:
-        form = CustomUserCreationForm(request.POST or None)
-        print(form.is_valid())
-
+        form = CustomUserCreationForm(request.POST)
+        #print(form.is_valid())
         if form.is_valid():
             user = form.save(commit=False)
 
             # get the data here
             data = form.cleaned_data
+            #print(data)
             # assighn single password
             data['password'] = data.get('password2')
             # del password1/password2 pairs
@@ -50,12 +50,13 @@ def register_user_view(request, *args, **kwargs):
 
             user = CustomUser()
             new_user = user.create_user(data)
-            #print(new_user)
+            #new_user.set_password(data['password'])
+            print(new_user)
             # update db data - Custom.user(update)
 
             messages.success(
                 request,
-                f'U\'ve just created the next user: {data} (^_-)≡☆'
+                f'U\'ve just created the next user: {new_user.nickname} (^_-)≡☆'
                 )
             return redirect ('/accounts/register/')
 
@@ -81,45 +82,46 @@ class RegisterView(CreateView):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
-    #get_redirect_url('/accounts/login-success/')
-    
-    #success_url = '/accounts/login-success/'
-    #get_success_url = '/accounts/login-success/'
+
 
 ## Function-based View
-def login_user_view(request, *args, **kwargs):
-    try:
-        form = CustomUserLoginForm(request.POST or None)
-        print('Form is valid') if form.is_valid() else 'Form is NOT valid'
+# def login_user_view(request, *args, **kwargs):
+#     try:
+#         form = CustomUserLoginForm(request.POST or None)
+#         print('Form is valid') if form.is_valid() else 'Form is NOT valid'
 
-        if form.is_valid():
-            user = form.cleaned_data
+#         if form.is_valid():
+#             user = form.cleaned_data
 
-            email = user.get('email')
-            password = user.get('password')
+#             email = user.get('email')
+#             password = user.get('password')
 
-            # user.set_password('password') ## !!! password should be encrypted
+#             # user.set_password('password') ## !!! password should be encrypted
             
-            user = authenticate(request, username=email, password=password) ## None
-            print(user)
-            print(request.user.is_authenticated)
+#             user = authenticate(request, username=email, password=password) ## None
+#             print(user)
+#             print(request.user.is_authenticated)
 
-            messages.success(
-                request,
-                f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
-                )
-            return redirect ('/accounts/login2/')
+#             messages.success(
+#                 request,
+#                 f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
+#                 )
+#             return redirect ('/accounts/login2/')
         
-        form = CustomUserLoginForm()
-        context = {'form': form}
+#         form = CustomUserLoginForm()
+#         context = {'form': form}
 
-    #    return HttpResponse('<h2> This is login </h2>')
-        return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
-    #    return render (request, 'accounts/login_form_as_p.html', context)
+#     #    return HttpResponse('<h2> This is login </h2>')
+#         return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
+#     #    return render (request, 'accounts/login_form_as_p.html', context)
 
-    except Exception as err:
-        print(err)
-        pass
+#     except Exception as err:
+#         print(err)
+#         pass
+
+def login_user_view(request, *args, **kwargs):
+    pass
+
 
 ################# *** Login/Logout Views HTMLS*** ################### +++
 def logout_view(request, *args, **kwargs):
@@ -139,7 +141,7 @@ def login_view(request, *args, **kwargs):
 def profile_user_view(request, *args, **kwargs):
     user = request.user
     auth = request.user.is_authenticated
-    
+
     context = {'user': user, 'auth': auth}
 
     # return render (request, 'accounts/profile.html', context)
@@ -195,16 +197,6 @@ class  EditProfilePageView(generic.UpdateView):
     template_name = 'accounts/edit_profile_page_CBW.html'
     success_url = '/accounts/login/'
     fields = ('email', 'username', 'password', 'first_name', 'last_name')
-
-def set_password(request, *args, **kwargs):
-    user = request.user
-    auth = request.user.is_authenticated
-    password = 'Passw0rd20022016_'
-
-    #user.set_password(password)
-
-    context = {'user': user, 'auth': auth, 'password': password}
-    return HttpResponse(f'<h2> {context} <h2>')
     
 
 ####################### *** Delete User*** #######################
@@ -226,3 +218,18 @@ def profile_delete_submit(request, user_id, *args, **kwargs):
 ################# *** Contact *** ###################
 def contact_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
+
+
+
+#### checker
+def show_info(request):
+    user = request.user
+    try:
+        instance = auth_views.LoginView
+        #print(instance.get_success_url(instance))
+        # x = instance()
+        # y = x.get_success_url(request)
+        # print(y)
+        return HttpResponse(f'<h2> {instance.__dict__} <h2>')
+    except Exception as err:
+        print(err)
