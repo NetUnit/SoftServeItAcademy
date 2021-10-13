@@ -18,7 +18,9 @@ from accounts.views import (
     #########
     profile_user_view,
     profile_update_view,
+    ########
     profile_delete_view,
+    profile_delete_submit,
 )
 
 app_name = 'accounts'
@@ -42,10 +44,13 @@ urlpatterns = [
 
     ######################### *** profile FBW ***#######################
     re_path(r'^accounts/profile/$', profile_user_view, name='profile'),                                      ## ++
-    re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'), ## -- redefine forms.Form
-    re_path(r'^accounts/profile-delete/(?P<user_id>\d+)/$', profile_delete_view, name='profile_delete_view'), ## ++
+
+    ######################### *** profile DELETE FBW ***#######################
+    re_path(r'^accounts/profile-delete/(?P<user_id>\d+)/$', profile_delete_view, name='profile_delete_view'),            ## ++
+    re_path(r'^accounts/profile-delete-submit/(?P<user_id>\d+)/$', profile_delete_submit, name='profile_delete_submit'), ## ++
 
     ######################### *** UPDATE CBV *** #######################
     path(r'<int:pk>/edit-profile-page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),        ## ++
+    re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'),  ## -- redefine forms.Form
     
 ]

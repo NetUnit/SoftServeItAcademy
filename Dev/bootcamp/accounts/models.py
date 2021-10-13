@@ -51,7 +51,7 @@ class CustomUser(AbstractUser):
     @staticmethod
     def delete_user_by_id(user_id=None):
         user = get_object_or_404(CustomUser, pk=user_id)
-        return user
+        user.delete()
 
     # data here will be a dict(**kwargs from UI)
     def create_user(self, data):
