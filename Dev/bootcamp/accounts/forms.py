@@ -229,3 +229,36 @@ class CustomUserUpdateForm:
 #             self.fields[field].required = True
         
 #         self.new_password = new_password
+
+User = get_user_model()
+
+class LoginFormJmitch(forms.Form):
+    
+    email = forms.EmailField(widget = forms.EmailInput(attrs={'placeholder': 'type email..'}))
+    # username = forms.CharField(widget = forms.TextInput(attrs={'placeholder': 'type username..'}))
+    
+    password = forms.CharField(
+        widget = forms.PasswordInput(
+            attrs = {
+                "class": "form-control",
+                "id": "user-password"
+            }
+        )
+    )
+    
+    # def clean(self):
+    #     username = self.cleaned_data.get('username')
+    #     password = self.cleaned_data.get('password')
+
+    def clean_username(self):
+        email = self.cleaned_data.get('email')
+        ## thisIsMyUsername == thisismyusername
+        ## capitalization doesn't matter
+        qs = User.objects.filter(username_iexact=email)
+        if not qs.exists():
+            raise forms.ValidationError('This is an invalid user')
+
+        return email
+
+
+    
