@@ -20,6 +20,9 @@ from django.views import generic
 from django.urls import reverse_lazy, reverse
 
 
+from datetime import datetime as dt
+from datetime import timedelta as add_minutes
+
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
@@ -119,29 +122,113 @@ class LoginView(auth_views.LoginView):
 #         print(err)
 #         pass
 
+from accounts.forms import LoginFormJmitch
+
+
+class LoginCounter:
+
+    login_attempt = 0 
+    leftover = dt.now(tz=None)
+
+    def __init__(self, login_attempt=login_attempt):
+        LoginCounter.login_attempt += 1
+        self.login_attempt = LoginCounter.login_attempt
+
+    def count_attempt(self, attempt=None):
+        max_attempts = self.login_attempt > 3
+        if max_attempts:
+            LoginCounter.login_attempt = 0
+            self.login_attempt = 0
+            return 'This is exception'
+        else:
+            return self.login_attempt
+
+    def out_of_attempts(self):
+        LoginCounter.leftover += add_minutes(minutes=5)
+        return self.leftover
+        #return LoginCounter.leftover
+
 def login_user_view(request, *args, **kwargs):
-    pass
+    try:
+        form = LoginFormJmitch(request.POST or None)
+        print(LoginCounter.leftover) ### if LoginCounter.leftover < dt.now() --> pass, else exit() --->redirect
+        if form.is_valid():
+            #username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+
+            user = authenticate(request, username=email, password=password)
+
+            if user == None:
+                attempt = request.session.get('attempt') or 0
+                login_attempt = LoginCounter()
+                status_login = login_attempt.count_attempt(attempt)
+                # print(status_login, LoginCounter.login_attempt)
+                if status_login == 'This is exception':
+                    return redirect ('/accounts/login-out-of-attempts/')
+                else:
+                    return redirect ('/accounts/login-failed/')
+
+
+            print(user.is_authenticated)
+            messages.success(
+                request,
+                f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
+                )
+
+            return HttpResponse(f'<h2> This is login2 view {email} {password} {user.is_authenticated} <h2>') ## {request.__dict__} 
+            
+        
+        form = LoginFormJmitch()
+        context = {'form': form}
+
+        return render (request, 'accounts/login2.html', context)
+
+    except Exception as err:
+        print(err)
+        pass
 
 
 ################# *** Login/Logout Views HTMLS*** ################### +++
-def logout_view(request, *args, **kwargs):
+def logout_success_view(request, *args, **kwargs):
     logout(request)
     context = {}
     messages.success(request, f'U\'ve been successfully logged out')
     return render(request, 'accounts/logout_success.html', context)
 
-
-def login_view(request, *args, **kwargs):
-    context = {}
+def login_success_view(request, *args, **kwargs):
     messages.success(request, f'U\'ve been successfully logged in')
-    return render(request, 'accounts/login_success.html', context)
+    return render(request, 'accounts/login_success.html', context={})
+
+
+def login_failed_view(request, *args, **kwargs):
+    try:
+        attempts = 3 - LoginCounter.login_attempt
+        context = {'attempts': attempts}
+        messages.success(request, f'Seem\'s like that username or email was wrong (⇀‸↼‶)')
+        attempts_left = attempts != 0
+        if attempts_left:
+            return render(request, 'accounts/login_failed.html', context)
+        else:
+            out_of_attempts = LoginCounter()
+            print(out_of_attempts, LoginCounter.login_attempt)
+            leftover = out_of_attempts.out_of_attempts()
+            
+            context = {'leftover': leftover}
+            print(LoginCounter.leftover)
+            return render(request, 'accounts/login_failed.html', context)
+    except Exception as err:
+        print(err)
+        pass
+
+def login_out_of_attempts_view(request, *args, **kwargs):
+    messages.success(request, f'U\'re out of attempts, wait for a while (⇀‸↼‶)')
+    return render(request, 'accounts/login_failed.html', context={})
 
 ####################### *** Profile *** #######################
-
 def profile_user_view(request, *args, **kwargs):
     user = request.user
     auth = request.user.is_authenticated
-
     context = {'user': user, 'auth': auth}
 
     # return render (request, 'accounts/profile.html', context)
