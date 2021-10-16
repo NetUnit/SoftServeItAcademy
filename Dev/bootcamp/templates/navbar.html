@@ -8,15 +8,29 @@
     border-bottom: 2px solid limegreen;
     }
 
-    .login {
-        width: 75px;
+    .login_fbv {
+        width: 110px;
         margin: 2px;
     }
 
-    .register {
-        width: 75px;
+    .login_cbv {
+        width: 110px;
+        margin: 2px;
+        color: mediumspringgreen;
+        text-decoration-color: mediumspringgreen;
+    }
+
+    .register_fbv {
+        width: 110px;
         margin: 2px;
     }
+
+    .register_cbv {
+        width: 110px;
+        margin: 2px;
+        color: mediumspringgreen;
+    }
+
 
 </style>
 
@@ -74,15 +88,20 @@
                 </li>
 
                 {% else %}
+                <li class="login_fbv">
+                    <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login_fbv' %}">Login FBW</a>                  
+                </li>
+                <li class="login_cbv">
+                    <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login_cbv' %}">Login CBW</a>                  
+                </li>
+                <li class="register_fbv">
+                    <a class="nav-link btn btn-danger text-white" type="button" href="{%url 'accounts:register_fbv' %}">SignUp FBW</a>
+                </li>
+                <li class="register_cbv">
+                    <a class="nav-link btn btn-danger text-white" type="button" href="{%url 'accounts:register_cbv' %}">SignUp CBW</a>
+                </li>
 
-                <li class="login">
-                    <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login' %}">Login</a>                  
-                </li>
-                <li class="register">
-                    <a class="nav-link btn btn-danger text-white" type="button" href="{%url 'accounts:register' %}">Register</a>
-                </li>
                 {% endif %}
-
             </ul>
         </div>
 

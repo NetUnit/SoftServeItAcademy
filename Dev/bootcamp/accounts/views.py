@@ -9,16 +9,12 @@ from django.views.generic import CreateView, FormView, DetailView, View, UpdateV
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 
-
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, get_user_model
-
-
 
 from django.contrib.auth import views as auth_views
 from django.views import generic
 from django.urls import reverse_lazy, reverse
-
 
 from datetime import datetime as dt
 from datetime import timedelta as add_minutes
@@ -27,36 +23,25 @@ from datetime import timedelta as add_minutes
 def panda_link_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
 
-
 ############################## *** Full List *** ########################
 def accounts_list_view(request, *args, **kwargs):
     return HttpResponse('<h2> Accounts list should be here </h2>')
-
 
 ################# *** Registration *** ####################
 ## Function-based View
 def register_user_view(request, *args, **kwargs):
     try:
-        form = CustomUserCreationForm(request.POST)
-        #print(form.is_valid())
+        form = CustomUserCreationForm(request.POST or None)
         if form.is_valid():
             user = form.save(commit=False)
-
-            # get the data here
             data = form.cleaned_data
-            #print(data)
             # assighn single password
             data['password'] = data.get('password2')
             # del password1/password2 pairs
             [data.pop(f'password{i}') for i in range(1, 3)]
-            #print(data)
-
             user = CustomUser()
+            # encrypted password will be setup autmatically via model
             new_user = user.create_user(data)
-            #new_user.set_password(data['password'])
-            print(new_user)
-            # update db data - Custom.user(update)
-
             messages.success(
                 request,
                 f'U\'ve just created the next user: {new_user.nickname} (^_-)≡☆'
@@ -70,7 +55,6 @@ def register_user_view(request, *args, **kwargs):
     except Exception as err:
         print(err)
         pass
-## will use this on the lesson#5 authentication
 
 ## Class-based View
 from django.views.generic import CreateView
@@ -86,49 +70,10 @@ class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
 
-
-## Function-based View
-# def login_user_view(request, *args, **kwargs):
-#     try:
-#         form = CustomUserLoginForm(request.POST or None)
-#         print('Form is valid') if form.is_valid() else 'Form is NOT valid'
-
-#         if form.is_valid():
-#             user = form.cleaned_data
-
-#             email = user.get('email')
-#             password = user.get('password')
-
-#             # user.set_password('password') ## !!! password should be encrypted
-            
-#             user = authenticate(request, username=email, password=password) ## None
-#             print(user)
-#             print(request.user.is_authenticated)
-
-#             messages.success(
-#                 request,
-#                 f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
-#                 )
-#             return redirect ('/accounts/login2/')
-        
-#         form = CustomUserLoginForm()
-#         context = {'form': form}
-
-#     #    return HttpResponse('<h2> This is login </h2>')
-#         return render (request, 'accounts/login_user_form_as_crispy_fields.html', context)
-#     #    return render (request, 'accounts/login_form_as_p.html', context)
-
-#     except Exception as err:
-#         print(err)
-#         pass
-
-from accounts.forms import LoginFormJmitch
-
-
 class LoginCounter:
 
-    login_attempt = 0 
-    leftover = dt.now(tz=None)
+    login_attempt = 0;
+    leftover = dt.now(tz=None);
 
     def __init__(self, login_attempt=login_attempt):
         LoginCounter.login_attempt += 1
@@ -146,97 +91,92 @@ class LoginCounter:
     def out_of_attempts(self):
         LoginCounter.leftover += add_minutes(minutes=5)
         return self.leftover
-        #return LoginCounter.leftover
+        # return LoginCounter.leftover ## same
 
+import getpass
+## Function-based View
 def login_user_view(request, *args, **kwargs):
+    
+    elapsed_time = LoginCounter.leftover < dt.now()
+    if not elapsed_time and request.method == 'GET':
+        return redirect ('/accounts/login-failed/')
+
     try:
-        form = LoginFormJmitch(request.POST or None)
-        print(LoginCounter.leftover) ### if LoginCounter.leftover < dt.now() --> pass, else exit() --->redirect
+        form = CustomUserLoginForm(request.POST or None)
         if form.is_valid():
             #username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
 
             user = authenticate(request, username=email, password=password)
+            print(user.__dict__)
+            login(request, user)
+            messages.success(
+                request,
+                f'U\'ve just successfully logined (^_-)≡☆'
+                )
+            return redirect('/accounts/login-success/')
 
             if user == None:
                 attempt = request.session.get('attempt') or 0
-                login_attempt = LoginCounter()
-                status_login = login_attempt.count_attempt(attempt)
-                # print(status_login, LoginCounter.login_attempt)
-                if status_login == 'This is exception':
-                    return redirect ('/accounts/login-out-of-attempts/')
-                else:
-                    return redirect ('/accounts/login-failed/')
+                login_attempt = LoginCounter(attempt)
+                return redirect('/accounts/login-failed/')
 
-
-            print(user.is_authenticated)
-            messages.success(
-                request,
-                f'U\'ve just logined with the next email: {email}, password: {password} (^_-)≡☆'
-                )
-
-            return HttpResponse(f'<h2> This is login2 view {email} {password} {user.is_authenticated} <h2>') ## {request.__dict__} 
-            
-        
-        form = LoginFormJmitch()
+        form = CustomUserLoginForm()
         context = {'form': form}
 
-        return render (request, 'accounts/login2.html', context)
+        return render (request, 'accounts/login_form_as_p.html', context)
 
     except Exception as err:
         print(err)
         pass
-
 
 ################# *** Login/Logout Views HTMLS*** ################### +++
 def logout_success_view(request, *args, **kwargs):
     logout(request)
     context = {}
-    messages.success(request, f'U\'ve been successfully logged out')
+    messages.success(request, f'U\'ve been successfully logged out (　ﾟ)(　　)')
     return render(request, 'accounts/logout_success.html', context)
 
 def login_success_view(request, *args, **kwargs):
-    messages.success(request, f'U\'ve been successfully logged in')
+    messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
-
 
 def login_failed_view(request, *args, **kwargs):
     try:
         attempts = 3 - LoginCounter.login_attempt
+        leftover = LoginCounter.leftover
         context = {'attempts': attempts}
-        messages.success(request, f'Seem\'s like that username or email was wrong (⇀‸↼‶)')
-        attempts_left = attempts != 0
-        if attempts_left:
+        # conditions of elapsed time login trial & 3 attempts
+        elapsed_time = leftover < dt.now()
+        attempts_left = attempts > 0
+
+        if not elapsed_time:
+            leftover = leftover.strftime('%d.%m.%Y %H:%M:%S')
+            return render(request, 'accounts/login_failed.html', context={'leftover': leftover})
+
+        if attempts_left and elapsed_time:
+            messages.error(request, f'Seem\'s like that username or email was wrong (⇀‸↼‶)')
             return render(request, 'accounts/login_failed.html', context)
-        else:
+
+        if not attempts_left and elapsed_time:
             out_of_attempts = LoginCounter()
-            print(out_of_attempts, LoginCounter.login_attempt)
-            leftover = out_of_attempts.out_of_attempts()
-            
-            context = {'leftover': leftover}
-            print(LoginCounter.leftover)
-            return render(request, 'accounts/login_failed.html', context)
+            leftover = out_of_attempts.out_of_attempts().strftime('%d.%m.%Y %H:%M:%S')
+            messages.error(request, f'U\'re out of attempts ヾ( ￣O￣)ツ')
+            return render(request, 'accounts/login_failed.html', context={'leftover': leftover})
     except Exception as err:
         print(err)
         pass
-
-def login_out_of_attempts_view(request, *args, **kwargs):
-    messages.success(request, f'U\'re out of attempts, wait for a while (⇀‸↼‶)')
-    return render(request, 'accounts/login_failed.html', context={})
 
 ####################### *** Profile *** #######################
 def profile_user_view(request, *args, **kwargs):
     user = request.user
     auth = request.user.is_authenticated
     context = {'user': user, 'auth': auth}
-
-    # return render (request, 'accounts/profile.html', context)
     return render (request, 'accounts/user_detail.html', context)
-    # return HttpResponse(f'<h2> {user}, user is_authenticated: {auth} <h2>')
 
 ####################### *** Update User*** #######################
-## form isn't valid
+## form isn't valid ### ------
 def profile_update_view(request, user_id, *args, **kwargs):
     try:
         form = CustomUserUpdateForm(request.POST or None)
@@ -277,7 +217,7 @@ def profile_update_view(request, user_id, *args, **kwargs):
         print(err)
         pass
 
-## CBW edit Profile
+## cbv edit Profile
 from django.views.generic import UpdateView
 class  EditProfilePageView(generic.UpdateView):
     model = get_user_model()
@@ -285,13 +225,9 @@ class  EditProfilePageView(generic.UpdateView):
     success_url = '/accounts/login/'
     fields = ('email', 'username', 'password', 'first_name', 'last_name')
     
-
-####################### *** Delete User*** #######################
+####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
     user = get_object_or_404(CustomUser, pk=user_id)
-    #return redirect ('/accounts/register/')
-    #CustomUser.delete_user_by_id(user_id)
-    # return HttpResponse(f'<h2> {user}, user will be deleted <h2>')
     context = {'user': user}
     return render (request, 'accounts/delete_inquiry.html', context)
 
@@ -301,12 +237,10 @@ def profile_delete_submit(request, user_id, *args, **kwargs):
     time.sleep(1.5)
     return redirect ('/')
 
-
 ################# *** Contact *** ###################
+### Put your resume here ###
 def contact_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
-
-
 
 #### checker
 def show_info(request):
