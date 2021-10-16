@@ -230,21 +230,31 @@ class CustomUserUpdateForm:
         
 #         self.new_password = new_password
 
+CustomUser = get_user_model()
 
-User = get_user_model()
 class CustomUserLoginForm(forms.Form):
     
-    email = forms.EmailField(widget = forms.EmailInput(attrs={'placeholder': 'type email..'}))
-    # username = forms.CharField(widget = forms.TextInput(attrs={'placeholder': 'type username..'}))
     
+    email_username = forms.CharField(
+        widget = forms.TextInput(
+            attrs = {
+                'class': "form-control",
+                "placeholder": "email or username",
+                }
+            )
+        )
+
     password = forms.CharField(
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
-                "id": "user-password"
+                "id": "user-password",
+                "placeholder": "password here",
             }
         )
     )
+
+    
     
     # def clean(self):
     #     username = self.cleaned_data.get('username')
@@ -254,7 +264,7 @@ class CustomUserLoginForm(forms.Form):
         email = self.cleaned_data.get('email')
         ## thisIsMyUsername == thisismyusername
         ## capitalization doesn't matter
-        qs = User.objects.filter(username_iexact=email)
+        qs = CustomUser.objects.filter(username_iexact=email)
         if not qs.exists():
             raise forms.ValidationError('This is an invalid user')
         return email
