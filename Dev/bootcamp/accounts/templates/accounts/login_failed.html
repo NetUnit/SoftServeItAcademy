@@ -86,9 +86,10 @@
              <div class="content">
                 <h1> Failed </h1>
                 <p> The user ID or password was incorrect (⇀‸↼‶) </p>
-                <a href="{%url 'accounts:login_fbw' %}">Attempts left: {{ attempts }}</a>
                 {% if leftover %}
-                    <p> Try again at: {{ leftover }} {{x}} </p>
+                    <a href="{% url 'index' %}"> Try again at: {{ leftover }} </a>
+                {% else %}
+                    <a href="{%url 'accounts:login_cbv' %}"> Attempts left: {{ attempts }}</a>
                 {% endif %}
              </div>
           </div>

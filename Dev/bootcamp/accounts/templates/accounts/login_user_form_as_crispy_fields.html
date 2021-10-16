@@ -62,7 +62,7 @@
         <h5 class="card-title">Login</h5>
         <form action="" method="post">
             {%csrf_token%}
-            {{form.username|as_crispy_field}} {{form.password|as_crispy_field}}
+            {{ form.as_p }}
             
             {% include 'snippets/create_message.html' %}
 
@@ -71,7 +71,7 @@
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
             <div class="d-flex justify-content-center links" >
-                Don't have an account? <a href="{% url 'accounts:register' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
+                Don't have an account? <a href="{% url 'accounts:register_cbv' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
             </div>
         </div>
     </div>

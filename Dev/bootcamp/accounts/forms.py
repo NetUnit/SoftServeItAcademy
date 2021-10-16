@@ -51,29 +51,29 @@ class CustomUserCreationForm(UserCreationForm):
     #         user.save()
     #     return user
 
-## function-based view authenticate
-class CustomUserLoginForm(forms.ModelForm):
+## function-based view authenticate ### not valid
+# class CustomUserLoginForm(forms.ModelForm):
     
-    class Meta:
-        model = get_user_model()
-        fields = ('username', 'password')
-        required = ('username', 'password')
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('username', 'password')
+#         required = ('username', 'password')
 
-        labels = {
-            'username': 'Email',
-            'password': 'Password',
-        }
+#         labels = {
+#             'username': 'Email',
+#             'password': 'Password',
+#         }
 
-        widgets = {
-            'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
-            'password': forms.PasswordInput(attrs={'placeholder': 'type password..'}), 
-        }
+#         widgets = {
+#             'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
+#             'password': forms.PasswordInput(attrs={'placeholder': 'type password..'}), 
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super(CustomUserLoginForm, self).__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super(CustomUserLoginForm, self).__init__(*args, **kwargs)
 
-        for field in self.Meta.required:
-            self.fields[field].required = True
+#         for field in self.Meta.required:
+#             self.fields[field].required = True
 
 ## class-based view authenticate
 class LoginForm(AuthenticationForm):
@@ -230,9 +230,9 @@ class CustomUserUpdateForm:
         
 #         self.new_password = new_password
 
-User = get_user_model()
 
-class LoginFormJmitch(forms.Form):
+User = get_user_model()
+class CustomUserLoginForm(forms.Form):
     
     email = forms.EmailField(widget = forms.EmailInput(attrs={'placeholder': 'type email..'}))
     # username = forms.CharField(widget = forms.TextInput(attrs={'placeholder': 'type username..'}))
@@ -257,7 +257,6 @@ class LoginFormJmitch(forms.Form):
         qs = User.objects.filter(username_iexact=email)
         if not qs.exists():
             raise forms.ValidationError('This is an invalid user')
-
         return email
 
 

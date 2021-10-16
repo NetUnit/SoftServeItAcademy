@@ -74,14 +74,14 @@
                 form_fields[3].placeholder = 'Password..';
         
                 for (var field in form_fields) {
-                    form_fields[field].LoginForm += ' form-control'
+                    form_fields[field].CustomUserLoginForm += ' form-control'
                 }
             </script>  
         </form>
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
             <div class="d-flex justify-content-center links" >
-                Don't have an account? <a href="{% url 'accounts:register' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
+                Don't have an account? <a href="{% url 'accounts:register_cbv' %}" class="ml-2" style="color: rgb(245, 173, 6); font-weight: bold">Register</a>
             </div>
         </div> 
     </div>
