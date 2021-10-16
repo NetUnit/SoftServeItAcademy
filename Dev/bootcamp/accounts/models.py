@@ -102,13 +102,13 @@ class CustomUser(AbstractUser):
 
     # +++
     @staticmethod
-    def get_user_by_nickname(nickname=None):
+    def get_user_by_username(username=None):
         '''
             This method is getting a user by it's nickname
             :return: user object via nickname
         '''
         try:
-            user = CustomUser.objects.all().filter(nickname=nickname).get()
+            user = CustomUser.objects.all().filter(username=username).get()
             # user = CustomUser.objects.get(nickname)
             return user
         except CustomUser.DoesNotExist:

@@ -93,7 +93,6 @@ class LoginCounter:
         return self.leftover
         # return LoginCounter.leftover ## same
 
-import getpass
 ## Function-based View
 def login_user_view(request, *args, **kwargs):
     
@@ -104,23 +103,22 @@ def login_user_view(request, *args, **kwargs):
     try:
         form = CustomUserLoginForm(request.POST or None)
         if form.is_valid():
-            #username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
+        
+            email_username = form.cleaned_data.get('email_username')
             password = form.cleaned_data.get('password')
+            user = authenticate(request, username=email_username, password=password)
 
-            user = authenticate(request, username=email, password=password)
-            print(user.__dict__)
+            if user == None:
+                attempt = request.session.get('attempt') or 0
+                login_attempt = LoginCounter(attempt)
+                return redirect('/accounts/login-failed/')
+
             login(request, user)
             messages.success(
                 request,
                 f'U\'ve just successfully logined (^_-)≡☆'
                 )
             return redirect('/accounts/login-success/')
-
-            if user == None:
-                attempt = request.session.get('attempt') or 0
-                login_attempt = LoginCounter(attempt)
-                return redirect('/accounts/login-failed/')
 
         form = CustomUserLoginForm()
         context = {'form': form}
@@ -173,7 +171,7 @@ def profile_user_view(request, *args, **kwargs):
     user = request.user
     auth = request.user.is_authenticated
     context = {'user': user, 'auth': auth}
-    return render (request, 'accounts/user_detail.html', context)
+    return render (request, 'accounts/profile_view.html', context)
 
 ####################### *** Update User*** #######################
 ## form isn't valid ### ------
