@@ -1,10 +1,46 @@
 from django.db import models
 from django.db import models, IntegrityError, DataError
 from django.http.response import Http404
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy
 from django.shortcuts import get_object_or_404
 # Create your models here.
+
+class MyAccountManager(BaseUserManager):
+
+    def create_user(self, email, password=None):
+        '''
+            Creates a user, email is set a username
+            username field is excessive
+        '''
+        if not email:
+            raise ValueError('Users  must have an email address:')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            password=password,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        '''
+            Allows to create superuser with the given 
+            email and password.
+            install from terminal
+        
+        '''
+        user = self.create_user(
+            email=self.normalize_email(email),
+            password=password,
+        )
+
+        user.is_superuser = True
+        user.is_staff = True
+        user.is_active = True
+        user.save(using=self._db)
+        return user
 
 
 class CustomUser(AbstractUser):
@@ -17,6 +53,8 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
+    objects = MyAccountManager()
+
     class Meta:
         ordering = ('id',)
 
@@ -121,11 +159,11 @@ class CustomUser(AbstractUser):
             This method is redefined to check if user with 
             similar email/nickname is present in the db
             :return: True if user exists, False if opposite
-        '''
-        # data is a dict that comes from form (cleaned_data)
-        # dict has pairs of key-value
-        # getting Value from the dict to match with the db
 
+            NOTE:   data is a dict that comes from form (cleaned_data)
+                    dict has pairs of key-value
+                    getting Value from the dict to match with the db
+        '''
         # will return the query-object when match the Value from the form
         user_by_email = data.get('email')
         user_by_nickname = data.get('nickname')
@@ -143,3 +181,5 @@ class CustomUser(AbstractUser):
     #         returns str role name
     #     '''
     #     return self.get_role_display()
+
+

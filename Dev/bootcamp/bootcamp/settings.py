@@ -71,6 +71,7 @@ LOGOUT_URL = '/logout/'
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+# AUTH_USER_MODEL = 'accounts.MyAccountManager'
 #ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
 
