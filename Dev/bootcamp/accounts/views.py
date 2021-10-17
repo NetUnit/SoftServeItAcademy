@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
+from django.forms import ValidationError
 
 from .models import CustomUser
 from accounts.forms import CustomUserCreationForm, LoginForm
@@ -61,7 +62,7 @@ from django.views.generic import CreateView
 class RegisterView(CreateView):
     form_class =  CustomUserCreationForm
     template_name = 'accounts/register_user_form_as_crispy_fields.html'
-    success_url = '/accounts/login/'
+    success_url = '/accounts/login-fbv/'
     # success_url = reverse_lazy('/products/list/')
 
 ####################### *** Auth *** #######################
@@ -95,7 +96,6 @@ class LoginCounter:
 
 ## Function-based View
 def login_user_view(request, *args, **kwargs):
-    # print(request.GET)
     elapsed_time = LoginCounter.leftover < dt.now()
     if not elapsed_time and request.method == 'GET':
         return redirect ('/accounts/login-failed/')
@@ -176,18 +176,23 @@ def profile_user_view(request, *args, **kwargs):
 ####################### *** Update User*** #######################
 ## form isn't valid ### ------
 def profile_update_view(request, user_id, *args, **kwargs):
+
     try:
         form = CustomUserUpdateForm(request.POST or None)
-        print(form.is_valid())
+        # print(form.is_valid())
         if form.is_valid():
-            data = form.cleaned_data
+            # check if password matches
+            password = form.clean_password() ### +++
+            # set password
+            
+            #data = form.cleaned_data
 
             # get user old password
-            db_password = CustomUser.get_user_by_id(user_id).password
-            print(db_password)
+            #db_password = CustomUser.get_user_by_id(user_id).password
+            #print(db_password)
 
-            input_password = data.get('new_password')
-            print(input_password)
+            # input_password = data.get('new_password')
+            # print(input_password)
             #db_password = user.password
             #input_password = data.get('password')
             #print(db_password==input_password)
@@ -196,7 +201,7 @@ def profile_update_view(request, user_id, *args, **kwargs):
             #user = CustomUser.get_user_by_id(user_id)
             #print(user)
             #updated_user = CustomUser.update_user_by_id(user_id, data)
-            return HttpResponse(f'<h2> This is updated user with {data} | {db_password} {input_password} </h2>')
+            return HttpResponse(f'<h2> This is updated user with {data} | {db_password}  </h2>')
 
             
             # messages.success(
@@ -209,7 +214,10 @@ def profile_update_view(request, user_id, *args, **kwargs):
 
         form = CustomUserUpdateForm()
         context = {'form': form}
-        return render (request, 'accounts/update_user_form_as_crispy_fields.html', context)
+        return render (request, 'accounts/update_user_form_as_crispy_fields_fbv.html', context)
+    
+    except ValidationError as psw_error:
+        return render (request, 'accounts/update_failed.html', context={'psw_error': ''.join(psw_error)})
 
     except Exception as err:
         print(err)
@@ -218,11 +226,12 @@ def profile_update_view(request, user_id, *args, **kwargs):
 ## cbv edit Profile
 from django.views.generic import UpdateView
 class  EditProfilePageView(generic.UpdateView):
+
     model = get_user_model()
-    template_name = 'accounts/edit_profile_page_CBW.html'
-    success_url = '/accounts/login/'
+    template_name = 'accounts/edit_profile_page_cbv.html'
+    success_url = '/accounts/login-fbv/'
     fields = ('email', 'username', 'password', 'first_name', 'last_name')
-    
+
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
     user = get_object_or_404(CustomUser, pk=user_id)
