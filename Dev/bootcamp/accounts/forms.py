@@ -78,7 +78,7 @@ class CustomUserCreationForm(UserCreationForm):
 ## class-based view authenticate
 class LoginForm(AuthenticationForm):
     #username = forms.CharField(label='Email / Username')
-    email = forms.EmailInput(attrs={'placeholder': 'type email..'})
+    email = forms.EmailInput(attrs={'placeholder': 'type email..', 'label': 'Email/Username'})
     
 
 class CustomUserUpdateForm:
@@ -234,8 +234,8 @@ CustomUser = get_user_model()
 
 class CustomUserLoginForm(forms.Form):
     
-    
     email_username = forms.CharField(
+        label = 'Email/Username',
         widget = forms.TextInput(
             attrs = {
                 'class': "form-control",
@@ -254,8 +254,6 @@ class CustomUserLoginForm(forms.Form):
         )
     )
 
-    
-    
     # def clean(self):
     #     username = self.cleaned_data.get('username')
     #     password = self.cleaned_data.get('password')

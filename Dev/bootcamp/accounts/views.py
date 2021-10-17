@@ -95,7 +95,7 @@ class LoginCounter:
 
 ## Function-based View
 def login_user_view(request, *args, **kwargs):
-    
+    # print(request.GET)
     elapsed_time = LoginCounter.leftover < dt.now()
     if not elapsed_time and request.method == 'GET':
         return redirect ('/accounts/login-failed/')
