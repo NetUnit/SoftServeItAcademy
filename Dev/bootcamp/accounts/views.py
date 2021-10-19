@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
+from django.utils.translation import gettext as _
 from django.forms import ValidationError
 
 from .models import CustomUser
@@ -167,11 +168,26 @@ def login_failed_view(request, *args, **kwargs):
         pass
 
 ####################### *** Profile *** #######################
-def profile_user_view(request, *args, **kwargs):
-    user = request.user
-    auth = request.user.is_authenticated
-    context = {'user': user, 'auth': auth}
-    return render (request, 'accounts/profile_view.html', context)
+def profile_user_view(request, user_id, *args, **kwargs):
+    try:
+        user = request.user
+        auth = request.user.is_authenticated
+        print(user)
+        print(auth)
+        context = {'user': user, 'auth': auth}
+        return render (request, 'accounts/profile_view.html', context)
+    except Exception as err:
+        print(err)
+
+# def profile_user_view(request, user_id, *args, **kwargs):
+#     try:
+#         user = CustomUser.get_user_by_id(user_id)
+#         auth = user.is_authenticated
+#         print(auth, user)
+#         context = {'user': user, 'auth': auth}
+#         return render (request, 'accounts/profile_view.html', context)
+#     except Exception as err:
+#         print(err)
 
 ####################### *** Update User*** #######################
 ## form isn't valid ### ------
@@ -179,38 +195,38 @@ def profile_update_view(request, user_id, *args, **kwargs):
 
     try:
         form = CustomUserUpdateForm(request.POST or None)
-        # print(form.is_valid())
+        print(form.is_valid())
         if form.is_valid():
-            # check if password matches
-            password = form.clean_password() ### +++
-            # set password
+
+            # FORM: setup a new password & validate
+            password = form.clean_password()
+            print(password)
+
+            # FORM: check whether the previous password is correct
+            password_correct = form.check_user(request, user_id)
+            print(password_correct)
+
+            # get data from the a form
+            data = form.cleaned_data
+
+            # prepare new data set to record into db, remove excessive items
+            [data.pop(f'password{i}') for i in range(1, 3)]
+            data.pop('old_password')
+
+            # update user
+            user = CustomUser.update_user_by_id(user_id, data)
             
-            #data = form.cleaned_data
-
-            # get user old password
-            #db_password = CustomUser.get_user_by_id(user_id).password
-            #print(db_password)
-
-            # input_password = data.get('new_password')
-            # print(input_password)
-            #db_password = user.password
-            #input_password = data.get('password')
-            #print(db_password==input_password)
-
-
-            #user = CustomUser.get_user_by_id(user_id)
-            #print(user)
-            #updated_user = CustomUser.update_user_by_id(user_id, data)
-            return HttpResponse(f'<h2> This is updated user with {data} | {db_password}  </h2>')
-
+            # asigh and ecrypt new password
+            user.set_password(password)
+            delattr(user, '_password')
+            user.save()
             
-            # messages.success(
-            #     request,
-            #     f'U\'ve just updated profile with: {username}, password: {email} (^_-)≡☆'
-            # )
-
-            # return redirect ('/accounts/profile/')
-
+            messages.success(
+                request,
+                f'U\'ve just updated profile with: {user.email}, password: {user.password} (^_-)≡☆'
+            )
+            # return HttpResponse(f'<h2> This is updated user with {user.__dict__} </h2>')
+            return redirect ('/')
 
         form = CustomUserUpdateForm()
         context = {'form': form}

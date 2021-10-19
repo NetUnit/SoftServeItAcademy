@@ -86,7 +86,7 @@
              <div class="content">
                 <h1>Login Done!</h1>
                 <p> U've been successfully logged in (•̀ᴗ•́)و ̑̑</p>
-                <a href="{% url 'accounts:profile' %}">Go to Profile</a>
+                <a href="{% url 'accounts:profile' user.id%}">Go to Profile</a>
              </div>
           </div>
        </div>

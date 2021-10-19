@@ -4,8 +4,9 @@ from django import forms
 
 ################################################################################################
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import get_user_model
-from django import forms
+from django.contrib.auth import get_user_model, authenticate
+from django.forms import ValidationError
+from django.utils.translation import gettext as _
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -78,20 +79,15 @@ class CustomUserCreationForm(UserCreationForm):
 ## class-based view authenticate
 class LoginForm(AuthenticationForm):
     #username = forms.CharField(label='Email / Username')
-    email = forms.EmailInput(attrs={'placeholder': 'type email..', 'label': 'Email/Username'})
+    email = forms.EmailInput(
+        attrs={
+            'placeholder': 'type email..',
+            'label': 'Email/Username'
+            }
+        )
     
 
 class CustomUserUpdateForm(forms.Form):
-    
-    email = forms.CharField(
-        label = 'Email',
-        widget = forms.TextInput(
-            attrs = {
-                'class': "form-control",
-                "placeholder": "email",
-                }
-            )
-        )
 
     username = forms.CharField(
         label = 'Username',
@@ -104,6 +100,7 @@ class CustomUserUpdateForm(forms.Form):
         )
 
     old_password = forms.CharField(
+        label = 'Current Password',
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
@@ -112,7 +109,8 @@ class CustomUserUpdateForm(forms.Form):
             }
         )
     )
-    new_password1 = forms.CharField(
+    password1 = forms.CharField(
+        label = 'New Password',
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
@@ -122,7 +120,8 @@ class CustomUserUpdateForm(forms.Form):
         )
     )
 
-    new_password2 = forms.CharField(
+    password2 = forms.CharField(
+        label = 'Repeat Password',
         widget = forms.PasswordInput(
             attrs = {
                 "class": "form-control",
@@ -133,6 +132,7 @@ class CustomUserUpdateForm(forms.Form):
     )
 
     first_name = forms.CharField(
+        label = 'First Name',
         widget = forms.TextInput(
             attrs = {
                 "class": "form-control",
@@ -143,6 +143,7 @@ class CustomUserUpdateForm(forms.Form):
     )
 
     last_name = forms.CharField(
+        label = 'Lastname',
         widget = forms.TextInput(
             attrs = {
                 "class": "form-control",
@@ -153,33 +154,48 @@ class CustomUserUpdateForm(forms.Form):
     )
 
     # def clean(self):
-    #     email = self.cleaned_data.get('email')
     #     username = self.cleaned_data.get('username')
-    #     old_password = self.cleaned_data.get('old_password')
-    #     new_password1 = self.cleaned_data.get('new_password1')
-    #     new_password2 = self.cleaned_data.get('new_password2')
+    #     old_password = self.cleaned_data.get('password')
+    #     new_password1 = self.cleaned_data.get('password1')
+    #     new_password2 = self.cleaned_data.get('password2')
     #     first_name = self.cleaned_data.get('first_name')
     #     last_name = self.cleaned_data.get('last_name')
     
     def clean_password(self):
-        # Check that the two password entries match
-        new_password1 = self.cleaned_data.get("new_password1")
-        new_password2 = self.cleaned_data.get("new_password2")
-        if new_password1 and new_password2 and new_password1 != new_password2:
-            raise forms.ValidationError("Passwords doesn't match")
-        return new_password2
+        '''
+            This method checks & sets up a new user password
+            :returns: new password if user exists & ValidationError when vice versa
+        '''
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError(_('Passwords don\'t match '), code='invalid')
+        return password2
+    
+    def check_user(self, request, user_id=None):
+        '''
+            in the Form it's prohibited to assign the password as old password
+            This method checks if the previous password is correct
+            :returns: True if user object exists in the db, ValidationError when vice versa
+        '''
+        password = self.cleaned_data.get("old_password")
+        email =  CustomUser.get_user_by_id(user_id).email
+        user = authenticate(request, username=email, password=password)
+        if user is None:
+            raise ValidationError(_('Previous password is incorrect '), code='invalid')
+        return True
 
     ## se_password --> make in a model
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super(CustomUserUpdateForm, self).save(commit=False)
-        user.set_password(self.cleaned_data.get('new_password2'))
-        user.is_active = False # send confirmation email via signals
-        # obj = EmailActivation.objects.create(user=user)
-        # obj.send_activation_email()
-        if commit:
-            user.save()
-        return user
+    # def save(self, commit=True):
+    #     # Save the provided password in hashed format
+    #     user = super(CustomUserUpdateForm, self).create_user(commit=False)
+    #     user.set_password(self.cleaned_data.get('new_password2'))
+    #     user.is_active = False # send confirmation email via signals
+    #     # obj = EmailActivation.objects.create(user=user)
+    #     # obj.send_activation_email()
+    #     if commit:
+    #         user.save()
+    #     return user
 
  
 ################################################################################################

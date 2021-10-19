@@ -101,9 +101,9 @@ class CustomUser(AbstractUser):
     # data here will be a dict(**kwargs from UI)
     @staticmethod
     def update_user_by_id(user_id, data=None):
-        user = CustomUser.get_by_id(user_id)
-        updated_user = user.__dict__.update(data)
-        return updated_user
+        user = CustomUser.get_user_by_id(user_id)
+        user.__dict__.update(data)
+        return user
 
     # make api info from this
     def to_dict(self):
@@ -174,6 +174,7 @@ class CustomUser(AbstractUser):
 
         user_exists = bool(match_by_email) + bool(match_by_nickname) > 0
         return True if user_exists else False
+
 
     # in the case of AbstractBaseUser
     # def get_role_name(self):

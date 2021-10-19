@@ -86,10 +86,8 @@
              <div class="content">
                 <h1> Failed </h1>
                 {% if psw_error %}
-                    <p> Oops {{ psw_error }} ヽ(￣ω￣(。。 )ゝ (⇀‸↼‶) </p>
+                    <p> Oops {{ psw_error }} (⇀‸↼‶) </p>
                     <a href="{%url 'accounts:profile_update_view' user.id%}"> Retry Again </a>
-                {% else %}
-                    <a href="{% url 'index' %}"> Attempts left: {{ attempts }}</a>
                 {% endif %}
              </div>
           </div>

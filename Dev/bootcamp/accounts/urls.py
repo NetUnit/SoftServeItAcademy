@@ -45,7 +45,7 @@ urlpatterns = [
     re_path(r'^accounts/log-out/', logout_success_view, name='logout'),                                              ## ++
 
     ######################### *** profile FBW ***#######################
-    re_path(r'^accounts/profile/$', profile_user_view, name='profile'),                                              ## ++
+    re_path(r'^accounts/profile/(?P<user_id>\d+)/$', profile_user_view, name='profile'),                                              ## ++
 
     ######################### *** profile DELETE FBW ***#######################
     re_path(r'^accounts/profile-delete/(?P<user_id>\d+)/$', profile_delete_view, name='profile_delete_view'),            ## ++
