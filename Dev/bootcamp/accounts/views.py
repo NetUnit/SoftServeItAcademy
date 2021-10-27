@@ -4,8 +4,8 @@ from django.utils.translation import gettext as _
 from django.forms import ValidationError
 
 from .models import CustomUser
-from accounts.forms import CustomUserCreationForm, LoginForm
-from accounts.forms import CustomUserLoginForm, CustomUserUpdateForm
+from accounts.forms import CustomUserLoginForm, LoginForm, ModelLoginForm
+from accounts.forms import  CustomUserCreationForm, CustomUserUpdateForm
 # from accounts.forms import RegisterForm
 from django.views.generic import CreateView, FormView, DetailView, View, UpdateView
 from django.contrib import messages
@@ -29,7 +29,7 @@ def panda_link_view(request, *args, **kwargs):
 def accounts_list_view(request, *args, **kwargs):
     return HttpResponse('<h2> Accounts list should be here </h2>')
 
-################# *** Registration *** ####################
+################# *** Registration FBV + CBV  *** ####################
 ## Function-based View
 def register_user_view(request, *args, **kwargs):
     try:
@@ -70,7 +70,7 @@ class RegisterView(CreateView):
 ## Class-based View
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
-    template_name = 'accounts/login_form_as_p.html'
+    template_name = 'accounts/login_form_as_p2.html'
 
 class LoginCounter:
 
@@ -130,13 +130,11 @@ def login_user_view(request, *args, **kwargs):
         print(err)
         pass
 
-################# *** Login/Logout Views HTMLS*** ################### +++
-def logout_success_view(request, *args, **kwargs):
-    logout(request)
-    context = {}
-    messages.success(request, f'U\'ve been successfully logged out (　ﾟ)(　　)')
-    return render(request, 'accounts/logout_success.html', context)
 
+def login_train(reaquest, *args, **kwargs):
+    return HttpResponse('<h2> This is a login form <h2>')
+
+#################### *** Login/Logout Views *** ######################
 def login_success_view(request, *args, **kwargs):
     messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
@@ -167,45 +165,36 @@ def login_failed_view(request, *args, **kwargs):
         print(err)
         pass
 
+def logout_success_view(request, *args, **kwargs):
+    logout(request)
+    context = {}
+    messages.success(request, f'U\'ve been successfully logged out (　ﾟ)(　　)')
+    return render(request, 'accounts/logout_success.html', context)
+
 ####################### *** Profile *** #######################
 def profile_user_view(request, user_id, *args, **kwargs):
     try:
-        user = request.user
-        auth = request.user.is_authenticated
-        print(user)
-        print(auth)
+        user = CustomUser.get_user_by_id(user_id)
+        auth = user.is_authenticated
         context = {'user': user, 'auth': auth}
         return render (request, 'accounts/profile_view.html', context)
     except Exception as err:
         print(err)
 
-# def profile_user_view(request, user_id, *args, **kwargs):
-#     try:
-#         user = CustomUser.get_user_by_id(user_id)
-#         auth = user.is_authenticated
-#         print(auth, user)
-#         context = {'user': user, 'auth': auth}
-#         return render (request, 'accounts/profile_view.html', context)
-#     except Exception as err:
-#         print(err)
-
-####################### *** Update User*** #######################
-## form isn't valid ### ------
+####################### *** Update User FBV *** #######################
 def profile_update_view(request, user_id, *args, **kwargs):
 
     try:
         form = CustomUserUpdateForm(request.POST or None)
-        print(form.is_valid())
         if form.is_valid():
+
+            # FORM: check whether the previous password is correct
+            form.check_user(request, user_id)
 
             # FORM: setup a new password & validate
             password = form.clean_password()
-            print(password)
-
-            # FORM: check whether the previous password is correct
-            password_correct = form.check_user(request, user_id)
-            print(password_correct)
-
+            form.password_validation(password)
+            
             # get data from the a form
             data = form.cleaned_data
 
@@ -225,12 +214,12 @@ def profile_update_view(request, user_id, *args, **kwargs):
                 request,
                 f'U\'ve just updated profile with: {user.email}, password: {user.password} (^_-)≡☆'
             )
-            # return HttpResponse(f'<h2> This is updated user with {user.__dict__} </h2>')
-            return redirect ('/')
+
+            return redirect (f'/accounts/profile/{user_id}')
 
         form = CustomUserUpdateForm()
         context = {'form': form}
-        return render (request, 'accounts/update_user_form_as_crispy_fields_fbv.html', context)
+        return render (request, 'accounts/edit_profile_fbv.html', context)
     
     except ValidationError as psw_error:
         return render (request, 'accounts/update_failed.html', context={'psw_error': ''.join(psw_error)})
@@ -239,12 +228,12 @@ def profile_update_view(request, user_id, *args, **kwargs):
         print(err)
         pass
 
-## cbv edit Profile
+####################### *** Update User CBV *** #######################
 from django.views.generic import UpdateView
 class  EditProfilePageView(generic.UpdateView):
 
     model = get_user_model()
-    template_name = 'accounts/edit_profile_page_cbv.html'
+    template_name = 'accounts/edit_profile_cbv.html'
     success_url = '/accounts/login-fbv/'
     fields = ('email', 'username', 'password', 'first_name', 'last_name')
 
@@ -277,3 +266,12 @@ def show_info(request):
         return HttpResponse(f'<h2> {instance.__dict__} <h2>')
     except Exception as err:
         print(err)
+
+# def profile_user_view(request, user_id, *args, **kwargs):
+#     try:
+#         user = request.user
+#         auth = request.user.is_authenticated
+#         context = {'user': user, 'auth': auth}
+#         return render (request, 'accounts/profile_view.html', context)
+#     except Exception as err:
+#         print(err)

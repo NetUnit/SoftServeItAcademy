@@ -2,7 +2,12 @@
 
 {%block title%} User Update {%endblock%} 
 
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 {%block content%}
+
+
 
 {% if user.is_authenticated  %}
 
@@ -19,8 +24,15 @@
     </div>
 
 {% else %}
-
-    U're not allowed here
+    <p> U need to login with a new password  </p>
+    <div style="padding-top: 5px">
+        <a href="{%url 'accounts:login_fbv'%}" 
+        class="btn btn-success"
+        type="button"
+        id="delete_btn"
+        >
+            Delete
+        </a>
 
 {% endif %}
 
