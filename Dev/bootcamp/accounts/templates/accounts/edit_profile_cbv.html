@@ -12,6 +12,8 @@
 
     p {
         margin: 8px 0 0 0;
+        text-align: left;
+
     }
 
     form ul {
@@ -41,6 +43,23 @@
         margin: 5px;
     }
     
+    #update_btn {
+        background-color: rgb(245, 173, 6);
+        color: rgb(3, 4, 31);
+        width: 80px;
+        border-color: darkorange;
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
+    #update_btn:hover {			
+        background-color: gainsboro;		
+    }
+
+    #link2:hover {			
+        text-decoration: underline;
+    }
+
     .header1
     {
         border:1px solid #f2f2f2;
@@ -99,20 +118,6 @@
         text-decoration:none;
         background:#000;
     }
-    
-    #update_btn {
-        background-color: rgb(245, 173, 6);
-        color: rgb(3, 4, 31);
-        width: 80px;
-        border-color: darkorange;
-        margin-bottom: 0px;
-        margin-top: 0px;
-    }
-
-    #update_btn:hover {			
-        background-color: gainsboro;		
-    }
-
 
     .footer_app {
       color: rgb(245, 173, 6);
@@ -136,25 +141,32 @@
 <div>
     {% if user.is_authenticated  %}
 
-    <div class="card w-25 my_margin" style="margin-left: 5px; text-align: left;">
+    <div class="card w-25 my_margin" style="margin-left: 5px; text-align: left">
         <div class="card-body" >
             <h5 class="card-title">User Update</h5>
             
         <div class="form-group">
-    <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                
+                    
                 {{form.as_p}}
 
                 {% include 'snippets/update_message.html' %}
                 <button type="submit" class="btn btn-success" id='update_btn'>Update</button>
+            </form>
         </div>
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold; text-align: center; margin-top: 0px; padding-top: 0px;">
             <p style="text-align: center;"> Delete this account and create a new one (×﹏×)</p>
-            <div class="d-flex justify-content-center links" style=" margin-bottom: 10px">
-                <a href="{%url 'accounts:profile_delete_view' user.id%}" class="ml-2" style="color: rgb(220, 48, 71); font-weight: bold">Delete profile</a>
-            </div>
+        </div>
+        <div class="d-flex justify-content-center links" style=" margin-bottom: 10px">
+            <a href="{%url 'accounts:profile_delete_view' user.id%}"
+                class="ml-2"
+                id='link2'
+                style="color: rgb(220, 48, 71); background-color: transparent; font-weight: bold;"
+            >
+                Delete profile
+            </a>
         </div>
     </div>
 

@@ -7,24 +7,59 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, authenticate
 from django.forms import ValidationError
 from django.utils.translation import gettext as _
-
+import string
 
 class CustomUserCreationForm(UserCreationForm):
     
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password1', 'password2', 'nickname', 'first_name', 'last_name')
-        required = ('email', 'password1', 'password2', 'nickname')
+        fields = ('email', 'password1',
+                  'password2', 'nickname',
+                  'first_name', 'last_name'
+                 )
+        required = ('email', 'password1',
+                    'password2', 'nickname'
+                   )
 
         # hidden password input
         widgets = {
-            'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
-            'password1': forms.PasswordInput(attrs={'placeholder': 'type password..1'}),
-            'password2': forms.PasswordInput(attrs={'placeholder': 'repeat the password..'}),
-            'nickname': forms.TextInput(attrs={'placeholder': 'type nickname..'}),
-            'first_name': forms.TextInput(attrs={'placeholder': 'type name..'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'type surname..'}),
-        }
+            'email': forms.EmailInput(
+                attrs={
+                    'placeholder': 'type email..',
+                    'class': 'form-control',
+                    }
+                ),
+            'password1': forms.PasswordInput(
+                attrs={
+                    'placeholder': 'type password..1',
+                    'class': "form-control",
+                    }
+                ),
+            'password2': forms.PasswordInput(
+                attrs={
+                    'placeholder': 'repeat the password..',
+                    'class': "form-control",
+                    }
+                ),
+            'nickname': forms.TextInput(
+                attrs={
+                    'placeholder': 'type nickname..',
+                    'class': "form-control",
+                    }
+                ),
+            'first_name': forms.TextInput(
+                attrs={
+                'placeholder': 'type name..',
+                'class': "form-control",
+                    }
+                ),
+            'last_name': forms.TextInput(
+                attrs={
+                    'placeholder': 'type surname..',
+                    'class': "form-control",
+                    }
+                ),
+            }
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
@@ -32,60 +67,76 @@ class CustomUserCreationForm(UserCreationForm):
         for field in self.Meta.required:
             self.fields[field].required = True
 
-    # def clean_password(self):
-    #     # Check that the two password entries match
-    #     password1 = self.cleaned_data.get("password1")
-    #     password2 = self.cleaned_data.get("password2")
-        
-    #     if password1 and password2 and password1 != password2:
-    #         raise forms.ValidationError("Passwords don't match")
-    #     return password2
-
-    # def save(self, commit=True):
-    #     # Save the provided password in hashed format
-    #     user = super(CustomUserCreationForm, self).save(commit=False)
-    #     user.set_password(self.cleaned_data["password1"])
-    #     user.is_active = False # send confirmation email via signals
-    #     # obj = EmailActivation.objects.create(user=user)
-    #     # obj.send_activation_email()
-    #     if commit:
-    #         user.save()
-    #     return user
-
-## function-based view authenticate ### not valid
-# class CustomUserLoginForm(forms.ModelForm):
+# function-based view authenticate ### not valid
+class ModelLoginForm(forms.ModelForm):
     
-#     class Meta:
-#         model = get_user_model()
-#         fields = ('username', 'password')
-#         required = ('username', 'password')
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password')
+        required = ('username', 'password')
 
-#         labels = {
-#             'username': 'Email',
-#             'password': 'Password',
-#         }
+        labels = {
+            'username': 'Email',
+            'password': 'Password',
+        }
 
-#         widgets = {
-#             'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
-#             'password': forms.PasswordInput(attrs={'placeholder': 'type password..'}), 
-#         }
+        widgets = {
+            #'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
+            'username': forms.TextInput(attrs={'placeholder': 'type username..'}),
+            'password': forms.PasswordInput(attrs={'placeholder': 'type password..'}), 
+        }
 
-#     def __init__(self, *args, **kwargs):
-#         super(CustomUserLoginForm, self).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ModelLoginForm, self).__init__(*args, **kwargs)
 
-#         for field in self.Meta.required:
-#             self.fields[field].required = True
+        for field in self.Meta.required:
+            self.fields[field].required = True
 
 ## class-based view authenticate
 class LoginForm(AuthenticationForm):
-    #username = forms.CharField(label='Email / Username')
-    email = forms.EmailInput(
-        attrs={
-            'placeholder': 'type email..',
-            'label': 'Email/Username'
-            }
+
+    '''
+        This form is rederined in order to convert out of a box
+        username field to email field
+
+        NOTE:  only email Authentication
+    '''
+
+    # email_username = forms.CharField(
+    #     label = 'Email/Username',
+    #     widget = forms.TextInput(
+    #         attrs = {
+    #             'class': "form-control",
+    #             "placeholder": "email or username",
+    #             }
+    #         )
+    #     )
+    
+    username = forms.CharField(
+        label = 'Email',
+        widget = forms.EmailInput(
+            attrs = {
+                'class': "form-control",
+                "placeholder": "email",
+                }
+            )
         )
     
+    password = forms.CharField(
+        label = 'Password',
+        widget = forms.PasswordInput(
+            attrs = {
+                "class": "form-control",
+                "id": "user-password",
+                "placeholder": "password here",
+            }
+        )
+    )
+
+    def __init__(self, email = username, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 
 class CustomUserUpdateForm(forms.Form):
 
@@ -109,6 +160,7 @@ class CustomUserUpdateForm(forms.Form):
             }
         )
     )
+
     password1 = forms.CharField(
         label = 'New Password',
         widget = forms.PasswordInput(
@@ -185,19 +237,27 @@ class CustomUserUpdateForm(forms.Form):
             raise ValidationError(_('Previous password is incorrect '), code='invalid')
         return True
 
-    ## se_password --> make in a model
-    # def save(self, commit=True):
-    #     # Save the provided password in hashed format
-    #     user = super(CustomUserUpdateForm, self).create_user(commit=False)
-    #     user.set_password(self.cleaned_data.get('new_password2'))
-    #     user.is_active = False # send confirmation email via signals
-    #     # obj = EmailActivation.objects.create(user=user)
-    #     # obj.send_activation_email()
-    #     if commit:
-    #         user.save()
-    #     return user
-
- 
+    def password_validation(self, password):
+        '''
+            This method checks whether a password is relibale
+            :returns: True if password is ok & ValidationError when conditions not satisfied
+        '''
+        demand1 = any([i in string.ascii_lowercase for i in password])  
+        demand2 = any([i in string.ascii_uppercase for i in password])  
+        demand3 = any([i in string.digits for i in password])         
+        demand4 = any([i in string.punctuation for i in password])     
+        demand5 = [i in password for i in password].count(True) > 7  
+        result = (demand1, demand2, demand3, demand4, demand5)
+        if result.count(True) != 5:
+            raise  ValidationError(_(
+                'Password can’t be too similar to your other personal information. \n\
+                Password must contain at least 8 characters. \n\
+                Password can’t be a commonly used password. \n\
+                Password can’t be entirely numeric. \n\
+                Password should contain letters of lower and uppercase.'
+                ), code='invalid')
+        return True
+        
 ################################################################################################
 # class CustomUserCreationForm(forms.ModelForm):
     
@@ -344,6 +404,8 @@ class CustomUserUpdateForm(forms.Form):
         
 #         self.new_password = new_password
 
+
+####################### *** forms.Form Inheritance *** #######################
 CustomUser = get_user_model()
 
 class CustomUserLoginForm(forms.Form):
@@ -382,4 +444,26 @@ class CustomUserLoginForm(forms.Form):
         return email
 
 
+## function-based view authenticate ### not valid
+# class CustomUserLoginForm(forms.ModelForm):
     
+#     class Meta:
+#         model = get_user_model()
+#         fields = ('username', 'password')
+#         required = ('username', 'password')
+
+#         labels = {
+#             'username': 'Email',
+#             'password': 'Password',
+#         }
+
+#         widgets = {
+#             'email': forms.EmailInput(attrs={'placeholder': 'type email..'}),
+#             'password': forms.PasswordInput(attrs={'placeholder': 'type password..'}), 
+#         }
+
+#     def __init__(self, *args, **kwargs):
+#         super(CustomUserLoginForm, self).__init__(*args, **kwargs)
+
+#         for field in self.Meta.required:
+#             self.fields[field].required = True
