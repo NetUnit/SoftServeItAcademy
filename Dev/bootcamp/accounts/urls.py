@@ -22,6 +22,11 @@ from accounts.views import (
     profile_delete_view,
     profile_delete_submit,
     ########
+
+    ########
+    check_user_auth,
+    #check_staff_auth,
+
     show_info,
 )
 
@@ -54,6 +59,10 @@ urlpatterns = [
     ######################### *** UPDATE CBV *** #######################
     path(r'<int:pk>/edit-profile-page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),                  ## ++
     re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'),            ## ++ redefine forms.Form
+
+    ######################## *** UPDATE CBV *** #######################
+    re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## +++
+    #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
 
     ######### *** show info *** #########
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),
