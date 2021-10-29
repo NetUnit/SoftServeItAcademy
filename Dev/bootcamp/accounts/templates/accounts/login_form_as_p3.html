@@ -78,15 +78,6 @@
             {% include 'snippets/create_message.html' %}
 
             <button type="submit" class="btn btn-success">Login</button>
-            <script>
-                var form_fields = document.getElementsByTagName('input')
-                form_fields[2].placeholder = 'email / username';
-                form_fields[3].placeholder = 'Password..';
-        
-                for (var field in form_fields) {
-                    form_fields[field].CustomUserLoginForm += 'form-control'
-                }
-            </script>  
         </form>
 
         <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold">
