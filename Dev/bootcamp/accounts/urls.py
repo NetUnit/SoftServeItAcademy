@@ -11,7 +11,6 @@ from accounts.views import (
     #########
     login_user_view,
     LoginView,
-    login_train,
     ##########
     logout_success_view,
     login_success_view,
@@ -58,8 +57,4 @@ urlpatterns = [
 
     ######### *** show info *** #########
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),
-
-    #### *** TRAIN *** ####
-    re_path(r'^accounts/login-train/$', login_train, name='login_train'),
-
 ]

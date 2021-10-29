@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from django.forms import ValidationError
 
 from .models import CustomUser
-from accounts.forms import CustomUserLoginForm, LoginForm, ModelLoginForm
+from accounts.forms import CustomUserLoginForm, LoginForm
 from accounts.forms import  CustomUserCreationForm, CustomUserUpdateForm
 # from accounts.forms import RegisterForm
 from django.views.generic import CreateView, FormView, DetailView, View, UpdateView
@@ -70,7 +70,7 @@ class RegisterView(CreateView):
 ## Class-based View
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
-    template_name = 'accounts/login_form_as_p2.html'
+    template_name = 'accounts/login_form_as_p.html'
 
 class LoginCounter:
 
@@ -129,10 +129,6 @@ def login_user_view(request, *args, **kwargs):
     except Exception as err:
         print(err)
         pass
-
-
-def login_train(reaquest, *args, **kwargs):
-    return HttpResponse('<h2> This is a login form <h2>')
 
 #################### *** Login/Logout Views *** ######################
 def login_success_view(request, *args, **kwargs):
