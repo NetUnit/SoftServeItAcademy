@@ -13,6 +13,8 @@ from django.template import RequestContext
 
 ################# *** Django Generic HomePageView *** #############
 from django.views.generic import TemplateView, ListView # Import TemplateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 ## main page
 ## Class-based View
@@ -140,7 +142,8 @@ from django.contrib import messages
 from products.forms import ProductCreationForm
 
 
-############################## **** Create+Validation Form **** ###############################
+############################## **** Create + Validation Form **** ###############################
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_create_view(request, *args, **kwargs):
     form = ProductCreationForm(request.POST or None)
 
@@ -160,14 +163,9 @@ def product_create_view(request, *args, **kwargs):
             get_title = form.cleaned_data.get('title')
             messages.error(request, f'{get_title} isn\'t enough long')
             return redirect ('/products/create/')
-    
-    # fix this later (watch Denis video)
-    # else:
-    #     messages.error(request, f'make sure U r entering all data in the correct order')
 
     form = ProductCreationForm()
     context = {'form': form}
-    #time.sleep(1.0)
     
 #    return render (request, 'forms.html', context) # +
 #    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
@@ -207,7 +205,8 @@ def product_create_view(request, *args, **kwargs):
     
 #     context = {'form': form}
 #     return render (request, 'products/product_update_form_as_crispy_fields.html', context)
-    
+
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_update_view(request, product_id,  *args, **kwargs):
     try:
         form = ProductCreationForm(request.POST or None)
@@ -232,7 +231,7 @@ def product_update_view(request, product_id,  *args, **kwargs):
     context = {'form': form}
     return render (request, 'products/product_update_form_as_crispy_fields.html', context)
     
-
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_delete_view(request, product_id, *args, **kwargs):
     product = Product.get_by_id(product_id)
     Product.delete_by_id(product_id)

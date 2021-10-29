@@ -250,6 +250,35 @@ def profile_delete_submit(request, user_id, *args, **kwargs):
 def contact_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
 
+
+################# *** Authenticated User or Staff Member Check *** ###################
+def check_user_auth(request, *args, **kwargs):
+    user = request.user
+    not_staff = user.is_staff == False
+    context = {'user': user, 'not_staff': not_staff}
+    return render (request, 'check_user_status.html', context)
+
+
+# def check_user_auth(request, *args, **kwargs):
+#     user = request.user
+#     context = {'user': user}
+#     if not user.is_authenticated:
+#         return render (request, 'not_authenticated.html', context)
+#     if not user.is_staff:
+#         return render (request, 'not_staff.html', context)
+
+
+# def check_user_auth(request, *args, **kwargs):
+#     user = request.user
+#     context = {'user': user}
+#     return render (request, 'not_authenticated.html', context)
+    
+# def check_staff_auth(request, *args, **kwargs):
+#     is_staff = request.user.is_staff
+#     context = {'is_staff': is_staff}
+#     return render (request, 'not_staff.html', context)
+
+
 #### checker
 def show_info(request):
     user = request.user
@@ -259,7 +288,10 @@ def show_info(request):
         # x = instance()
         # y = x.get_success_url(request)
         # print(y)
-        return HttpResponse(f'<h2> {instance.__dict__} <h2>')
+        user = request.user
+        auth = request.user.is_authenticated
+        staff = request.user.is_staff
+        return HttpResponse(f'<h2> {user} | {auth} | {staff} <h2>')
     except Exception as err:
         print(err)
 
