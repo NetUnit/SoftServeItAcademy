@@ -24,7 +24,7 @@ class HomePageView(TemplateView):
 
 ## function view
 def home_view(request, *args, **kwargs):
-    context = {'name': 'Andrii'}
+    context = {}
     return render (request, 'home.html', context)
 
 ################### *** product detailed view *** ###################
@@ -60,10 +60,14 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
 ################ *** Product Create View *** #################
 # try/except blocks will be excessive as model has it already 
 def product_list_view(request, *args, **kwargs):
-    products = Product.get_all()
-    context = {'product_list': products}
+    try:
+        products = Product.get_all()
+        context = {'product_list': products}
 
-    return render (request, 'products/list_main.html', context)
+        return render (request, 'products/list_main.html', context)
+    except Exception as err:
+        print(err)
+        pass
 
 ############################## *** Full List *** ###############################
 ## getthe list of items in every object
@@ -131,10 +135,6 @@ def method_view(request, *args, **kwargs):
     context = {'result1': result1, 'result2': result2 , 'result3': result3, 'result4': result4}
     return render (request, 'methods.html', context)
 
-#############################################################
-
-
-################ *** Django Forms *** ################
 ################ *** Product Create View *** #################
 
 ## для можливості виведення повідомлення статусу виконання команди в браузері
@@ -143,29 +143,36 @@ from products.forms import ProductCreationForm
 
 
 ############################## **** Create + Validation Form **** ###############################
+
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_create_view(request, *args, **kwargs):
-    form = ProductCreationForm(request.POST or None)
+    try:
+        form = ProductCreationForm(request.POST or None)
+        print(form.is_valid())
+        if form.is_valid():
+            product = form.save(commit=False)
+            
+            min_title_length = len(str(form.cleaned_data.get('title'))) > 1
+            # print(min_title_length)
+            if min_title_length:
+                product.save()
+                messages.success(
+                    request,
+                    f'U\'ve just created the next product: {product.title} (^_-)≡☆'
+                    )
+                return redirect ('/products/create/')
+            else:
+                get_title = form.cleaned_data.get('title')
+                messages.error(request, f'{get_title} isn\'t enough long')
+                return redirect ('/products/create/')
 
-    if form.is_valid():
-        product = form.save(commit=False)
-        
-        min_title_length = len(str(form.cleaned_data.get('title'))) > 1
-        # print(min_title_length)
-        if min_title_length:
-            product.save()
-            messages.success(
-                request,
-                f'U\'ve just created the next product: {product.title} (^_-)≡☆'
-                )
-            return redirect ('/products/create/')
-        else:
-            get_title = form.cleaned_data.get('title')
-            messages.error(request, f'{get_title} isn\'t enough long')
-            return redirect ('/products/create/')
+        form = ProductCreationForm()
+        context = {'form': form}
 
-    form = ProductCreationForm()
-    context = {'form': form}
+    except Exception as err:
+        print(err)
+        pass
+
     
 #    return render (request, 'forms.html', context) # +
 #    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)

@@ -15,13 +15,18 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('email', 'password1',
-                  'password2', 'nickname',
+                  'password2', 'username',
                   'first_name', 'last_name'
                  )
         required = ('email', 'password1',
-                    'password2', 'nickname'
+                    'password2', 'username'
                    )
-
+        labels = {
+            'email': 'Email',
+            'username': 'Nickname',
+            'first_name': 'Name',
+            'last_name': 'Surname'
+        }
         # hidden password input
         widgets = {
             'email': forms.EmailInput(
@@ -42,7 +47,7 @@ class CustomUserCreationForm(UserCreationForm):
                     'class': "form-control",
                     }
                 ),
-            'nickname': forms.TextInput(
+            'username': forms.TextInput(
                 attrs={
                     'placeholder': 'type nickname..',
                     'class': "form-control",
@@ -63,7 +68,7 @@ class CustomUserCreationForm(UserCreationForm):
             }
 
     def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         for field in self.Meta.required:
             self.fields[field].required = True
@@ -124,11 +129,11 @@ CustomUser = get_user_model()
 class CustomUserLoginForm(forms.Form):
     
     email_username = forms.CharField(
-        label = 'Email/Username',
+        label = 'Email/Nickname',
         widget = forms.TextInput(
             attrs = {
                 'class': "form-control",
-                "placeholder": "email or username",
+                "placeholder": "type email or nickname",
                 }
             )
         )
@@ -160,7 +165,7 @@ class CustomUserLoginForm(forms.Form):
 class CustomUserUpdateForm(forms.Form):
 
     username = forms.CharField(
-        label = 'Username',
+        label = 'Nickname',
         widget = forms.TextInput(
             attrs = {
                 'class': "form-control",
@@ -203,7 +208,7 @@ class CustomUserUpdateForm(forms.Form):
     )
 
     first_name = forms.CharField(
-        label = 'First Name',
+        label = 'Name',
         widget = forms.TextInput(
             attrs = {
                 "class": "form-control",

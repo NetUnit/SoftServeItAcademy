@@ -44,11 +44,24 @@ class MyAccountManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    # id = models.AutoField()
-    email = models.EmailField(gettext_lazy('email address'), unique=True)
-    password = models.CharField(max_length=200, blank=False)
-    nickname = models.CharField(max_length=200, blank=True)
+    '''
+        id = models.AutoField()
+        
+        other fields r inherited from
+        AbstractUser class. Those r as follows:
+        is_superuser: BOOL
+        username: alphanumeric charfield
+        first_name: charfield
+        last_name: charfield
+        is_staff: BOOL
+        is_active: BOOL,
+        date_joined: datetime field (auto)
+    '''
 
+    email = models.EmailField(gettext_lazy('email address'), unique=True)
+    username = models.CharField(gettext_lazy('nickname'), max_length=200, unique=True)
+    password = models.CharField(max_length=200, blank=False)
+    
     #username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -67,12 +80,12 @@ class CustomUser(AbstractUser):
     #     '''
     #     return f'{self.email} {self.password}'
 
-    # def __repr__(self):
-    #     '''
-    #         This magic method is redefined to show class and id of product object.
-    #         :return: class, id
-    #     '''
-    #     return f'{self.__class__.name}(id={self.id})'
+    def __repr__(self):
+        '''
+            This magic method is redefined to show class and id of product object.
+            :return: class, id
+        '''
+        return f'{self.__class__.name}(id={self.id})'
 
     # def __del__(self):
 	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
@@ -110,11 +123,11 @@ class CustomUser(AbstractUser):
     # make api info from this
     def to_dict(self):
         '''
-            :return: user email, user password, user nickname, user created_at, user is_active
+            :return: user email, user password, user username, user created_at, user is_active
             :Example:
             | {
             |   'email': John@Dillinger.yahoo.com,
-            |   'nickname': 'Johny D',
+            |   'username': 'Johny D',
             |   'name': 'John',
             |   'surname': 'Dillinger',
             | }
@@ -144,12 +157,12 @@ class CustomUser(AbstractUser):
     @staticmethod
     def get_user_by_username(username=None):
         '''
-            This method is getting a user by it's nickname
-            :return: user object via nickname
+            This method is getting a user by it's username
+            :return: user object via username
         '''
         try:
             user = CustomUser.objects.all().filter(username=username).get()
-            # user = CustomUser.objects.get(nickname)
+            # user = CustomUser.objects.get(username)
             return user
         except CustomUser.DoesNotExist:
             return False
@@ -159,7 +172,7 @@ class CustomUser(AbstractUser):
     def user_exists(data):
         '''
             This method is redefined to check if user with 
-            similar email/nickname is present in the db
+            similar email/username is present in the db
             :return: True if user exists, False if opposite
 
             NOTE:   data is a dict that comes from form (cleaned_data)
@@ -168,13 +181,13 @@ class CustomUser(AbstractUser):
         '''
         # will return the query-object when match the Value from the form
         user_by_email = data.get('email')
-        user_by_nickname = data.get('nickname')
+        user_by_username = data.get('username')
 
-        # qurying the db via data from the form (email, nickname)
+        # qurying the db via data from the form (email, username)
         match_by_email = CustomUser.get_user_by_email(user_by_email)
-        match_by_nickname = CustomUser.get_user_by_nickname(user_by_nickname)
+        match_by_username = CustomUser.get_user_by_username(user_by_username)
 
-        user_exists = bool(match_by_email) + bool(match_by_nickname) > 0
+        user_exists = bool(match_by_email) + bool(match_by_username) > 0
         return True if user_exists else False
 
 
