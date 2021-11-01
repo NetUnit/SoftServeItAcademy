@@ -45,14 +45,14 @@ class CustomMMCF(forms.ModelMultipleChoiceField):
 class ProductCreationForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('title', 'content', 'price')
+        fields = ('title', 'content', 'price') -->
         labels = {
             'title': 'Title',
             'content': 'Content',
             'price': 'Price, $:',
         }
 
-        required = ('title', 'manufacturers')
+        required = ('title', 'price')
 
         widgets = {
 

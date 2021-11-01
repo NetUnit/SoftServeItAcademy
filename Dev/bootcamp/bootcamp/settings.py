@@ -67,6 +67,7 @@ LOGOUT_URL = '/logout/'
 # Add to test email:
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
@@ -135,7 +136,7 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'panda_hardware',                                     
+        'NAME': 'panda_hardware2',                                     
         'USER': 'postgres',
         'PASSWORD': '7875',                                  
         'HOST': 'localhost',

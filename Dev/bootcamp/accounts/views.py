@@ -46,9 +46,9 @@ def register_user_view(request, *args, **kwargs):
             new_user = user.create_user(data)
             messages.success(
                 request,
-                f'U\'ve just created the next user: {new_user.nickname} (^_-)≡☆'
+                f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
                 )
-            return redirect ('/accounts/register/')
+            return redirect ('/accounts/register-fbv/')
 
         form = CustomUserCreationForm()
         context = {'form': form}
@@ -226,13 +226,13 @@ def profile_update_view(request, user_id, *args, **kwargs):
 
 ####################### *** Update User CBV *** #######################
 from django.views.generic import UpdateView
-class  EditProfilePageView(generic.UpdateView):
 
+class  EditProfilePageView(generic.UpdateView):
     model = get_user_model()
     template_name = 'accounts/edit_profile_cbv.html'
     success_url = '/accounts/login-fbv/'
     fields = ('email', 'username', 'password', 'first_name', 'last_name')
-
+    
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
     user = get_object_or_404(CustomUser, pk=user_id)
@@ -256,7 +256,7 @@ def check_user_auth(request, *args, **kwargs):
     user = request.user
     not_staff = user.is_staff == False
     context = {'user': user, 'not_staff': not_staff}
-    return render (request, 'check_user_status.html', context)
+    return render (request, 'user_status.html', context)
 
 
 # def check_user_auth(request, *args, **kwargs):

@@ -1,6 +1,10 @@
 from django.db import models, IntegrityError, DataError
 from manufacturer.models import Manufacturer
 from django.http.response import Http404
+from accounts.models import CustomUser
+# from django.conf import settings
+# CustomUser = settings.AUTH_USER_MODEL
+
 
 # Create your models here.
 class Product(models.Model):
@@ -8,6 +12,8 @@ class Product(models.Model):
     title = models.CharField(max_length=220)
     content = models.TextField(null=True, blank=True)
     price = models.IntegerField(null=True, default=0)
+    user = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
+    #user = models.ForeignKey(CustomUser, null=True, on_delete=models.CASCADE)
     manufacturers = models.ManyToManyField(Manufacturer, related_name='products')
 
     class Meta:
