@@ -27,7 +27,7 @@ class CustomUserCreationForm(UserCreationForm):
             'first_name': 'Name',
             'last_name': 'Surname'
         }
-        # hidden password input
+        
         widgets = {
             'email': forms.EmailInput(
                 attrs={
@@ -86,7 +86,7 @@ class LoginForm(AuthenticationForm):
               as if U r trying to create a new User,
               causing the already exists failures.
     '''
-    # can be used to username-email auth
+    # could be used to username-email auth
     # email_username = forms.CharField(
     #     label = 'Email/Username',
     #     widget = forms.TextInput(
