@@ -33,6 +33,10 @@ from django.contrib import messages
 import re
 import datetime
 from manufacturer.dates_range import Dates
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_create_view(request, *args, **kwargs):
     form = ManufacturerCreationForm(request.POST or None)
 
@@ -151,6 +155,7 @@ def manufacturer_list_view(request, *args, **kwargs):
 #     context = {'form': form}
 #     return render (request, 'manufacturer/manufacturer_update_form_crispy.html', context)
 
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
     try:
         form = ManufacturerCreationForm(request.POST or None)
@@ -181,6 +186,7 @@ def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
     return render (request, 'manufacturer/manufacturer_update_form_crispy.html', context)
 
 ############################## *** Update Product *** ###########################
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_delete_view(request, manufacturer_id, *args, **kwargs):
     try:
         manufacturer = Manufacturer.get_by_id(manufacturer_id)

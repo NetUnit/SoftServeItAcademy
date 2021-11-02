@@ -47,14 +47,14 @@ class ProductCreationForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title', 'content', 'price', 'manufacturers')
+        fields = ('title', 'content', 'price')
         labels = {
             'title': 'Title',
             'content': 'Content',
             'price': 'Price, $:',
         }
 
-        required = ('title', 'content', 'price', 'manufacturers')
+        required = ('title', 'content', 'price')
 
         widgets = {
 
