@@ -6,8 +6,9 @@ from django.http.request import HttpRequest
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from .models import Product, Manufacturer
 import time
-from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.forms import ValidationError
+from django.utils.translation import gettext as _
 # exception handling
 from django.template import RequestContext
 
@@ -146,40 +147,41 @@ from products.forms import ProductCreationForm
 
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_create_view(request, *args, **kwargs):
+
     try:
         form = ProductCreationForm(request.POST or None)
-        print(form.is_valid())
-        if form.is_valid():
+        form.check_manufacturers()
+
+        correct_form = form.is_valid()
+        if correct_form:
+            form.check_title()
             product = form.save(commit=False)
-            
-            min_title_length = len(str(form.cleaned_data.get('title'))) > 1
-            # print(min_title_length)
-            if min_title_length:
-                product.save()
-                messages.success(
-                    request,
-                    f'U\'ve just created the next product: {product.title} (^_-)≡☆'
-                    )
-                return redirect ('/products/create/')
-            else:
-                get_title = form.cleaned_data.get('title')
-                messages.error(request, f'{get_title} isn\'t enough long')
-                return redirect ('/products/create/')
-
+            product.save()
+            messages.success(
+                request,
+                f'U\'ve just created the next product: {product.title} (^_-)≡☆'
+                )
+            return redirect ('/products/create/')
+        
+        messages.error(
+                request,
+                f'Please make sure to select all fields（♯××）┘ ◎☆')
+               
         form = ProductCreationForm()
-        context = {'form': form}
+        context = {'form': form, 'correct_form': correct_form}
 
-    except Exception as err:
-        print(err)
+    #    return render (request, 'forms.html', context) # +
+    #    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
+    #     ## !!required fields demand!!
+    #     # return render (request, 'products/create_product_form_as_p.html', context) # +
+        return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
+    #    return render (request, 'products/create_product_form_crispy.html', context) # +
+    except ValidationError as error:
+        print(error)
+        return render (request, 'form_failure.html', context={'form_error': ''.join(error)})
+    except Exception as error1:
+        print(error1)
         pass
-
-    
-#    return render (request, 'forms.html', context) # +
-#    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
-#     ## !!required fields demand!!
-#     # return render (request, 'products/create_product_form_as_p.html', context) # +
-    return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
-#    return render (request, 'products/create_product_form_crispy.html', context) # +
 ############################## **** Update View **** ###############################
 # def product_update_view(request, product_id,  *args, **kwargs):
 

@@ -27,12 +27,12 @@ class Product(models.Model):
     #     # return f'{self.id} {self.title} {self.price} {self.manufacturers}'
     #     # return str(self.to_dict())[1:-1]
 
-    def __repr__(self):
-        """
-            This magic method is redefined to show class and id of product object.
-            :return: class, id
-        """
-        return f'{self.__class__.__name__}(id={self.id})'
+    # def __repr__(self):
+    #     """
+    #         This magic method is redefined to show class and id of product object.
+    #         :return: class, id
+    #     """
+    #     return f'{self.__class__.__name__}(id={self.id})'
 
     @staticmethod
     def get_by_id(product_id):

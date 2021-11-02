@@ -67,15 +67,17 @@
     <div class="card-body">
         <h5 class="card-title">Create Product</h5>
         <form action="" method="post">
-            {%csrf_token%}
+            {% csrf_token %}
             
             {{form.title|as_crispy_field}} {{form.content|as_crispy_field}} {{form.price|as_crispy_field}}
             
-            
-            <div class="card-body" style="display: flex; justify-content: space-between; align-items: right">
-                <label for="">Manufacturers:</label>
-                {{form.manufacturers}}
-            </div>
+            {% if form.manufacturers %}
+                <div class="card-body" style="display: flex; justify-content: space-between; align-items: right">
+                    <label for="">Manufacturers:</label>
+                    {{form.manufacturers}}
+                </div>
+            {% endif %}
+
             {% if messages %}
                 <div>
                     <br>
@@ -85,6 +87,7 @@
                     <br>
                 </div>
             {% endif %}
+            
             <button type="submit" class="btn btn-success">Create</button>
             <!-- position: relative; z-index: 1000 -->
         </form>
