@@ -61,7 +61,7 @@ class Product(models.Model):
         return False
 
     @staticmethod
-    def create(title, content, price, manufacturers=None):
+    def create(title, content, price, manufacturers=None, user=None):
         """
             param name: Describes name of the product
             type name: str max_length=220
@@ -73,7 +73,7 @@ class Product(models.Model):
             :return: a new product object which is also written into the DB
         """
         # allows to create objects with not all attrs input obligatory
-        product = Product(title=title, content=content, price=price)
+        product = Product(title=title, content=content, price=price, user=user)
         try:
             product.save()
             manufacturer_exists = manufacturers is not None

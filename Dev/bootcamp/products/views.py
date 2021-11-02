@@ -22,7 +22,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 class HomePageView(TemplateView):
     template_name = "index.html"
 
-
 ## function view
 def home_view(request, *args, **kwargs):
     context = {}
@@ -46,7 +45,6 @@ def product_detailed_view(request, product_id, *args, **kwargs):
     context = {'object': obj}
     return render (request, 'products/detail.html', context)
 
-
 # JSON response of product#2 # example just for url
 def api_product_detailed_view(request, product_id, *args, **kwargs):
     try:
@@ -56,7 +54,6 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
         # return JsonResponse({"message": "Not found"}, status=404) # will 
         # return JSON response with HTTP status code of 404
     return JsonResponse({'id': obj.id, 'title': obj.title, 'content': obj.content, 'price': obj.price})
-
 
 ################ *** Product Create View *** #################
 # try/except blocks will be excessive as model has it already 
@@ -123,9 +120,6 @@ class ProductListView(ListView):
 #     return response
 
 
-#############################################################
-
-
 ################ *** Methods *** #################
 
 def method_view(request, *args, **kwargs):
@@ -144,18 +138,20 @@ from products.forms import ProductCreationForm
 
 
 ############################## **** Create + Validation Form **** ###############################
-
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
-def product_create_view(request, *args, **kwargs):
-
+def product_create_view(request, *args, **kwargs): ### add user_id here from frontend
+    '''
+        in this method we r not gonna grab the user_id
+        from the url, but instatly take it from the
+        request session an dwrite to the db (as a primary key)
+    '''
     try:
         form = ProductCreationForm(request.POST or None)
         form.check_manufacturers()
-
-        correct_form = form.is_valid()
-        if correct_form:
+        if form.is_valid():
             form.check_title()
             product = form.save(commit=False)
+            product.user = request.user
             product.save()
             messages.success(
                 request,
@@ -168,7 +164,7 @@ def product_create_view(request, *args, **kwargs):
                 f'Please make sure to select all fields（♯××）┘ ◎☆')
                
         form = ProductCreationForm()
-        context = {'form': form, 'correct_form': correct_form}
+        context = {'form': form}
 
     #    return render (request, 'forms.html', context) # +
     #    return render (request, 'products/create_product_input_tags.html', context) # NOTE: (frontend placeholders)
@@ -398,7 +394,6 @@ def search_view(request, *args, **kwargs):
     objects = Manufacturer.get_all() + Product.get_all()
     print(objects)
     
-
     if request.method == 'POST':
         item = request.POST.get('searched')
 
@@ -429,7 +424,6 @@ def search_view(request, *args, **kwargs):
     # print(storage[0].__dict__['signer'].__dict__)
     return render (request, 'products/search_messages.html')
  
-
 # ### work +++ 
 # def search_view(request, *args, **kwargs):
 #     if request.method == 'POST':
@@ -699,3 +693,41 @@ def search_view(request, *args, **kwargs):
 #     return HttpResponse(f"Here is product detailed view of: {obj.id}")
 
 
+######### ****** CORRECT *********** 
+# @staff_member_required(login_url=f'/accounts/check-user-auth/')
+# def product_create_view(request, *args, **kwargs): ### add user_id here from frontend
+
+#     try:
+#         form = ProductCreationForm(request.POST or None)
+#         form.check_manufacturers()
+
+#         # print(form.is_valid())
+#         if form.is_valid():
+#             form.check_title()
+#             data = form.cleaned_data
+#             product = Product.create(**data) ## product = form.save(commit=False)
+#             product.save()
+            
+#             ## write product_id into the db
+#             product.user = request.user
+#             messages.success(
+#                 request,
+#                 f'U\'ve just created the next product: {product.title} (^_-)≡☆'
+#                 )
+#             return redirect ('/products/create/')
+        
+#         messages.error(
+#                 request,
+#                 f'Please make sure to select all fields（♯××）┘ ◎☆')
+               
+#         form = ProductCreationForm()
+#         context = {'form': form}
+    
+#         return render (request, 'products/create_product_form_as_crispy_fields.html', context) # NOTE: (backend placeholders)
+#     #    return render (request, 'products/create_product_form_crispy.html', context) # +
+#     except ValidationError as error:
+#         print(error)
+#         return render (request, 'form_failure.html', context={'form_error': ''.join(error)})
+#     except Exception as error1:
+#         print(error1)
+#         pass
