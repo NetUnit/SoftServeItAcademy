@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
@@ -15,17 +16,38 @@ from django.views.generic import FormView
 
 # https://www.gravityforms.com/pricing/ - 59 usd
 from paypal.standard.forms import PayPalPaymentsForm
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here
-def order_create_view(request, product_id, *args, **kwargs):
-    product = Product.get_by_id(product_id)
-    Order.create(product) if product else None
 
-    # return HttpResponse (
-    #     f'<h3>  {order}  <h3>'
+## @login_required(login_url=f'/accounts/check-user-auth/')
+def order_create_view(request, product_id, *args, **kwargs):
+    try:
+        product = Product.get_by_id(product_id)
+        order = Order.create(product) if product else None
+        print(isinstance(request.user, AnonymousUser))
+        # in the case not user.is_authenticated()
+        if isinstance(request.user, AnonymousUser):
+            order.user = None
+            #print(order.user)
+            return redirect ('/order/cart/')
+        
+        order.user = request.user
+        order.save()
+
+        #print(order.user)
+        #print(request.user)
+        #order.save
+        # return HttpResponse (
+        #     f'<h3>  {order}  <h3>'
     # )
     
-    return redirect ('/order/cart/')
+        return redirect ('/order/cart/')
+
+    except Exception as error:
+        print(error)
 
 def order_remove_view(request, order_id, *args, **kwargs):
     Order.delete_by_id(order_id)
@@ -37,23 +59,37 @@ def order_remove_view(request, order_id, *args, **kwargs):
 
 
 def cart_clean_view(request, *args, **kwargs): # add these later: product_id, user_id,
+    try:
     #condition = user_id is not None
-    Order.delete_all()
-    messages.success(request, f'Your cart is empty now (-ˍ-。)')
-    return redirect ('/order/cart/')
+        user = request.user
+        user_id = user.id
+        print(user_id)
+
+        Order.delete_all(user_id)
+
+       #order = Order.objects.all().filter(user_id=user_id)
+        #print(order)
+
+        #print(Order.delete_all(user_id))
+
+        messages.success(request, f'Your cart is empty now (-ˍ-。)')
+        return redirect ('/order/cart/')
+    except Exception as error:
+        print(error)
 
 def cart_view(request, *args, **kwargs):
+    
+    user = request.user
+    user_id = user.id
 
     ## context#1
-    basket = Order.cart_items_amount()
-    
+    basket = Order.cart_items_amount(user_id)
+
     ## context#2
-    products_amount = Order.products_amount() 
-    #print(products_amount)
+    products_amount = Order.products_amount(user_id) 
 
     ## context#3 total_value_price
-    total_value = Order.total_value()
-    #print(total_value)
+    total_value = Order.total_value(user_id)
 
     ## context#4 discount
     disc_ratio = Order.get_discount()
@@ -73,20 +109,36 @@ def cart_view(request, *args, **kwargs):
     
 
 # payment process view
+@login_required(login_url=f'/accounts/check-user-auth/')
 def process_payment_view(request, *args, **kwargs):
     try:
         form = PayPalPaymentsForm()
         print(form.__dict__) ## will return form fields that we need to fulfill 
-        order_id = request.session.get('order_id')
-        order = get_object_or_404(Order, id=order_id)
-        host = request.get_host()
+        user = request.user
+        user_id = user.id
+        order_id = user_id
+        print(order_id)
+
+        ## we have a customized cart, so that this method doesn't suit
+        #order = get_object_or_404(Order, id=order_id)
+        #print(order)
+
+        total_value = Order.total_value(user_id)
+        total_value = Decimal(str(total_value))
+
+        order = Order.get_orders_by_user(user_id)
+
+        host = request.get_host() ### +++
+        print(host)
+
+        ## 'amount': '%.2f' % order.get_total_value().quantize(Decimal('1.000'))
 
         paypal_dict = {
 
             'business': settings.PAYPAL_RECEIVER_EMAIL,
-            'amount': '%.2f' % order.get_total_cost().quantize(Decimal('.01')),
-            'item_name': f'Order {order.id}',
-            'invoice': str(order.id),
+            'amount': '%.2f' % total_value.quantize(Decimal('1.000')),
+            'item_name': f'Order {order_id}',
+            'invoice': str(order_id),
             'currencey_code': 'USD',
             'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
             'cancel_return': 'http://{}{}'.format(host, reverse('orders:paypal-cancel')),
