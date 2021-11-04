@@ -5,7 +5,7 @@ from orders.views import (
     cart_view,
     order_remove_view,
     cart_clean_view,
-    #process_payment_view,
+    process_payment_view,
     PaypalReturnView,
     PaypalCancelView,
 
@@ -36,7 +36,7 @@ urlpatterns = [
 
     # ############# *** Order Pay View *** ###############
     ## set 1 
-    # re_path(r'^order/payment/$', process_payment_view, name='process_payment_view'),
+    re_path(r'^order/payment/$', process_payment_view, name='process_payment_view'),
     # re_path(r'^order/payment-done/$', TemplateView.as_view(template_name="orders/payment_done.html"), name='payment_done'),
     # re_path(r'^order/payment-canceled/$', TemplateView.as_view(template_name="orders/payment_canceled.html"), name='payment_canceled'),
 

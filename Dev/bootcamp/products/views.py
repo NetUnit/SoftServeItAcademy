@@ -696,7 +696,7 @@ def search_view(request, *args, **kwargs):
 ######### ****** CORRECT *********** 
 # @staff_member_required(login_url=f'/accounts/check-user-auth/')
 # def product_create_view(request, *args, **kwargs): ### add user_id here from frontend
-
+### if we want to get user_id we need to grab from url_pattern <user_id>
 #     try:
 #         form = ProductCreationForm(request.POST or None)
 #         form.check_manufacturers()

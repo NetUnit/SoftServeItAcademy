@@ -22,9 +22,9 @@ class Order(models.Model):
     '''
 
     #id is the autofield
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    user = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
 
     # 1
     # def __str__(self):
@@ -60,10 +60,11 @@ class Order(models.Model):
     
     # 4
     @staticmethod
-    def get_all():
+    def get_all(user_id=None):
         '''
             This method gets all orders from the db
-            return: queryset of product objects converted to a list
+            return: queryset of product objects converted
+            to a list
         '''
         condition = len([
             product for product in Product.get_all()
@@ -105,7 +106,7 @@ class Order(models.Model):
 
     # 7
     @staticmethod
-    def delete_all():
+    def delete_all(user_id=None):
         '''
             param user_id: SERIAL: the id of an Order to be found in the DB
             return: delete all objects found in the db (clean the db)
@@ -118,15 +119,27 @@ class Order(models.Model):
             ]) > 0
 
         if product_exist and order_exist:
-            return Order.objects.all().delete()
+            return Order.objects.all().filter(user_id=user_id).delete()
 
-    ## *** CART FUNCTIONALITY *** ##
     # 8
     @staticmethod
-    def create_cart():
+    def get_orders_by_user(user_id=None):
+        '''
+            NOTE: We can attach ip condition here for later
+                  for anonymous users, to have several of them
+                  and allow them to create cart
+        
+        '''
 
-        products = [order.product.title for order in Order.get_all()]
-        orders = Order.get_all()
+        return Order.objects.all().filter(user_id=user_id)
+
+    ## *** CART FUNCTIONALITY *** ##
+    # 9
+    @staticmethod
+    def create_cart(user_id=None):
+        
+        products = [order.product.title for order in Order.get_orders_by_user(user_id)]
+        orders = Order.get_orders_by_user(user_id)
         zipped = dict(zip(products, orders))
 
         ## form empty basket: key - order, value - list of products
@@ -147,10 +160,10 @@ class Order(models.Model):
         
         return basket
     
-    # 9
+    # 10
     @staticmethod
-    def cart_items_amount():  ## add user_id late
-        basket = Order.create_cart()
+    def cart_items_amount(user_id=None):  ## add user_id late
+        basket = Order.create_cart(user_id)
         #products_amount = 0
         for order, products in basket.items():
             basket[order] = len(products)
@@ -158,35 +171,35 @@ class Order(models.Model):
         
         return basket
 
-    # 10
-    @staticmethod
-    def products_amount():
-        basket = Order.cart_items_amount()
-        return sum(list(basket.values()))
-        
     # 11
     @staticmethod
-    def total_value():
+    def products_amount(user_id=None):
+        basket = Order.cart_items_amount(user_id)
+        return sum(list(basket.values()))
+        
+    # 12
+    @staticmethod
+    def total_value(user_id=None):
         try:
             total_value = float(sum([
-                order.product.price for order in Order.get_all()
+                order.product.price for order in Order.get_orders_by_user(user_id)
                 ]))
             return total_value
         except Exception as err:
             # LOGGER.error(f'{err}')
             pass
     
-    # 12
+    # 13
     @staticmethod
-    def get_discount():
-        products_amount = Order.products_amount()
+    def get_discount(user_id=None):
+        products_amount = Order.products_amount(user_id)
         disc_ratio = ((products_amount//5)*5)/100
         max_disc = int(disc_ratio*100) not in range(0, 50)
                     
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
 
-        # return Order.objects.all().filter(id=user_id).delete() if condition else 0 # for user_id - when having a user
+        # return Order.objects.all().filter(user_id=user_id).delete() if condition else 0 # for user_id - when having a user
 
     
 
