@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',                                      # paypal gateaway
 ]
 
-
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/accounts/login-success/'
@@ -231,7 +230,7 @@ APP_NAME_5_TAGLINE = 'orders tagline'
 METHOD = 'METHODS'
 
 #django-paypal settings
-PAYPAL_RECEIVER_EMAIL = 'andriyproniyk@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'myXbox@bigmir.net'
 PAYPAL_TEST = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
