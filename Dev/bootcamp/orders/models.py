@@ -198,6 +198,12 @@ class Order(models.Model):
                     
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
+    
+    
+    def get_value_per_amount(self, user_id=None):
+        basket = Order.cart_items_amount(user_id)
+        amounts = [k.product.price * v  for k, v in basket.items()]
+        return amounts
 
         # return Order.objects.all().filter(user_id=user_id).delete() if condition else 0 # for user_id - when having a user
 
