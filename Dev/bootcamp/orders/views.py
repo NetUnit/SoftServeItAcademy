@@ -118,6 +118,7 @@ def cart_view(request, *args, **kwargs):
 @login_required(login_url=f'/accounts/check-user-auth/')
 def process_payment_view(request, *args, **kwargs):
     try:
+        instance = Order()
         form = PayPalPaymentsForm()
         print(form.__dict__)  # will return form fields that we need to fulfill
         user = request.user
@@ -138,18 +139,21 @@ def process_payment_view(request, *args, **kwargs):
         print(host)
 
         basket = Order.cart_items_amount(user_id)
-        instance = Order()
-        amounts = instance.get_value_per_amount(user_id)
-        print(amounts)
+
+        invoice_basket  = instance.get_value_per_amount(user_id)
+        # check amounts
+        #[print(item.amounts) for item in list(invoice_basket.keys())]
 
         # 'amount': '%.2f' % order.get_total_value().quantize(Decimal('1.000'))
 
         paypal_dict = {
             'business': settings.PAYPAL_RECEIVER_EMAIL,
             'personal': user.email,
+            'shipping': 20.00,
             'amount': '%.2f' % total_value.quantize(Decimal('1.000')),
             'basket': Order.cart_items_amount(user_id),
-            'amounts': amounts,
+            'invoice_basket': invoice_basket,
+            'user': user,
             'item_name': f'Order: {order_id}',
             'invoice': str(order_id),
             'currency_code': 'USD',
@@ -157,12 +161,9 @@ def process_payment_view(request, *args, **kwargs):
             'cancel_return': 'http://{}{}'.format(host, reverse('orders:paypal-cancel')),
         }
 
-        print(paypal_dict)
-
         form = PayPalPaymentsForm(initial=paypal_dict)
         context = {'form': form, 'order': order, 'data': paypal_dict}
         return render(request, 'orders/paypal_invoice.html', context)
-        # return render (request, 'orders/payment_process.html', context)
 
     except Exception as err:
         print(err)

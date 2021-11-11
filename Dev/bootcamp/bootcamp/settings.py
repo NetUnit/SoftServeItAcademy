@@ -205,6 +205,7 @@ PRODUCTS_TAGLINE = 'The latest incomes of products/manufacturers/prices/updates'
 
 MAIN_PAGE = 'BOOTCAMP/MAIN PAGE'
 MAIN_PAGE_TAGLINE = 'bootcamp main page tagline'
+COMPANY_NAME_TAGLINE = 'Panda Hardware LLC'
 
 
 APP_NAME_1 = 'PRODUCTS'
