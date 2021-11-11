@@ -33,6 +33,8 @@ def footer_app_name(request, *args, **kwargs):
         'app_name_4_tagline': settings.APP_NAME_4_TAGLINE,
         'app_name_5': settings.APP_NAME_5,
         'app_name_5_tagline': settings.APP_NAME_5_TAGLINE,
+        #################################################
+        'company_name_tagline': settings.COMPANY_NAME_TAGLINE,
     }
 
 

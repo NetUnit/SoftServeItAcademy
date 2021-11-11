@@ -199,14 +199,34 @@ class Order(models.Model):
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
     
-    
+    ## *** RECEIPT ADDITIONAL FUNCTIONALITY *** ##
+    # 14
     def get_value_per_amount(self, user_id=None):
+        ''' 
+            instantiate form Order class to use this method
+            param user_id: SERIAL: the id of an Order to be found in the DB
+            returns: total amount per single item 
+        '''
         basket = Order.cart_items_amount(user_id)
         amounts = [k.product.price * v  for k, v in basket.items()]
-        return amounts
+        for i in range(len(amounts)):
+            list(basket.keys())[i].amounts = amounts[i]
+        return basket
+    
+    # 15
+    def calculate_shipping(self, user_id=None):
+        ''' 
+            NOTE: elaborate shipping formula aforehand
 
-        # return Order.objects.all().filter(user_id=user_id).delete() if condition else 0 # for user_id - when having a user
-
+            param user_id: SERIAL: the id of an Order to be found in the DB
+            returns: shipping price for cart
+            size (volume, l): k1
+            weight (kg): k2
+            route (km): k3
+        '''
+        products_amount = Order.products_amount(user_id)
+        pass
+    
     
 
     # add calculate basket here
