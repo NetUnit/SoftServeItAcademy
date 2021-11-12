@@ -2,6 +2,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.http.response import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy, reverse
+from django.http import  JsonResponse
 
 # from orders.models import Order
 from .models import Product, Order
@@ -24,8 +25,6 @@ import json
 # Create your views here
 
 # @login_required(login_url=f'/accounts/check-user-auth/')
-
-
 def order_create_view(request, product_id, *args, **kwargs):
     try:
         product = Product.get_by_id(product_id)
@@ -52,7 +51,7 @@ def order_create_view(request, product_id, *args, **kwargs):
     except Exception as error:
         print(error)
 
-
+# @login_required(login_url=f'/accounts/check-user-auth/')
 def order_remove_view(request, order_id, *args, **kwargs):
     Order.delete_by_id(order_id)
     return redirect('/order/cart/')
@@ -61,7 +60,7 @@ def order_remove_view(request, order_id, *args, **kwargs):
     #     f'<h3>  {order_id} {Order.delete_by_id(order_id)}  <h3>'
     # )
 
-
+# @login_required(login_url=f'/accounts/check-user-auth/')
 def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, user_id,
     try:
         #condition = user_id is not None
@@ -114,33 +113,33 @@ def cart_view(request, *args, **kwargs):
     return render(request, 'orders/cart.html', context)
 
 
-# payment process view
 @login_required(login_url=f'/accounts/check-user-auth/')
 def process_payment_view(request, *args, **kwargs):
     try:
         instance = Order()
         form = PayPalPaymentsForm()
-        print(form.__dict__)  # will return form fields that we need to fulfill
+        
         user = request.user
         user_id = user.id
-        order_id = user_id
-        print(order_id)
-
-        # we have a customized cart, so that this method doesn't suit
-        #order = get_object_or_404(Order, id=order_id)
-        # print(order)
+        
+        order_id = max(
+            [order.id for order in Order.get_orders_by_user(user.id)]
+        )
+        
+        to_decimal = lambda value: Decimal(str(value))
 
         total_value = Order.total_value(user_id)
-        total_value = Decimal(str(total_value))
+        total_value = to_decimal(total_value)
 
         order = Order.get_orders_by_user(user_id)
-
-        host = request.get_host()  # +++
-        print(host)
+        host = request.get_host() 
 
         basket = Order.cart_items_amount(user_id)
 
         invoice_basket  = instance.get_value_per_amount(user_id)
+        shipping = 20
+        shipping = to_decimal(shipping)
+        
         # check amounts
         #[print(item.amounts) for item in list(invoice_basket.keys())]
 
@@ -149,16 +148,20 @@ def process_payment_view(request, *args, **kwargs):
         paypal_dict = {
             'business': settings.PAYPAL_RECEIVER_EMAIL,
             'personal': user.email,
-            'shipping': 20.00,
+            'shipping': '%.2f' % shipping.quantize(Decimal('1.000')),
             'amount': '%.2f' % total_value.quantize(Decimal('1.000')),
+            'total_cart_amount': '%.2f' % (20 + total_value).quantize(Decimal('1.000')),
             'basket': Order.cart_items_amount(user_id),
             'invoice_basket': invoice_basket,
             'user': user,
             'item_name': f'Order: {order_id}',
             'invoice': str(order_id),
             'currency_code': 'USD',
-            'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
-            'cancel_return': 'http://{}{}'.format(host, reverse('orders:paypal-cancel')),
+            "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+            "return_url": request.build_absolute_uri(reverse('orders:paypal-return')),
+            "cancel_return": request.build_absolute_uri(reverse('orders:paypal-cancel')),
+            # 'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
+            # 'cancel_return': 'http://{}{}'.format(host, reverse('orders:paypal-cancel')),
         }
 
         form = PayPalPaymentsForm(initial=paypal_dict)
@@ -201,9 +204,21 @@ class PaypalFormView(FormView):
             pass
 
 
+def payment_complete_view(request):
+    try:
+        body = json.loads(request.body)
+        order = Order.objects.get(id=body['orderId'])
+        return JsonResponse('Payment Completed', safe=False)
+
+    except Exception as err:
+        print(err)
+        pass
+
 
 class PaypalReturnView(TemplateView):
     template_name = 'orders/payment_done.html'
+
+
 
 class PaypalCancelView(TemplateView):
     template_name = 'orders/payment_cancelled.html'

@@ -10,7 +10,7 @@ from orders.views import (
     PaypalReturnView,
     PaypalCancelView,
     PaypalFormView,
-
+    payment_complete_view
 )
 
 from django.conf import settings
@@ -46,9 +46,9 @@ urlpatterns = [
 
     ## set 2
     # ############# *** Order Pay View *** ###############
-
     path('paypal-payment/', PaypalFormView.as_view(), name='paypal-payment'),
-    path('paypal-done/', PaypalReturnView.as_view(), name='paypal-return'),
+    path('paypal-done/', payment_complete_view, name='paypal-done'),
+    path('paypal-return/', PaypalReturnView.as_view(), name='paypal-return'),
     path('paypal-cancelled/', PaypalCancelView.as_view(), name='paypal-cancel'),
     
 ]
