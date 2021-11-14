@@ -226,11 +226,3 @@ class Order(models.Model):
         '''
         products_amount = Order.products_amount(user_id)
         pass
-    
-    
-
-    # add calculate basket here
-    ## 1) calculate number of items
-    ## 2) calculate discount
-    ## 3) calculate total nember of items
-    ## !!! get all of these things from basket views

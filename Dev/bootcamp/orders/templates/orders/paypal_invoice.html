@@ -122,21 +122,18 @@
                 <button style="float:right" class="vx_btn vx_btn-medium seo-inv-action-btn" id="sendInvoiceBtn" data-action="preview" pa-marked="1">Preview &amp; Send</button>
                 <button class="vx_btn vx_btn-large" id="sendInvoiceBtn">Send</button>
               </div>
-              <br>
             </div>
             <div class="row">
               <div id="logoContainer" class="col-lg-6 col-md-6 col-xs-12 logo-container" style="height: 90px;">
-                  <div id="logoTextBox">
+                  <!-- <div id="logoTextBox">
                     <div class="logo-text">
                       <span id="addLogo" class="addIcon logo-select-trigger" tabindex="0" aria-describedby="add-logo-content"></span>
                       <span id="add-logo-content" class="vx_btn-link vx_addBtn-secondary add-biz-logo logo-select-trigger">Add business logo</span>
                     </div>
-                  </div>
-                  <div id="logoBox" class="logo-box" style="">
-                    <div>
-                      <label for="logo" class="sr-only">Choose a file</label>
-                      <input type="file" name="logoFile" id="logo" style="display:none;" accept="image/*">
-                      <img id="logoImage" class="business-logo logo-select-trigger logo-size" src="" alt="Business logo" border="0" tabindex="0" style="margin-left: 0px;">
+                  </div> -->
+                  <div class="logoTextBox">
+                    <div class="col-xs-6">
+                      <img width="90px" height="90px" src="/static/images/panada_logo_small.jpg" alt="">
                     </div>
                     <div class="logo-options" id="logoOptions">
                       <button id="updateLogo" class="vx_btn-link logo-select-trigger" pa-marked="1">Update</button>
@@ -203,7 +200,8 @@
                     </div>
                     <div class="col-xs-7" id="dueDateDiv">
                       <div class="vx_form-group no-padding">
-                        <input class="vx_form-control input-form-field due-date-field" type="text" id="dueDate" value="10/11/2021" placeholder="Due date">
+                        <text class="vx_form-control input-form-field" autocomplete="off" placeholder="0001" type="text" id="invoiceNumber" style="color: grey;"> {{ data.date }} </text>
+                        <!-- <input class="vx_form-control input-form-field due-date-field" type="text" id="dueDate" value="10/11/2021" placeholder="Due date"> -->
                       </div>
                       <span id="calendarIcon" class="vx_icon vx_icon-medium vx_icon-calendar-small input-icon-right-col hidden">
 

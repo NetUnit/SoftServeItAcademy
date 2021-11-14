@@ -41,10 +41,10 @@
         var success_url = "{% url 'orders:paypal-return'  %}"
         var orderId = '{{ data.invoice }}'
 
-        async function latency() {
-            await sleep(15000);
-            window.location.replace(success_url);
-        }
+        // async function latency() {
+        //     await sleep(15000);
+        //     window.location.replace(success_url);
+        // }
 
         // setTimeout(function(){
         //     window.location.replace(success_url)
@@ -107,9 +107,9 @@
                     const element = document.getElementById('paypal-button-container');
                     element.innerHTML = '';
                     alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details')
-                    latency()
+                    // latency()
 
-                    // small break fter a payment
+                    // small break after a payment
                     setTimeout(function(){
                         window.location.replace(success_url)
                     }, 2000);

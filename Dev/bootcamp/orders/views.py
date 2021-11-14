@@ -21,6 +21,9 @@ from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 import json
+import datetime
+from datetime import date
+from time import strftime
 
 # Create your views here
 
@@ -29,7 +32,7 @@ def order_create_view(request, product_id, *args, **kwargs):
     try:
         product = Product.get_by_id(product_id)
         order = Order.create(product) if product else None
-        print(isinstance(request.user, AnonymousUser))
+        #print(isinstance(request.user, AnonymousUser))
         # in the case not user.is_authenticated()
         if isinstance(request.user, AnonymousUser):
             order.user = None
@@ -44,8 +47,7 @@ def order_create_view(request, product_id, *args, **kwargs):
         # order.save
         # return HttpResponse (
         #     f'<h3>  {order}  <h3>'
-    # )
-
+        # )
         return redirect('/order/cart/')
 
     except Exception as error:
@@ -66,7 +68,7 @@ def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, u
         #condition = user_id is not None
         user = request.user
         user_id = user.id
-        print(user_id)
+        # print(user_id)
 
         Order.delete_all(user_id)
 
@@ -88,7 +90,7 @@ def cart_view(request, *args, **kwargs):
 
     # context#1
     basket = Order.cart_items_amount(user_id)
-    print(basket)
+    # [print(order.product.manufacturers) for order in list(basket.keys())]
 
     # context#2
     products_amount = Order.products_amount(user_id)
@@ -140,9 +142,10 @@ def process_payment_view(request, *args, **kwargs):
         shipping = 20
         shipping = to_decimal(shipping)
         
+        date = datetime.date.today()
+        
         # check amounts
         #[print(item.amounts) for item in list(invoice_basket.keys())]
-
         # 'amount': '%.2f' % order.get_total_value().quantize(Decimal('1.000'))
 
         paypal_dict = {
@@ -157,6 +160,7 @@ def process_payment_view(request, *args, **kwargs):
             'item_name': f'Order: {order_id}',
             'invoice': str(order_id),
             'currency_code': 'USD',
+            'date': date,
             "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
             "return_url": request.build_absolute_uri(reverse('orders:paypal-return')),
             "cancel_return": request.build_absolute_uri(reverse('orders:paypal-cancel')),
@@ -207,6 +211,7 @@ class PaypalFormView(FormView):
 def payment_complete_view(request):
     try:
         body = json.loads(request.body)
+        print(body)
         order = Order.objects.get(id=body['orderId'])
         return JsonResponse('Payment Completed', safe=False)
 
@@ -217,7 +222,6 @@ def payment_complete_view(request):
 
 class PaypalReturnView(TemplateView):
     template_name = 'orders/payment_done.html'
-
 
 
 class PaypalCancelView(TemplateView):
@@ -234,7 +238,6 @@ def api_process_payment_view(request, *args, **kwargs):
         script
 
     '''
-
     try:
         form = PayPalPaymentsForm()
         user = request.user

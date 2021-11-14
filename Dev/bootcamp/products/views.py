@@ -143,14 +143,19 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
     '''
         in this method we r not gonna grab the user_id
         from the url, but instatly take it from the
-        request session an dwrite to the db (as a primary key)
+        request session and write to the db (as a primary key)
+        field manufacturers are manually added to the intermediate table
+        through models add() method
+
     '''
     try:
         form = ProductCreationForm(request.POST or None)
         form.check_manufacturers()
+        print(form.check_manufacturers())
         if form.is_valid():
             form.check_title()
-            product = form.save(commit=False)
+            data = form.cleaned_data
+            product = Product.create(**data)
             product.user = request.user
             product.save()
             messages.success(
