@@ -1,0 +1,127 @@
+<style>
+
+    .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+</style>
+<body>
+    <!-- Set up a container element for the button -->
+    <div id="paypal-button-container"></div>
+
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AQ3V59MA0LgsqGtPTn1FGIIU4-KfBuU7Ru2Ng9Fkxh6JjyCA0SiPEZovAX-LzAjbQ76C7fVK9iWfbCBi&currency=USD"></script>
+    
+    <!-- &disable-funding=credit 'add this after USD when U want to avoid paymen options'-->
+    <script>
+        // ************************************ CSRF TOKEN ****************************************
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // ************************************         **************************************
+
+        var total = '{{ data.total_cart_amount }}'
+        var success_url = "{% url 'orders:paypal-return'  %}"
+        var orderId = '{{ data.invoice }}'
+
+        // async function latency() {
+        //     await sleep(15000);
+        //     window.location.replace(success_url);
+        // }
+
+        // setTimeout(function(){
+        //     window.location.replace(success_url)
+        // }, 25000);
+
+        function showNotification() {
+            $(".success")
+            .fadeIn()
+            .css({ right: 0, position: "absolute" })
+            .animate({ left: 0 }, 1000, function() {
+            // $('#selector').delay(5000).fadeOut('slow');
+            });
+        }
+
+        function completeOrder() {
+            var url = "{% url 'orders:paypal-done' %}"
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                
+                body:JSON.stringify({'orderId': orderId})
+            })
+
+        }
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            
+            style: {
+                color: 'blue',
+                shape: 'pill',
+                label: 'pay',
+                height: 40,
+                length: 120,
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    
+                    completeOrder()
+                    const element = document.getElementById('paypal-button-container');
+                    element.innerHTML = '';
+                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details')
+                    // latency()
+
+                    // small break after a payment
+                    setTimeout(function(){
+                        window.location.replace(success_url)
+                    }, 2000);
+
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+    <!-- <script>
+        setTimeout(function(){
+            window.location.replace("{% url 'orders:paypal-return'  %}")
+        }, 25000);
+    </script> -->
+</body>

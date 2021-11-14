@@ -61,7 +61,7 @@ class Product(models.Model):
         return False
 
     @staticmethod
-    def create(title, content, price, manufacturers=None, user=None):
+    def create(title, content, price, user=None, manufacturers=None):
         """
             param name: Describes name of the product
             type name: str max_length=220
