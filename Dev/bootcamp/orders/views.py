@@ -176,7 +176,7 @@ def process_payment_view(request, *args, **kwargs):
         print(err)
         pass
 
-
+## method#2
 class PaypalFormView(FormView):
     template_name = 'orders/paypal_form2.html'
     form_class = PayPalPaymentsForm
