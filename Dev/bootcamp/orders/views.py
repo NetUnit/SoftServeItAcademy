@@ -274,6 +274,10 @@ def api_process_payment_view(request, *args, **kwargs):
         print(err)
         pass
 
+def order_download(reauest, product_id, *args, **kwargs):
+    pass
+
+
 #################### *** API PAYPAL RETURN *** ####################
 
 # order cart view - WHOLE

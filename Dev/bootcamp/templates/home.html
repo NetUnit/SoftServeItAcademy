@@ -1,15 +1,19 @@
 ﻿{% extends 'base.html' %}
+{% load static %}
+
 
 {% block content%}
 
-
 <head>
 <style>
-    .main {
-      border: 1px solid #4287f5;
-      height: 185px;
-      width: 650px;
-      position: relative;
+    .landing-logo img {
+      margin-top: 24px;
+      display: block;
+      width: 1024px;
+      height: 800px;
+      position: absolute;
+      right: 0%;
+      top: 29.5%;
     }
 
     .column1 {
@@ -49,14 +53,18 @@
 <body>
     <div class="main">
         <div class="column1">
-            <h2> Here are dynamically rendered objects: {{ object.id }} </h2>
         </div>
-        <div class="products_group">
-          custom context#1: {{ products_group }}
+          <!-- <h1> hhh </h1>
+          <h2> hhh </h2> -->
+        <div class='landing-logo' style="margin-top: 5px;">
+          <img src="{% static 'images/panda_logo_big4.png' %}" alt="Panda logo">
+        </div>
+        <!-- <div class="products_group">
+          custom context#1: {{ products_group }} 
         </div>
         <div class="products_tagline">
           custom context#2: {{ products_tagline }}
-        </div>
+        </div> -->
         <div class="footer_root">
           root: {{ app_name_0 }}
         </div>

@@ -25,12 +25,12 @@ SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+# disable if wants to render errortemaplates
+DEBUG = True
+ALLOWED_HOSTS =  []
 
-# DEBUG = True
-# ALLOWED_HOSTS =  []
-
-DEBUG = False
-ALLOWED_HOSTS =  ['*']
+# DEBUG = False
+# ALLOWED_HOSTS =  ['*']
 # ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
 
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     # apps
     'products',                                                 # app#1
     'manufacturer',                                             # app#2
-    #'accounts',                                                # app#5
+    #'accounts',                                                # app#5 ## equals 'accounts.apps.AccountsConfig' 
     'profiles',                                                 # app#3
     'emails',                                                   # app#4
     'orders',                                                   # app#5
@@ -181,13 +181,42 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# in the case of a BASE_DIR
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+# STATICFILES_DIRS setting should not contain the STATIC_ROOT setting.
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'staticfiles'),
+    # os.path.join('/staticfiles/')
+]
 # STATICFILES_DIRS = [
 #    os.path.join('/var/www/static/'),
 # ]
+
+### *** Django & app realted files *** ###
+# Cloud storages: Cloudfront, Google Cloud Storage, django-storages, Whitenoise
+STATIC_ROOT = os.path.join(BASE_DIR, 'cdn_test/static/')
+# allows to load static filesand use them like this:
+# {% load static %}
+# <img src="{% static "images/hi.jpg" %}" alt="Hi!"
+
+### *** User uploaded files *** ###
+#any file field upload by deafault
+MEDIA_ROOT = os.path.join(BASE_DIR, 'cdn_test/')
+PROTECTED_MEDIA = os.path.join(BASE_DIR, 'cdn_test/')
+
+MEDIA_URL = '/media/'
+
+# creates folders for different static roots
+if DEBUG:
+    os.makedirs(STATIC_ROOT,  exist_ok = True),
+    os.makedirs(MEDIA_ROOT,  exist_ok = True),
+    os.makedirs(PROTECTED_MEDIA,  exist_ok = True),
+
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -230,12 +259,8 @@ APP_NAME_5_TAGLINE = 'orders tagline'
 
 METHOD = 'METHODS'
 
-#django-paypal settings
+# django-paypal settings
 PAYPAL_RECEIVER_EMAIL = 'myXbox@bigmir.net'
 PAYPAL_TEST = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
 CRISPY_FORMS_TEMPLATE_PACK = 'bootstrap4'
-
-

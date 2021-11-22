@@ -89,7 +89,7 @@
                 {% if leftover %}
                     <a href="{% url 'index' %}"> Try again at: {{ leftover }} </a>
                 {% else %}
-                    <a href="{%url 'accounts:login_cbv' %}"> Attempts left: {{ attempts }}</a>
+                    <a href="{%url 'accounts:login_fbv' %}"> Attempts left: {{ attempts }}</a>
                 {% endif %}
              </div>
           </div>

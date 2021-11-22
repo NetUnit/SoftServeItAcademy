@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
@@ -12,6 +13,10 @@
             integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
             crossorigin="anonymous"
         />
+
+        <!-- Custom CSS -->
+        <!-- <link rel="stylesheet" href="{% static 'css/main.css' %}" /> -->
+        
         <style>
             body {
                 background-color: rgb(3, 4, 31);
@@ -56,12 +61,6 @@
                 text-align: justify;
             }
 
-            img {
-                margin-top: 24px;
-                display: block;
-                width: 850px;
-                height: 400px;
-            }
             p {
                 margin: 0;
             }
@@ -92,9 +91,7 @@
     </body>
 
     <div class="navbar">{% include 'navbar.html' %}</div>
-
     <div class="content">{% block content %} {% endblock %}</div>
-
     <div class="footer">{% block footer %} {% endblock %}</div>
-
+    
 </html>
