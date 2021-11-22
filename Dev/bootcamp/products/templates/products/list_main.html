@@ -1,4 +1,6 @@
 {% extends 'base.html' %} 
+{% load static %}
+
 
 {% block title %} Products List {% endblock %}
 
@@ -57,7 +59,7 @@
         color:rgb(3, 4, 31);
     }
 
-    .picture {
+    .picture img {
       border: 1px solid #4287f5;
       height: 100px;
       width: 120px;
@@ -101,6 +103,7 @@
 </div>
 
 {%for product in product_list%}
+{% for image in images %}
 <div class="card w-25 my_margin">
     <div class="card-body" style="display: flex; justify-content: space-between">
         <div style="display: flex; align-items: stretch; width: 100%">
@@ -177,7 +180,15 @@
         
         <div class="column">
             <div class='picture'>
-                >picture here<
+                {% if product.image %}
+                <!-- <img name='picture' src="{% static 'images/yamaha-tenere-700.jpg' %}"/>  -->
+                <!-- fix this with js ---return source, assighn variable   -->
+
+                    <img src="{% static 'images/products/yamaha-tenere-700.jpg' %}" alt="">
+                {% else %}
+                    not filled
+                {% endif %}
+                
             </div>
             <!-- ## no snippet here -->
             <a href="{%url 'orders:order_create_view' product.id%}"
@@ -190,6 +201,7 @@
     
     </div>
 </div>
+{% endfor %}
 {%endfor%}
 {%endblock%}
 

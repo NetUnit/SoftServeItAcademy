@@ -47,11 +47,13 @@ class ProductCreationForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title', 'content', 'price')
+        fields = ('title', 'content', 'price', 'image', 'media')
         labels = {
             'title': 'Title',
             'content': 'Content',
             'price': 'Price, $:',
+            'image': 'Image',
+            'media': 'Media',
         }
 
         required = ('title', 'content', 'price')
@@ -60,7 +62,7 @@ class ProductCreationForm(forms.ModelForm):
 
             'title': forms.TextInput(attrs={'placeholder': 'title..'}),
             'content': forms.Textarea(attrs={'placeholder': 'type some content here..'}),
-            'price': forms.NumberInput(attrs={'min':1,'max': 1000000,'type': 'number', 'placeholder': 'price..'})
+            'price': forms.NumberInput(attrs={'min':1,'max': 1000000,'type': 'number', 'placeholder': 'price..'}),
         }
 
     manufacturers = CustomMMCF(

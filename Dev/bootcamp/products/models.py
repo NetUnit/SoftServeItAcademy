@@ -2,6 +2,7 @@ from django.db import models, IntegrityError, DataError
 from manufacturer.models import Manufacturer
 from django.http.response import Http404
 from accounts.models import CustomUser
+from .storages import ProtectedStorage
 # from django.conf import settings
 # CustomUser = settings.AUTH_USER_MODEL
 
@@ -15,6 +16,13 @@ class Product(models.Model):
     user = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
     #user = models.ForeignKey(CustomUser, null=True, on_delete=models.CASCADE)
     manufacturers = models.ManyToManyField(Manufacturer, related_name='products')
+    image = models.ImageField(upload_to='media/products/', null=True, blank=True)
+    media = models.FileField(
+        storage=ProtectedStorage,
+        upload_to='protected/products/',
+        null=True,
+        blank=True
+        )
 
     class Meta:
         ordering = ('id',)
@@ -36,10 +44,10 @@ class Product(models.Model):
 
     @staticmethod
     def get_by_id(product_id):
-        """
+        '''
             param product_id: SERIAL: the id of a Product to be found in the DB
             return: product object or None if a product with such ID does not exist
-        """
+        '''
         try:
             product = Product.objects.get(pk=product_id)
             return product
@@ -61,7 +69,8 @@ class Product(models.Model):
         return False
 
     @staticmethod
-    def create(title, content, price, user=None, manufacturers=None):
+    def create(
+        title, content, price, user=None, manufacturers=None, image=None, media=None):
         """
             param name: Describes name of the product
             type name: str max_length=220
@@ -73,7 +82,11 @@ class Product(models.Model):
             :return: a new product object which is also written into the DB
         """
         # allows to create objects with not all attrs input obligatory
-        product = Product(title=title, content=content, price=price, user=user)
+        product = Product(
+            title=title, content=content,
+            price=price, user=user,
+            image=image, media=media
+            )
         try:
             product.save()
             manufacturer_exists = manufacturers is not None
@@ -87,7 +100,7 @@ class Product(models.Model):
             pass
         
     
-    def update(self, title=None, content=None, price=None):
+    def update(self, title=None, content=None, price=None, image=None, media=None):
         """
             Updates product in the database with the specified parameters.\n
             param title: Depicts product title of a product
@@ -104,6 +117,10 @@ class Product(models.Model):
             self.content = content
         if price:
             self.price = price
+        if image:
+            self.image = image
+        if media:
+            self.media = media
         self.save()
 
     def to_dict(self):

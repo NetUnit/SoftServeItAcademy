@@ -20,12 +20,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 ## main page
 ## Class-based View
 class HomePageView(TemplateView):
-    template_name = "index.html"
-
-## function view
-def home_view(request, *args, **kwargs):
-    context = {}
-    return render (request, 'home.html', context)
+    template_name = "home.html"
 
 ################### *** product detailed view *** ###################
 # using python simple function get(pk=pk)
@@ -60,8 +55,10 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
 def product_list_view(request, *args, **kwargs):
     try:
         products = Product.get_all()
-        context = {'product_list': products}
-
+        images = [str(product.image) for product in products]
+        [print(image) for image in images]
+        # [print(str(image)) for image in images]
+        context = {'product_list': products, 'images': images}
         return render (request, 'products/list_main.html', context)
     except Exception as err:
         print(err)
@@ -149,14 +146,28 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
 
     '''
     try:
-        form = ProductCreationForm(request.POST or None)
+        form = ProductCreationForm(
+            request.POST or None,
+            request.FILES or None
+        )
+        
         form.check_manufacturers()
-        print(form.check_manufacturers())
+        # print(form.check_manufacturers())
+        print(form.is_valid())
         if form.is_valid():
             form.check_title()
             data = form.cleaned_data
             product = Product.create(**data)
             product.user = request.user
+            # image data will be sent through the form
+            # no need it's in models
+            # image = request.FILES.get('image')
+            # product.image = image
+            # media = request.FILES.get('media')
+            # product.media = media
+
+            print(product)
+            
             product.save()
             messages.success(
                 request,

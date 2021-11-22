@@ -85,7 +85,7 @@ class CustomUser(AbstractUser):
             This magic method is redefined to show class and id of product object.
             :return: class, id
         '''
-        return f'{self.__class__.name}(id={self.id})'
+        return f'{self.__class__.__name__}(id={self.id})'
 
     # def __del__(self):
 	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
