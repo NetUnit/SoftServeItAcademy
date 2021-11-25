@@ -103,7 +103,6 @@
 </div>
 
 {%for product in product_list%}
-{% for image in images %}
 <div class="card w-25 my_margin">
     <div class="card-body" style="display: flex; justify-content: space-between">
         <div style="display: flex; align-items: stretch; width: 100%">
@@ -181,15 +180,18 @@
         <div class="column">
             <div class='picture'>
                 {% if product.image %}
-                <!-- <img name='picture' src="{% static 'images/yamaha-tenere-700.jpg' %}"/>  -->
-                <!-- fix this with js ---return source, assighn variable   -->
-
-                    <img src="{% static 'images/products/yamaha-tenere-700.jpg' %}" alt="">
+                    <a href="{%url 'products:media_download_view' product.id%}" 
+                        class="vx_btn-link vx_addBtn-secondary"
+                        pa-marked="1"
+                    >
+                        <img src="{{ product.image.url }}" alt="moto-item-image">
+                    </a>
+  
                 {% else %}
                     not filled
                 {% endif %}
-                
             </div>
+
             <!-- ## no snippet here -->
             <a href="{%url 'orders:order_create_view' product.id%}"
                 class="btn btn-warning"
@@ -202,7 +204,6 @@
     </div>
 </div>
 {% endfor %}
-{%endfor%}
 {%endblock%}
 
 {% block footer %}

@@ -10,7 +10,8 @@ from orders.views import (
     PaypalReturnView,
     PaypalCancelView,
     PaypalFormView,
-    payment_complete_view
+    payment_complete_view,
+    order_download_view,
 )
 
 from django.conf import settings
@@ -40,6 +41,7 @@ urlpatterns = [
     ## set 1 
     re_path(r'^order/payment/$', process_payment_view, name='process_payment_view'),
     re_path(r'^api/order/payment/$', api_process_payment_view, name='api_process_payment_view'),
+    re_path(r'^order/download/(?P<order_id>\d+)$', order_download_view, name='order_download_view'),
 
     # re_path(r'^order/payment-done/$', TemplateView.as_view(template_name="orders/payment_done.html"), name='payment_done'),
     # re_path(r'^order/payment-canceled/$', TemplateView.as_view(template_name="orders/payment_canceled.html"), name='payment_canceled'),

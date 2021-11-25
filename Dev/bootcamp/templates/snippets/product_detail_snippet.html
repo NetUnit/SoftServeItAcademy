@@ -1,0 +1,58 @@
+{% load static %}
+
+<style>
+    .card-text {
+        color:rgb(3, 4, 31);
+        font-weight: bold;
+        padding-top: 1px;
+    }
+
+    .not-filled {
+        color: rgb(220, 48, 71);
+        font-weight: bold; 
+        position: relative;     
+        text-align: left;
+        margin-top: 10px;
+        margin-left: 25px;   
+    }
+
+    .field-names {
+        color: rgb(220, 48, 71);
+        font-weight: bolder; 
+        position: relative;     
+        text-align: left; 
+    }
+
+</style>
+
+
+<script>
+    let picture = '{{ image }}'; 
+
+</script>
+
+<div style="padding-top: 5px">
+    <text class='field-names'> Product: 
+        {% if product.title %}
+        <text class="card-text"> {{ product.title }} <text> 
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </text>
+    
+    <p class='field-names'> Info: 
+        {% if product.content %}
+            <p class="card-text" style="margin-left: 50px;"> {{ product.content }}  </p>
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </p>
+
+    <text class='field-names'> Price: 
+        {% if product.price %}
+            <text class="card-text"> {{ product.price }}$  </text>
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </text>
+</div>

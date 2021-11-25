@@ -62,7 +62,7 @@
 <div class="card w-25 my_margin">
     <div class="card-body">
         <h5 class="card-title">Create Company</h5>
-        <form action="" method="post">
+        <form action="." method="POST" enctype="multipart/form-data">
             {%csrf_token%}
             
             {{ form|crispy }}
@@ -94,7 +94,7 @@
         
         
         for (var field in form_fields) {
-            form_fields[field].ManufacturerCreationForm += 'form-control'
+            form_fields[field].ManufacturerCreationForm += ' form-control'
         }
     </script>   
 

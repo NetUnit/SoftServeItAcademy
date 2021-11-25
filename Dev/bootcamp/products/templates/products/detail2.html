@@ -1,0 +1,156 @@
+{% extends 'base.html'  %} 
+
+{% load static %}
+
+<title> {% block title %} {{product.title}} - {{ block.super }} {% endblock title %} </title>
+
+
+{% block content %}
+
+
+<style>
+  form div label {
+      margin: 5px 0 2px;
+      text-align: center;
+  }
+  
+  /* moving search button upside and down */
+  form button {
+      margin-top: 0px;
+  }
+
+  input[type='text'] {
+      width: 100%;
+  }
+
+  .card {
+    margin: 5px;
+  }
+
+  .column {
+    display: table-column;
+    text-align: center;
+  }
+
+  .btn-info {
+    display: inline-block;
+    width: 100px; 
+    color: white;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .picture img {
+    border: 1px solid #4287f5;
+    height: 100px;
+    width: 120px;
+    padding-top: 10px;
+    padding-left: 10px;
+    text-align: center;
+    text-orientation: initial;
+  }
+
+  /* .btn-warning {
+    width: 80px;
+    height: 35px;
+    color:rgb(3, 4, 31);
+    margin-top: 10px;
+    margin-left: 6px;
+    text-align: center;
+    position: relative;
+    background-color: orange;
+    border: 1px solid rgb(3, 4, 31);
+  }
+
+  .btn-warning:hover { 
+    background-color: gainsboro;
+    color:rgb(3, 4, 31);
+  } */
+
+  #update_btn {
+    margin-left: 25px;
+    margin-bottom: 2px;
+    background-color: rgb(245, 173, 6);
+    color: rgb(3, 4, 31);
+    width: 100px;
+    border-color: darkorange;
+  }
+
+  #update_btn:hover {			
+    background-color: gainsboro;		
+  }			
+
+  #delete_btn {
+    margin-left: 25px;
+    margin-bottom: 25px;
+    background-color: rgb(220, 48, 71);
+    color: rgb(255,255,255);
+    width: 100px;
+    border-color: rgb(3, 4, 31);
+  }
+
+  #delete_btn:hover {			
+    background-color: gainsboro;		
+  }	
+
+  .footer_root {
+    padding: 10px;
+    color: rgb(245, 173, 6);
+    font-weight: bold;
+    text-align: left;
+    /* top: 350px; */
+    width: 100%;
+    position: absolute;
+    margin-top: 730px;
+    /* margin-bottom: 35px; */
+  }
+
+</style>
+
+<div class="card w-25 my_margin" id="userTitle" style="margin-bottom:10px; text-align: center">
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">
+          Product Detail View |
+          <text style="color: darkorange; font-weight: bold">{{product.id}}</text>
+        </h5>
+    </div>
+</div>
+
+<div class="card w-25 my_margin">
+  <div class="card-body" style="display: flex; justify-content: space-between">
+    <div style="display: flex; align-items: stretch; width: 100%">
+      <div>
+        {% include 'snippets/product_detail_snippet.html' %}
+      </div>
+    </div>
+    <div class="column" style="margin-left: 10px;">
+      {% if product.image %}
+        <a href="{%url 'products:media_download_view' product.id%}" 
+            class="vx_btn-link vx_addBtn-secondary"
+            pa-marked="1"
+        >
+          <div class='picture'>
+            <img src="{{ image.url }}" alt="moto-item-image">
+          </div>
+        </a>
+      {% else %}
+          not filled
+      {% endif %}
+    </div>
+  </div>
+  <div style="padding-top: 5px">
+    {%include 'snippets/product_update_snippet.html'%}
+  </div>
+  <div style="padding-top: 1px">
+    {%include 'snippets/product_delete_snippet.html'%}
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_2 }}
+</div>
+{% endblock %}

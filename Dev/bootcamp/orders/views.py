@@ -25,6 +25,11 @@ import datetime
 from datetime import date
 from time import strftime
 
+# path
+import pathlib
+from wsgiref.util import FileWrapper
+from mimetypes import guess_type
+
 # Create your views here
 
 # @login_required(login_url=f'/accounts/check-user-auth/')
@@ -134,6 +139,7 @@ def process_payment_view(request, *args, **kwargs):
         total_value = to_decimal(total_value)
 
         order = Order.get_orders_by_user(user_id)
+        order = order.order_by('-id').first()
         host = request.get_host() 
 
         basket = Order.cart_items_amount(user_id)
@@ -176,6 +182,54 @@ def process_payment_view(request, *args, **kwargs):
         print(err)
         pass
 
+
+
+def order_download_view(request, user_id, *args, **kwargs):
+    '''
+        Download the order media if it exists:
+    '''
+    
+    # orders = Order.get_orders_by_user(user_id)
+    ### print(orders) # +++
+    ## <QuerySet [Order(id=183), Order(id=184)]>
+    
+    qs = Product.objects.all().filter(user_id=user_id)
+    product = qs.order_by('-id').first()
+    
+    if not product.media:
+        raise Http404
+    
+    media = product.media
+    # give's path to media: 
+    # /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/cdn_test/protected/products/terrible_bike_lsPY8iG.jpg
+    product_path = media.path
+
+    product_id = product.id
+
+    # path = <class 'pathlib.PosixPath'>
+    path = pathlib.Path(product_path)
+    if not path.exists():
+        raise Http404
+
+    # file extention '.jpg'
+    ext = path.suffix
+    file_name = f'cool-moto-product-{product_id}{ext}'
+
+    # will open fiel through a path from pathlib
+    # 'rb' read as bites
+    
+    with open(path, 'rb') as file:
+        wrapper = FileWrapper(file)
+        content_type = 'application/force-download'
+        first_type = 0
+        guessed_ = guess_type(path)[first_type]
+        content_type = guessed_ if guessed_ else content_type
+        response = HttpResponse(wrapper, content_type=content_type)
+        response['Content-Disposition'] = f'attachment;filename={file_name}'
+        response['X-SendFile'] = f'{file_name}'
+        return response
+
+
 ## method#2
 class PaypalFormView(FormView):
     template_name = 'orders/paypal_form2.html'
@@ -206,6 +260,7 @@ class PaypalFormView(FormView):
         except Exception as err:
             print(err)
             pass
+
 
 
 def payment_complete_view(request):
@@ -274,8 +329,7 @@ def api_process_payment_view(request, *args, **kwargs):
         print(err)
         pass
 
-def order_download(reauest, product_id, *args, **kwargs):
-    pass
+
 
 
 #################### *** API PAYPAL RETURN *** ####################
