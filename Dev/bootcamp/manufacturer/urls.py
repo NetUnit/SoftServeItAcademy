@@ -8,6 +8,8 @@ from manufacturer.views import (
     api_manufacturer_detailed_view,
     manufacturer_update_view,
     manufacturer_delete_view,
+    media_download_view,
+    get_products_manufacturer
 )
 
 from django.conf import settings
@@ -31,5 +33,11 @@ urlpatterns = [
 
     ############# *** ManufacturerDeleteView *** ###############
     re_path(r'^manufacturers/delete/(?P<manufacturer_id>\d+)/$', manufacturer_delete_view, name='manufacturer_delete_view'),
+
+    ################## *** media download product *** ###############
+    re_path(r'^manufacturers/media-download/(?P<manufacturer_id>\d+)/$', media_download_view, name='media_download_view'),
+
+    ################## *** get products manufacturer *** ###############
+    re_path(r'^manufacturers/get-products-manufacturer/(?P<manufacturer_id>\d+)/$', get_products_manufacturer, name='get_products_manufacturer')
 
 ]

@@ -7,7 +7,7 @@ PROTECTED_MEDIA = getattr(settings, 'PROTECTED_MEDIA', None)
 
 conf_error = PROTECTED_MEDIA == None
 if conf_error:
-    raise   ImproperlyConfigured('PROTECTED_MEDIA is not set in seetings.py')
+    raise   ImproperlyConfigured('PROTECTED_MEDIA is not set in settings.py')
 
 # if conf_error:
 #     raise   ImproperlyConfigured(_('PROTECTED_MEDIA is not set in seetings.py'), code='invalid')

@@ -22,9 +22,8 @@ import pathlib
 from wsgiref.util import FileWrapper
 from mimetypes import guess_type
 
-import pathlib
-from wsgiref.util import FileWrapper
-from mimetypes import guess_type
+###### *** auth user model *** ########
+from django.contrib.auth import get_user_model
 
 
 ###### *** path imports *** ######
@@ -260,6 +259,7 @@ def product_update_view(request, product_id,  *args, **kwargs):
 
         if form.is_valid():
             data = form.cleaned_data
+            print(data)
             product = Product.update_by_id(product_id, data)
 
             messages.success(request,

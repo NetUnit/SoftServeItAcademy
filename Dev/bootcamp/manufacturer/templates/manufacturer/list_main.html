@@ -1,4 +1,5 @@
 {% extends 'base.html' %} 
+{% load static %}
 
 {% block title %} Manufacturers List {% endblock %}
 
@@ -22,7 +23,7 @@
         margin: 5px;
     }
 
-    .picture {
+    .picture img {
       border: 1px solid #4287f5;
       height: 100px;
       width: 150px;
@@ -45,6 +46,18 @@
         margin-top: 5px;
         margin-left: 0px;
         text-align: center;
+    }
+
+    .btn-warning {
+        width: 80px;
+        height: 35px;
+        color:rgb(3, 4, 31);
+        margin-top: 10px;
+        margin-left: 35px;
+        text-align: center;
+        position: relative;
+        background-color: orange;
+        border: 1px solid rgb(3, 4, 31);
     }
 
     .footer_root {
@@ -118,7 +131,7 @@
                         Details
                     </a>
                 </div>
-                
+
                 <!-- add if user.is_authenticated  #e7bc0d -->
                 <div style="padding-top: 5px">
                     {% include 'snippets/manufacturer_update_snippet.html' %}
@@ -127,11 +140,29 @@
                 <div style="padding-top: 1px">
                     {% include 'snippets/manufacturer_delete_snippet.html' %}
                 </div>
-
             </div>
         </div>
-        <div class='picture'>
-           >picture here<
+        <div class="column">
+            <div class='picture'>
+                {% if manufacturer.image %}
+                    <a href="{%url 'manufacturer:media_download_view' manufacturer.id%}" 
+                        class="vx_btn-link vx_addBtn-secondary"
+                        pa-marked="1"
+                    >
+                        <img src="{{ manufacturer.image.url }}" alt="moto-item-image">
+                    </a>
+    
+                {% else %}
+                    not filled
+                {% endif %}
+            </div>
+    
+            <a href="{%url 'manufacturer:get_products_manufacturer' manufacturer.id%}" 
+                class="btn btn-warning"
+                type="button"
+            >
+                All Bikes
+            </a>
         </div>
     </div>
 </div>

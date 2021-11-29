@@ -1,6 +1,8 @@
 from django.db import models, IntegrityError, DataError
 from django.forms.models import model_to_dict
 from django.http.response import Http404
+from products.storages import ProtectedStorage
+
 
 # Create your models here.
 class Manufacturer(models.Model):
@@ -23,6 +25,12 @@ class Manufacturer(models.Model):
     title = models.CharField(max_length=40, blank=False)
     country = models.CharField(max_length=20, blank=True)
     year = models.DateField()
+    image = models.ImageField(upload_to='media/manufacturers/', null=True, blank=True)
+    media = models.FileField(storage=ProtectedStorage,
+        upload_to='protected/manufacturers/',
+        null=True,
+        blank=True
+        )
 
     class Meta:
         ordering = ('id',) 
@@ -94,7 +102,7 @@ class Manufacturer(models.Model):
             # LOGGER.error("User does not exist")
     
     @staticmethod
-    def create(title, country, year):
+    def create(title, country, year, image, media):
         '''
             This method is created in order to create manufacturer object
             to be saved into a DB
@@ -106,7 +114,7 @@ class Manufacturer(models.Model):
             type: date
         '''
         try:
-            manufacturer = Manufacturer.objects.create(title=title, country=country, year=year)
+            manufacturer = Manufacturer.objects.create(title=title, country=country, year=year, image=image, media=media)
             manufacturer.save()
             return manufacturer 
         except(IntegrityError, DataError, AttributeError):
@@ -114,18 +122,25 @@ class Manufacturer(models.Model):
             # LOGGER.error("User does not exist")
     
     @staticmethod
-    def update_by_id(manufacturer_id, title=None, country=None, year=None):
+    def update_by_id(
+        manufacturer_id, title=None,
+        country=None, year=None,
+        image=None, media=None):
         '''
             This method is created in order to update manufacturer object
             :params: same as in create method, if param is None - no update done
             :return None
         '''
         try:
-            manufacturer = Manufacturer.get_by_id(manufacturer_id)
+            manufacturer = Manufacturer.get_by_id(
+                manufacturer_id
+            )
             update_data = {
                     'title': title,
                     'country': country,
-                    'year': year
+                    'year': year,
+                    'image': image,
+                    'media': media
                     }
             manufacturer.__dict__.update(**update_data)
             manufacturer.save()
@@ -134,4 +149,11 @@ class Manufacturer(models.Model):
         except Exception as error:
             print(error)
             return False
-            
+    
+    # @staticmethod
+    # def get_products_manufacturer(manufacturer_id):
+    #     manufacturer = Manufacturer.get_by_id(manufacturer_id)
+    #     products = Product.objects.all().filter(
+    #         manufacturer=manufacturer
+    #     )
+    #     return products
