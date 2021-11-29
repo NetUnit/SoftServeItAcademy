@@ -1,5 +1,5 @@
 from django.http import request
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.http.request import HttpRequest
@@ -17,6 +17,16 @@ from django.views.generic import TemplateView, ListView # Import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
+###### *** path imports *** ######
+import pathlib
+from wsgiref.util import FileWrapper
+from mimetypes import guess_type
+
+###### *** auth user model *** ########
+from django.contrib.auth import get_user_model
+
+
+###### *** path imports *** ######
 ## main page
 ## Class-based View
 class HomePageView(TemplateView):
@@ -27,18 +37,25 @@ class HomePageView(TemplateView):
 # dynamic id from url + error handling method#1
 def product_detailed_view(request, product_id, *args, **kwargs):
     try:
+
+        product = get_object_or_404(Product,  pk=product_id)
+        image = product.image
+
+        #obj = Product.get_by_id(product_id) ### !!!
+        # # ex2: using models: @staticmethod
+
         #obj = Product.objects.get(pk=product_id) ### !!!
         # # ex2: using models: @staticmethod
-        obj = Product.get_by_id(product_id)
+
         # ex3: using all() + filter
-        # obj = Product.objects.all().filter(pk=pk)[0]
+        # obj = Product.objects.all().filter(pk=product_id)[0]
     except Product.DoesNotExist:
         raise Http404 # this would render html page with HTTP status code
     
     ## optional, when not using template for rendering data (day#2)
     # return HttpResponse(f"Here is a product detailed view of: {obj.id}")
-    context = {'object': obj}
-    return render (request, 'products/detail.html', context)
+    context = {'product': product, 'image': image}
+    return render (request, 'products/detail2.html', context)
 
 # JSON response of product#2 # example just for url
 def api_product_detailed_view(request, product_id, *args, **kwargs):
@@ -56,7 +73,7 @@ def product_list_view(request, *args, **kwargs):
     try:
         products = Product.get_all()
         images = [str(product.image) for product in products]
-        [print(image) for image in images]
+        #[print(image) for image in images]
         # [print(str(image)) for image in images]
         context = {'product_list': products, 'images': images}
         return render (request, 'products/list_main.html', context)
@@ -232,12 +249,17 @@ def product_update_view(request, product_id,  *args, **kwargs):
     try:
         form = ProductCreationForm(request.POST or None)
         
-        for item in form.fields:
-            not_title = form.fields[item] != 'title'
-            form.fields[item].required = False if not_title else 0
+        for field in form.fields:
+            # make title_not_adjustable 
+            # not_title = form.fields[field] != 'title'
+            # if not_title:
+            form.fields[field].required = False
+            
+
 
         if form.is_valid():
             data = form.cleaned_data
+            print(data)
             product = Product.update_by_id(product_id, data)
 
             messages.success(request,
@@ -259,7 +281,39 @@ def product_delete_view(request, product_id, *args, **kwargs):
     messages.success(request, f'\'{product.title}\' has been removed') if True else None
     # print(messages.__dict__)
     return redirect ('/products/list/')
+
+def media_download_view(request, product_id, *args, **kwargs):
+    '''
+        downlodas media of a certain product
+        :returns: HttpResponse in the form of a downloading file
+                  (as oppose to render or redirect a new page)
+    '''
+    product = Product.get_by_id(product_id)
+    media = product.media
+    if not media:
+        raise Http404
     
+    product_path = media.path
+    path = pathlib.Path(product_path)
+
+    if not path.exists():
+        raise Http404
+
+    # file extension
+    ext = path.suffix
+    file_name = f'panda-moto-product-{product_id}{ext}'
+
+    with open(path, 'rb') as file:
+        wrapper = FileWrapper(file)
+        content_type = 'application/force-download'
+        first_type = 0
+        guessed_ = guess_type(path)[first_type]
+        content_type = guessed_ if guessed_ else content_type
+        response = HttpResponse(wrapper, content_type=content_type)
+        response['Content-Disposition'] = f'attachment;filename={file_name}'
+        response['X-SendFile'] = f'{file_name}'
+        return response
+
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
 # this part of a view contains logic itself

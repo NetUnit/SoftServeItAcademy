@@ -1,4 +1,5 @@
 {% extends 'base.html' %} 
+{% load static %}
 
 {% block title %} Cart {% endblock %}
 
@@ -81,7 +82,7 @@
       text-orientation: initial;
     }
 
-    .picture {
+    .picture img {
       border: 1px solid #4287f5;
       height: 95px;
       width: 115px;
@@ -162,8 +163,19 @@
         <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
           <div class="column">
             <div class='picture'>
-              >picture here<
+              {% if order.product.image %}
+                <a href="{%url 'products:media_download_view' order.product.id%}" 
+                  class="vx_btn-link vx_addBtn-secondary"
+                  pa-marked="1"
+                >
+                  <img src="{{ order.product.image.url }}" alt="moto-item-image">
+                </a>
+
+            {% else %}
+                not filled
+            {% endif %}
             </div>
+
             <div>
               <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold; margin-top: 13px;"> Quantity: {{number}}  </h6>
               <!-- <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}} {{order.product.id}}</h7> -->

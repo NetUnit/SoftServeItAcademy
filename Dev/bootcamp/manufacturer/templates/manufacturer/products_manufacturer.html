@@ -1,0 +1,199 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block title %} Product Manufacturers List {% endblock %}
+
+{% block content %}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+    
+    /* moving search button upside and down */
+    form button {
+        margin-top: 0px;
+    }
+
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .card {
+        margin: 5px;
+    }
+
+    .picture img {
+      border: 1px solid #4287f5;
+      height: 100px;
+      width: 150px;
+      padding-top: 10px;
+      text-align: center;
+      text-orientation: initial;
+    }
+
+    /* #messages {
+        background-color: rgb(172, 169, 169);
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    } */
+
+    .btn-info {
+        display: inline-block;
+        width: 100px; 
+        color: white;
+        margin-top: 5px;
+        margin-left: 0px;
+        text-align: center;
+    }
+
+    .btn-warning {
+        width: 80px;
+        height: 35px;
+        color:rgb(3, 4, 31);
+        margin-top: 10px;
+        margin-left: 35px;
+        text-align: center;
+        position: relative;
+        background-color: orange;
+        border: 1px solid rgb(3, 4, 31);
+    }
+
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      text-align: left;
+      /* top: 350px; */
+      width: 100%;
+      position: relative;
+      margin-top: 80px;
+    }
+
+</style>
+
+<div class="card w-25 my_margin" id="manufacturerTitle" style=margin-bottom:10px>
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">Manufacturers: </h5>
+        <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
+
+        <a href="{%url 'manufacturer:manufacturer_create_view'%}" class="btn btn-primary" style=background-color:mediumpurple>Create</a>
+    </div>
+</div>
+
+<div>
+    {% include 'snippets/list_message_snippet.html'%}
+</div>
+
+<!-- manufacturer_list is a var taken from views.py context -->
+{% for product in products %}
+<div class="card w-25 my_margin">
+    <div class="card-body" style="display: flex; justify-content: space-between">
+        <div style="display: flex; align-items: stretch; width: 100%">
+            <div>
+                <h6 class="card-title" style="margin: 0; line-height: 1.5; padding-right: 5px">{{forloop.counter}}.</h6>
+            </div>
+
+            <div style="width: 100%">
+                <p>{{product.title}}</p>
+                <!--  <p>Count: {{product.count}}</p> !!! shift to status - available/non/availbale !!! check how it's in Zappos -->
+                <div style="margin-top: 1px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{product.id}}"
+                        style="width: 100px;"
+
+                    >
+                        Info
+                    </button>
+                    <div class="collapse" id="collapseDesc{{product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px; width: 200px">
+                            {% if product.content %}
+                                {{product.content}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 1px">
+                    <button
+                        class="btn btn-info btn-sm"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseDesc{{product.id}}"
+                        aria-expanded="false"
+                        aria-controls="collapseDesc{{product.id}}"
+                        style="width: 100px"
+                    >
+                        Price
+                    </button>
+                    <div class="collapse" id="collapseDesc{{product.id}}" style="padding-top: 5px">
+                        <div class="card card-body" style="padding: 5px 10px; width: 200px">
+                            {% if product.price %}
+                                {{product.price}}
+                            {% else %}
+                                not filled yet
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 5px">
+                    <a href="{%url 'products:detailed_view' product.id%}" 
+                        class="btn-info btn-sm"
+                        type="button"
+                        id="detail_btn"
+                    >
+                        Details
+                    </a>
+                </div>
+                <!-- add if user.is_authenticated  #e7bc0d -->
+                <div style="padding-top: 5px">
+                    {%include 'snippets/product_update_snippet.html'%}
+                </div>
+                <div style="padding-top: 1px">
+                    {%include 'snippets/product_delete_snippet.html'%}
+                </div>
+            </div>
+        </div>
+        
+        <div class="column">
+            <div class='picture'>
+                {% if product.image %}
+                    <a href="{%url 'products:media_download_view' product.id%}" 
+                        class="vx_btn-link vx_addBtn-secondary"
+                        pa-marked="1"
+                    >
+                        <img src="{{ product.image.url }}" alt="moto-item-image">
+                    </a>
+  
+                {% else %}
+                    not filled yet
+                {% endif %}
+            </div>
+
+            <!-- ## no snippet here -->
+            <a href="{%url 'orders:order_create_view' product.id%}"
+                class="btn btn-warning"
+                type="button"
+            >
+                To Cart
+            </a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_4 }}
+</div>
+{% endblock %}

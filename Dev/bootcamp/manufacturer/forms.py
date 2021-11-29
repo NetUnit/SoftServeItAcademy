@@ -45,11 +45,14 @@ from django import forms
 class ManufacturerCreationForm(forms.ModelForm):
     class Meta:
         model = Manufacturer
-        fields = ('title', 'country', 'year')
+        fields = ('title', 'country', 'year', 'image', 'media')
         labels = {
             'title': 'Title',
             'country': 'Country',
             'year': 'Year',
+            'image': 'Image',
+            'media': 'Media',
+
         }
 
         required = ('title',)

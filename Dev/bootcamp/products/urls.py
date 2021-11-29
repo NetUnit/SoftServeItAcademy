@@ -8,6 +8,7 @@ from products.views import (
     api_product_detailed_view,
     product_update_view,
     product_delete_view,
+    media_download_view,
 )
 
 from .models import Product
@@ -47,5 +48,8 @@ urlpatterns = [
 
     ################## *** Delete View *** #################
     re_path(r'^products/delete/(?P<product_id>\d+)/$', product_delete_view, name='product_delete_view'),
+
+    ################## *** media download product *** ###############
+    re_path(r'^products/download-media/(?P<product_id>\d+)/$', media_download_view, name='media_download_view'),
 
 ]
