@@ -122,7 +122,7 @@ def manufacturer_detailed_view(request, manufacturer_id, *args, **kwargs):
                   automatically when object is None
     '''
     manufacturer = Manufacturer.get_by_id(manufacturer_id)
-    context = {'object': manufacturer}
+    context = {'manufacturer': manufacturer}
     return render (request, 'manufacturer/detail.html', context)
 
 

@@ -32,7 +32,7 @@
       margin: 5px;
     }
 
-    .cart_title {
+    .cart-title {
         position: relative;
         padding-top: 17px;
         padding-right: 65px;
@@ -73,25 +73,24 @@
       margin-bottom: 0px;
     }
 
-    .picture_cart {
+    .picture-cart-logo img {
       border: 1px solid #4287f5;
       height: 100px;
       width: 100px;
-      padding-top: 10px;
       text-align: center;
-      text-orientation: initial;
+      text-orientation: upright;
+
     }
 
-    .picture img {
+    .picture-cart img {
       border: 1px solid #4287f5;
-      height: 95px;
-      width: 115px;
-      padding-top: 10px;
+      height: 120px;
+      width: 150px;
       text-align: center;
       text-orientation: upright;
     }
     
-    .cart_clean {
+    .cart-clean {
         color:rgb(3, 4, 31);
         font-weight: bold;
     }
@@ -114,10 +113,10 @@
   <div class='basket'>
     <div class="card w-100 my_margin" id="cardTitle">
       <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class='picture_cart'>
-          >picture here<
+        <div class='picture-cart-logo'>
+          <img width="100px" height="100px" style="margin-top: 0px;" src="{% static 'images/order/moto-panda-cart.png' %}" alt="">
         </div>
-        <h5 class="cart_title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+        <h5 class="cart-title">Hi (*°ｰ°)ﾉ. This your cart</h5>
       </div>
     </div>
 
@@ -158,11 +157,12 @@
   </div>
   <div class='basket'>
     {%for order, number in basket.items %}
+    <!-- add if manufcturer would not shwo product un the cart -->
       {% for manufacturer in order.product.manufacturers.all %}
       <div class="card" style="margin-left: 30px">
         <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
           <div class="column">
-            <div class='picture'>
+            <div class='picture-cart'>
               {% if order.product.image %}
                 <a href="{%url 'products:media_download_view' order.product.id%}" 
                   class="vx_btn-link vx_addBtn-secondary"

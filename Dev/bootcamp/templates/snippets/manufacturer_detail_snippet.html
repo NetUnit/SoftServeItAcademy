@@ -1,0 +1,58 @@
+{% load static %}
+
+<style>
+    .card-text {
+        color:rgb(3, 4, 31);
+        font-weight: bold;
+        padding-top: 1px;
+    }
+
+    .not-filled {
+        color: rgb(220, 48, 71);
+        font-weight: bold; 
+        position: relative;     
+        text-align: left;
+        margin-top: 10px;
+        margin-left: 25px;   
+    }
+
+    .field-names {
+        color: rgb(220, 48, 71);
+        font-weight: bolder; 
+        position: relative;     
+        text-align: left; 
+    }
+
+</style>
+
+
+<script>
+    let picture = '{{ image }}'; 
+
+</script>
+
+<div style="padding-top: 5px">
+    <text class='field-names'> Manufacturer: 
+        {% if manufacturer.title %}
+        <text class="card-text"> {{ manufacturer.title }} <text> 
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </text>
+    <br>
+    <text class='field-names'> Country: 
+        {% if manufacturer.country %}
+            <text class="card-text"> {{ manufacturer.country }}  </text>
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </text>
+    <br>
+    <text class='field-names'> Year: 
+        {% if manufacturer.year %}
+            <text class="card-text"> {{ manufacturer.year }}  </text>
+        {% else %}
+            <text class='not-filled'> not filled yet </text>
+        {% endif %}
+    </text>
+</div>

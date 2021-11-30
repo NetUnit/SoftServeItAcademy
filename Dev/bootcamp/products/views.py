@@ -55,7 +55,7 @@ def product_detailed_view(request, product_id, *args, **kwargs):
     ## optional, when not using template for rendering data (day#2)
     # return HttpResponse(f"Here is a product detailed view of: {obj.id}")
     context = {'product': product, 'image': image}
-    return render (request, 'products/detail2.html', context)
+    return render (request, 'products/detail.html', context)
 
 # JSON response of product#2 # example just for url
 def api_product_detailed_view(request, product_id, *args, **kwargs):
