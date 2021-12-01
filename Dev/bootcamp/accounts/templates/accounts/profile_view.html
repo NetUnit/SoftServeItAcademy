@@ -1,4 +1,5 @@
 {% extends 'base.html' %} 
+{% load static %}
 
 {% block title %} User Profile {% endblock %}
 
@@ -23,14 +24,14 @@
     margin: 5px;
   }
 
-  .picture {
+  .picture img {
     border: 1px solid #4287f5;
-    height: 100px;
-    width: 150px;
-    padding-top: 10px;
+    height: 120px;
+    width: 120px;
+    /* padding-top: 10px; */
+    /* padding-left: 10px; */
     text-align: center;
     text-orientation: initial;
-    margin-left: 145px;
   }
 
   #update_btn {
@@ -88,10 +89,23 @@
       <div>
         {% include 'snippets/user_detail_snippet.html' %}
       </div>
-      <div class='picture'>
-        >picture here<
-      </div>
     </div>
+
+    <div class="column" style="margin-left: 10px;">
+      {% if user.image %}
+        <a href="{%url 'accounts:media_download_view' user.id%}" 
+            class="vx_btn-link vx_addBtn-secondary"
+            pa-marked="1"
+        >
+          <div class='picture'>
+            <img src="{{ user.image.url }}" alt="moto-item-image">
+          </div>
+        </a>
+      {% else %}
+        not filled
+      {% endif %}
+    </div>
+
   </div>
   <div style="padding-top: 5px">
     <a href="{% url 'accounts:edit_profile_page_view' user.id%}" 

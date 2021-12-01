@@ -43,7 +43,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_create_view(request, *args, **kwargs):
-    form = ManufacturerCreationForm(request.POST or None)
+    form = ManufacturerCreationForm(
+        request.POST or None,
+        request.FILES or None
+        )
 
     # rendering various messages depend on user input
     if form.is_valid():
@@ -202,7 +205,10 @@ def get_products_manufacturer(request, manufacturer_id, *args, **kwargs):
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
     try:
-        form = ManufacturerCreationForm(request.POST or None)
+        form = ManufacturerCreationForm(
+            request.POST or None,
+            request.FILES or None
+            )
 
         for field in form.fields:
             # not_title = form.fields[item].required != 'title'

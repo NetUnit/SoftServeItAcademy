@@ -16,7 +16,8 @@ class CustomUserCreationForm(UserCreationForm):
         model = get_user_model()
         fields = ('email', 'password1',
                   'password2', 'username',
-                  'first_name', 'last_name'
+                  'first_name', 'last_name',
+                  'image', 'media'
                  )
         required = ('email', 'password1',
                     'password2', 'username'
@@ -228,6 +229,9 @@ class CustomUserUpdateForm(forms.Form):
             }
         )
     )
+
+    image = forms.ImageField()
+    media = forms.FileField()
 
     # def clean(self):
     #     username = self.cleaned_data.get('username')

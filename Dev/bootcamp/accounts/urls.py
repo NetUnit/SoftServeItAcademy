@@ -27,6 +27,9 @@ from accounts.views import (
     check_user_auth,
     #check_staff_auth,
 
+    ########
+    media_download_view,
+
     show_info,
 )
 
@@ -64,6 +67,11 @@ urlpatterns = [
     re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## +++
     #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
 
-    ######### *** show info *** #########
+    ######################## *** MEDIA *** ########################
+    re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),
+
+    ########################  *** show info *** ########################
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),
+
+
 ]

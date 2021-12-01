@@ -21,6 +21,11 @@ from django.urls import reverse_lazy, reverse
 from datetime import datetime as dt
 from datetime import timedelta as add_minutes
 
+###### *** path imports *** ######
+import pathlib
+from wsgiref.util import FileWrapper
+from mimetypes import guess_type
+
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
@@ -33,7 +38,10 @@ def accounts_list_view(request, *args, **kwargs):
 ## Function-based View
 def register_user_view(request, *args, **kwargs):
     try:
-        form = CustomUserCreationForm(request.POST or None)
+        form = CustomUserCreationForm(
+            request.POST or None,
+            request.FILES or None
+            )
         if form.is_valid():
             user = form.save(commit=False)
             data = form.cleaned_data
@@ -99,7 +107,7 @@ class LoginCounter:
 def login_user_view(request, *args, **kwargs):
     elapsed_time = LoginCounter.leftover < dt.now()
     if not elapsed_time and request.method == 'GET':
-        return redirect ('/accounts/login-failed/')
+        return redirect('/accounts/login-failed/')
 
     try:
         form = CustomUserLoginForm(request.POST or None)
@@ -181,7 +189,10 @@ def profile_user_view(request, user_id, *args, **kwargs):
 def profile_update_view(request, user_id, *args, **kwargs):
 
     try:
-        form = CustomUserUpdateForm(request.POST or None)
+        form = CustomUserUpdateForm(
+            request.POST or None,
+            request.FILES or None
+        )
         if form.is_valid():
 
             # FORM: check whether the previous password is correct
@@ -211,7 +222,7 @@ def profile_update_view(request, user_id, *args, **kwargs):
                 f'U\'ve just updated profile with: {user.email}, password: {user.password} (^_-)≡☆'
             )
 
-            return redirect (f'/accounts/profile/{user_id}')
+            return redirect(f'/accounts/profile/{user_id}')
 
         form = CustomUserUpdateForm()
         context = {'form': form}
@@ -231,7 +242,7 @@ class  EditProfilePageView(generic.UpdateView):
     model = get_user_model()
     template_name = 'accounts/edit_profile_cbv.html'
     success_url = '/accounts/login-fbv/'
-    fields = ('email', 'username', 'password', 'first_name', 'last_name')
+    fields = ('email', 'username', 'password', 'first_name', 'last_name', 'image', 'media')
     
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
@@ -243,7 +254,7 @@ import time
 def profile_delete_submit(request, user_id, *args, **kwargs):
     CustomUser.delete_user_by_id(user_id)
     time.sleep(1.5)
-    return redirect ('/')
+    return redirect('/')
 
 ################# *** Contact *** ###################
 ### Put your resume here ###
@@ -277,6 +288,42 @@ def check_user_auth(request, *args, **kwargs):
 #     is_staff = request.user.is_staff
 #     context = {'is_staff': is_staff}
 #     return render (request, 'not_staff.html', context)
+
+def media_download_view(request, user_id, *args, **kwargs):
+    '''
+        downlodas media of a certain user
+        :returns: HttpResponse in the form of a downloading file
+                  (as oppose to render or redirect a new page)
+    '''
+    if not user_id:
+        return redirect('/accounts/login-failed/')
+
+    user = CustomUser.get_user_by_id(user_id)
+    # or user = reauest.user
+    media = user.media
+    if not media:
+        raise Http404
+    
+    user_path = media.path
+    path = pathlib.Path(user_path)
+
+    if not path.exists():
+        raise Http404
+
+    # file extension
+    ext = path.suffix
+    file_name = f'user-moto-picture-{user_id}{ext}'
+
+    with open(path, 'rb') as file:
+        wrapper = FileWrapper(file)
+        content_type = 'application/force-download'
+        first_type = 0
+        guessed_ = guess_type(path)[first_type]
+        content_type = guessed_ if guessed_ else content_type
+        response = HttpResponse(wrapper, content_type=content_type)
+        response['Content-Disposition'] = f'attachment;filename={file_name}'
+        response['X-SendFile'] = f'{file_name}'
+        return response
 
 
 #### checker

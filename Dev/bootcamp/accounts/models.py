@@ -4,6 +4,7 @@ from django.http.response import Http404
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy
 from django.shortcuts import get_object_or_404
+from products.storages import ProtectedStorage
 # Create your models here.
 
 class MyAccountManager(BaseUserManager):
@@ -58,9 +59,23 @@ class CustomUser(AbstractUser):
         date_joined: datetime field (auto)
     '''
 
-    email = models.EmailField(gettext_lazy('email address'), unique=True)
-    username = models.CharField(gettext_lazy('nickname'), max_length=200, unique=True)
+    email = models.EmailField(gettext_lazy('email address'),
+        unique=True
+        )
+    username = models.CharField(gettext_lazy('nickname'),
+        max_length=200,
+        unique=True
+        )
     password = models.CharField(max_length=200, blank=False)
+    image = models.ImageField(upload_to='media/accounts/',
+        null=True,
+        blank=True
+        )
+    media = models.FileField(storage=ProtectedStorage,
+        upload_to='protected/accounts/',
+        null=True,
+        blank=True
+        )
     
     #username = None
     USERNAME_FIELD = 'email'

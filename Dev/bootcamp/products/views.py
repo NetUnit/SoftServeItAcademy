@@ -170,12 +170,13 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
         
         form.check_manufacturers()
         # print(form.check_manufacturers())
-        print(form.is_valid())
+        # print(form.is_valid())
         if form.is_valid():
             form.check_title()
             data = form.cleaned_data
             product = Product.create(**data)
             product.user = request.user
+
             # image data will be sent through the form
             # no need it's in models
             # image = request.FILES.get('image')
@@ -247,7 +248,10 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_update_view(request, product_id,  *args, **kwargs):
     try:
-        form = ProductCreationForm(request.POST or None)
+        form = ProductCreationForm(
+            request.POST or None,
+            request.FILES or None
+            )
         
         for field in form.fields:
             # make title_not_adjustable 
@@ -259,7 +263,6 @@ def product_update_view(request, product_id,  *args, **kwargs):
 
         if form.is_valid():
             data = form.cleaned_data
-            print(data)
             product = Product.update_by_id(product_id, data)
 
             messages.success(request,
