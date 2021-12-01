@@ -11,18 +11,19 @@ from django.core.exceptions import ValidationError
 class Manufacturer(models.Model):
 
     '''
-        This class represents the manufacturer of a certain product \n
-        -----------------------------------------------------------
-        Attrs:
-        param name: Describes the comapny name
-        type: str max_length = 40
-        param country: Depicts the manufacturer's country of origin
-        type: str max_length = 20
-        param year: depicts the foundation year year of a company
-        type: date
+    ===========================================================
+    This class represents the manufacturer of a certain product
+    ===========================================================
+    Attrs:
+    :param name: Describes the comapny name
+    :type name: str max_length = 40
+    :param country: Depicts the manufacturer's country of origin
+    :type country: str max_length = 20
+    :param year: depicts the foundation year year of a company
+    :type date: 
 
-        NOTE: Manufacturer model is more customized than Product
-            in order to avoid less code in views
+    .. note:: 
+        Put some notes here...
     '''
 
     title = models.CharField(max_length=40, blank=False)
@@ -51,7 +52,7 @@ class Manufacturer(models.Model):
         '''
             This megic method is redefined in order to show class name and id 
             of a certain product object
-            :return: class, id
+            :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
@@ -64,9 +65,9 @@ class Manufacturer(models.Model):
     @staticmethod
     def get_by_id(manufacturer_id):
         '''
-            This method is created in order to get manufacturer object
+            This method is created in order to get manufacturers object
             found in the DB
-            :return Manufacturer object or None if such a manufacturer does not exist in the DB
+            :returns: Manufacturer object or None if such a manufacturer does not exist in the DB
             (None will raise 404 status)
         '''
         try:
@@ -81,9 +82,9 @@ class Manufacturer(models.Model):
     def get_all():
         '''
             This method is created in order to get a queryset of all present objects
-            found in the DB
-            :return Manufacturer queryset of all objects or empty list if nothing has been found
-            in the DB
+            found in the db
+            :returns: Manufacturer queryset of all objects or empty list if nothing has been found
+            in the db
         '''
         try:
             manufacturers = Manufacturer.objects.all()
@@ -98,7 +99,7 @@ class Manufacturer(models.Model):
         '''
             This method is created in order to delete manufacturer object
             found in the DB
-            :return True if such an object was found in the DB or False if it didn't existed
+            :returns: True if such an object was found in the DB or False if it didn't existed
         '''
         
         manufacturer = Manufacturer.objects.get(pk=manufacturer_id)
@@ -111,12 +112,16 @@ class Manufacturer(models.Model):
         '''
             This method is created in order to create manufacturer object
             to be saved into a DB
-            param name: Describes the comapny name
-            type: str max_length = 40
-            param country: Depicts the manufacturer's country of origin
-            type: str max_length = 20
-            param year: depicts the foundation year of a company
-            type: date
+            :param name: Describes the comapny name
+            :type: str max_length = 40
+            :param country: Depicts the manufacturer's country of origin
+            :type: str max_length = 20
+            :param year: depicts the foundation year of a company
+            :type date: datetime autofiled
+            :param image: input field for upload/download of images
+            :type image: 
+            :param file: input field for upload/download of files
+ 
         '''
         try:
             manufacturer = Manufacturer.objects.create(
@@ -132,9 +137,9 @@ class Manufacturer(models.Model):
 
     def update(self, **kwargs):
         '''
-            :params: data that comes from the form - dict ({key: value})
+            :params: data - comes from the form - dict ({key: value})
             number/presence of user keyword parameters doesn't matter
-            :returns updated object or None
+            :returns: updated object or None
         '''
         self.__dict__.update(**kwargs)
         self.save()
@@ -148,7 +153,7 @@ class Manufacturer(models.Model):
         '''
             This method is created in order to update manufacturer object
             :params: same as in create method, if param is None - no update done
-            :return updated object or None
+            :returns: updated object or None
         '''
         try:
             manufacturer = Manufacturer.get_by_id(
