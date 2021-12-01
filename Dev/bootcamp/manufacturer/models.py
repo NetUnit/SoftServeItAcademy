@@ -114,13 +114,27 @@ class Manufacturer(models.Model):
             type: date
         '''
         try:
-            manufacturer = Manufacturer.objects.create(title=title, country=country, year=year, image=image, media=media)
+            manufacturer = Manufacturer.objects.create(
+                title=title, country=country, year=year,
+                image=image, media=media
+            )
             manufacturer.save()
             return manufacturer 
         except(IntegrityError, DataError, AttributeError):
             pass
             # LOGGER.error("User does not exist")
     
+
+    def update(self, **kwargs):
+        '''
+            :params: data that comes from the form - dict ({key: value})
+            number/presence of user keyword parameters doesn't matter
+            :returns updated object or None
+        '''
+        self.__dict__.update(**kwargs)
+        self.save()
+        return self
+
     @staticmethod
     def update_by_id(
         manufacturer_id, title=None,
@@ -129,7 +143,7 @@ class Manufacturer(models.Model):
         '''
             This method is created in order to update manufacturer object
             :params: same as in create method, if param is None - no update done
-            :return None
+            :return updated object or None
         '''
         try:
             manufacturer = Manufacturer.get_by_id(

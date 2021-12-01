@@ -75,12 +75,14 @@
 <div class="card w-25 my_margin" style="margin-left: 5px;">
     <div class="card-body" >
         <h5 class="card-title">User Update</h5>
-        <form action="" method="post">
-            {%csrf_token%}
+        <form action="." method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-            {{form.username|as_crispy_field}} {{form.old_password|as_crispy_field}}
-            {{form.password1|as_crispy_field}} {{form.password2|as_crispy_field}}
-            {{form.first_name|as_crispy_field}} {{form.last_name|as_crispy_field}}
+            {{ form.username|as_crispy_field }} {{ form.old_password|as_crispy_field }}
+            {{ form.password1|as_crispy_field }} {{ form.password2|as_crispy_field }}
+            {{ form.first_name|as_crispy_field }} {{ form.last_name|as_crispy_field }}
+            {{ form.image|as_crispy_field }} {{ form.media|as_crispy_field }}
+
             
             {% include 'snippets/update_message.html' %}
             <button type="submit" class="btn btn-success" id='update_btn'>Update</button>

@@ -15,10 +15,10 @@
     <br/><br/>
         
     <div class="form-group">
-<form method="POST" enctype="multipart/form-data">
+        <form action="." method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             
-            {{form.as_p}}
+            {{ form.as_p }}
 
             <button class="btn btn-secondary">Update</button>
     </div>

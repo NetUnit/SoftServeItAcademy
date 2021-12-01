@@ -100,7 +100,7 @@ class Product(models.Model):
             pass
         
     
-    def update(self, title=None, content=None, price=None, image=None, media=None):
+    def update(self, **kwargs):
         """
             Updates product in the database with the specified parameters.\n
             param title: Depicts product title of a product
@@ -111,18 +111,10 @@ class Product(models.Model):
             type cprice: int default=10
             :return: None
         """
-        if title:
-            self.title = title
-        if content:
-            self.content = content
-        if price:
-            self.price = price
-        if image:
-            self.image = image
-        if media:
-            self.media = media
+        self.__dict__.update(**kwargs)
         self.save()
-
+        return self
+        
     def to_dict(self):
         '''
             :return: product title, content, price
