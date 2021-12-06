@@ -143,8 +143,6 @@
 
 </style>
 <div>
-    {% if user.is_authenticated  %}
-
     <div class="card w-25 my_margin" style="margin-left: 5px; text-align: left">
         <div class="card-body" >
             <h5 class="card-title">User Update</h5>
@@ -173,29 +171,6 @@
             </a>
         </div>
     </div>
-
-    {% else %}
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 mx-auto mt-5">
-                <div class="header1">
-                    <div class="header2">
-                        <div class="dot-circle-o"> <i class="fa fa-dot-circle-o" style="font-size:62px;"></i> ⦿ </div>
-                    </div>
-                    <div class="content">
-                        <h1>Compulsory Logout!</h1>
-                        <p> Login again with a new password to update profile again ⊂(・﹏・⊂) </p>
-                        </br>
-                        <a href="{% url 'accounts:login_fbv' %}" style="margin-bottom: 0px">Login</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% endif %}
-
 </div>
 
 <div class="footer_app">
