@@ -133,6 +133,7 @@ class CustomUser(AbstractUser):
     def update_user_by_id(user_id, data=None):
         user = CustomUser.get_user_by_id(user_id)
         user.__dict__.update(data)
+        user.save()
         return user
 
     # make api info from this
@@ -204,6 +205,13 @@ class CustomUser(AbstractUser):
 
         user_exists = bool(match_by_email) + bool(match_by_username) > 0
         return True if user_exists else False
+
+    @staticmethod
+    def set_user_password(user_id=None):
+        user = CustomUser.get_user_by_id(user_id)
+        user.set_password(user.password)
+        user.save()
+        return user
 
 
     # in the case of AbstractBaseUser

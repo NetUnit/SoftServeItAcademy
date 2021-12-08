@@ -18,6 +18,7 @@ from accounts.views import (
     #########
     profile_user_view,
     profile_update_view,
+    update_success_view,
     ########
     profile_delete_view,
     profile_delete_submit,
@@ -31,6 +32,7 @@ from accounts.views import (
     media_download_view,
 
     show_info,
+    status_update_view
 )
 
 app_name = 'accounts'
@@ -50,7 +52,7 @@ urlpatterns = [
     re_path(r'^accounts/login-failed/$', login_failed_view, name='login_failed'),                                       ## +++
 
     ######################### *** LOGOUT CBV *** #######################
-    re_path(r'^accounts/log-out/', logout_success_view, name='logout'),                                                 ## ++
+    re_path(r'^accounts/log-out/$', logout_success_view, name='logout'),                                                 ## ++
 
     ######################### *** profile FBW ***#######################
     re_path(r'^accounts/profile/(?P<user_id>\d+)/$', profile_user_view, name='profile'),                                ## ++
@@ -62,16 +64,19 @@ urlpatterns = [
     ######################### *** UPDATE CBV *** #######################
     path(r'<int:pk>/edit-profile-page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),                  ## ++
     re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'),            ## ++ redefine forms.Form
+    re_path(r'^accounts/update-success/$', update_success_view, name='profile_update_view'),            ## ++
 
     ######################## *** UPDATE CBV *** #######################
     re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## +++
     #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
 
     ######################## *** MEDIA *** ########################
-    re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),
+    re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),           ## +++
 
     ########################  *** show info *** ########################
-    re_path(r'^accounts/show-info/$', show_info, name='show_info'),
+    re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                     ## +++
 
+    ########################## *** trial *** #######################
+    re_path(r'^accounts/status-update/(?P<user_id>\d+)/$', status_update_view, name='status_update'),
 
 ]

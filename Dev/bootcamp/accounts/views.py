@@ -26,6 +26,9 @@ import pathlib
 from wsgiref.util import FileWrapper
 from mimetypes import guess_type
 
+##### *** time *** #####
+import time
+
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
@@ -186,6 +189,32 @@ def profile_user_view(request, user_id, *args, **kwargs):
         print(err)
 
 ####################### *** Update User FBV *** #######################
+def update_success_view(request, *args, **kwargs):
+    try:
+        user = CustomUser.get_user_by_id(4)
+        # print(user)
+        # password = user.password
+        # user.set_password(password)
+        # user.save()
+        context = {'user': user}
+        messages.success(request, f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏')
+        return render(request, 'accounts/update_success.html', context)
+    except Exception as err:
+        print(err)
+
+def status_update_view(request, user_id, *args):
+    try:
+        user = CustomUser.get_user_by_id(user_id)
+        password = user.password
+        user.set_password(password)
+        user.save()
+        context = {'user': user}
+        messages.success(request, f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏')
+        return render(request, 'accounts/update_success.html', context)
+
+    except Exception as err:
+        print(err)
+
 def profile_update_view(request, user_id, *args, **kwargs):
 
     try:
@@ -222,7 +251,7 @@ def profile_update_view(request, user_id, *args, **kwargs):
                 f'U\'ve just updated profile with: {user.email}, password: {user.password} (^_-)≡☆'
             )
 
-            return redirect(f'/accounts/profile/{user_id}')
+            return redirect('/accounts/update-success/')
 
         form = CustomUserUpdateForm()
         context = {'form': form}
@@ -238,19 +267,118 @@ def profile_update_view(request, user_id, *args, **kwargs):
 ####################### *** Update User CBV *** #######################
 from django.views.generic import UpdateView
 
-class  EditProfilePageView(generic.UpdateView):
+class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateForm
+
     model = get_user_model()
     template_name = 'accounts/edit_profile_cbv.html'
-    success_url = '/accounts/login-fbv/'
-    fields = ('email', 'username', 'password', 'first_name', 'last_name', 'image', 'media')
+    success_url = '/accounts/update-success/'
+    fields = ('email', 'username',
+            'password', 'first_name',
+            'last_name', 'image', 'media'
+        )
     
+    # slug_field = 'slug'
+
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     if hasattr(self, 'object'):
+    #         if self.request.method == "GET":
+    #             kwargs.update({'instance': self.object})
+    #             return kwargs
+
+    #         if self.request.method == "POST":
+    #             data = kwargs.get('data')
+    #             password = data.get('password')
+                
+    #             user = self.request.user
+    #             user.set_password(password)
+                
+    #             _mutable = data._mutable
+    #             data._mutable = True
+
+    #             data['password'] = user.password
+
+    #             data._mutable = _mutable
+    #             return kwargs
+
+    def __init__(self, *args, **kwargs):
+        self.kwargs = None
+        super().__init__(*args)
+
+
+    def get_object(self, queryset=None, *args, **kwargs):
+        '''
+            Return the object the view is displaying.
+            Require `self.queryset` and a `pk` or `slug` argument in the URLconf.
+            Subclasses can override this to return any object.
+
+            self.kwargs: dict() containing main object info {'pk': int}
+            self.pk_url_kwarg: key corresponds to pk(user) from url
+            self.get_queryset(): get queryset of all model class related objects
+            
+
+        '''
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        print(self.kwargs)
+        print(self.pk_url_kwarg)
+            
+        if queryset is None:
+            queryset = self.get_queryset()
+            print(queryset)
+
+        # Next, try looking up by primary key.
+        user_id = self.kwargs.get(self.pk_url_kwarg)
+
+        # if user_id is None:
+        #     raise Http404(_('User wasn\'t found'))
+
+        # If none of those are defined, it's an error.
+        if user_id is None:
+            raise AttributeError(
+                f'Generic detail view {self.__class__.__name__}'
+                ' must be called with either an object pk or a slug.'
+                )
+                
+        # queryset = queryset.filter(pk=user_id)    
+        # user = queryset.get()
+        
+        try:
+            # Get the single item from the filtered queryset
+            data = self.request.POST
+            data = dict(data)
+        
+            updated_data = dict()
+            for key, value in list(data.items())[1:]:
+                value = ''.join(value)
+                updated_data[key] = value
+
+            user = CustomUser.update_user_by_id(
+                user_id, 
+                updated_data
+            )
+
+            user.save()
+            self.success_url = f'/accounts/status-update/{user_id}'
+            return user
+            
+        except queryset.model.DoesNotExist:
+            raise Http404(_('No %(verbose_name)s found matching the query') %
+                        {'verbose_name': queryset.model._meta.verbose_name})
+        
+        
+#################### *** Login/Logout Views *** ######################
+def login_success_view(request, *args, **kwargs):
+    messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
+    return render(request, 'accounts/login_success.html', context={})
+
+
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
     user = get_object_or_404(CustomUser, pk=user_id)
     context = {'user': user}
     return render (request, 'accounts/delete_inquiry.html', context)
 
-import time
 def profile_delete_submit(request, user_id, *args, **kwargs):
     CustomUser.delete_user_by_id(user_id)
     time.sleep(1.5)
