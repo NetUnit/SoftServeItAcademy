@@ -22,7 +22,7 @@ app_name = 'orders'
 
 urlpatterns = [
     
-    re_path(r'order/cart/', cart_view, name='cart_view'),
+    re_path(r'order/cart/(?P<user_id>\d+)/$', cart_view, name='cart_view'),
 
     # ############# *** DeatailedView + API *** ###############
     #re_path(r'^order/(?P<order_id>\d+)/$', order_detailed_view, name='detailed_view'),

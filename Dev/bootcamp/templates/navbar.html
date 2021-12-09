@@ -70,13 +70,15 @@
                         <a class="dropdown-item" href="{% url 'accounts:profile' user.id%}">Profile</a>
                         <a class="dropdown-item" href="{% url 'accounts:edit_profile_page_view' user.id%}">Edit Profie CBW</a>
                         <a class="dropdown-item" href="{% url 'accounts:profile_update_view' user.id%}">Edit Profie FBW</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something Else</a>
+                        {% if user.is_staff %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'accounts:profile_list_view'%}">Profiles</a>
+                        {% endif %}
                     </div>
                 </li>
 
                 <li class="cart">
-                    <a class="nav-link" href="{%url 'orders:cart_view' %}">Shop Cart</a>
+                    <a class="nav-link" href="{% url 'orders:cart_view' user.id %}">Shop Cart</a>
                 </li>
                 <!-- <li class="contact">
                     <a class="nav-link" href="https://frosty-cori-df7b43.netlify.app/">Contact</a>

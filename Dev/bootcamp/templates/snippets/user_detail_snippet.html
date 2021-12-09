@@ -5,37 +5,57 @@
         padding-top: 1px;
     }
 
+    .not-filled {
+        color: rgb(220, 48, 71);
+        font-weight: bold; 
+        position: relative;     
+        text-align: left;
+        margin-top: 10px;
+        margin-left: 25px;   
+    }
+
+    .field-names {
+        color: rgb(220, 48, 71);
+        font-weight: bolder; 
+        position: relative;     
+        text-align: left; 
+    }
+
 </style>
 
-<div style="padding-top: 5px">
+<div style="padding-top: 0px">
     <p class="card-text">
         {% if user.username %}
-        Username: {{ user.username }}
+            <text class='field-names'> Username: </text> 
+            <text class="card-text">  {{ user.username }} </text> 
         {% else %}
-        not filled yet
+            <text class='not-filled'> not filled yet </text> 
         {% endif %}
     </p>
     <p class="card-text">
         {% if user.email %}
-        Email: {{ user.email }}
+            <text class='field-names'> Email: </text> 
+            <text class="card-text"> {{ user.email }} </text>
         {% else %}
-        not filled yet
+            <text class="not-filled"> not filled yet  </text>
         {% endif %}
     </p>
 
     <p class="card-text">
         {% if user.first_name %}
-            Firstname: {{ user.first_name }}
+            <text class='field-names'> Firstname: </text> 
+            <text class="card-text"> {{ user.first_name }} </text>
         {% else %}
-            not filled yet
+            <text class="not-filled"> not filled yet </text>
         {% endif %}
     </p>
 
     <p class="card-text">
         {% if user.last_name %}
-        Lastname: {{ user.last_name }}
+            <text class='field-names'> Lastname: </text> 
+            <text class="card-text"> {{ user.last_name }} </text>
         {% else %}
-        not filled yet
+            <text class="not-filled"> not filled yet </text>
         {% endif %}
     </p>
 </div>

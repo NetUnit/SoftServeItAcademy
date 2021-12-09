@@ -88,7 +88,7 @@ def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, u
         print(error)
 
 
-def cart_view(request, *args, **kwargs):
+def cart_view(request, user_id, *args, **kwargs):
 
     user = request.user
     user_id = user.id

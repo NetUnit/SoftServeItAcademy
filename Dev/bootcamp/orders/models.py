@@ -3,22 +3,22 @@ from django.db import models, DataError, IntegrityError
 import datetime
 from products.models import Product
 from accounts.models import CustomUser
+import time, datetime
+from django.urls.base import reverse_lazy
 
     # Create your models here.
 class Order(models.Model):
         
     '''
-    This class represents the order that'll be added to a cart \n
-    -----------------------------------------------------------
-    Attrs:
-    param 'product': Outlines the product that will be added to a cart
-    type: Foreign Key - constraint that references to a primary key of Product.id fields
-    param 'created_at': outlines the creation date of a product
-    type: datetime field
-    param user: outlines the user that is adding a product to a cart
-    type: Foreign Key - constraint that references to a primary key of User.id fields
-
-    '2 Scopes of Dajngo: Fat Models, Helper Modules, Thin Views, Stupid Templates'
+        This class represents the order that'll be added to a cart
+        
+        Args:
+            param 'product': Outlines the product that will be added to a cart
+            type: Foreign Key - constraint that references to a primary key of Product.id fields
+            param 'created_at': outlines the creation date of a product
+            type: datetime field
+            param user: outlines the user that is adding a product to a cart
+            type: Foreign Key - constraint that references to a primary key of User.id fields
     '''
 
     #id is the autofield
@@ -27,28 +27,38 @@ class Order(models.Model):
     user = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
 
     # 1
-    # def __str__(self):
-    #     '''
-    #     Magic method is redefined to show all information about an order
-    #     :return: order id, created at, user_id, product_id
-    #     '''
-    #     return f'{self.product}{self.created_at}' ## {self.user}
+    def __str__(self):
+        '''
+            Magic method aims to show basic info about the order object
+            :returns: order id, converted creted time & user if such exists
+        '''
+        is_user = lambda user: f'-{self.user}' if self.user != None else ''
+        convert_time = lambda created_at: f'-{self.created_at.strftime("%d/%m/%Y")}' if True else ''
+        return f'Order№{self.id} ({self.product}' + \
+                    convert_time(self.created_at) + \
+                    is_user(self.user) +')'
 
     # 2
     def __repr__(self):
         '''
-        This magic method is redefined to show class and id of the Order object.
-        :return: class, id
+            This megic method is redefined in order to show class name and id
+            :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
+    def get_absolute_url(self):
+        return reverse_lazy(
+            'orders:cart_view',
+            args=[str(self.id)]
+            )
+    
     # 3
     @staticmethod
     def create(product):
         '''
-        This magic method is redefined to create order based on particular product 
-        and saved to db
-        :return: order object
+            This magic method is redefined to create order based on particular product 
+            and saved to db
+            :return: order object
         '''
         order = Order(product=product)
         try:
@@ -130,7 +140,6 @@ class Order(models.Model):
                   and allow them to create cart
         
         '''
-
         return Order.objects.all().filter(user_id=user_id)
 
     ## *** CART FUNCTIONALITY *** ##
@@ -226,3 +235,5 @@ class Order(models.Model):
         '''
         products_amount = Order.products_amount(user_id)
         pass
+
+

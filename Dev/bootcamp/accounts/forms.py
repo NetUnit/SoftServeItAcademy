@@ -159,7 +159,7 @@ class CustomUserLoginForm(forms.Form):
         ## capitalization doesn't matter
         qs = CustomUser.objects.filter(username_iexact=email)
         if not qs.exists():
-            raise forms.ValidationError('This is an invalid user')
+            raise forms.ValidationError(_('This is an invalid user'),  code='invalid')
         return email
 
 ###################### *** Update Form + built-in logic *** #######################

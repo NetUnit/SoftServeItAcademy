@@ -9,7 +9,7 @@ class OrderAdmin(admin.ModelAdmin):
     model = Order
     ordering = ['id']
 
-    list_display = ('product', 'created_at', ) ## add user later
+    list_display = ('id' ,'product', 'created_at', 'user') ## add user later
 
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('id', 'product', 'created_at')}),

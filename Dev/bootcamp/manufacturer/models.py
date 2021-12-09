@@ -2,6 +2,7 @@ from django.db import models, IntegrityError, DataError
 from django.forms.models import model_to_dict
 from django.http.response import Http404
 from products.storages import ProtectedStorage
+from django.urls.base import reverse_lazy
 
 
 # Create your models here.
@@ -35,16 +36,13 @@ class Manufacturer(models.Model):
     class Meta:
         ordering = ('id',) 
 
-    # def __str__(self):
-    #     '''
-    #         This magic method is created  in order to show all
-    #         info about a class Manufacturer
-    #         :return manufacturer.id,  manufacturer.name,  manufacturer.country,  manufacturer.year
+    def __str__(self):
+        '''
+            Magic method aims to show basic info about a manufacturer
+            :returns: manufacturer.title,  manufacturer.country,  manufacturer.year
 
-    #     '''
-    #     # return str(self.to_dict())[1:-1]
-    #     #return Manufacturer
-    #     return f'{self.id} {self.title} {self.country} {self.year}'
+        '''
+        return f'{self.title} LTD'
 
     
     def __repr__(self):
@@ -54,6 +52,12 @@ class Manufacturer(models.Model):
             :return: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
+
+    def get_absolute_url(self):
+        return reverse_lazy(
+            'manufacturer:get_products_manufacturer',
+            args=[str(self.id)]
+            )
 
     @staticmethod
     def get_by_id(manufacturer_id):

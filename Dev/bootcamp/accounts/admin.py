@@ -8,11 +8,12 @@ from django.contrib.auth.admin import UserAdmin
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
     ordering = ['id']
-    list_display = ('id', 'email',
-                    'is_staff', 'username',
-                    'first_name', 'last_name')
+    list_display = ('id', 'username', 
+                    'is_staff', 'email',
+                    'first_name', 'last_name',
+                    'image', 'media')
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('id', 'email', 'is_staff',
+        (None, {'fields': ('id', 'username', 'is_staff',
                            'username', 'first_name',
-                           'last_name')}))
+                           'last_name', 'image', 'media')}))

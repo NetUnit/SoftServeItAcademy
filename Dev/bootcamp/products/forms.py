@@ -129,4 +129,4 @@ class ItemSearchForm(forms.Form):
     }
 
     def __init__(self, *args, **kwargs):
-        super(ItemSearchForm, self).__init__(*args, **kwargs)
+        super(forms.Form, self).__init__(*args, **kwargs)
