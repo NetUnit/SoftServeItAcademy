@@ -28,6 +28,9 @@ from mimetypes import guess_type
 
 ##### *** time *** #####
 import time
+### *** decorators *** ###
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
@@ -55,6 +58,11 @@ def register_user_view(request, *args, **kwargs):
             user = CustomUser()
             # encrypted password will be setup autmatically via model
             new_user = user.create_user(data)
+            if not new_user:
+                raise ValidationError(
+                    _(f'User has been not created'),
+                    code='invalid'
+                    )
             messages.success(
                 request,
                 f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
@@ -63,7 +71,11 @@ def register_user_view(request, *args, **kwargs):
 
         form = CustomUserCreationForm()
         context = {'form': form}
-        return render (request, 'accounts/register_user_form_as_crispy_fields.html', context)
+        return render (
+            request, 
+            'accounts/register_user_form_as_crispy_fields.html', 
+            context
+            )
 
     except Exception as err:
         print(err)
@@ -157,10 +169,17 @@ def login_failed_view(request, *args, **kwargs):
 
         if not elapsed_time:
             leftover = leftover.strftime('%d.%m.%Y %H:%M:%S')
-            return render(request, 'accounts/login_failed.html', context={'leftover': leftover})
+            return render(
+                request,
+                'accounts/login_failed.html',
+                context={'leftover': leftover}
+                )
 
         if attempts_left and elapsed_time:
-            messages.error(request, f'Seem\'s like that username or email was wrong (⇀‸↼‶)')
+            messages.error(
+                request,
+                f'Seem\'s like that username or email was wrong (⇀‸↼‶)'
+                )
             return render(request, 'accounts/login_failed.html', context)
 
         if not attempts_left and elapsed_time:
@@ -172,13 +191,21 @@ def login_failed_view(request, *args, **kwargs):
         print(err)
         pass
 
+def ban_user_view(request, user_id):
+    user = CustomUser.get_user_by_id(user_id)
+    return HttpResponse(f'<h2> This is banned user {user_id} <h2>') 
+
 def logout_success_view(request, *args, **kwargs):
     logout(request)
     context = {}
-    messages.success(request, f'U\'ve been successfully logged out (　ﾟ)(　　)')
+    messages.success(
+        request,
+        f'U\'ve been successfully logged out (　ﾟ)(　　)'
+        )
     return render(request, 'accounts/logout_success.html', context)
 
 ####################### *** Profile *** #######################
+
 def profile_user_view(request, user_id, *args, **kwargs):
     try:
         user = CustomUser.get_user_by_id(user_id)
@@ -188,19 +215,31 @@ def profile_user_view(request, user_id, *args, **kwargs):
     except Exception as err:
         print(err)
 
-####################### *** Update User FBV *** #######################
-def update_success_view(request, *args, **kwargs):
+@staff_member_required(login_url=f'/accounts/check-user-auth/')
+def profile_list_view(request, *args, **kwargs):
     try:
-        user = CustomUser.get_user_by_id(4)
-        # print(user)
-        # password = user.password
-        # user.set_password(password)
-        # user.save()
+        profiles = CustomUser.get_all_users()
+        context = {'profiles': profiles}
+        return render(request, 'accounts/list_main.html', context)
+        # return HttpResponse(f'<h2> {profiles}  <h2>')
+    except ValidationError as error:
+        ### change this afterwards to general template
+        ### put error as general name of eror in a template for all views
+        return render(request, 'accounts/update_faied.html')
+
+####################### *** Update User FBV *** #######################
+def update_success_view(request, user_id, *args, **kwargs):
+    try:
+        user = CustomUser.get_user_by_id(user_id)
         context = {'user': user}
-        messages.success(request, f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏')
+        messages.success(
+            request,
+            f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏'
+            )
         return render(request, 'accounts/update_success.html', context)
     except Exception as err:
         print(err)
+
 
 def status_update_view(request, user_id, *args):
     try:
@@ -209,7 +248,10 @@ def status_update_view(request, user_id, *args):
         user.set_password(password)
         user.save()
         context = {'user': user}
-        messages.success(request, f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏')
+        messages.success(
+            request,
+            f'User: {user} has been successfully updated ๏[-ิ_•ิ]๏'
+            )
         return render(request, 'accounts/update_success.html', context)
 
     except Exception as err:
@@ -251,7 +293,7 @@ def profile_update_view(request, user_id, *args, **kwargs):
                 f'U\'ve just updated profile with: {user.email}, password: {user.password} (^_-)≡☆'
             )
 
-            return redirect('/accounts/update-success/')
+            return redirect(f'/accounts/update-success/{user_id}')
 
         form = CustomUserUpdateForm()
         context = {'form': form}
@@ -269,6 +311,14 @@ from django.views.generic import UpdateView
 
 class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateForm
 
+    '''
+        :get_form_kwargs(): returns kwargs of parental class UpdateView
+        kwars r form fields that is written to db
+        :get_object: returns the object the view is displaying and then
+        changing it's fields with ne data get with POST method
+    
+    '''
+
     model = get_user_model()
     template_name = 'accounts/edit_profile_cbv.html'
     success_url = '/accounts/update-success/'
@@ -279,92 +329,97 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
     
     # slug_field = 'slug'
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     if hasattr(self, 'object'):
-    #         if self.request.method == "GET":
-    #             kwargs.update({'instance': self.object})
-    #             return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if not hasattr(self, 'object'):
+            raise Http404(_('User wasn\'t found, but it\'s not your fault'))
 
-    #         if self.request.method == "POST":
-    #             data = kwargs.get('data')
-    #             password = data.get('password')
-                
-    #             user = self.request.user
-    #             user.set_password(password)
-                
-    #             _mutable = data._mutable
-    #             data._mutable = True
+        user_id = self.object.id
+        self.success_url = f'/accounts/update-success/{user_id}'
 
-    #             data['password'] = user.password
+        if self.request.method == "GET":
+            kwargs.update({'instance': self.object})
+            return kwargs
 
-    #             data._mutable = _mutable
-    #             return kwargs
-
-    def __init__(self, *args, **kwargs):
-        self.kwargs = None
-        super().__init__(*args)
-
-
-    def get_object(self, queryset=None, *args, **kwargs):
-        '''
-            Return the object the view is displaying.
-            Require `self.queryset` and a `pk` or `slug` argument in the URLconf.
-            Subclasses can override this to return any object.
-
-            self.kwargs: dict() containing main object info {'pk': int}
-            self.pk_url_kwarg: key corresponds to pk(user) from url
-            self.get_queryset(): get queryset of all model class related objects
+        if self.request.method == "POST":
+            data = kwargs.get('data')
+            password = data.get('password')
             
-
-        '''
-        # Use a custom queryset if provided; this is required for subclasses
-        # like DateDetailView
-        print(self.kwargs)
-        print(self.pk_url_kwarg)
+            user = self.request.user
+            user.set_password(password)
             
-        if queryset is None:
-            queryset = self.get_queryset()
-            print(queryset)
+            _mutable = data._mutable
+            data._mutable = True
 
-        # Next, try looking up by primary key.
-        user_id = self.kwargs.get(self.pk_url_kwarg)
+            data['password'] = user.password
 
-        # if user_id is None:
-        #     raise Http404(_('User wasn\'t found'))
+            data._mutable = _mutable
+            return kwargs
 
-        # If none of those are defined, it's an error.
-        if user_id is None:
-            raise AttributeError(
-                f'Generic detail view {self.__class__.__name__}'
-                ' must be called with either an object pk or a slug.'
-                )
+
+    # def __init__(self, *args, **kwargs):
+    #     self.kwargs = None
+    #     super().__init__(*args)
+
+
+    # def get_object(self, queryset=None, *args, **kwargs):
+    #     '''
+    #         Return the object the view is displaying.
+    #         Require `self.queryset` and a `pk` or `slug` argument in the URLconf.
+    #         Subclasses can override this to return any object.
+
+    #         self.kwargs: dict() containing main object info {'pk': int}
+    #         self.pk_url_kwarg: key corresponds to pk(user) from url
+    #         self.get_queryset(): get queryset of all model class related objects
+    #     '''
+    #     # Use a custom queryset if provided; this is required for subclasses
+    #     # like DateDetailView
+    #     print(self.kwargs)
+    #     print(self.pk_url_kwarg)
+            
+    #     if queryset is None:
+    #         queryset = self.get_queryset()
+    #         print(queryset)
+
+    #     # Next, try looking up by primary key.
+    #     user_id = self.kwargs.get(self.pk_url_kwarg)
+
+    #     # if user_id is None:
+    #     #     raise Http404(_('User wasn\'t found'))
+
+    #     # If none of those are defined, it's an error.
+    #     if user_id is None:
+    #         raise AttributeError(
+    #             f'Generic detail view {self.__class__.__name__}'
+    #             ' must be called with either an object pk or a slug.'
+    #             )
                 
-        # queryset = queryset.filter(pk=user_id)    
-        # user = queryset.get()
+    #     queryset = queryset.filter(pk=user_id)    
+    #     user = queryset.get()
         
-        try:
-            # Get the single item from the filtered queryset
-            data = self.request.POST
-            data = dict(data)
+    #     try:
+    #         # Get the single item from the filtered queryset
+    #         data = self.request.POST
+    #         data = dict(data)
         
-            updated_data = dict()
-            for key, value in list(data.items())[1:]:
-                value = ''.join(value)
-                updated_data[key] = value
+    #         updated_data = dict()
+    #         for key, value in list(data.items())[1:]:
+    #             value = ''.join(value)
+    #             updated_data[key] = value
 
-            user = CustomUser.update_user_by_id(
-                user_id, 
-                updated_data
-            )
+    #         user = CustomUser.update_user_by_id(
+    #             user_id, 
+    #             updated_data
+    #         )
 
-            user.save()
-            self.success_url = f'/accounts/status-update/{user_id}'
-            return user
+    #         user.save()
+    #         print(user.password) # not hashed password
+    #         self.success_url = f'/accounts/status-update/{user_id}'
+    #         return user
             
-        except queryset.model.DoesNotExist:
-            raise Http404(_('No %(verbose_name)s found matching the query') %
-                        {'verbose_name': queryset.model._meta.verbose_name})
+    # except queryset.model.DoesNotExist:
+    #     raise Http404(_('No %(verbose_name)s found matching the query') %
+    #                 {'verbose_name': queryset.model._meta.verbose_name})
         
         
 #################### *** Login/Logout Views *** ######################
@@ -386,6 +441,7 @@ def profile_delete_submit(request, user_id, *args, **kwargs):
 
 ################# *** Contact *** ###################
 ### Put your resume here ###
+### Delete this later
 def contact_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
 

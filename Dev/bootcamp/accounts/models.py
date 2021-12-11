@@ -1,10 +1,15 @@
 from django.db import models
 from django.db import models, IntegrityError, DataError
-from django.http.response import Http404
+import logging
+logger = logging.getLogger(__name__)
+from django.http.response import Http404, HttpResponseNotFound
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy
 from django.shortcuts import get_object_or_404
 from products.storages import ProtectedStorage
+from django.urls.base import reverse_lazy
 # Create your models here.
 
 class MyAccountManager(BaseUserManager):
@@ -88,19 +93,23 @@ class CustomUser(AbstractUser):
     class Meta:
         ordering = ('id',)
 
-    # def __str__(self):
-    #     '''
-    #         Magic method is redefined to show all information about a Product
-    #         :return: product id, product title, product title, product price
-    #     '''
-    #     return f'{self.email} {self.password}'
-
+    def __str__(self):
+        '''
+            Magic method is redefined to show basic information
+            about a User in UI (admin interface)
+            :return: user username
+        '''
+        return f'{self.username}'
+    
     def __repr__(self):
         '''
             This magic method is redefined to show class and id of product object.
             :return: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
+
+    def get_absolute_url(self):
+        return reverse_lazy('accounts:profile', args=[str(self.id)])
 
     # def __del__(self):
 	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
@@ -113,17 +122,24 @@ class CustomUser(AbstractUser):
     @staticmethod
     def get_all_users():
         all_users = CustomUser.objects.all()
-        users_exist = len(user for user in all_users) > 0
-        return all_users if users_exist else 0
-
+        if not all_users.exists():
+            raise ValidationError(_(
+                'There r no users registered yet'),
+                code='invalid'
+            )
+            # logger.info(f'There r no users registered yet')
+        return list(all_users)
+        
     @staticmethod
     def delete_user_by_id(user_id=None):
         user = get_object_or_404(CustomUser, pk=user_id)
         user.delete()
 
     # data here will be a dict(**kwargs from UI)
-    def create_user(self, data):
-        user = CustomUser.objects.create(**data) if data != None else 0
+    def create_user(self, data=None):
+        if data == None:
+            return False
+        user = CustomUser.objects.create(**data)
         user.set_password(user.password)
         user.save()
         return user
@@ -212,7 +228,7 @@ class CustomUser(AbstractUser):
         user.set_password(user.password)
         user.save()
         return user
-
+    
 
     # in the case of AbstractBaseUser
     # def get_role_name(self):

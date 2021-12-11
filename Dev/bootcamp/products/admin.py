@@ -12,7 +12,7 @@ from django.contrib.auth.admin import UserAdmin
 class ProductAdmin(admin.ModelAdmin):
     model = Product
     ordering = ['id']
-    list_display = ('id', 'title', 'content', 'price')
+    list_display = ('id', 'title', 'content', 'price', 'image' , 'media')
 
     add_fieldsets = UserAdmin.add_fieldsets + (
             (None, {'fields': ('id', 'title', 'content', 'price')}),

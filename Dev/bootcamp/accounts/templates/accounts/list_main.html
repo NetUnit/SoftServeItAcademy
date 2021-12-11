@@ -1,0 +1,149 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block title %} Profiles List {% endblock %}
+
+{% block content %}
+
+<style>
+    form div label {
+        margin: 5px 0 2px;
+    }
+    
+    /* moving search button upside and down */
+    form button {
+        margin-top: 0px;
+    }
+
+    input[type='text'] {
+        width: 100%;
+    }
+
+    .card {
+        margin: 5px;
+    }
+
+    .picture img {
+        border: 1px solid #4287f5;
+        height: 100px;
+        width: 150px;
+        text-align: center;
+        text-orientation: initial;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .btn-info {
+        display: inline-block;
+        width: 100px; 
+        color: white;
+        margin-top: 5px;
+        margin-left: 0px;
+        text-align: center;
+    }
+
+    #ban_btn { 
+        text-decoration: none;
+        background-color: rgb(220, 48, 71);
+        margin-left: 25px;
+    }
+
+    #ban_btn:hover { 
+        background-color: red;
+        color:rgb(3, 4, 31);
+        border: 1px;
+        margin-left: 25px;
+    }
+
+    .btn-warning {
+        width: 80px;
+        height: 35px;
+        color:rgb(3, 4, 31);
+        margin-top: 10px;
+        margin-left: 35px;
+        text-align: center;
+        position: relative;
+        background-color: orange;
+        border: 1px solid rgb(3, 4, 31);
+    }
+
+    .footer_root {
+      padding: 10px;
+      color: rgb(245, 173, 6);
+      font-weight: bold;
+      text-align: left;
+      /* top: 350px; */
+      width: 100%;
+      position: relative;
+      margin-top: 80px;
+    }
+
+</style>
+
+<div class="card w-25 my_margin" id="manufacturerTitle" style=margin-bottom:10px>
+    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center">
+        <h5 class="card-title" style="margin-bottom: 0; font-weight: bold; color:rgb(3, 4, 31)">Users: </h5>
+        <!-- USER AUTHENTICATION CHECK !!!! open this part after  user will be created'  -->
+
+        <a href="{% url 'accounts:register_fbv' %}" class="btn btn-primary" style=background-color:mediumpurple> New User </a>
+    </div>
+</div>
+
+<div>
+    {% include 'snippets/list_message_snippet.html'%}
+</div>
+
+<!-- manufacturer_list is a var taken from views.py context -->
+{% for profile in profiles %}
+<div class="card w-25 my_margin">
+    <div class="card-body" style="display: flex; justify-content: space-between">
+        <div style="display: flex; align-items: stretch; width: 100%">
+            <div>
+                <h6 class="card-title" style="margin: 0; line-height: 1.5; padding-right: 5px">{{forloop.counter}}.</h6>
+            </div>
+            <div>
+                {% include 'snippets/user_detail_snippet.html' with user=profile %}
+            </div>
+        </div>
+        <div class="column">
+            <div class='picture'>
+                {% if profile.image %}
+                    <a href="{%url 'accounts:media_download_view' profile.id%}" 
+                        class="vx_btn-link vx_addBtn-secondary"
+                        pa-marked="1"
+                    >
+                        <img src="{{ profile.image.url }}" alt="moto-item-image" style="height: 100%;">
+                    </a>
+    
+                {% else %}
+                    not filled
+                {% endif %}
+            </div>
+
+            {% if not profile.is_staff %}
+                <div style="padding-top: 5px">
+                    <a href="{%url 'accounts:ban_user_view' profile.id%}" 
+                        class="btn btn-info btn-sm"
+                        id="ban_btn"
+                        type="button"
+                    >
+                        Ban User
+                    </a>
+                </div>
+            {% endif %}
+        
+        </div>
+    </div>
+</div>
+{%endfor%}
+{% endblock %}
+
+{% block footer %}
+<div class="footer_root">
+  root: {{ root }} 
+  </br>
+  app: {{ app_name_2 }}
+</div>
+{% endblock %}

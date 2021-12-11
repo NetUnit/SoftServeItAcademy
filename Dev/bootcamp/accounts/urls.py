@@ -17,6 +17,8 @@ from accounts.views import (
     login_failed_view,
     #########
     profile_user_view,
+    profile_list_view,
+    ##########
     profile_update_view,
     update_success_view,
     ########
@@ -32,7 +34,11 @@ from accounts.views import (
     media_download_view,
 
     show_info,
-    status_update_view
+    status_update_view,
+
+    #########
+    ban_user_view
+
 )
 
 app_name = 'accounts'
@@ -56,6 +62,7 @@ urlpatterns = [
 
     ######################### *** profile FBW ***#######################
     re_path(r'^accounts/profile/(?P<user_id>\d+)/$', profile_user_view, name='profile'),                                ## ++
+    re_path(r'^accounts/profiles/list/$', profile_list_view, name='profile_list_view'),
 
     ######################### *** profile DELETE FBW ***#######################
     re_path(r'^accounts/profile-delete/(?P<user_id>\d+)/$', profile_delete_view, name='profile_delete_view'),            ## ++
@@ -64,10 +71,11 @@ urlpatterns = [
     ######################### *** UPDATE CBV *** #######################
     path(r'<int:pk>/edit-profile-page/', EditProfilePageView.as_view(), name='edit_profile_page_view'),                  ## ++
     re_path(r'^accounts/profile-update/(?P<user_id>\d+)/$', profile_update_view, name='profile_update_view'),            ## ++ redefine forms.Form
-    re_path(r'^accounts/update-success/$', update_success_view, name='profile_update_view'),            ## ++
+    re_path(r'^accounts/update-success/(?P<user_id>\d+)/$', update_success_view, name='update_success_view'),            ## ++
 
     ######################## *** UPDATE CBV *** #######################
     re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## +++
+    re_path(r'^accounts/status-update/(?P<user_id>\d+)/$', status_update_view, name='status_update'),
     #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
 
     ######################## *** MEDIA *** ########################
@@ -76,7 +84,8 @@ urlpatterns = [
     ########################  *** show info *** ########################
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                     ## +++
 
-    ########################## *** trial *** #######################
-    re_path(r'^accounts/status-update/(?P<user_id>\d+)/$', status_update_view, name='status_update'),
+    ########################## *** ban *** #######################
+    re_path(r'^accounts/profiles/ban/(?P<user_id>\d+)/$', ban_user_view, name='ban_user_view'),
+    
 
 ]

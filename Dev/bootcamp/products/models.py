@@ -3,6 +3,7 @@ from manufacturer.models import Manufacturer
 from django.http.response import Http404
 from accounts.models import CustomUser
 from .storages import ProtectedStorage
+from django.urls.base import reverse_lazy
 # from django.conf import settings
 # CustomUser = settings.AUTH_USER_MODEL
 
@@ -27,20 +28,27 @@ class Product(models.Model):
     class Meta:
         ordering = ('id',)
 
-    # def __str__(self):
-    #     """
-    #     Magic method is redefined to show all information about a Product
-    #     :return: product id, product title, product title, product price
-    #     """
-    #     # return f'{self.id} {self.title} {self.price} {self.manufacturers}'
-    #     # return str(self.to_dict())[1:-1]
+    def __str__(self):
+        '''
+            Magic method aims to show basic info about a Product
+            :returns: product name and price
+        '''
+        if_price = lambda price: f': {str(self.price)}$' if self.price!=None else ''
+        return f'{self.title}' + if_price(self.price)
 
-    # def __repr__(self):
-    #     """
-    #         This magic method is redefined to show class and id of product object.
-    #         :return: class, id
-    #     """
-    #     return f'{self.__class__.__name__}(id={self.id})'
+
+    def __repr__(self):
+        '''
+            This magic method is redefined to show class and id of product object.
+            :return: class, id
+        '''
+        return f'{self.__class__.__name__}(id={self.id})'
+
+    def get_absolute_url(self):
+        return reverse_lazy(
+            'products:detailed_view',
+            args=[str(self.id)]
+            )
 
     @staticmethod
     def get_by_id(product_id):
@@ -57,10 +65,10 @@ class Product(models.Model):
 
     @staticmethod
     def get_all():
-        """
-            returns data for json request with QuerySet of all products
+        '''
+            :returns: data for json request with QuerySet of all products
             use iteration to render separately in a template
-        """
+        '''
         try:
             all_products = Product.objects.all()
             return list(all_products)
@@ -71,7 +79,7 @@ class Product(models.Model):
     @staticmethod
     def create(
         title, content, price, user=None, manufacturers=None, image=None, media=None):
-        """
+        '''
             param name: Describes name of the product
             type name: str max_length=220
             param content: Describes description of the book
@@ -80,7 +88,7 @@ class Product(models.Model):
             type price: int default=10
 
             :return: a new product object which is also written into the DB
-        """
+        '''
         # allows to create objects with not all attrs input obligatory
         product = Product(
             title=title, content=content,
@@ -101,7 +109,7 @@ class Product(models.Model):
         
     
     def update(self, **kwargs):
-        """
+        '''
             Updates product in the database with the specified parameters.\n
             param title: Depicts product title of a product
             type title: str max_length=128
@@ -110,7 +118,7 @@ class Product(models.Model):
             param price: shows a product's price
             type cprice: int default=10
             :return: None
-        """
+        '''
         self.__dict__.update(**kwargs)
         self.save()
         return self
@@ -137,11 +145,11 @@ class Product(models.Model):
 
     @staticmethod
     def delete_by_id(product_id):
-        """
+        '''
             :param product_id: an id of a product to be deleted
             :type product_id: int
             :return: True if the object existed in the db and was removed or False if it didn't exist
-        """
+        '''
 
         try:
             product = Product.objects.get(pk=product_id)

@@ -11,8 +11,8 @@ from django.contrib.auth.admin import UserAdmin
 class ManufacturerAdmin(admin.ModelAdmin):
     model = Manufacturer
     ordering = ['id']
-    list_display = ('title', 'country', 'year', )
+    list_display = ('title', 'country', 'year', 'image' , 'media')
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('id', 'title', 'country', 'year')}),
+        (None, {'fields': ('id', 'title', 'country', 'year', 'image' , 'media')}),
     )
