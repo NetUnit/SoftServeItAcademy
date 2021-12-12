@@ -1,11 +1,15 @@
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 from django.db import models, DataError, IntegrityError
 
 import datetime
+
+from django.http.response import HttpResponse
 from products.models import Product
 from accounts.models import CustomUser
 import time, datetime
-from django.urls.base import reverse_lazy
-
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
     # Create your models here.
 class Order(models.Model):
         
@@ -41,18 +45,21 @@ class Order(models.Model):
     # 2
     def __repr__(self):
         '''
-            This megic method is redefined in order to show class name and id
+            This magic method is redefined to show class name and id
             :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
-    def get_absolute_url(self):
+    # 3
+    def get_absolute_url(self, *args):
+        if self.user is None:
+            raise ValidationError(_('User cart wasn\'t found'))
         return reverse_lazy(
             'orders:cart_view',
-            args=[str(self.id)]
-            )
+            args=[str(self.user.id)]
+        )
     
-    # 3
+    # 4
     @staticmethod
     def create(product):
         '''
@@ -68,7 +75,7 @@ class Order(models.Model):
             # LOGGER.error("Wrong attributes or relational integrity error")
             pass
     
-    # 4
+    # 5
     @staticmethod
     def get_all(user_id=None):
         '''
@@ -83,7 +90,7 @@ class Order(models.Model):
             order for order in Order.objects.all()
             ] if condition else list()
 
-    # 5
+    # 6
     @staticmethod
     def get_by_id(order_id):
         '''
@@ -98,7 +105,7 @@ class Order(models.Model):
             pass
         return False
 
-    # 6
+    # 7
     @staticmethod
     def delete_by_id(order_id):
         '''
@@ -114,7 +121,7 @@ class Order(models.Model):
             pass
         return False
 
-    # 7
+    # 8
     @staticmethod
     def delete_all(user_id=None):
         '''
@@ -131,7 +138,7 @@ class Order(models.Model):
         if product_exist and order_exist:
             return Order.objects.all().filter(user_id=user_id).delete()
 
-    # 8
+    # 9
     @staticmethod
     def get_orders_by_user(user_id=None):
         '''
@@ -143,7 +150,7 @@ class Order(models.Model):
         return Order.objects.all().filter(user_id=user_id)
 
     ## *** CART FUNCTIONALITY *** ##
-    # 9
+    # 10
     @staticmethod
     def create_cart(user_id=None):
         
@@ -166,10 +173,9 @@ class Order(models.Model):
         except TypeError as err:
             # LOGGER.error(f'{err}')
             pass
-        
         return basket
     
-    # 10
+    # 11
     @staticmethod
     def cart_items_amount(user_id=None):  ## add user_id late
         basket = Order.create_cart(user_id)
@@ -180,13 +186,13 @@ class Order(models.Model):
         
         return basket
 
-    # 11
+    # 12
     @staticmethod
     def products_amount(user_id=None):
         basket = Order.cart_items_amount(user_id)
         return sum(list(basket.values()))
         
-    # 12
+    # 13
     @staticmethod
     def total_value(user_id=None):
         try:
@@ -198,7 +204,7 @@ class Order(models.Model):
             # LOGGER.error(f'{err}')
             pass
     
-    # 13
+    # 14
     @staticmethod
     def get_discount(user_id=None):
         products_amount = Order.products_amount(user_id)

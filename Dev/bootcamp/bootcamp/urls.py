@@ -35,7 +35,6 @@ from accounts.views import (
     contact_view
 )
 
-
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -48,6 +47,7 @@ from django.conf.urls.static import static
 ###################################################################################
 
 urlpatterns = [
+    # 
     path('', HomePageView.as_view(), name='index'), # add template                                  # same_1
     path('admin/', admin.site.urls, name='admin'),
 
