@@ -116,7 +116,11 @@
         <div class='picture-cart-logo'>
           <img width="100px" height="100px" style="margin-top: 0px;" src="{% static 'images/order/moto-panda-cart.png' %}" alt="">
         </div>
-        <h5 class="cart-title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+        {% if not_admin_url %}
+          <h5 class="cart-title">Hi (*°ｰ°)ﾉ. This your cart</h5>
+        {% else %}
+          <h5 class="cart-title">Hi (*°ｰ°)ﾉ. This {{ user.username }}'s cart</h5>
+        {% endif %}
       </div>
     </div>
 
@@ -129,8 +133,10 @@
         <p class='order_title' style="color: rgb(3, 4, 31); font-weight: bold">Discounted value: {{discounted}} usd</p>
         
         {% include 'snippets/cart_message_snippet.html'%}
-      
+        
+        {% if not_admin_url %}
         <div style="padding-top: 5px">
+
           <a href="{%url 'orders:cart_clean_view'%}" 
             class="btn btn-info btn-sm"
             type="button"
@@ -151,9 +157,10 @@
             Process
           </a>
         </div>
+        {% endif %}
       </div>
     </div>
-
+    
   </div>
   <div class='basket'>
     {%for order, number in basket.items %}
@@ -175,11 +182,12 @@
                 not filled
             {% endif %}
             </div>
-
+            
             <div>
               <h6 class='quantity' style="margin-top: 5px; color: limegreen; font-weight: bold; margin-top: 13px;"> Quantity: {{number}}  </h6>
               <!-- <h7 class='' style='color:rgb(22, 44, 240)'>{{order.id}} {{order.product.id}}</h7> -->
             </div>
+            {% if not_admin_url %}
             <a href="{%url 'orders:order_create_view' order.product.id%}"
               class="btn btn-info btn-sm"
               type="button"
@@ -194,8 +202,9 @@
             >
               -
             </a>
+            {% endif %}
           </div>
-
+          
           <div style="display: flex; width: 100%; margin-left: 40px;">
             <div style="width: 100%">
               <p class='order_title' style="color: rgb(245, 173, 6); font-weight: bold" >{{order.product.title}}</p>

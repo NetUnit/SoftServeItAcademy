@@ -120,6 +120,17 @@ class LoginForm(AuthenticationForm):
         )
     )
 
+    error_messages = {
+        'invalid_login': _(
+            'Authentication Failed, reasons: '
+            'Incorrect password or %(username)s. '
+            'Both fields may be case-sensitive. '
+            'Check if the \'Caps Lock\' key  wasn\'t accidentally hit '
+            '(*ﾟｰﾟ)ゞ'
+        ),
+        'inactive': _('This account is inactive.'),
+    }
+
     def __init__(self, email = username, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

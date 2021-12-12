@@ -53,15 +53,17 @@ def order_create_view(request, product_id, *args, **kwargs):
         # return HttpResponse (
         #     f'<h3>  {order}  <h3>'
         # )
-        return redirect('/order/cart/')
+        return redirect(f'/order/cart/{order.user.id}')
 
     except Exception as error:
         print(error)
 
 # @login_required(login_url=f'/accounts/check-user-auth/')
 def order_remove_view(request, order_id, *args, **kwargs):
+    order = Order.get_by_id(order_id)
+    user_id = order.user.id
     Order.delete_by_id(order_id)
-    return redirect('/order/cart/')
+    return redirect(f'/order/cart/{user_id}')
 
     # return HttpResponse (
     #     f'<h3>  {order_id} {Order.delete_by_id(order_id)}  <h3>'
@@ -83,20 +85,23 @@ def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, u
         # print(Order.delete_all(user_id))
 
         messages.success(request, f'Your cart is empty now (-ˍ-。)')
-        return redirect('/order/cart/')
+        return redirect(f'/order/cart/{user_id}')
     except Exception as error:
         print(error)
 
 
 def cart_view(request, user_id, *args, **kwargs):
-
-    user = request.user
-    user_id = user.id
-
+    '''
+        context#6 corresponds to get_absolute_url() 
+        method & shows limited acces from admin session 
+        to a cart of selected user
+        :returns: BOOl value if admin access user's cart
+    
+    '''
     # context#1
     basket = Order.cart_items_amount(user_id)
-    # [print(order.product.manufacturers) for order in list(basket.keys())]
-
+    # order = list(basket.keys())[0]
+    
     # context#2
     products_amount = Order.products_amount(user_id)
 
@@ -110,11 +115,15 @@ def cart_view(request, user_id, *args, **kwargs):
     # context#5 price after discount
     discounted = total_value - total_value * disc_ratio
 
+    # context#6 limitedacces from admin to user's cart
+    not_admin_url = user_id == str(request.user.id)
+    
     context = {'basket': basket,
                'products_amount': products_amount,
                'total_value': total_value,
                'discount': discount,
-               'discounted': discounted
+               'discounted': discounted,
+               'not_admin_url': not_admin_url
                }
 
     return render(request, 'orders/cart.html', context)
@@ -274,14 +283,11 @@ def payment_complete_view(request):
         print(err)
         pass
 
-
 class PaypalReturnView(TemplateView):
     template_name = 'orders/payment_done.html'
 
-
 class PaypalCancelView(TemplateView):
     template_name = 'orders/payment_cancelled.html'
-
 
 #################### *** API PAYPAL RETURN *** ####################
 def api_process_payment_view(request, *args, **kwargs):

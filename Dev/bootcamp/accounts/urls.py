@@ -10,7 +10,7 @@ from accounts.views import (
     RegisterView,
     #########
     login_user_view,
-    LoginView,
+    CustomLoginView,
     ##########
     logout_success_view,
     login_success_view,
@@ -52,7 +52,7 @@ urlpatterns = [
     re_path(r'^accounts/register-cbv/$', RegisterView.as_view(), name='register_cbv'),                                  ## +++ CreateView
 
     ######################### *** LOGIN FBV + CBV + Fail *** #######################
-    re_path(r'^accounts/login-cbv/$', LoginView.as_view(), name='login_cbv'),
+    re_path(r'^accounts/login-cbv/$', CustomLoginView.as_view(), name='login_cbv'),
     re_path(r'^accounts/login-fbv/$', login_user_view, name='login_fbv'),                                               ## +++ authenticate doesn't work - set_apssword()
     re_path(r'^accounts/login-success/$', login_success_view, name='login-success'),                                    ## +++
     re_path(r'^accounts/login-failed/$', login_failed_view, name='login_failed'),                                       ## +++

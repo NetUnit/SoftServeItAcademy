@@ -13,6 +13,7 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth import views as auth_views
 from django.views import generic
@@ -31,6 +32,9 @@ import time
 ### *** decorators *** ###
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+
+### *** exceptions *** ###
+from accounts.exceptions import CustomAuthFailed
 
 ################# *** Panda Hardware *** ###################
 def panda_link_view(request, *args, **kwargs):
@@ -60,7 +64,7 @@ def register_user_view(request, *args, **kwargs):
             new_user = user.create_user(data)
             if not new_user:
                 raise ValidationError(
-                    _(f'User has been not created'),
+                    _(f'User hasn\'t been created'),
                     code='invalid'
                     )
             messages.success(
@@ -71,7 +75,7 @@ def register_user_view(request, *args, **kwargs):
 
         form = CustomUserCreationForm()
         context = {'form': form}
-        return render (
+        return render(
             request, 
             'accounts/register_user_form_as_crispy_fields.html', 
             context
@@ -91,9 +95,11 @@ class RegisterView(CreateView):
 
 ####################### *** Auth *** #######################
 ## Class-based View
-class LoginView(auth_views.LoginView):
+
+class CustomLoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
+    
 
 class LoginCounter:
 
@@ -109,7 +115,7 @@ class LoginCounter:
         if max_attempts:
             LoginCounter.login_attempt = 0
             self.login_attempt = 0
-            return 'This is exception'
+            raise CustomAuthFailed
         else:
             return self.login_attempt
 
