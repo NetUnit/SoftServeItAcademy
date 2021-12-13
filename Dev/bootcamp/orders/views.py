@@ -42,7 +42,7 @@ def order_create_view(request, product_id, *args, **kwargs):
         if isinstance(request.user, AnonymousUser):
             order.user = None
             # print(order.user)
-            return redirect('/order/cart/')
+            return redirect('/order/cart/user/')
 
         order.user = request.user
         order.save()
@@ -53,7 +53,7 @@ def order_create_view(request, product_id, *args, **kwargs):
         # return HttpResponse (
         #     f'<h3>  {order}  <h3>'
         # )
-        return redirect(f'/order/cart/{order.user.id}')
+        return redirect(f'/order/cart/user/{order.user.id}')
 
     except Exception as error:
         print(error)
@@ -63,7 +63,7 @@ def order_remove_view(request, order_id, *args, **kwargs):
     order = Order.get_by_id(order_id)
     user_id = order.user.id
     Order.delete_by_id(order_id)
-    return redirect(f'/order/cart/{user_id}')
+    return redirect(f'/order/cart/user/{user_id}')
 
     # return HttpResponse (
     #     f'<h3>  {order_id} {Order.delete_by_id(order_id)}  <h3>'
@@ -85,7 +85,7 @@ def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, u
         # print(Order.delete_all(user_id))
 
         messages.success(request, f'Your cart is empty now (-ˍ-。)')
-        return redirect(f'/order/cart/{user_id}')
+        return redirect(f'/order/cart//user/{user_id}')
     except Exception as error:
         print(error)
 

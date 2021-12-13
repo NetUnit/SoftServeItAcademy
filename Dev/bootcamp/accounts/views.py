@@ -213,13 +213,12 @@ def logout_success_view(request, *args, **kwargs):
 ####################### *** Profile *** #######################
 
 def profile_user_view(request, user_id, *args, **kwargs):
-    try:
-        user = CustomUser.get_user_by_id(user_id)
-        auth = user.is_authenticated
-        context = {'user': user, 'auth': auth}
-        return render (request, 'accounts/profile_view.html', context)
-    except Exception as err:
-        print(err)
+    
+    user = CustomUser.get_user_by_id(user_id)
+    auth = user.is_authenticated
+    context = {'user': user, 'auth': auth}
+    return render (request, 'accounts/profile_view.html', context)
+    
 
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def profile_list_view(request, *args, **kwargs):

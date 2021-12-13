@@ -26,25 +26,31 @@ from products.views import (
     ProductListView,
     TemplateView,
     method_view,
-    search_view,
-    search_venues,
 )
 
 from accounts.views import (
     panda_link_view,
-    contact_view
+    contact_view,
 )
 
-from django.conf import settings
-from django.conf.urls.static import static
+from bootcamp.views import (
+    handler400,
+    handler403,
+    handler404,
+    search_view,
+    search_venues,
+    logger_error_view,
+)
 
 
-################### *** exceptions:404, 500, 403, 400 *** #########################
-# handler404 = 'products.views.handler404'
-# handler500 = 'products.views.handler500'
-# handler403 = 'products.views.handler403'
-# handler400 = 'products.views.handler400'
-###################################################################################
+############## *** handlers 400, 403, 404, 500 *** ###################
+handler400 = 'bootcamp.views.handler400'
+handler403 = 'bootcamp.views.handler403'
+handler404 = 'bootcamp.views.handler404'
+handler500 = 'bootcamp.views.handler500'
+#######################################################################
+
+
 
 urlpatterns = [
     # 
@@ -67,6 +73,14 @@ urlpatterns = [
     ################### *** search view *** ########################
     re_path(r'^search/$', search_view, name='search_view'),             # same_3
     re_path(r'^search-venues/$', search_venues, name='search_venues'),  # same_3
+
+    #### **** exceptions *** ####
+    ## add 500, 400 & 403 exceptions here
+    
+    # ________________________
+    re_path(r'^logger-error/$', logger_error_view, name='logger_error_view'),  # same_3
+
+    ## 
 
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),

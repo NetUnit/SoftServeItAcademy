@@ -247,17 +247,15 @@ def manufacturer_update_view(request, manufacturer_id, *args, **kwargs):
 ############################## *** Update Product *** ###########################
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def manufacturer_delete_view(request, manufacturer_id, *args, **kwargs):
-    try:
-        manufacturer = Manufacturer.get_by_id(manufacturer_id)
-        Manufacturer.delete_by_id(manufacturer_id)
-        messages.success(
-            request, f'\'{manufacturer.title}\' has been removed'
-        ) if True else 0
-        #print(messages.__dict__)
-        return redirect ('/manufacturers/list/')
 
-    except Exception as err:
-        print(err)
+    manufacturer = Manufacturer.get_by_id(manufacturer_id)
+    Manufacturer.delete_by_id(manufacturer_id)
+    messages.success(
+        request, f'\'{manufacturer.title}\' has been removed'
+    ) if True else 0
+    #print(messages.__dict__)
+    return redirect ('/manufacturers/list/')
+
     
 def media_download_view(request, manufacturer_id, *args, **kwargs):
     '''
