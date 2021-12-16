@@ -1,3 +1,5 @@
+from django.http.response import HttpResponseBadRequest
+
 class CustomAuthFailed(Exception):
     message = ('Authentication Failed, reasons:' +
         'Incorrect password or username' +

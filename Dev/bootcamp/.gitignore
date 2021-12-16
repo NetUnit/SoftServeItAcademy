@@ -4,3 +4,7 @@ reserverd-static/
 reserved_temlates/
 
 cdn_test/
+
+pyvenv.cfg
+
+debug.log

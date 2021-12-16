@@ -1,9 +1,12 @@
 from django.db import models, IntegrityError, DataError
+from django.core.exceptions import ValidationError
 from manufacturer.models import Manufacturer
 from django.http.response import Http404
 from accounts.models import CustomUser
 from .storages import ProtectedStorage
 from django.urls.base import reverse_lazy
+from django.utils.translation import gettext as _
+from bootcamp.settings import LOGGER
 # from django.conf import settings
 # CustomUser = settings.AUTH_USER_MODEL
 
@@ -60,8 +63,9 @@ class Product(models.Model):
             product = Product.objects.get(pk=product_id)
             return product
         except Product.DoesNotExist:
-            raise Http404
-            # LOGGER.error("Product does not exist")
+            LOGGER.warning("Item does not exist")
+            raise Http404(_('Item wasn\'t found'))
+            
 
     @staticmethod
     def get_all():
@@ -73,8 +77,9 @@ class Product(models.Model):
             all_products = Product.objects.all()
             return list(all_products)
         except (IndexError, TypeError, Product.DoesNotExist):
-            pass
-        return False
+            message = 'So far no items availbale'
+            LOGGER.info(message)
+            raise Http404(_(message))
 
     @staticmethod
     def create(
@@ -103,9 +108,9 @@ class Product(models.Model):
                     product.manufacturers.add(manufacturer)
             product.save()
             return product
-        except (IntegrityError, AttributeError, DataError):
-            # LOGGER.error("Wrong attributes or relational integrity error")
-            pass
+        except (IntegrityError, AttributeError, DataError, ValueError):
+            LOGGER.error('Wrong attributes or relational integrity error')
+            raise ValidationError(_('Check if field entries r correct'))
         
     
     def update(self, **kwargs):
@@ -124,7 +129,8 @@ class Product(models.Model):
         return self
         
     def to_dict(self):
-        '''
+        ''' 
+            removes id & db _state
             :return: product title, content, price
             :Example:
             | {
@@ -132,38 +138,30 @@ class Product(models.Model):
             |   'content': 'some content',
             |   'price': 'some price',
         '''
-        try:
-            # setup your index here
-            index = 2
-            keys = list(self.__dict__.keys())[index:]
-            values = list(self.__dict__.values())[index:]
-            api_data = dict(zip(keys, values))
-            return api_data
-        except IndexError as error:
-            # LOGGER.error("This is index error")
-            pass
+
+        index = 2
+        keys = list(self.__dict__.keys())[index:]
+        values = list(self.__dict__.values())[index:]
+        api_data = dict(zip(keys, values))
+        return api_data
 
     @staticmethod
     def delete_by_id(product_id):
         '''
             :param product_id: an id of a product to be deleted
             :type product_id: int
-            :return: True if the object existed in the db and was removed or False if it didn't exist
+            :returns: True if the object existed in the db and was
+            :exception will be trown automatically
+            from previous method when no item in db
         '''
-
-        try:
-            product = Product.objects.get(pk=product_id)
-            product.delete()
-            return True
-        except Product.DoesNotExist:
-            # LOGGER.error("User does not exist")
-            pass
-        return False
+        product = Product.get_by_id(product_id)
+        product.delete()
+        return True
 
     @staticmethod
     def update_by_id(product_id, data=None):
         '''
-            This method is created in order to update manufacturer object
+            This method is created in order to update product object
             :params: same as in create method, if param is None - no update done
             :return None
         '''
@@ -173,8 +171,7 @@ class Product(models.Model):
             product.save()
             return product
 
-        except Exception as error:
-            # LOGGER.error(f"{error}}"
-            pass
-        return False
+        except (IntegrityError, AttributeError, DataError, ValueError) as err:
+            LOGGER.error(f'{err}')
+            raise ValidationError(_('Check if field entries r correct'))
             

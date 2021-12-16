@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-# disable if wants to render errortemaplates
+# disable if want to render errortemaplates
 DEBUG = True
 ALLOWED_HOSTS =  []
 
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    # 'errortemplates',                                         # custom error templates
+    'errortemplates',                                         # custom error templates
     # apps
     'products',                                                 # app#1
     'manufacturer',                                             # app#2
@@ -83,7 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'accounts.middleware.CustomHTTP404Middleware'
+    'bootcamp.middleware.CustomExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'bootcamp.urls'
@@ -163,6 +164,49 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# instantating a Python logging instance
+LOGGER = logging.getLogger(__name__)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            # The -12s % -8s control spacing between the different format specifications
+            'format': 'PACKAGE: %(name)-15s LEVEL: %(levelname)-9s MESSAGE: %(message)s'
+        },
+        'file': {
+            # adding timestamp value to debug.log journal
+            'format': '%(asctime)s %(name)-15s %(levelname)-9s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/debug.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file'],
+            'propagate': False
+        },
+        # handles any exceptions that occur due to 
+        # Cross-Site Request Forgery (CSRF) attacks
+        'django.request': {
+            'level': 'DEBUG', ## * below this level 
+            'handlers': ['console', 'file']
+        }
+    }
+}
 
 
 # Internationalization

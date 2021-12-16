@@ -1,15 +1,18 @@
 from django.core.exceptions import ValidationError
+from django.db.utils import InterfaceError
 from django.utils.translation import gettext as _
 from django.db import models, DataError, IntegrityError
 
 import datetime
 
-from django.http.response import HttpResponse
+from django.http.response import Http404, HttpResponse
 from products.models import Product
 from accounts.models import CustomUser
 import time, datetime
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
+from django.contrib import messages
+from bootcamp.settings import LOGGER
     # Create your models here.
 class Order(models.Model):
         
@@ -23,6 +26,11 @@ class Order(models.Model):
             type: datetime field
             param user: outlines the user that is adding a product to a cart
             type: Foreign Key - constraint that references to a primary key of User.id fields
+
+        NOTE: logging here is implement via
+              catching errors db errors and
+              raisisng Http errors with 'str'
+              custom message
     '''
 
     #id is the autofield
@@ -53,12 +61,14 @@ class Order(models.Model):
     # 3
     def get_absolute_url(self, *args):
         if self.user is None:
-            raise ValidationError(_('User cart wasn\'t found'))
+            message = f'User\'s  cart wasn\'t found'
+            LOGGER.warning(message)
+            raise Http404(_(message))
         return reverse_lazy(
             'orders:cart_view',
             args=[str(self.user.id)]
         )
-    
+        
     # 4
     @staticmethod
     def create(product):
@@ -72,7 +82,7 @@ class Order(models.Model):
             order.save()
             return order
         except (IntegrityError, AttributeError, DataError, ValueError):
-            # LOGGER.error("Wrong attributes or relational integrity error")
+            LOGGER.warning('Wrong attributes or relational integrity error')
             pass
     
     # 5
@@ -101,10 +111,10 @@ class Order(models.Model):
             order = Order.objects.get(pk=order_id)
             return order
         except Order.DoesNotExist:
-            # LOGGER.error("User does not exist")
-            pass
-        return False
-
+            message = f'Order does not exist'
+            LOGGER.warning(message)
+            raise Http404(_(message))
+            
     # 7
     @staticmethod
     def delete_by_id(order_id):
@@ -117,9 +127,11 @@ class Order(models.Model):
             order.delete()
             return True
         except Order.DoesNotExist:
-            # LOGGER.error("User does not exist")
-            pass
-        return False
+            message = 'Order does not exist'
+            LOGGER.warning(message)
+            raise Http404(_(message))
+        #     pass
+        # return False
 
     # 8
     @staticmethod
@@ -137,11 +149,16 @@ class Order(models.Model):
 
         if product_exist and order_exist:
             return Order.objects.all().filter(user_id=user_id).delete()
+        message = f'No orders or products so far'
+        LOGGER.warning(message)
+        raise Http404(_('No orders or products so far'))
 
     # 9
     @staticmethod
     def get_orders_by_user(user_id=None):
         '''
+            :returns: empty qs of orders by user
+                empty qs when user does not exist
             NOTE: We can attach ip condition here for later
                   for anonymous users, to have several of them
                   and allow them to create cart
@@ -154,8 +171,8 @@ class Order(models.Model):
     @staticmethod
     def create_cart(user_id=None):
         
-        products = [order.product.title for order in Order.get_orders_by_user(user_id)]
-        orders = Order.get_orders_by_user(user_id)
+        products = [order.product.title for order in Order.get_orders_by_user(user_id)] ### +++
+        orders = Order.get_orders_by_user(user_id) ### +++
         zipped = dict(zip(products, orders))
 
         ## form empty basket: key - order, value - list of products
@@ -167,11 +184,11 @@ class Order(models.Model):
         try:
             for i in range(len(products)):
                 iteration = i <= len(basket) - 1
-                for product in products if iteration else 0:
+                for product in products if iteration else 0: ### +++
                     similar_product = product == list(basket.keys())[i].product.title
-                    list(basket.values())[i].append(product) if similar_product else 0
+                    list(basket.values())[i].append(product) if similar_product else 0 ### +++
         except TypeError as err:
-            # LOGGER.error(f'{err}')
+            LOGGER.error(f'{err}')
             pass
         return basket
     
@@ -200,9 +217,9 @@ class Order(models.Model):
                 order.product.price for order in Order.get_orders_by_user(user_id)
                 ]))
             return total_value
-        except Exception as err:
-            # LOGGER.error(f'{err}')
-            pass
+        except (IntegrityError, AttributeError, DataError, ValueError):
+            LOGGER.warning(_('Check if price entries r digits'))
+            raise ValidationError(_('Check if price entries r digits'))
     
     # 14
     @staticmethod
@@ -231,7 +248,7 @@ class Order(models.Model):
     # 15
     def calculate_shipping(self, user_id=None):
         ''' 
-            NOTE: elaborate shipping formula aforehand
+            NOTE: elaborate shipping formula aforehand (company policy)
 
             param user_id: SERIAL: the id of an Order to be found in the DB
             returns: shipping price for cart
@@ -239,7 +256,10 @@ class Order(models.Model):
             weight (kg): k2
             route (km): k3
         '''
-        products_amount = Order.products_amount(user_id)
-        pass
+        try:
+            products_amount = Order.products_amount(user_id)
+            pass
+        except (DataError, TypeError, ValueError):
+            raise ValidationError(_('Check if field entries r correct'))
 
 

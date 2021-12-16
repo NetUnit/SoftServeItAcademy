@@ -3,7 +3,9 @@ from django.forms.models import model_to_dict
 from django.http.response import Http404
 from products.storages import ProtectedStorage
 from django.urls.base import reverse_lazy
-
+from bootcamp.settings import LOGGER
+from django.utils.translation import gettext as _
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Manufacturer(models.Model):
@@ -70,9 +72,10 @@ class Manufacturer(models.Model):
         try:
             manufacturer = Manufacturer.objects.get(pk=manufacturer_id)
             return manufacturer 
-        except Manufacturer.DoesNotExist:
-            raise Http404
-            # LOGGER.error("Manufacturer does not exist")
+        except Manufacturer.DoesNotExist as err:
+            LOGGER.warning(f'{err}')
+            raise Http404(_('Manufacturer wasn\'t found'))
+            
     
     @staticmethod
     def get_all():
@@ -85,9 +88,10 @@ class Manufacturer(models.Model):
         try:
             manufacturers = Manufacturer.objects.all()
             return list(manufacturers)
-        except Manufacturer.DoesNotExist:
-            raise Http404
-            # LOGGER.error("Manufacturers does not exist")
+        except Manufacturer.DoesNotExist as err:
+            LOGGER.error(f'{err}')
+            raise Http404(_('So far no manufacturer\'s added'))
+            
 
     @staticmethod
     def delete_by_id(manufacturer_id):
@@ -96,15 +100,12 @@ class Manufacturer(models.Model):
             found in the DB
             :return True if such an object was found in the DB or False if it didn't existed
         '''
-        try:
-            manufacturer = Manufacturer.objects.get(pk=manufacturer_id)
-            manufacturer.delete()
-            return True
-        except Manufacturer.DoesNotExist:
-            pass
-        return False
-            # LOGGER.error("User does not exist")
-    
+        
+        manufacturer = Manufacturer.objects.get(pk=manufacturer_id)
+        manufacturer.delete()
+        return True
+
+
     @staticmethod
     def create(title, country, year, image, media):
         '''
@@ -124,9 +125,9 @@ class Manufacturer(models.Model):
             )
             manufacturer.save()
             return manufacturer 
-        except(IntegrityError, DataError, AttributeError):
-            pass
-            # LOGGER.error("User does not exist")
+        except(IntegrityError, DataError, AttributeError, ValueError):
+            LOGGER.warning('Wrong attributes or relational integrity error')
+            raise ValidationError(_('Check if field entries r correct'))
     
 
     def update(self, **kwargs):
@@ -164,9 +165,10 @@ class Manufacturer(models.Model):
             manufacturer.save()
             return manufacturer
 
-        except Exception as error:
-            print(error)
-            return False
+        except (IntegrityError, AttributeError, DataError, ValueError) as err:
+            LOGGER.error(f'{err}')
+            raise ValidationError(_('Check if field entries r correct'))
+            
     
     # @staticmethod
     # def get_products_manufacturer(manufacturer_id):

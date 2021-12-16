@@ -1,7 +1,7 @@
 from django.db import models
 from django.db import models, IntegrityError, DataError
 import logging
-logger = logging.getLogger(__name__)
+from bootcamp.settings import LOGGER
 from django.http.response import Http404, HttpResponseNotFound
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -20,7 +20,8 @@ class MyAccountManager(BaseUserManager):
             username field is excessive
         '''
         if not email:
-            raise ValueError('Users  must have an email address:')
+            LOGGER.error('Users  must have an email address')
+            raise ValueError(_('Users  must have an email address'))
 
         user = self.model(
             email=self.normalize_email(email),
@@ -62,6 +63,10 @@ class CustomUser(AbstractUser):
         is_staff: BOOL
         is_active: BOOL,
         date_joined: datetime field (auto)
+
+        NOTE: logging here is implement via
+              catching errors and set to logger 
+              as a variable
     '''
 
     email = models.EmailField(gettext_lazy('email address'),
@@ -116,41 +121,60 @@ class CustomUser(AbstractUser):
 
     @staticmethod
     def get_user_by_id(user_id=None):
-        user = get_object_or_404(CustomUser, pk=user_id)
-        return user
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+            return user
+        except CustomUser.DoesNotExist as err:
+            LOGGER.warning(f'{err}')
+            raise Http404(_('User wasn\'t found'))
 
     @staticmethod
     def get_all_users():
         all_users = CustomUser.objects.all()
         if not all_users.exists():
+            message = 'There r no users registered yet'
+            LOGGER.info(f'{message}')
             raise ValidationError(_(
-                'There r no users registered yet'),
+                message),
                 code='invalid'
             )
-            # logger.info(f'There r no users registered yet')
+            
         return list(all_users)
         
     @staticmethod
     def delete_user_by_id(user_id=None):
-        user = get_object_or_404(CustomUser, pk=user_id)
-        user.delete()
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+            user.delete()
+        except CustomUser.DoesNotExist as err:
+            LOGGER.warning(f'{err}')
+            raise Http404(_('User wasn\'t found'))
 
     # data here will be a dict(**kwargs from UI)
     def create_user(self, data=None):
         if data == None:
             return False
-        user = CustomUser.objects.create(**data)
-        user.set_password(user.password)
-        user.save()
-        return user
+        try:
+            user = CustomUser.objects.create(**data)
+            user.set_password(user.password)
+            user.save()
+            return user
+        except (IntegrityError, AttributeError, DataError, ValueError) as err:
+            LOGGER.error(f'{err}')
+            raise ValidationError(_('Check if field entries r correct'))
+
 
     # data here will be a dict(**kwargs from UI)
     @staticmethod
     def update_user_by_id(user_id, data=None):
-        user = CustomUser.get_user_by_id(user_id)
-        user.__dict__.update(data)
-        user.save()
-        return user
+        try:
+            user = CustomUser.get_user_by_id(user_id)
+            user.__dict__.update(data)
+            user.save()
+            return user
+        except (IntegrityError, AttributeError, DataError, ValueError) as err:
+            LOGGER.error(f'{err}')
+            raise ValidationError(_('Check if field entries r correct'))
 
     # make api info from this
     def to_dict(self):
@@ -182,8 +206,9 @@ class CustomUser(AbstractUser):
             user = CustomUser.objects.all().filter(email=email).get()
             # user = CustomUser.objects.get(email)
             return user
-        except CustomUser.DoesNotExist:
-            return False
+        except CustomUser.DoesNotExist as err:
+            LOGGER.error(f'{err}')
+            raise Http404(_('User wasn\'t found'))
 
     # +++
     @staticmethod
@@ -196,8 +221,9 @@ class CustomUser(AbstractUser):
             user = CustomUser.objects.all().filter(username=username).get()
             # user = CustomUser.objects.get(username)
             return user
-        except CustomUser.DoesNotExist:
-            return False
+        except CustomUser.DoesNotExist as err:
+            LOGGER.error(f'{err}')
+            raise Http404(_('User wasn\'t found'))
 
     # +++
     @staticmethod
@@ -222,14 +248,13 @@ class CustomUser(AbstractUser):
         user_exists = bool(match_by_email) + bool(match_by_username) > 0
         return True if user_exists else False
 
-    @staticmethod
-    def set_user_password(user_id=None):
-        user = CustomUser.get_user_by_id(user_id)
-        user.set_password(user.password)
-        user.save()
-        return user
+    # @staticmethod
+    # def set_user_password(user_id=None):
+    #     user = CustomUser.get_user_by_id(user_id)
+    #     user.set_password(user.password)
+    #     user.save()
+    #     return user
     
-
     # in the case of AbstractBaseUser
     # def get_role_name(self):
     #     '''

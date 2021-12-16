@@ -1277,10 +1277,10 @@
                                                                                            AJL/CzAAVzO9MLNesgEAAAAASUVORK5CYII=" transform="matrix(1 0 0 1 -2.1111 200.7407)">
         </image>
         <g>
-          <rect x="5.9" y="208.8" class="st9" width="290" height="180"/>
+          <rect x="5.9" y="208.8" class="st9" width="290" height="215"/>
         </g>
       </g>
-      <rect x="10.9" y="213.8" class="st16" width="280" height="170"/>
+      <rect x="10.9" y="213.8" class="st16" width="280" height="188"/>
     </g>
     <g class="st0">
       <g class="st4">
@@ -1480,13 +1480,21 @@
     <text opacity="0.6" x="15" y="255" fill="#000" font-family="Viga" font-size="25">Whoops!
       <tspan x="30" y="290" font-size="22">it seem's like we couldn't</tspan>
       <tspan x="100" y="354" fill="#000" font-size="65">404</tspan>
-      <tspan x="47" y="379.2" fill="#000" font-size="15">found the page U were looking for :(</tspan>
+      <tspan x="15" y="379.2" fill="#000" font-size="15">found the page U were looking for :(</tspan>
+      {% if exception %}
+      <tspan x="47" y="394.0" fill="#000" font-size="12"> Reason: </tspan>
+      <tspan x="95" y="394.0" fill="#000" font-size="12"> {{ exception }} </tspan>
+      {% endif %}
     </text>
 
     <text x="15" y="253" fill="#6BA184" font-family="Viga" font-size="25">Whoops!
       <tspan x="30" y="288" font-size="22">it seem's like we couldn't</tspan>
       <tspan x="100" y="352" fill="#BF3E73" font-size="65">404</tspan>
-      <tspan x="47" y="378.0" fill="#6BA184" font-size="15">found the page U were looking for :(</tspan>
+      <tspan x="15" y="378.0" fill="#6BA184" font-size="15">found the page U were looking for :( </tspan>
+      {% if exception %}
+      <tspan x="47" y="393.0" fill="#6BA184" font-size="12"> Reason: </tspan>
+      <tspan x="95" y="393.0" fill="#BF3E73" font-size="12"> {{ exception }} </tspan>
+      {% endif %}
     </text>
   </g>
   </g>
