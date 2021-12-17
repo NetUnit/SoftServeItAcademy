@@ -1,0 +1,1273 @@
+2021-12-16 12:27:17,680 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:27:20,622 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:27:20,622 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:27:21,229 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:27:27,772 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:28:54,142 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:28:54,143 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:31:18,338 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:33:48,744 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:33:58,716 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:33:58,716 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:33:59,293 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:34:02,131 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:35:06,748 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:35:06,749 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:35:07,301 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:35:13,942 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:35:31,342 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:35:31,343 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:35:31,905 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:35:34,702 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:37:02,663 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:37:02,664 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:37:03,278 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:37:19,771 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:37:19,772 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:37:20,388 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:37:58,217 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:38:14,170 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/views.py changed, reloading.
+2021-12-16 12:38:14,170 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:38:14,766 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:39:50,945 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:39:50,946 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:40:27,285 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:40:36,633 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:40:36,634 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:40:37,220 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:42:47,626 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:42:47,627 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:42:48,787 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:42:52,449 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:43:17,206 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:43:17,207 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:43:17,803 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:43:42,605 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:43:42,605 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:43:43,250 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:43:58,866 bootcamp.settings ERROR    Product does not exist
+2021-12-16 12:44:16,535 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 12:44:16,536 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 12:44:17,152 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 12:44:26,641 bootcamp.settings ERROR    Product does not exist
+2021-12-16 14:48:02,200 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 14:48:02,200 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 14:48:02,928 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:25:33,991 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:25:33,992 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:25:34,541 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:25:43,645 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:25:43,645 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:25:44,243 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:28:13,653 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:28:13,654 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:30:47,248 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:31:49,827 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:31:52,694 bootcamp.settings ERROR    Product does not exist
+2021-12-16 16:32:06,850 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/views.py changed, reloading.
+2021-12-16 16:32:06,850 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:32:07,378 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:32:10,695 bootcamp.settings INFO     Product does not exist
+2021-12-16 16:32:23,803 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/views.py changed, reloading.
+2021-12-16 16:32:23,803 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:32:24,325 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-12-16 16:42:30,833 django.utils.autoreload INFO     /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:42:30,833 asyncio      DEBUG    Using selector: EpollSelector
+2021-12-16 16:42:31,386 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:43:52,779 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:43:52,780 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 16:43:53,361 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:52:51,100 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:52:51,101 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 16:52:51,405 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:54:37,584 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:54:38,091 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:56:07,391 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:56:07,392 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 16:56:07,936 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:59:19,001 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:59:19,001 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 16:59:19,552 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:59:29,666 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 16:59:29,667 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 16:59:30,215 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 16:59:48,389 bootcamp.settings ERROR     Product does not exist
+2021-12-16 17:00:56,984 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 17:00:56,985 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 17:00:57,311 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 17:01:30,199 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 17:02:57,397 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 17:07:49,502 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 17:08:03,449 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 17:08:15,547 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 17:08:16,026 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 17:08:21,236 bootcamp.settings ERROR     Product does not exist
+2021-12-16 17:09:37,697 bootcamp.settings ERROR     Product does not exist
+2021-12-16 17:09:59,345 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 17:09:59,346 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 17:09:59,902 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:47:45,574 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:47:45,575 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:47:46,189 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:51:18,935 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/urls.py changed, reloading.
+2021-12-13 18:51:18,935 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:51:19,427 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:55:33,142 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/urls.py changed, reloading.
+2021-12-13 18:55:33,143 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:55:33,622 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:56:32,837 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/urls.py changed, reloading.
+2021-12-13 18:56:32,838 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:56:33,359 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:57:21,834 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/urls.py changed, reloading.
+2021-12-13 18:57:21,834 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:57:22,330 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:57:33,496 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:57:33,497 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:57:33,989 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:57:49,304 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:57:49,305 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:57:49,818 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:58:32,458 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:58:32,458 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:58:32,951 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:58:51,431 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:58:51,432 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:58:51,916 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:58:57,700 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:58:57,701 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:58:58,204 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 18:59:55,291 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 18:59:55,292 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 18:59:55,781 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:00:29,159 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:00:29,160 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:00:29,647 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:02:51,572 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:02:51,573 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:02:52,074 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:02:59,873 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:02:59,874 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:03:00,391 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:03:32,528 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:03:32,529 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:03:33,013 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:03:41,862 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:03:41,863 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:03:42,358 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:04:15,838 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:04:15,839 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:04:17,297 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:04:29,568 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:04:29,568 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:04:30,085 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:05:01,511 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:05:01,511 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:05:02,082 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:05:39,965 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:05:39,965 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:05:40,517 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:06:11,147 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:06:11,148 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:06:11,700 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:06:51,017 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:06:51,018 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:06:51,560 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:07:21,071 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:07:21,071 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:07:21,609 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:07:51,097 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:07:51,097 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:07:51,629 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:08:09,110 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:08:09,111 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:08:09,655 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:08:43,369 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:08:43,369 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:08:43,903 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:08:55,002 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:08:55,003 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:08:55,544 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:09:19,449 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:09:19,450 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:09:20,023 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:16:33,120 bootcamp.settings ERROR     Order does not exist
+2021-12-13 19:16:33,126 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:16:33,126 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:19:15,125 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-13 19:19:15,125 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:19:15,631 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:19:24,636 bootcamp.settings ERROR     Order does not exist
+2021-12-13 19:19:25,037 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:19:25,037 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:20:39,900 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-13 19:20:39,901 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:20:40,451 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:20:44,939 bootcamp.settings ERROR     Order does not exist
+2021-12-13 19:20:44,947 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:20:44,947 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:21:20,174 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-13 19:21:20,174 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:21:20,676 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:21:26,879 bootcamp.settings ERROR     Order does not exist
+2021-12-13 19:21:26,893 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:21:26,893 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:21:47,906 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-13 19:21:47,907 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:21:48,430 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:21:51,212 bootcamp.settings ERROR     Order does not exist
+2021-12-13 19:21:51,219 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:21:51,219 django.request  WARNING   Not Found: /order/delete/251/
+2021-12-13 19:22:05,422 django.request  WARNING   Not Found: /products/list/sd
+2021-12-13 19:22:05,422 django.request  WARNING   Not Found: /products/list/sd
+2021-12-13 19:22:09,837 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-13 19:22:09,837 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:22:10,329 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:23:47,392 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:23:47,393 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:23:47,898 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:26:13,924 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:26:13,924 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:26:14,451 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:29:41,461 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:29:41,461 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:29:41,958 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:31:36,172 django.request  ERROR     Internal Server Error: /accounts/profile/98/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:31:36,172 django.request  ERROR     Internal Server Error: /accounts/profile/98/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:33:10,323 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:33:10,323 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:33:10,826 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:33:18,502 django.request  ERROR     Internal Server Error: /accounts/profile/98/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:33:18,502 django.request  ERROR     Internal Server Error: /accounts/profile/98/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:34:06,828 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:34:06,829 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:34:07,324 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:34:10,994 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:34:10,994 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:34:11,556 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:34:20,096 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:34:20,096 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view accounts.views.profile_user_view didn't return an HttpResponse object. It returned None instead.
+2021-12-13 19:36:45,984 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py changed, reloading.
+2021-12-13 19:36:45,984 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:36:46,473 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:36:53,101 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:36:53,101 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:38:22,950 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:38:22,950 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:38:23,445 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:38:27,982 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:38:27,982 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:39:47,109 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:39:47,110 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:39:47,630 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:39:50,744 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:39:50,744 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:40:00,721 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:40:00,721 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:40:01,247 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:40:03,980 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py changed, reloading.
+2021-12-13 19:40:03,981 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:40:04,494 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:40:07,334 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:40:07,334 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:40:35,035 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:40:35,036 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:40:35,545 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:40:45,927 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:40:45,928 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:40:46,429 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:41:43,445 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:41:43,446 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:41:43,944 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:41:51,759 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:41:51,760 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:41:52,298 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:42:41,170 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 19:42:41,170 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:42:41,672 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:43:04,957 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:43:04,958 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:43:05,482 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:43:18,912 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:43:18,912 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:45:05,787 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:45:05,787 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:45:06,189 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:45:09,108 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:45:09,109 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:45:09,614 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:45:14,570 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:45:14,570 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:45:15,781 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:45:40,544 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:45:40,545 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:45:41,026 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:45:57,993 bootcamp.settings ERROR     No CustomUser matches the given query.
+2021-12-13 19:45:58,002 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:45:58,002 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:46:33,597 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:46:33,598 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:46:34,087 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:46:37,606 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:46:37,606 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:46:38,137 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:46:40,220 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/shortcuts.py", line 76, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/db/models/query.py", line 429, in get
+    raise self.model.DoesNotExist(
+accounts.models.CustomUser.DoesNotExist: CustomUser matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py", line 121, in get_user_by_id
+    user = get_object_or_404(CustomUser, pk=user_id)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/shortcuts.py", line 78, in get_object_or_404
+    raise Http404('No %s matches the given query.' % queryset.model._meta.object_name)
+django.http.response.Http404: No CustomUser matches the given query.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py", line 217, in profile_user_view
+    user = CustomUser.get_user_by_id(user_id)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py", line 125, in get_user_by_id
+    LOGGER.error(f'{error}')
+NameError: name 'error' is not defined
+2021-12-13 19:46:40,220 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/shortcuts.py", line 76, in get_object_or_404
+    return queryset.get(*args, **kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/db/models/query.py", line 429, in get
+    raise self.model.DoesNotExist(
+accounts.models.CustomUser.DoesNotExist: CustomUser matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py", line 121, in get_user_by_id
+    user = get_object_or_404(CustomUser, pk=user_id)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/shortcuts.py", line 78, in get_object_or_404
+    raise Http404('No %s matches the given query.' % queryset.model._meta.object_name)
+django.http.response.Http404: No CustomUser matches the given query.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py", line 217, in profile_user_view
+    user = CustomUser.get_user_by_id(user_id)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py", line 125, in get_user_by_id
+    LOGGER.error(f'{error}')
+NameError: name 'error' is not defined
+2021-12-13 19:46:48,068 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:46:48,069 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:46:48,573 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:46:51,400 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:46:51,400 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:46:51,916 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:46:56,437 bootcamp.settings ERROR     No CustomUser matches the given query.
+2021-12-13 19:46:56,468 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:46:56,468 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:47:52,064 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:47:52,065 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:47:52,585 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:47:55,797 bootcamp.settings ERROR     No CustomUser matches the given query.
+2021-12-13 19:47:55,833 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:47:55,833 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:51:41,691 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:51:41,692 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:51:42,197 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:51:45,015 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-13 19:51:45,023 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:51:45,023 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:54:39,239 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:54:39,239 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:54:39,641 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:54:44,535 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:54:44,535 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:54:45,028 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:55:18,459 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:55:18,459 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:55:18,962 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:55:25,722 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:55:25,722 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:55:26,241 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:56:26,918 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py changed, reloading.
+2021-12-13 19:56:26,919 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:56:27,411 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:57:59,690 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:57:59,690 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:58:00,094 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:58:10,307 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:58:10,307 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:58:10,793 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:58:20,846 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:58:20,846 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:58:21,354 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:58:28,220 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 19:58:28,221 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:58:28,796 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:58:30,908 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-13 19:58:30,920 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:58:30,920 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:58:56,533 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:58:56,533 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:58:57,082 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 19:59:01,572 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-13 19:59:01,581 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:59:01,581 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 19:59:13,647 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-13 19:59:13,647 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 19:59:14,167 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:00:16,517 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:00:16,518 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:00:17,049 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:00:19,539 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:00:19,539 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:00:20,100 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:01:27,887 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:01:27,888 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:01:28,380 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:01:52,751 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:01:52,751 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:01:53,257 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:01:57,842 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:01:57,842 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:01:58,363 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:03:07,205 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:03:07,206 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:03:07,723 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:03:24,214 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:03:24,214 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:03:24,712 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:04:08,173 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:04:08,174 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:04:08,681 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:04:32,697 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:04:32,697 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:04:33,215 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:04:41,286 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:04:41,287 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:04:41,814 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:05:46,712 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:05:46,713 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:05:47,221 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:05:55,435 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:05:55,436 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:05:55,941 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:11:17,092 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:11:17,092 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:11:17,592 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:11:51,043 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:11:51,043 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:11:51,524 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:13:40,793 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:13:40,793 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:13:41,287 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:16:36,717 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-13 20:16:36,718 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:16:37,222 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:18:10,883 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:18:10,885 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:18:11,398 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:18:25,665 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:18:25,666 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:18:26,161 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:19:14,267 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:19:14,267 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:19:14,771 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:20:16,901 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:20:16,902 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:20:17,388 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:20:32,428 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:20:32,428 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:20:32,913 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:25:17,722 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:25:17,723 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:25:18,114 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:25:40,996 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:25:40,996 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:25:41,471 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:30:38,878 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:30:38,878 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:30:39,378 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:32:11,088 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:32:11,088 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:32:11,572 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:33:12,337 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:33:12,337 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:33:12,837 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:33:46,481 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:33:46,481 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:33:46,974 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:36:36,418 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:36:36,419 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:36:36,911 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:36:50,161 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:36:50,161 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:36:50,654 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:18,261 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:18,262 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:18,789 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:21,367 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:21,367 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:21,878 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:23,510 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:23,511 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:24,000 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:29,060 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:29,061 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:29,565 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:32,270 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:32,271 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:32,765 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:35,426 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:35,426 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:35,940 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:39,791 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:39,791 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:40,286 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:45,524 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:45,525 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:46,050 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:51,075 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:51,075 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:51,613 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:39:53,324 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:39:53,324 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:39:53,828 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:00,278 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:00,279 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:00,808 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:02,899 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:02,899 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:03,444 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:06,078 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:06,079 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:06,583 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:10,564 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:10,564 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:11,068 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:12,748 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:12,748 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:13,247 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:40:17,482 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 20:40:17,483 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 20:40:17,981 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 20:44:41,702 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-13 20:44:41,711 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 20:44:41,711 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 21:24:31,261 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-13 21:24:31,261 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-13 21:24:31,771 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-13 21:24:35,172 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-13 21:24:35,183 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-13 21:24:35,183 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:36:47,331 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:36:47,332 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:36:47,864 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:36:54,661 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:36:54,661 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:36:55,165 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:36:56,801 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:36:56,801 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:36:57,316 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:37:01,987 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:37:02,126 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py", line 218, in profile_user_view
+    auth = user.is_authenticated
+AttributeError: 'NoneType' object has no attribute 'is_authenticated'
+2021-12-16 21:37:02,126 django.request  ERROR     Internal Server Error: /accounts/profile/67/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/views.py", line 218, in profile_user_view
+    auth = user.is_authenticated
+AttributeError: 'NoneType' object has no attribute 'is_authenticated'
+2021-12-16 21:39:30,532 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:39:30,532 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:39:31,035 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:39:40,011 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:39:40,011 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:39:40,509 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:39:48,588 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:39:48,606 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:39:48,606 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:40:17,990 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:40:17,991 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:40:18,483 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:40:31,869 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:40:31,869 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:40:32,381 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:40:39,162 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:40:39,162 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:40:39,654 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:41:16,921 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:41:16,938 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:41:16,938 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:42:18,980 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 21:42:18,981 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:42:19,475 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:42:22,181 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:42:22,191 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:42:22,191 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:42:30,886 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 21:42:30,887 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:42:31,406 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:42:33,570 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:42:33,579 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:42:33,579 django.request  WARNING   Not Found: /accounts/profile/67/
+2021-12-16 21:42:44,566 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 21:42:44,567 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:42:45,059 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:42:47,413 bootcamp.settings ERROR     CustomUser matching query does not exist.
+2021-12-16 21:43:07,517 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 21:43:07,518 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:43:08,057 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:43:34,126 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/settings.py changed, reloading.
+2021-12-16 21:43:34,126 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:43:34,629 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:44:01,736 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:44:01,737 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:44:02,264 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:44:09,036 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:44:09,037 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:44:09,550 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:51:46,060 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:51:46,060 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:51:46,563 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:52:15,615 django.request  WARNING   Not Found: /accounts/profile-delete/55/
+2021-12-16 21:52:15,615 django.request  WARNING   Not Found: /accounts/profile-delete/55/
+2021-12-16 21:52:42,626 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:52:42,627 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:52:43,120 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:52:49,493 django.request  WARNING   Not Found: /accounts/profile-delete/55/
+2021-12-16 21:52:49,493 django.request  WARNING   Not Found: /accounts/profile-delete/55/
+2021-12-16 21:52:59,575 bootcamp.settings WARNING   CustomUser matching query does not exist.
+2021-12-16 21:52:59,579 django.request  WARNING   Not Found: /accounts/profile/55/
+2021-12-16 21:52:59,579 django.request  WARNING   Not Found: /accounts/profile/55/
+2021-12-16 21:53:08,641 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:08,641 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:11,058 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:11,058 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:26,399 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:26,399 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:27,141 django.request  WARNING   Not Found: /favicon.ico
+2021-12-16 21:53:27,141 django.request  WARNING   Not Found: /favicon.ico
+2021-12-16 21:53:28,656 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:28,656 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:29,809 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:53:29,809 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:30,852 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:54:30,853 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:54:31,368 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:54:34,778 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:34,778 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:39,304 bootcamp.settings WARNING   CustomUser matching query does not exist.
+2021-12-16 21:54:39,319 django.request  WARNING   Not Found: /accounts/profile/55/
+2021-12-16 21:54:39,319 django.request  WARNING   Not Found: /accounts/profile/55/
+2021-12-16 21:54:42,204 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:42,204 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:42,872 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:54:42,872 django.request  WARNING   Not Found: /accounts/profile-delete/67/
+2021-12-16 21:55:51,078 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:55:51,079 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:55:51,586 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:55:54,144 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 21:55:54,144 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:55:54,647 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:56:16,043 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/bootcamp/middleware.py changed, reloading.
+2021-12-16 21:56:16,043 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:56:16,552 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:57:23,088 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 21:57:23,089 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:57:23,621 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:57:31,398 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 21:57:31,399 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:57:31,893 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 21:57:39,769 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 21:57:39,770 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 21:57:40,264 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:00:08,667 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 22:00:08,667 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:00:09,098 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:00:13,596 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 22:00:13,598 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:00:14,085 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:01:38,276 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:01:38,276 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:01:38,682 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:01:54,564 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:01:54,566 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:01:54,957 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:02:17,750 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:02:17,751 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:02:18,130 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:02:20,943 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:02:20,944 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:02:21,374 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:02:28,587 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:02:28,587 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:02:29,079 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:02:53,519 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:02:53,520 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:02:53,926 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:03:52,160 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:03:52,160 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:03:52,638 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:04:26,163 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:04:26,164 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:04:26,669 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:06:08,064 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:06:08,065 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:06:08,572 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:06:12,126 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:06:12,126 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:06:12,627 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:09:21,647 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:09:21,648 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:09:22,135 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:10:40,059 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:10:40,060 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:10:41,548 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:11:10,018 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:11:10,019 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:11:10,540 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:13:36,039 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:13:36,039 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:13:36,551 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:13:39,105 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:13:39,105 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:13:39,602 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:17:31,733 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:17:31,733 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:17:32,226 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:17:38,932 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:17:38,932 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:17:39,467 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:17:41,042 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:17:41,042 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:17:41,594 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:19:00,210 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:19:00,211 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:19:00,739 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:19:09,582 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:19:09,583 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:19:10,086 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:19:23,379 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:19:23,380 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:19:23,885 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:19:55,290 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:19:55,291 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:19:55,779 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:21:57,715 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:21:57,715 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:21:58,134 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:22:08,759 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:22:08,760 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:22:09,245 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:23:16,231 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:23:16,231 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:23:16,735 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:23:52,955 bootcamp.settings WARNING   Product does not exist
+2021-12-16 22:23:52,964 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:23:52,964 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:24:09,496 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:24:09,497 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:24:09,985 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:24:15,634 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:24:15,634 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:24:16,118 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:25:35,121 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:25:35,122 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:25:35,638 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:25:41,422 bootcamp.settings WARNING   Product does not exist
+2021-12-16 22:25:41,430 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:25:41,430 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:26:33,844 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:26:33,844 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:26:34,333 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:26:52,959 bootcamp.settings WARNING   Product does not exist
+2021-12-16 22:26:52,970 django.request  WARNING   Not Found: /products/delete/181/
+2021-12-16 22:26:52,970 django.request  WARNING   Not Found: /products/delete/181/
+2021-12-16 22:27:36,152 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:27:36,153 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:27:36,645 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:27:51,964 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:27:51,964 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:27:52,459 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:29:14,638 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 22:29:14,638 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:29:15,145 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:30:59,910 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:30:59,910 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:31:00,327 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:31:05,283 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:31:05,284 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:31:05,715 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:31:14,683 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:31:14,684 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:31:15,170 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:31:47,992 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:31:47,992 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:31:48,503 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:32:03,912 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:32:03,912 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:32:04,405 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:33:49,857 bootcamp.settings WARNING   Product does not exist
+2021-12-16 22:33:49,867 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:33:49,867 django.request  WARNING   Not Found: /products/delete/180/
+2021-12-16 22:34:07,864 bootcamp.settings WARNING   Product does not exist
+2021-12-16 22:34:07,879 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:34:07,879 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:35:04,814 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:35:04,815 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:35:05,766 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:35:23,504 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:35:23,504 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:35:24,040 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:35:27,084 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:35:27,095 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:35:27,095 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:36:28,799 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:36:28,803 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:36:28,803 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:36:30,693 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:36:30,697 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:36:30,697 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:37:07,184 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:37:07,185 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:37:08,508 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:37:35,877 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:37:35,877 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:37:36,384 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:37:38,998 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:37:38,998 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:37:39,535 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:37:41,094 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:37:41,102 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:37:41,102 django.request  WARNING   Not Found: /products/delete/186/
+2021-12-16 22:37:46,919 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:37:46,931 django.request  WARNING   Not Found: /products/delete/190/
+2021-12-16 22:37:46,931 django.request  WARNING   Not Found: /products/delete/190/
+2021-12-16 22:38:20,096 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:38:20,096 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:38:20,659 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:38:38,512 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:38:38,519 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:38:38,519 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:39:18,302 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:39:18,303 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:39:18,790 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:40:10,503 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:40:10,504 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:40:10,938 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:40:15,820 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:40:15,821 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:40:16,338 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:40:20,721 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:40:20,722 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:40:21,224 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:40:24,323 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:40:24,331 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:40:24,331 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:40:46,691 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:40:46,834 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:41:06,836 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:41:34,999 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:41:35,007 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:41:35,007 django.request  WARNING   Not Found: /products/delete/25/
+2021-12-16 22:41:43,716 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:41:43,717 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:41:44,224 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:42:09,855 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:42:09,856 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:42:10,387 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:42:56,624 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:42:56,624 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:42:57,127 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:43:06,077 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 22:43:06,078 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:43:06,575 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:43:51,592 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:43:51,593 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:43:52,520 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:43:55,375 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:43:55,376 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:43:55,888 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:45:24,381 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:45:24,383 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:45:24,925 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:45:48,708 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:45:48,708 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:45:49,224 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:46:28,407 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:46:28,408 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:46:28,927 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:47:53,315 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:47:53,315 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:47:53,807 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:49:16,696 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:49:16,697 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:49:17,216 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:49:38,980 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:49:38,981 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:49:39,480 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:50:52,208 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 22:50:52,209 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:50:53,625 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:51:15,797 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:51:15,797 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:51:16,303 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:51:36,146 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:51:36,147 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:51:36,643 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:52:05,192 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:52:05,333 django.request  ERROR     Internal Server Error: /manufacturers/delete/585/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:52:05,333 django.request  ERROR     Internal Server Error: /manufacturers/delete/585/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:52:18,870 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:52:18,871 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:52:19,409 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:52:54,557 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:52:54,695 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:52:54,695 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:53:20,749 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:53:20,759 django.request  WARNING   Not Found: /manufacturers/99/
+2021-12-16 22:53:20,759 django.request  WARNING   Not Found: /manufacturers/99/
+2021-12-16 22:54:11,783 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:54:11,785 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:54:12,344 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:54:18,088 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:54:18,242 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:54:18,242 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:54:20,099 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:54:20,123 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:54:20,123 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:54:44,122 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 22:54:44,122 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 22:54:44,630 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 22:55:45,605 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:55:45,614 django.request  WARNING   Not Found: /products/delete/99/
+2021-12-16 22:55:45,614 django.request  WARNING   Not Found: /products/delete/99/
+2021-12-16 22:57:23,295 bootcamp.settings WARNING   Item does not exist
+2021-12-16 22:57:23,310 django.request  WARNING   Not Found: /products/delete/99/
+2021-12-16 22:57:23,310 django.request  WARNING   Not Found: /products/delete/99/
+2021-12-16 22:57:34,423 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:57:34,582 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:57:34,582 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 22:57:45,909 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 22:57:45,914 django.request  WARNING   Not Found: /manufacturers/99/
+2021-12-16 22:57:45,914 django.request  WARNING   Not Found: /manufacturers/99/
+2021-12-16 23:00:16,982 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:00:16,983 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:00:17,468 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:00:30,738 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:00:30,738 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:00:31,249 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:02:12,910 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:02:12,914 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:02:32,721 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:02:32,882 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:02:32,882 django.request  ERROR     Internal Server Error: /manufacturers/delete/99/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:04:29,094 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:04:29,124 django.request  ERROR     Internal Server Error: /manufacturers/delete/185/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:04:29,124 django.request  ERROR     Internal Server Error: /manufacturers/delete/185/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:06:47,266 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:06:47,267 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:06:47,763 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:06:52,366 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:06:52,367 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:06:52,883 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:07:14,899 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:07:14,900 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:07:15,388 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:07:28,488 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:07:28,651 django.request  ERROR     Internal Server Error: /manufacturers/delete/185/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:07:28,651 django.request  ERROR     Internal Server Error: /manufacturers/delete/185/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:08:36,057 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:08:36,079 django.request  ERROR     Internal Server Error: /manufacturers/delete/100/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:08:36,079 django.request  ERROR     Internal Server Error: /manufacturers/delete/100/
+Traceback (most recent call last):
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 186, in _get_response
+    self.check_response(response, callback)
+  File "/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/lib/python3.8/site-packages/django/core/handlers/base.py", line 307, in check_response
+    raise ValueError(
+ValueError: The view manufacturer.views.manufacturer_delete_view didn't return an HttpResponse object. It returned None instead.
+2021-12-16 23:10:27,293 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/views.py changed, reloading.
+2021-12-16 23:10:27,294 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:10:27,845 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:11:00,595 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/views.py changed, reloading.
+2021-12-16 23:11:00,595 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:11:01,091 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:11:07,284 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:11:07,294 django.request  WARNING   Not Found: /manufacturers/delete/100/
+2021-12-16 23:11:07,294 django.request  WARNING   Not Found: /manufacturers/delete/100/
+2021-12-16 23:11:13,084 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/views.py changed, reloading.
+2021-12-16 23:11:13,085 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:11:13,586 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:11:38,341 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/views.py changed, reloading.
+2021-12-16 23:11:38,341 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:11:38,859 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:12:11,377 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:12:11,378 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:12:11,907 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:12:18,620 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:12:18,621 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:12:19,200 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:12:20,571 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:12:20,582 django.request  WARNING   Not Found: /manufacturers/delete/100/
+2021-12-16 23:12:20,582 django.request  WARNING   Not Found: /manufacturers/delete/100/
+2021-12-16 23:12:24,865 bootcamp.settings WARNING   Manufacturer matching query does not exist.
+2021-12-16 23:12:24,869 django.request  WARNING   Not Found: /manufacturers/delete/101/
+2021-12-16 23:12:24,869 django.request  WARNING   Not Found: /manufacturers/delete/101/
+2021-12-16 23:15:17,869 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:15:17,871 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:15:18,300 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:16:09,916 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:16:09,917 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:16:10,424 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:16:40,851 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:16:40,852 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:16:41,352 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:17:47,306 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 23:17:47,307 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:17:48,791 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:18:22,865 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/products/models.py changed, reloading.
+2021-12-16 23:18:22,865 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:18:23,372 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:18:33,443 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:18:33,443 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:18:33,945 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:19:35,715 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:19:35,715 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:19:37,188 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:20:12,208 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:20:12,209 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:20:12,720 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:22:15,580 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/orders/models.py changed, reloading.
+2021-12-16 23:22:15,581 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:22:16,095 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:22:38,769 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/manufacturer/models.py changed, reloading.
+2021-12-16 23:22:38,769 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:22:39,289 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-16 23:26:46,519 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-16 23:26:46,520 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-16 23:26:47,043 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-14 00:08:42,497 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-14 00:08:42,498 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-14 00:08:42,998 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-14 00:12:06,667 bootcamp.settings WARNING   CustomUser matching query does not exist.
+2021-12-14 00:12:06,675 django.request  WARNING   Not Found: /accounts/profile/89/
+2021-12-14 00:12:06,675 django.request  WARNING   Not Found: /accounts/profile/89/
+2021-12-14 00:12:42,945 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-14 00:12:42,946 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-14 00:12:43,465 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-14 00:12:50,235 django.utils.autoreload INFO      /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/accounts/models.py changed, reloading.
+2021-12-14 00:12:50,236 asyncio         DEBUG     Using selector: EpollSelector
+2021-12-14 00:12:50,742 django.utils.autoreload INFO      Watching for file changes with StatReloader
+2021-12-14 00:12:59,576 django.request  WARNING   Not Found: /accounts/profile/89/
+2021-12-14 00:12:59,576 django.request  WARNING   Not Found: /accounts/profile/89/
+2021-12-14 00:44:51,156 django.request  WARNING   Not Found: /accounts/profile/101/
+2021-12-14 00:44:51,156 django.request  WARNING   Not Found: /accounts/profile/101/
