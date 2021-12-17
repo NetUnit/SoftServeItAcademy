@@ -109,7 +109,7 @@ class Product(models.Model):
             product.save()
             return product
         except (IntegrityError, AttributeError, DataError, ValueError):
-            LOGGER.error('Wrong attributes or relational integrity error')
+            LOGGER.warning('Wrong attributes or relational integrity error')
             raise ValidationError(_('Check if field entries r correct'))
         
     

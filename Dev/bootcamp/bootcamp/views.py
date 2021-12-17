@@ -4,6 +4,8 @@
 '''
 from django.shortcuts import render, redirect
 from django.http.response import Http404, HttpResponse, HttpResponseBadRequest
+from django.core.exceptions import PermissionDenied
+from django.utils.translation import gettext as _
 
 from django.contrib import messages
 from products.models import Product
@@ -11,21 +13,18 @@ from manufacturer.models import Manufacturer
 import time
 from bootcamp.settings import LOGGER
 
-###
-
 ################ *** Custom Error Pages *** #################
 def logger_error_view(request, *args, **kwargs):
+    # raise PermissionDenied('Access Denied')
+    raise Http404('Page not found. Bad url')
     # print(LOGGER.__dict__)
-    LOGGER.error("Product does not exist")
-    return HttpResponse('<h2> This is logging staff <h2>')
+    # LOGGER.error("Product does not exist")
+    # return HttpResponse('<h2> This is logging staff <h2>')
 
 
 ################ *** Custom Error Pages *** #################
 def handler404(request, exception, *args, **kwargs):
-    # message = request.__dict__.get('_messages')
-    # message = message.__dict__.get('storages')
-    # print(message[0].__dict__.get('signer'))
-    # print(True)
+    # Http404 == 404
     context = {'exception': exception}
     response = render(request, '404.html', context)
     response.status = 404
@@ -38,13 +37,15 @@ def handler500(request, *args, **kwargs):
     return response
 
 def handler400(request, exception, *args, **kwargs):
+    # HttpResponseBadRequest == 400
     context = {}
     response = render(request, '400.html', context)
     response.status = 400
     return response
 
-def handler403(request, *args, **kwargs):
-    context = {}
+def handler403(request, exception, *args, **kwargs):
+    # PermissionDenied == 403
+    context = {'exception': exception}
     response = render(request, '403.html', context)
     response.status = 403
     return response

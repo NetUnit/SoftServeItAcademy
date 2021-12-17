@@ -27,11 +27,11 @@ SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d(
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # disable if want to render errortemaplates
-DEBUG = True
-ALLOWED_HOSTS =  []
+# DEBUG = True
+# ALLOWED_HOSTS =  []
 
-# DEBUG = False
-# ALLOWED_HOSTS =  ['*']
+DEBUG = False
+ALLOWED_HOSTS =  ['*']
 # ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
 
 
@@ -202,7 +202,7 @@ LOGGING = {
         # handles any exceptions that occur due to 
         # Cross-Site Request Forgery (CSRF) attacks
         'django.request': {
-            'level': 'DEBUG', ## * below this level 
+            'level': 'DEBUG',
             'handlers': ['console', 'file']
         }
     }

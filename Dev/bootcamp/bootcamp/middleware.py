@@ -1,7 +1,7 @@
 
-from django.http.response import HttpResponse
+from django.core.exceptions import PermissionDenied
 from django.http.response import Http404
-from django.http.response import HttpResponseBadRequest as Http400
+from django.http.response import HttpResponseBadRequest
 
 import datetime
 from django.core.cache import cache
@@ -22,6 +22,10 @@ class CustomExceptionMiddleware(MiddlewareMixin):
         if isinstance(exception, Http404):
             message = f'{exception}'
             exception.args = (message,)
+        
+        if isinstance(exception, PermissionDenied):
+            message = f'{exception}'
+            exception.args = (message, )
 
     # def process_exception(self, request, exception):
     #     if isinstance(exception, Http404):
