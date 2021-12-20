@@ -1,12 +1,13 @@
-
 from django.core.exceptions import PermissionDenied
-from django.http.response import Http404
-from django.http.response import HttpResponseBadRequest
+from django.http.response import Http404, HttpResponse, HttpResponseBadRequest
 
 import datetime
 from django.core.cache import cache
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
+from bootcamp.hosts import Hosts
+from django.contrib import messages
+from django.shortcuts import render, redirect
 
 class CustomExceptionMiddleware(MiddlewareMixin):
 
@@ -27,14 +28,31 @@ class CustomExceptionMiddleware(MiddlewareMixin):
             message = f'{exception}'
             exception.args = (message, )
 
-    # def process_exception(self, request, exception):
-    #     if isinstance(exception, Http404):
-    #         message = f"""
-    #             {exception.args},
-    #             User: {request.user},
-    #             Referrer: {request.META.get('HTTP_REFERRER', 'no referrer')}
-    #         """
-    #         exception.args = (message,)
-            
+    def process_request(self, request):
+       
+        try:
+            print(request.GET.get('ref'))
+            x_forward = request.META.get('HTTP_X_FORWARDED_FOR')
+            remote_addr = request.META.get('REMOTE_ADDR')
+            # link = request.META.get('HTTP_REFERER')
+            if x_forward:
+                ip = x_forward.split(',')[0]            
+            else:
+                ip = remote_addr 
 
-        
+            banned_networks = Hosts()
+            localhost = ['127']
+            network = ip.split('.')[0]
+            if network in banned_networks._restricted:
+                messages.info(request,
+                    ('Unfortunately this content is not' +
+                    'available in your country')
+                )
+                return render(request, 'access_status.html', context={})
+            # if network in localhost:
+            #     messages.info(request,
+            #         'This is a localhost'
+            #     )
+            #     return render(request, 'access_status.html', context={})
+        except:
+            pass

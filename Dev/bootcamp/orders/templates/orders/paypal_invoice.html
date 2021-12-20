@@ -1,4 +1,5 @@
 <html lang="en-GB" data-langpack="static/invoice/_languagepack.js" class="js-focus-visible" data-js-focus-visible="">
+{% load static %}
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,7 +134,7 @@
                   </div> -->
                   <div class="logoTextBox">
                     <div class="col-xs-6">
-                      <img width="90px" height="90px" src="/static/images/panada_logo_small.jpg" alt="">
+                      <img width="90px" height="90px" src="{% static 'images/panda_logo_small.jpg' %}" alt="panda-cart-logo">
                     </div>
                     <div class="logo-options" id="logoOptions">
                       <button id="updateLogo" class="vx_btn-link logo-select-trigger" pa-marked="1">Update</button>

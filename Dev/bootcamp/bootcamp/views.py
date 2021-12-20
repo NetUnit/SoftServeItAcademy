@@ -12,15 +12,10 @@ from products.models import Product
 from manufacturer.models import Manufacturer
 import time
 from bootcamp.settings import LOGGER
+from bootcamp.forms import ProcessContactForm
 
-################ *** Custom Error Pages *** #################
-def logger_error_view(request, *args, **kwargs):
-    # raise PermissionDenied('Access Denied')
-    raise Http404('Page not found. Bad url')
-    # print(LOGGER.__dict__)
-    # LOGGER.error("Product does not exist")
-    # return HttpResponse('<h2> This is logging staff <h2>')
-
+def some_middleware_view(request, get_response, *args, **kwargs):
+    return print(f'{get_response}')
 
 ################ *** Custom Error Pages *** #################
 def handler404(request, exception, *args, **kwargs):
@@ -50,6 +45,21 @@ def handler403(request, exception, *args, **kwargs):
     response.status = 403
     return response
     
+################ *** Custom Error Pages *** #################
+# def feedback_form_view(request, *args, **kwargs):
+#     print(request.POST.__dict__)
+#     form = ProcessContactForm(request.POST or None)
+#     print(form.is_valid())
+#     #print(form.__dict__)
+#     if form.is_valid():
+#         form_data = form.cleaned_data
+#         context = {'form_data': form}
+#         return render(request, 'feedback_form_as_p.html', context)
+
+#     form = ProcessContactForm()
+#     context = {'form_data': form}
+#     return render(request, 'feedback_form_as_p.html', context)
+
 # rebuild search view --> get itme from all tables
 ############################## **** Search View **** ###############################
 # this part of a view contains logic itself
@@ -97,10 +107,10 @@ def handler403(request, exception, *args, **kwargs):
         
 # this part of a view get main logic from  a model
 def search_venues(request, *args, **kwargs):
-   
+   ## match logic add to extend by 4 letters in a raw
     if request.method == "POST":
         searched = request.POST.get('searched')
-        #print(searched)
+
         # convert user_input to lowercase and split to a single word
         lowercase_and_split = lambda *args: (
             ' '.join(list(map(str, args))).lower().split())
@@ -113,26 +123,20 @@ def search_venues(request, *args, **kwargs):
         # [Product(id=1), Product(id=2), Product(id=3), Product(id=4)]
         
         user_input = lowercase_and_split(searched)
-        print(user_input)
-
-        ## 
 
         all_prod = Product.get_all()
         all_manuf = Manufacturer.get_all()
 
         ## ['Raspberry Pi', 'Turing Pi', 'PocketBeagle', 'Pine64']
         product_fields = [dict(obj.__dict__).get('title') for obj in all_prod]
-        print(product_fields)
         
         ## ['Sony', 'Octavo Systems']
         manufacturer_fields = [dict(obj.__dict__).get('title') for obj in all_manuf]
-        print(manufacturer_fields)
         
         # create method id model to cover this
         db_fields = product_fields + manufacturer_fields
 
         match = [word for word in user_input if word in lowercase_and_list(db_fields)]
-        print(match)
 
         matched_items = list()
 
@@ -142,8 +146,7 @@ def search_venues(request, *args, **kwargs):
                     matched_items.append(obj)
 
         matched_items = list(set(matched_items))
-        print(matched_items)
-        
+    
         context = {
             'searched': searched,
             'objects_list': matched_items,
@@ -156,7 +159,6 @@ def search_venues(request, *args, **kwargs):
             return render (request, 'products/search_venues.html', context)
 
         else:
-            print('fuck')
             messages.success(request, '¯\_(⊙︿⊙)_/¯ Nothing has been found')
             return render (request, 'products/search_venues.html', context)
 
@@ -198,7 +200,6 @@ def search_venues(request, *args, **kwargs):
 def search_view(request, *args, **kwargs):
 
     objects = Manufacturer.get_all() + Product.get_all()
-    print(objects)
     
     if request.method == 'POST':
         item = request.POST.get('searched')
@@ -230,6 +231,22 @@ def search_view(request, *args, **kwargs):
     # print(storage[0].__dict__['signer'].__dict__)
     return render (request, 'products/search_messages.html')
  
+#################### *** feedback form for middleware *** ####################
+def feedback_form_view(request, *args, **kwargs):
+    form = ProcessContactForm(request.POST or None)
+    # print(form.is_valid())
+    if form.is_valid():
+        email = form.cleaned_data.get('email')
+        feedback = form.cleaned_data.get('feedback')
+        messages.success(request, 'Many thanks. We appreciate your feedback')
+        ## add transfer message with POST data to admin email
+        return redirect('/feedback/')
+
+    form = ProcessContactForm()
+    context = {'form': form}
+    return render (request, 'accounts/feedback_form_as_p.html', context)
+
+
 # ### work +++ 
 # def search_view(request, *args, **kwargs):
 #     if request.method == 'POST':
