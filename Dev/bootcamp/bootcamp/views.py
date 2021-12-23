@@ -247,6 +247,7 @@ def feedback_form_view(request, *args, **kwargs):
     return render (request, 'accounts/feedback_form_as_p.html', context)
 
 
+
 # ### work +++ 
 # def search_view(request, *args, **kwargs):
 #     if request.method == 'POST':

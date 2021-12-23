@@ -39,7 +39,6 @@ class Product(models.Model):
         if_price = lambda price: f': {str(self.price)}$' if self.price!=None else ''
         return f'{self.title}' + if_price(self.price)
 
-
     def __repr__(self):
         '''
             This magic method is redefined to show class and id of product object.
