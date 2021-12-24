@@ -514,7 +514,6 @@ def media_download_view(request, user_id, *args, **kwargs):
         response['X-SendFile'] = f'{file_name}'
         return response
 
-
 #### checker
 def show_info(request):
     user = request.user

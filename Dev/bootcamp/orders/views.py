@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.http import  JsonResponse
 
 # from orders.models import Order
-from .models import Product, Order
+from .models import Product, Order, CustomUser
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, ListView
@@ -99,6 +99,7 @@ def cart_view(request, user_id, *args, **kwargs):
     
     '''
     # context#1
+    user = CustomUser.get_user_by_id(user_id)
     basket = Order.cart_items_amount(user_id)
     # order = list(basket.keys())[0]
     
@@ -123,7 +124,8 @@ def cart_view(request, user_id, *args, **kwargs):
                'total_value': total_value,
                'discount': discount,
                'discounted': discounted,
-               'not_admin_url': not_admin_url
+               'not_admin_url': not_admin_url,
+               'user': user
                }
 
     return render(request, 'orders/cart.html', context)

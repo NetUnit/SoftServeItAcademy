@@ -78,8 +78,7 @@ urlpatterns = [
     re_path(r'^accounts/status-update/(?P<user_id>\d+)/$', status_update_view, name='status_update'),
     #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
 
-    ######################## *** MEDIA *** ########################
-    re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),           ## +++
+    re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),
 
     ########################  *** show info *** ########################
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                     ## +++

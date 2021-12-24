@@ -58,16 +58,16 @@ class Order(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
-    # 3
+    #3 
     def get_absolute_url(self, *args):
         if self.user is None:
-            message = f'User\'s  cart wasn\'t found'
+            message = f'User\'s cart wasn\'t found'
             LOGGER.warning(message)
-            raise Http404(_(message))
+            raise Http404(message)
         return reverse_lazy(
             'orders:cart_view',
             args=[str(self.user.id)]
-        )
+            )
         
     # 4
     @staticmethod
