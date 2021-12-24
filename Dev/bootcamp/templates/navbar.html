@@ -94,12 +94,12 @@
                         <a class="dropdown-item" href="https://www.youtube.com/channel/UC_ACyB-DKm4Z3LLB0mH0kQg"> YouTube </a>
                     </div>
                 </li>
-
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url  'feedback_form_view' %}"> Feedback </a>
+                </li>
                 <li class="logout">
                     <a class="nav-link btn btn-primary text-white" type="button" href="{%url  'accounts:logout' %}"> Log Out </a>
                 </li>
-
                 {% else %}
                 <li class="login_fbv">
                     <a class="nav-link btn btn-primary text-white" type="button" href="{%url 'accounts:login_fbv' %}">Login FBW</a>                  

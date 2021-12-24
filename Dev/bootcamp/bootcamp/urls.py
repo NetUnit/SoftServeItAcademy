@@ -39,7 +39,7 @@ from bootcamp.views import (
     handler404,
     search_view,
     search_venues,
-    logger_error_view,
+    feedback_form_view,
 )
 
 
@@ -49,7 +49,6 @@ handler403 = 'bootcamp.views.handler403'
 handler404 = 'bootcamp.views.handler404'
 handler500 = 'bootcamp.views.handler500'
 #######################################################################
-
 
 
 urlpatterns = [
@@ -77,11 +76,10 @@ urlpatterns = [
     #### **** exceptions *** ####
     ## add 500, 400 & 403 exceptions here
     
-    # ________________________
-    re_path(r'^logger-error/$', logger_error_view, name='logger_error_view'),  # same_3
+    re_path(r'^feedback/$', feedback_form_view, name='feedback_form_view'),
+    re_path(r'^access-status/$', TemplateView.as_view(template_name='access_status.html'), name='access_status'),
 
     ## 
-
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),
     re_path(r'^', include('orders.urls')),

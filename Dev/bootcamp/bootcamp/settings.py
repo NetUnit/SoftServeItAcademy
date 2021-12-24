@@ -27,11 +27,11 @@ SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d(
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # disable if want to render errortemaplates
-# DEBUG = True
-# ALLOWED_HOSTS =  []
+DEBUG = True
+ALLOWED_HOSTS =  []
 
-DEBUG = False
-ALLOWED_HOSTS =  ['*']
+# DEBUG = False
+# ALLOWED_HOSTS =  ['*']
 # ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
 
 
@@ -85,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'bootcamp.middleware.CustomExceptionMiddleware',
+    #'bootcamp.middleware.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'bootcamp.urls'
@@ -242,7 +243,7 @@ STATICFILES_DIRS = [
 ### *** Django & app realted files *** ###
 # Cloud storages: Cloudfront, Google Cloud Storage, django-storages, Whitenoise
 STATIC_ROOT = os.path.join(BASE_DIR, 'cdn_test/static/')
-# allows to load static filesand use them like this:
+# allows to load static files and use them like this:
 # {% load static %}
 # <img src="{% static "images/hi.jpg" %}" alt="Hi!"
 
