@@ -31,7 +31,6 @@ class CustomExceptionMiddleware(MiddlewareMixin):
     def process_request(self, request):
        
         try:
-            print(request.GET.get('ref'))
             x_forward = request.META.get('HTTP_X_FORWARDED_FOR')
             remote_addr = request.META.get('REMOTE_ADDR')
             # link = request.META.get('HTTP_REFERER')
@@ -48,11 +47,13 @@ class CustomExceptionMiddleware(MiddlewareMixin):
                     ('Unfortunately this content is not' +
                     'available in your country')
                 )
+                # return redirect('/access-status/')
                 return render(request, 'access_status.html', context={})
             # if network in localhost:
             #     messages.info(request,
             #         'This is a localhost'
             #     )
+            #     # return redirect('/access-status/')
             #     return render(request, 'access_status.html', context={})
         except:
             pass

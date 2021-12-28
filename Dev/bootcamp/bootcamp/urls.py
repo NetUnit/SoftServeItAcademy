@@ -85,7 +85,13 @@ urlpatterns = [
     re_path(r'^', include('orders.urls')),
     re_path(r'^', include('emails.urls')),
     re_path(r'^', include('accounts.urls')),
-
+    
+    #### *** API *** ####
+    re_path(r'^api/products/', include(('products.api.urls', 'api-products'), namespace='api-products')),
+    re_path(r'^api/manufacturers/', include(('manufacturer.api.urls', 'api-manufacturers'), namespace='api-manufacturers')),
+    re_path(r'^api/orders/', include(('orders.api.urls', 'api-orders'), namespace='api-orders')),
+    #### *** Custom API Accounts *** ####
+    
     ################### *** payments views *** ########################
     path('paypal/', include('paypal.standard.ipn.urls')),
     

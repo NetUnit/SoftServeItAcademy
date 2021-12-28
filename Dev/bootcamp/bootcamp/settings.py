@@ -38,6 +38,7 @@ ALLOWED_HOSTS =  []
 
 # Application definition
 INSTALLED_APPS = [
+    'rest_framework',
     'whitenoise.runserver_nostatic',                            # customized (added)
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,17 +64,14 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/accounts/login-success/'
 LOGOUT_URL = '/logout/'
 
-
 # Add to test email:
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 # AUTH_USER_MODEL = 'accounts.MyAccountManager'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,7 +121,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bootcamp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -133,7 +130,6 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
 
 DATABASES = {
     'default': {
@@ -146,10 +142,8 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

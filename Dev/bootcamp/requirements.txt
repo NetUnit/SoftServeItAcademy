@@ -9,3 +9,4 @@ django-errortemplates==1.0.1
 whitenoise==5.2.0
 django-paypal==1.1
 pillow==8.4.0
+djangorestframework==3.13.1

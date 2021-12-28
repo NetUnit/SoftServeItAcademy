@@ -8,3 +8,13 @@ cdn_test/
 pyvenv.cfg
 
 debug.log
+
+lib64/
+
+lib/
+
+share/
+
+bin/
+
+coala.1
