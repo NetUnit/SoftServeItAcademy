@@ -15,3 +15,7 @@ class ManufacturerPostSerializer(serializers.ModelSerializer):
             'country', 'year',
             'image', 'media'
         ]
+
+        read_only_fields = [
+            'pk', 'user'
+        ]

@@ -46,6 +46,13 @@ class Product(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
+    def image_url(self):
+        if self.image:
+            return u'%s' % self.image.url
+            # return u'<img src="%s" width="50" height="50"/>' % self.image.url
+        else:
+            return '(Sin imagen)'
+
     def get_absolute_url(self):
         return reverse_lazy(
             'products:detailed_view',
@@ -137,12 +144,28 @@ class Product(models.Model):
             |   'content': 'some content',
             |   'price': 'some price',
         '''
+        data = dict()
+        if self.title:
+            data.update(title=self.title)
+        if self.content:
+            data.update(content=self.content)
+        if self.price:
+            data.update(price=self.price)
+        if self.user:
+            data.update(user=self.user)
+        if self.manufacturers:
+            data.update(manufacturers=self.manufacturers)
+        if self.image:
+            data.update(image=self.image)
+        if self.media:
+            data.update(media=self.media)
+        return data
 
-        index = 2
-        keys = list(self.__dict__.keys())[index:]
-        values = list(self.__dict__.values())[index:]
-        api_data = dict(zip(keys, values))
-        return api_data
+        # index = 2
+        # keys = list(self.__dict__.keys())[index:]
+        # values = list(self.__dict__.values())[index:]
+        # api_data = dict(zip(keys, values))
+        # return api_data
 
     @staticmethod
     def delete_by_id(product_id):

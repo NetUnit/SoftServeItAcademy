@@ -12,5 +12,9 @@ class OrderPostSerializer(serializers.ModelSerializer):
         fields = [
             'product',
             'created_at',
-            'user'
+            'user',
+        ]
+    
+        read_only_fields = [
+            'pk', 'user'
         ]
