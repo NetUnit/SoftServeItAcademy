@@ -272,7 +272,7 @@ def media_download_view(request, product_id, *args, **kwargs):
     
     product_path = media.path
     path = pathlib.Path(product_path)
-
+    
     if not path.exists():
         raise Http404
 
