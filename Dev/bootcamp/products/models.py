@@ -46,7 +46,7 @@ class Product(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
-    def image_url(self):
+    def get_image_url(self):
         if self.image:
             return u'%s' % self.image.url
             # return u'<img src="%s" width="50" height="50"/>' % self.image.url

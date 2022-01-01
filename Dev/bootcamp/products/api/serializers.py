@@ -1,12 +1,24 @@
 from rest_framework import serializers
 from products.models import Product
 from django.utils.translation import gettext as _
-###### *** path imports *** ######
+
+################## ***  path imports *** ##################
 import pathlib
 from wsgiref.util import FileWrapper
-from mimetypes import guess_type
 import binascii
+################## *** Files Related Imports ##################
 from django.forms.fields import ImageField
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.base import ContentFile
+from mimetypes import guess_type
+import io
+import uuid
+import base64
+import six
+import uuid
+import pickle
+from io import BytesIO
+import PIL
 
 class CustomImageField(serializers.ImageField):
     """
@@ -20,17 +32,10 @@ class CustomImageField(serializers.ImageField):
     """
 
     def to_internal_value(self, data):
-        from django.core.files.base import ContentFile
-        import base64
-        import six
-        import uuid
-        import pickle
-        from io import BytesIO
-
         # Check if this is a base64 string
         if isinstance(data, six.string_types):
             #print(True)
-            #print(self.__dict__)
+            print(type(self.__dict__))
             parent_data = self.__dict__.get('parent')
             obj = parent_data._args[0]
             media = obj.media
@@ -148,6 +153,89 @@ class CustomImageField(serializers.ImageField):
     #     return extension
     #################################################################################################
 
+## make this field as ImageField
+class TemporaryApiImageField(serializers.ImageField):
+    '''
+        Another self-built Django REST framework field for handling image-uploads
+        through the raw post data. It is used to pass: "The submitted data was not
+        a file. Check the encoding type on the form." Encodes temporary API image to 
+        InMemoryUploadedFile type image.
+
+        Heavily based on:
+        https://programtalk.com/python-examples/django.core.files.uploadedfile.InMemoryUploadedFile/
+    '''
+    def __init__(self, obj=None):
+        self.obj = obj
+    
+    def get_image_file(self):
+        '''
+            get image from API data and converts to bytes within <class 'django.core.files.base.File'>
+            :returns type <class 'bytes'> from API object
+        '''
+        # converts to the file-like object
+        # <class 'django.core.files.base.File'
+        img = self.obj.image.file
+        print(type(img))
+        ## converts django.core.files.base.File <class 'bytes'>
+        bytes_ = img.read()
+        #print(bytes_)
+        # data = request.data.get('image') # http://127.0.0.1:8000/media/media/products/creepy_bike_38pNNVf_QjOtmQc.jpg
+        return bytes_
+
+    def to_inmemory_upl_file(self):
+        '''
+            1) getting binary stream using the in-memory bytes buffer.
+                In-memory binary streams are also available as BytesIO objects.
+                BytesIO create file like object that operate on string data.
+                BytesIO mimic a normal file, usually a faster option of processing files
+                
+            :converts: <class 'django.core.files.base.File' to <class '_io.BytesIO'>
+
+            2) Collect data to create InMemoryUploadedFile
+            :returns type <class 'django.core.files.uploadedfile.InMemoryUploadedFile'>
+        '''
+        
+        # 1) getting in-memory file-like object 
+        # taking image bytes as attr
+        bytes_ = self.get_image_file()
+        img_io = io.BytesIO(bytes_)
+
+        # 2) collect InMemoryUploadedFile attrs
+        guessed_ = guess_type(self.obj.image.path)
+        # print(self.obj.image.path)
+        file_type = guessed_[0].split('/')
+        ext = file_type[1]
+        ext = "jpg" if ext == "jpeg" else ext
+        #2 fieldname
+        field_name = file_type[0]
+        #3 name
+        name = f'{str(uuid.uuid4())[:12]}.{ext}'
+        #4 content_type
+        content_type = guessed_[0]
+        #5 size
+        size = self.obj.image.size
+        inm_upl_pict = InMemoryUploadedFile(
+            file=img_io, field_name=field_name,
+            name=name, content_type=content_type,
+            size=size, charset=None
+            )
+        # print(type(inm_upl_pict))
+        return inm_upl_pict
+
+    def convert_image(self):
+        img = self.obj.image
+        # https://stackoverflow.com/questions/67244002/how-to-create-inmemoryuploadedfile-objects-proper-in-django
+        pass
+        
+
+    def save(self, data=None):
+        '''
+            returns: new raw data that is assighned with uploaded image
+        '''
+        inm_upl_pict = self.to_inmemory_upl_file()
+        data['image'] = inm_upl_pict
+        return data
+
 class ProductPostSerializer(serializers.ModelSerializer):
     '''
         Serializer does 2 main things:
@@ -165,6 +253,8 @@ class ProductPostSerializer(serializers.ModelSerializer):
         use_url=True
         )
 
+    # image = TemporaryApiImageField()
+
     class Meta:
         model = Product
         fields = [
@@ -181,12 +271,12 @@ class ProductPostSerializer(serializers.ModelSerializer):
             'pk', 'user'
         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
-        for field in self.Meta.required:
-            self.fields[field].required = True
-
+    #     for field in self.Meta.required:
+    #         self.fields[field].required = True
+    
 
     # def validate_title(self, value):
     #     qs = Product.objects.filter(title=value)

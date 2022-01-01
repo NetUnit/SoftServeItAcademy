@@ -7,11 +7,13 @@
 
 from rest_framework import generics, viewsets
 from products.models import Product
-from .serializers import ProductPostSerializer
+from .serializers import ProductPostSerializer, TemporaryApiImageField
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+import pathlib
+
 
 class ProductCrudView(generics.RetrieveUpdateDestroyAPIView):
     '''
@@ -42,19 +44,26 @@ class ProductViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['put', 'get', 'post'])
     def product(self, request, pk=None):
-        print(True) ### +++
-        print(request.data) ## +++
+        ## 'image': [<InMemoryUploadedFile: creepy_bike_c641PhV.png (image/png)>]}
+        # need to post/put this as an image in the raw data
+        # print(request.data)
         try:
             product = get_object_or_404(self.queryset, pk=pk)
-            serializer = ProductPostSerializer(product, data=request.data)
+            api_data = request.data         
+        
+            json_raw_data = TemporaryApiImageField(product)
+
+            data =  json_raw_data.to_internal_value(api_data)
+
+            serializer = ProductPostSerializer(product, data=data)
             if not serializer.is_valid():
                 print(False)
                 return Response(serializer.errors)
-            # serializer.save()
-            image = product.image_url()
-            print(image)
+            
+            print('serializer is valid')
             serializer.save()
             return Response(serializer.data)
         except Exception as err:
             print(err)
             pass
+    
