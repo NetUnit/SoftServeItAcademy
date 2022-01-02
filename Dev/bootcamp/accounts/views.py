@@ -94,8 +94,7 @@ class RegisterView(CreateView):
     # success_url = reverse_lazy('/products/list/')
 
 ####################### *** Auth *** #######################
-## Class-based View
-
+## Class-based Views
 class CustomLoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login_form_as_p.html'
@@ -213,7 +212,6 @@ def logout_success_view(request, *args, **kwargs):
 ####################### *** Profile *** #######################
 
 def profile_user_view(request, user_id, *args, **kwargs):
-    
     user = CustomUser.get_user_by_id(user_id)
     auth = user.is_authenticated
     context = {'user': user, 'auth': auth}
