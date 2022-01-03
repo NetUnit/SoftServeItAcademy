@@ -76,8 +76,7 @@ class Manufacturer(models.Model):
         except Manufacturer.DoesNotExist as err:
             LOGGER.warning(f'{err}')
             raise Http404(_('Manufacturer wasn\'t found'))
-            
-    
+                
     @staticmethod
     def get_all():
         '''

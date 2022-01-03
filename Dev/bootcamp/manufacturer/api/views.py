@@ -1,4 +1,9 @@
 from rest_framework import generics, mixins, serializers
+
+from django.core.exceptions import ValidationError
+from django.http.response import Http404
+from django.utils.translation import gettext as _
+
 from manufacturer.models import Manufacturer
 from .serializers import (
     ManufacturerPostSerializer,
@@ -18,6 +23,16 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly
     )
+
+from bootcamp.api.permissions import (
+    IsOwnerOrReadOnly,
+    BlocklistPermission
+    )
+
+from rest_framework.exceptions import (
+    PermissionDenied,
+    NotAuthenticated,
+)
 
 class ManufacturerCrudView(generics.RetrieveUpdateDestroyAPIView):
     '''
@@ -82,7 +97,7 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
         if query is not None:
             qs = qs.filter(
                 Q(title__icontains=query)|
-                Q(content__icontains=query)
+                Q(country__icontains=query)
             ).distinct()
         return qs
 
@@ -91,10 +106,9 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
             Shorter alternative of the method above
             :returns: self.obj searched via title
         '''
-        pk = self.kwargs.get('pk')
-        print(pk)
+
         data = self.request.data
-        print(data)
+        # print(data)
         title = data.get('title')
         if not title:
             raise serializers.ValidationError({
@@ -120,13 +134,10 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
     def check_object_permissions(self, request=None, obj=None):
         '''
             Check permission to adjust object PUT/PATCH Methods
-            :returns: True when user pass the permission (is author of an object)
+            :returns: True when user pass the permission (is admin)
         '''
-        permission = IsOwnerOrReadOnly()
-        view = self.get_view_name()
         request = self.request
-        obj = self.get_object()
-        permission_to_adjust = permission.has_object_permission(request, view, obj)
+        permission_to_adjust = request.user.is_staff
         if not permission_to_adjust:
             raise PermissionDenied(_('This is allowed for the owner only  (」＞＜)」'))
         return True
@@ -154,7 +165,7 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
     #     return Manufacturer.objects.get(pk=pk)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
     def perform_update(self, serializer):
         # print(serializer, 'This is serialiazer')
@@ -165,20 +176,16 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
             Add POST method to "Allow" list of HTTP  methods:
             :returns: new manufacturer object created 
         '''
+        self.check_permissions()
         obj = self.create(request, *args, **kwargs)
         return obj
     
-    # def perform_update(self, serializer):
-    #     print(serializer)
-    #     api_data = self.request.data
-    #     print(api_data)
-    #     serializer.save(commit=False)
-
     def put(self, request, *args, **kwargs):
         ''' 
             Add PUT method to "Allow" list of HTTP  methods:
             :returns: updated manufacturer object 
         '''
+        self.check_object_permissions()
         obj = self.update(request, *args, **kwargs)
         return obj
 
@@ -187,6 +194,7 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
             Add PATCH method to "Allow" list of HTTP  methods:
             :returns: updated manufacturer object  
         '''
+        self.check_object_permissions()
         obj = self.update(request, *args, **kwargs)
         return obj 
         
@@ -197,3 +205,9 @@ class ManufacturerMixinAPIView(mixins.CreateModelMixin,
         return print(dir(self))
 
 # "media/manufacturers/c69d6a2f-27f.png"
+{
+    "title": "fgfgffgh",
+    "country": "Terrible Country",
+    "year": "1970-10-10",
+    "image": "media/manufacturers/77177bab-320.png"
+}
