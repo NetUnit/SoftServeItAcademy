@@ -130,7 +130,6 @@ class ProductAPIView(generics.CreateAPIView):
         image = api_data.get("image")
         serializer.save(user=self.request.user, image=image)
 
-
 class ProductMixinAPIView(mixins.CreateModelMixin,
                         mixins.UpdateModelMixin,
                         generics.ListAPIView):
@@ -153,6 +152,10 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
             IsAuthenticatedOrReadOnly - allows to implement GET method without auth
             IsOwnerOrReadOnly - allows to update objects only for owners
             ReadOnly - allows to apply only SAFE_METHODS ('GET', 'HEAD', 'OPTIONS')
+            Destroy mixin requires pk, that's why werent added.
+            If we do not supply pk to delete, the operation fails.
+            https://stackoverflow.com/questions/61833947/django-mixins-
+            destroymodelmixin-delete-method-not-allowed
     '''
 
     
@@ -172,6 +175,13 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
     
     # defines existing models queryset
     # queryset = Product.objects.all()
+
+    def _allowed_methods(self):
+        methods = [
+            m.upper() for m in self.http_method_names if hasattr(self, m)
+        ]
+        methods.append('DELETE')
+        return methods
 
     def get_queryset(self):
         qs = Product.objects.all()
@@ -265,9 +275,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
         '''
         permission =  BlocklistPermission()
         view = self.get_view_name()
-        print(view)
         request = self.request
-        print(request)
         permission = permission.has_permission(request, view)
         if not permission:
             raise PermissionDenied(_(
@@ -283,6 +291,9 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def perform_destroy(self, instance):
+        instance.delete()
+
     def post(self, request, *args, **kwargs):
         ''' 
             Add POST method to "Allow" list of HTTP  methods:
@@ -291,7 +302,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
         self.check_permissions()
         obj = self.create(request, *args, **kwargs)
         return obj
-    
+
     def put(self, request, *args ,**kwargs):
         ''' 
             Add PUT method to "Allow" list of HTTP  methods:
@@ -309,7 +320,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
         self.check_object_permissions()
         obj = self.partial_update(request, *args, **kwargs)
         return obj
-        
+    
     def get_inherited_methods(self):
         '''
             Will return * parent methods & attrs

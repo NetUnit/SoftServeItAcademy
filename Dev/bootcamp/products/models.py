@@ -46,6 +46,10 @@ class Product(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
+    @property
+    def owner(self):
+        return self.user
+    
     def get_image_url(self):
         if self.image:
             return u'%s' % self.image.url
