@@ -208,7 +208,8 @@ class CustomUser(AbstractUser):
             return user
         except CustomUser.DoesNotExist as err:
             LOGGER.error(f'{err}')
-            raise Http404(_('User wasn\'t found'))
+            return False
+            # raise Http404(_('User wasn\'t found'))
 
     # +++
     @staticmethod
@@ -223,7 +224,8 @@ class CustomUser(AbstractUser):
             return user
         except CustomUser.DoesNotExist as err:
             LOGGER.error(f'{err}')
-            raise Http404(_('User wasn\'t found'))
+            return False
+            # raise Http404(_('User wasn\'t found'))
 
     # +++
     @staticmethod
