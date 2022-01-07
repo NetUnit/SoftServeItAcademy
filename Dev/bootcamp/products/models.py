@@ -42,7 +42,7 @@ class Product(models.Model):
     def __repr__(self):
         '''
             This magic method is redefined to show class and id of product object.
-            :return: class, id
+            :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
@@ -62,8 +62,8 @@ class Product(models.Model):
     @staticmethod
     def get_by_id(product_id):
         '''
-            param product_id: SERIAL: the id of a Product to be found in the DB
-            return: product object or None if a product with such ID does not exist
+            :param product_id: SERIAL: the id of a Product to be found in the DB
+            :returns: product object or None if a product with such ID does not exist
         '''
         try:
             product = Product.objects.get(pk=product_id)
@@ -91,14 +91,14 @@ class Product(models.Model):
     def create(
         title, content, price, user=None, manufacturers=None, image=None, media=None):
         '''
-            param name: Describes name of the product
-            type name: str max_length=220
-            param content: Describes description of the book
-            type description: str
-            param price: Describes a price of a product
-            type price: int default=10
+            :param name: Describes name of the product
+            :type name: str max_length=220
+            :param content: Describes description of the book
+            :type description: str
+            :param price: Describes a price of a product
+            :type price: int default=10
 
-            :return: a new product object which is also written into the DB
+            :returns: a new product object which is also written into the DB
         '''
         # allows to create objects with not all attrs input obligatory
         product = Product(
@@ -122,13 +122,13 @@ class Product(models.Model):
     def update(self, **kwargs):
         '''
             Updates product in the database with the specified parameters.\n
-            param title: Depicts product title of a product
-            type title: str max_length=128
-            param content: Depicts description of a product
-            type content: str
-            param price: shows a product's price
-            type cprice: int default=10
-            :return: None
+            :param title: Depicts product title of a product
+            :type title: str max_length=128
+            :param content: Depicts description of a product
+            :type content: str
+            :param price: shows a product's price
+            :type price: int default=10
+            :returns: None
         '''
         self.__dict__.update(**kwargs)
         self.save()
@@ -137,7 +137,7 @@ class Product(models.Model):
     def to_dict(self):
         ''' 
             removes id & db _state
-            :return: product title, content, price
+            :returns: product title, content, price
             :Example:
             | {
             |   'title': 'Raspberry Pi',
@@ -185,7 +185,7 @@ class Product(models.Model):
         '''
             This method is created in order to update product object
             :params: same as in create method, if param is None - no update done
-            :return None
+            :returns: None
         '''
         try:
             product = Product.get_by_id(product_id)
