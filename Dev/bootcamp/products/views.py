@@ -251,7 +251,11 @@ def product_update_view(request, product_id,  *args, **kwargs):
         pass
     
     context = {'form': form}
-    return render (request, 'products/product_update_form_as_crispy_fields.html', context)
+    return render (
+        request, 
+        'products/product_update_form_as_crispy_fields.html', 
+        context
+        )
     
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_delete_view(request, product_id, *args, **kwargs):

@@ -42,6 +42,13 @@ from bootcamp.views import (
     feedback_form_view,
 )
 
+from accounts.api.views import(
+    GoogleSocialAuthView,
+    GoogleSocialAuthTemplateView,
+    social_authentication_view
+    # TeamChartData
+    # test_view
+)
 
 ############## *** handlers 400, 403, 404, 500 *** ###################
 handler400 = 'bootcamp.views.handler400'
@@ -94,7 +101,11 @@ urlpatterns = [
     
     ### OAuth2 Authnetication urls ###
     re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    
+    re_path(r'^o/sighn-in/$', GoogleSocialAuthView.as_view(), name='oauth_user-login'),
+
+    re_path(r'^o/sighn-in-test2/$', GoogleSocialAuthTemplateView.as_view(), name='oauth_user-login-test2'), 
+    re_path(r'^o/sighn-in-test/$', social_authentication_view, name='oauth_user-login-test'),
+
     ################### *** payments views *** ########################
     path('paypal/', include('paypal.standard.ipn.urls')),
     

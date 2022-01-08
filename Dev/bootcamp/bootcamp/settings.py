@@ -15,6 +15,15 @@ import os
 import logging
 import datetime
 
+os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
+os.environ['GOOGLE_CLIENT_SECRET']="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"
+AUTH_PROVIDERS = (
+    'google', 
+    'facebook', 
+    'twitter', 
+    'VK'
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,12 +38,11 @@ SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d(
 
 # disable if want to render errortemaplates
 DEBUG = True
-ALLOWED_HOSTS =  []
+# ALLOWED_HOSTS =  []
 
 # DEBUG = False
-# ALLOWED_HOSTS =  ['*']
+ALLOWED_HOSTS =  ['*']
 # ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
-
 
 
 # Application definition
@@ -61,7 +69,11 @@ INSTALLED_APPS = [
     ### *** api authentication *** ###
     'rest_framework.authtoken',
     'rest_framework_jwt',
-    'oauth2_provider'
+    ## oauth2 provider 
+    'oauth2_provider',
+    ## social django
+    'social_django'
+
 ]
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -74,7 +86,12 @@ LOGOUT_URL = '/logout/'
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
-# AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'accounts.backends.EmailBackend',
+    # 'oauth2_provider.backends.GoogleOAuth2'
+    ]
+
 # AUTH_USER_MODEL = 'accounts.MyAccountManager'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
@@ -232,16 +249,18 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         #'rest_framework.authentication.SessionAuthentication',
         #'rest_framework.authentication.BasicAuthentication',
     )
 }
 
+
+
 #### *** JWT Authentication SETTINGS *** #####
 # additional settings that you can override similar to
-# how you'd do it with Django REST framework
+# # how you'd do it with Django REST framework
 # JWT_AUTH = {
 #     'JWT_ENCODE_HANDLER':
 #     'rest_framework_jwt.utils.jwt_encode_handler',

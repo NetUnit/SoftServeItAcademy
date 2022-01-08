@@ -10,7 +10,6 @@ from django.conf.urls import include
 from .views import (
     CustomUserCreateView,
     CustomUserLoginView,
-    
 )
 
 from rest_framework.authtoken.views import obtain_auth_token
@@ -24,8 +23,12 @@ urlpatterns = [
     re_path(r'^auth/token-verify/$', verify_jwt_token),
     re_path(r'^auth/token-refresh/$', refresh_jwt_token),
 
-    #### Token Authnetication urls ####
+    ### Token Authnetication urls ###
     # registration view already exists
+    # use postman to send POST requests
     re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
+
+    ### OAuth2 urls ###
+    # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
 
 ]

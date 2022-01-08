@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from .google import Google
+import os
 
 from rest_framework.fields import (
     CharField, 
@@ -21,6 +23,8 @@ from accounts.models import (
     CustomUser,
     Token
     )
+
+from django.contrib.auth import authenticate, login
 
 class CustomUserCreateSerializer(serializers.ModelSerializer):
 
@@ -124,7 +128,79 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
                 {'detail': 'Hmm ... passsword wasn\'t correct (° -°）', }
             )
         token = Token.objects.filter(user=user).get()
-        data['token'] = token.key
+        if token:
+            data['token'] = token.key
         return data
 
-# ['Meta', '__class__', '__class_getitem__', '__deepcopy__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_args', '_context', '_creation_counter', '_declared_fields', '_get_model_fields', '_kwargs', '_read_only_defaults', '_readable_fields', '_writable_fields', 'allow_null', 'bind', 'build_field', 'build_nested_field', 'build_property_field', 'build_relational_field', 'build_standard_field', 'build_unknown_field', 'build_url_field', 'context', 'create', 'data', 'default', 'default_empty_html', 'default_error_messages', 'default_validators', 'error_messages', 'errors', 'fail', 'field_name', 'fields', 'get_attribute', 'get_default', 'get_default_field_names', 'get_extra_kwargs', 'get_field_names', 'get_fields', 'get_initial', 'get_unique_for_date_validators', 'get_unique_together_validators', 'get_uniqueness_extra_kwargs', 'get_validators', 'get_value', 'help_text', 'include_extra_kwargs', 'initial', 'instance', 'is_valid', 'label', 'many_init', 'parent', 'partial', 'read_only', 'required', 'root', 'run_validation', 'run_validators', 'save', 'serializer_choice_field', 'serializer_field_mapping', 'serializer_related_field', 'serializer_related_to_field', 'serializer_url_field', 'source', 'style', 'to_internal_value', 'to_representation', 'update', 'url_field_name', 'validate', 'validate_empty_values', 'validated_data', 'validators', 'write_only']
+
+from bootcamp.settings import AUTH_PROVIDERS
+
+
+class GoogleSocialAuthSerializer(serializers.Serializer):
+    
+    auth_token = serializers.CharField() 
+
+    # register new_user here
+    # def register_social_user(self, email, *args, **kwargs):
+    #     user = CustomUser.get_user_by_email(email)
+    #     return user
+    
+    # authenticate user_here
+    # def register_social_user(self, email, *args, **kwargs):
+    #     user = CustomUser.get_user_by_email(email)
+    #     user = authenticate(username=email, password='Aer0p0rt1715418')
+    #     # login(user)
+    #     return user
+
+    def validate_auth_token(self, auth_token):
+
+        try:
+            user_data = Google.validate(auth_token)
+            user_data['sub']
+            #print(f"This is user data: {user_data}")
+        except Exception as err:
+            # print(f'Err: {err}')
+            raise serializers.ValidationError(
+                {'detail': 'Token is invalid or expired (︶︹︺)', }
+            )
+
+        ## user data is str -- thats why code below doesn't work
+
+        try:
+            # user_data['aud'] = 1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com
+            # print(user_data['aud'] == os.environ.get('GOOGLE_CLIENT_ID')) ## True
+            if user_data['aud'] != os.environ.get('GOOGLE_CLIENT_ID'):
+                raise serializers.ValidationError(
+                    {'detail': 'Oops who are U ...', }
+                )
+        except Exception as err2:
+            print(f'Err2: {err2}')
+
+        
+        user_id = user_data.get('sub')
+        #print(user_id)
+        email = user_data.get('email')
+        #print(email)
+        name = user_data.get('name')
+        #print(name)
+
+        provider = ''.join(
+            [provider for provider in AUTH_PROVIDERS
+            if len(user_data['iss'].split(provider)) > 1]
+        )
+
+        # print(provider)
+        # user = self.register_social_user(email)
+        # print(f'This is {user}')
+
+        return register_social_user(
+            provider=provider,
+            user_id=user_id,
+            email=email,
+            name=name
+        )
+
+        # return register_social_user(
+        #     email=email,
+        #     password=password
+        # )
