@@ -134,23 +134,60 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
 
 
 from bootcamp.settings import AUTH_PROVIDERS
-
+from django.contrib.auth.hashers import make_password
+import random
+import string 
 
 class GoogleSocialAuthSerializer(serializers.Serializer):
     
     auth_token = serializers.CharField() 
 
     # register new_user here
-    # def register_social_user(self, email, *args, **kwargs):
-    #     user = CustomUser.get_user_by_email(email)
-    #     return user
-    
+    # add provider later
+    def register_social_user(self, data):
+        user = CustomUser()
+        _password = ''.join(
+            [random.choice(string.digits + 
+            string.ascii_letters + 
+            string.punctuation) for i in range(0, 10)]
+            )
+
+        ## send password to the email
+        # print(password)
+        data['password'] = _password
+        # print(data)
+        user = user.create_user(data)
+        return user
+        # token = generate token
+
+    # make the same with auth2_provider_model 
+
+    # return register_social_user(
+    #     provider=provider,
+    #     user_id=user_id,
+    #     email=email,
+    #     name=name
+    # )
+
+
     # authenticate user_here
-    # def register_social_user(self, email, *args, **kwargs):
-    #     user = CustomUser.get_user_by_email(email)
-    #     user = authenticate(username=email, password='Aer0p0rt1715418')
-    #     # login(user)
-    #     return user
+    def authenticate_social_user(self, *args, request=None, user=None):
+        username=user.email
+        print(username)
+        password=user.password
+        print(password)
+
+        try:
+            user = authenticate(
+                username=user.email,
+                password='Aer0p0rt1715418'
+            )
+            
+            # if request:
+            #     login(request, user)
+            return user
+        except:
+            print ('Something went wrong with args')
 
     def validate_auth_token(self, auth_token):
 
@@ -173,34 +210,27 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     {'detail': 'Oops who are U ...', }
                 )
+
         except Exception as err2:
             print(f'Err2: {err2}')
 
-        
         user_id = user_data.get('sub')
-        #print(user_id)
+        print(user_id)
         email = user_data.get('email')
-        #print(email)
+        print(email)
         name = user_data.get('name')
-        #print(name)
+        print(name)
 
         provider = ''.join(
             [provider for provider in AUTH_PROVIDERS
             if len(user_data['iss'].split(provider)) > 1]
         )
 
-        # print(provider)
-        # user = self.register_social_user(email)
-        # print(f'This is {user}')
+        print(provider)
 
-        return register_social_user(
-            provider=provider,
-            user_id=user_id,
-            email=email,
-            name=name
-        )
-
-        # return register_social_user(
-        #     email=email,
-        #     password=password
-        # )
+        data = dict(email=email, username=name)
+        user_exists = CustomUser.user_exists(data)
+        if user_exists:
+            return CustomUser.get_user_by_email(email=email)
+        return data
+                

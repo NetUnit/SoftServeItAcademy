@@ -94,10 +94,15 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.contrib import messages
 
+
+# class CustomLoginView(auth_views.LoginView):
+#     form_class = LoginForm
+#     template_name = 'accounts/login_form_as_p.html'
 
 # @csrf_exempt
-# @csrf_protect
+@csrf_protect
 def social_authentication_view(request, *args, **kwargs):
     '''
         is a Google IdToken for user authnentication
@@ -114,26 +119,57 @@ def social_authentication_view(request, *args, **kwargs):
     '''
     serializer_class = GoogleSocialAuthSerializer
 
-    # POST metho is acquired via JS in a template
+    # print(request.META.get('PATH_INFO'))
+    # print(f'{request.POST} This is post')
+    # print(request.META.get('GOOGLE_CLIENT_ID'))
+    # print(request.META.get('GOOGLE_CLIENT_SECRET'))
+    # print(request.META.get('data'))
+    
+    # POST method is acquired via JS in a template
     if request.method == 'POST':
-        
+        serializer = serializer_class()
+
         try:
-            # get bytes API request 
+            # get bytes API request
             value = request.body
             # from bytes to str dict data
             decoded_string = value.decode()
-            token = eval(decoded_string).get("IdToken")
-            print(token)
+            token = eval(decoded_string).get('IdToken')
             
             # another way of getting IdToken
             # data = json.loads(request.body)
             # print(data)
             # token = data['IdToken']
+
+            result = serializer.validate_auth_token(token)
+            # print(result) ## ++
+            # print(isinstance(result, CustomUser)) ## ++
+
+            if isinstance(result, dict):
+                new_user_data = result
+                new_user = serializer.register_social_user(new_user_data)
+                messages.success(
+                request,
+                f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
+                )
+                return redirect ('/accounts/register-fbv/')
             
+            if isinstance(result, CustomUser):
+                print(result)
+                user = result
+                res = serializer.authenticate_social_user(request=request, user=user)
+                print(res)
+
+                messages.success(
+                request,
+                f'U\'ve just successfully logined (^_-)≡☆'
+                )
+                return redirect('/')
+
         except Exception as err:
             print(err)
         
-        # return render (request, 'accounts/oauth2_login.html', context={})
+        return render (request, 'accounts/oauth2_login.html', context={})
         # return redirect ('/o/sighn-in-test/')
 
     return render (request, 'accounts/oauth2_login.html', context={})
