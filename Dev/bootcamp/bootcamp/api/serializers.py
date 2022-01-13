@@ -29,6 +29,7 @@ class CustomImageField(serializers.ImageField):
         # Check if this is a base64 string
         if isinstance(data, six.string_types):
             parent_data = self.__dict__.get('parent')
+            print(parent_data)
             obj = parent_data._args[0]
             media = obj.media
             media_path = media.path
@@ -39,6 +40,7 @@ class CustomImageField(serializers.ImageField):
             with open(path, 'rb') as file:
                 # getting in-memory file-like object
                 file_like = file.read()
+                print(file_like)
                 # Generate file name:
                 file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.                                              
                 # Get the file name extension:

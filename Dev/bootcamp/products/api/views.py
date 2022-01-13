@@ -5,15 +5,28 @@
 
 '''
 
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, mixins
 from products.models import Product
-from .serializers import ProductPostSerializer, TemporaryApiImageData
+from .serializers import (
+    ProductPostSerializer, 
+    TemporaryApiImageData,
+    ProductCreateSerializer,
+    )
 from rest_framework.decorators import action
-from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser, FileUploadParser
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+
+# path
 import pathlib
+from bootcamp.settings import MEDIA_ROOT
+from pathlib import Path
+import os
+
 from django.core.exceptions import ValidationError
+from django.http.response import Http404
+from django.utils.translation import gettext as _
+from rest_framework import serializers
 
 ################## *** files *** ##################
 
@@ -50,7 +63,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         ## 'image': [<InMemoryUploadedFile: creepy_bike_c641PhV.png (image/png)>]}
         # need to post/put this as an image in the raw data
         # print(request.data)
-        # try:
+
         product = get_object_or_404(self.queryset, pk=pk)
         api_data = request.data
 
@@ -67,7 +80,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductPostSerializer(product, data=data, partial=True)
         # x = serializer.get_validation_exclusions()
         y = serializer.validate_title(title)
-        print(y)
+
 
         if not serializer.is_valid():
             print('serializer is INVALID')
@@ -76,9 +89,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         print('serializer is VALID')
         serializer.save()
         return Response(serializer.data)
-        # except Exception as err:
-        #     print(err)
-        #     pass
     
 class ProductAPIView(generics.CreateAPIView):
     '''
@@ -86,19 +96,128 @@ class ProductAPIView(generics.CreateAPIView):
     '''
     model = Product
     lookup_field = 'pk'
-    serializer_class = ProductPostSerializer
-    # parser_classes = (JSONParser, FormParser, MultiPartParser)
+    serializer_class = ProductCreateSerializer
+    parser_classes = (JSONParser, FormParser, MultiPartParser, FileUploadParser,)
     # queryset = Product.objects.all()
 
+    
     def get_queryset(self):
+        ''' 
+            Overrrides self-attr 'queryset'
+            :returns: existing models queryset
+        '''
         return Product.objects.all()
 
     def perform_create(self, serializer):
-        print(serializer)
-        serializer.save(user=self.request.user)
-    
+        api_data = self.request.data
+        image = api_data.get("image")
+        serializer.save(user=self.request.user, image=image)
+
+
+class ProductMixinAPIView(mixins.CreateModelMixin,
+                        mixins.UpdateModelMixin,
+                        generics.ListAPIView):
+    model = Product
+    lookup_field = 'pk'
+    serializer_class =  ProductCreateSerializer
+    parser_classes = (
+        JSONParser, FormParser,
+        MultiPartParser, FileUploadParser
+        )
+        
+    # defines existing models queryset
+    queryset = Product.objects.all()
+
+
+    def get_object(self):
+        # is <class 'rest_framework.request.Empty'>
+        # print(self.request.__dict__)
+        # dict of values: {'title': 'sdf', 'content': 'sdfdsf','price': 156, 'image': 'media/products/Honda-NC750X-gray-2016-xl_oOGJZRU.jpg'}
+        # print(self.request.data)
+
+        '''
+            Allows to add PUT/PATCH methods
+            get_object - method that redefines self.object 
+            & allows to change the next without search via 
+            lookup_filed (if such doesn\'t exists)
+
+            based on answer: 
+            https://stackoverflow.com/questions/43859053/django-rest-framework-
+            assertionerror-fix-your-url-conf-or-set-the-lookup-fi/43859898#43859898
+
+            :returns: self.obj searched via title
+        '''
+        data = self.request.data
+        title = data.get('title')
+        if not title:
+            raise serializers.ValidationError({
+                'detail': 'Title wasn\'t selected [ ± _ ± ]',
+                })
+        qs = Product.objects.filter(title=title)
+        if qs.exists():
+            obj = qs.get()
+            return obj
+        raise Http404()
+
     # def get_object(self):
-    #     pk = self.kwargs.get('pk')
-    #     if not pk:
-    #         raise Http404('Object not found')
-    #     return Product.objects.get(pk=pk)
+    #     '''
+    #         Shorter alternative of the method above
+    #         :returns: self.obj searched via title
+    #     '''
+    #     data = self.request.data
+    #     title = data.get('title')
+    #     obj = get_object_or_404(Product, title=title)
+    #     return obj
+
+    def post(self, request, *args, **kwargs):
+        ''' 
+            Add POST method to "Allow" list of HTTP  methods:
+            :returns: new product object created 
+        '''
+        obj = self.create(request, *args, **kwargs)
+        return obj
+    
+    def put(self, request, *args ,**kwargs):
+        ''' 
+            Add PUT method to "Allow" list of HTTP  methods:
+            :returns: new product object updated
+        '''
+        obj = self.update(request, *args, **kwargs)
+        return obj
+
+    def patch(self, request, *args ,**kwargs):
+        ''' 
+            Add PUT method to "Allow" list of HTTP  methods:
+            :returns: new product object updated
+        '''
+        obj = self.update(request, *args, **kwargs)
+        return obj
+
+
+    def get_inherited_methods(self):
+        '''
+            Will return * parent methods & attrs
+
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__',
+            '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__',
+            '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__',
+            '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
+            '_allowed_methods', '_negotiator', 'allowed_methods', 'args', 'as_view', 'authentication_classes',
+            'check_object_permissions', 'check_permissions', 'check_throttles', 'content_negotiation_class',
+            'create', 'default_response_headers', 'determine_version', 'dispatch', 'filter_backends',
+            'filter_queryset', 'finalize_response', 'format_kwarg', 'get', 'get_authenticate_header',
+            'get_authenticators', 'get_content_negotiator', 'get_exception_handler', 'get_exception_handler_context',
+            'get_format_suffix', 'get_object', 'get_paginated_response', 'get_parser_context', 'get_parsers',
+            'get_permissions', 'get_queryset', 'get_renderer_context', 'get_renderers', 'get_serializer',
+            'get_serializer_class', 'get_serializer_context', 'get_success_headers', 'get_throttles', 'get_view_description',
+            'get_view_name', 'handle_exception', 'head', 'headers', 'http_method_names', 'http_method_not_allowed', 'initial',
+            'initialize_request', 'kwargs', 'list', 'lookup_field', 'lookup_url_kwarg', 'metadata_class', 'model', 'options',
+            'paginate_queryset', 'pagination_class', 'paginator', 'parser_classes', 'perform_authentication',
+            'perform_content_negotiation', 'perform_create', 'permission_classes', 'permission_denied', 'post',
+            'queryset', 'raise_uncaught_exception', 'renderer_classes', 'request', 'schema', 'serializer_class',
+            'settings', 'setup', 'throttle_classes', 'throttled', 'versioning_class']
+
+        '''
+        return print(dir(self))
+    
+    # "media/products/Honda-NC750X-gray-2016-xl_oOGJZRU.jpg"

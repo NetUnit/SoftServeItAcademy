@@ -16,11 +16,13 @@ from django.template import RequestContext
 from django.views.generic import TemplateView, ListView # Import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.exceptions import SuspiciousFileOperation
 
 ###### *** path imports *** ######
 import pathlib
 from wsgiref.util import FileWrapper
 from mimetypes import guess_type
+import os
 
 ###### *** auth user model *** ########
 from django.contrib.auth import get_user_model
@@ -266,13 +268,13 @@ def media_download_view(request, product_id, *args, **kwargs):
                   (as oppose to render or redirect a new page)
     '''
     product = Product.get_by_id(product_id)
-    media = product.media
-    if not media:
+    image = product.image
+    if not image:
         raise Http404
-    
-    product_path = media.path
+
+    product_path = image.path
     path = pathlib.Path(product_path)
-    
+
     if not path.exists():
         raise Http404
 
