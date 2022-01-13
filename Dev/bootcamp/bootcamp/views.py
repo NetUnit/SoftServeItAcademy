@@ -109,6 +109,7 @@ def handler403(request, exception, *args, **kwargs):
 def search_venues(request, *args, **kwargs):
    ## match logic add to extend by 4 letters in a raw
     if request.method == "POST":
+        print(request.POST)
         searched = request.POST.get('searched')
 
         # convert user_input to lowercase and split to a single word

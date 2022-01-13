@@ -23,7 +23,16 @@ from io import BytesIO
 import PIL
 from PIL import Image
 from manufacturer.api.serializers import ManufacturerPostSerializer
-from rest_framework.fields import CharField
+
+from pathlib import Path
+import os
+from bootcamp.settings import MEDIA_ROOT
+
+from bootcamp.api.exceptions import (
+    CustomCharField,
+    TitleDuplicationError,
+    TitleAbsenceError
+    )
 
 class CustomImageField(serializers.ImageField):
     """
@@ -41,14 +50,15 @@ class CustomImageField(serializers.ImageField):
         # Check if this is a base64 string
         if isinstance(data, six.string_types):
             #print(True)
-            print(type(self.__dict__))
+           # print(type(self.__dict__))
             parent_data = self.__dict__.get('parent')
+
             obj = parent_data._args[0]
-            media = obj.media
+            image = obj.image
             # /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/cdn_test/protected/products/creepy_bike_0WMnA1W.png --> <class 'str'>
-            media_path = media.path
+            image_path = image.path
             # /media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/cdn_test/protected/products/creepy_bike_0WMnA1W.png --> <class 'pathlib.PosixPath'>
-            path = pathlib.Path(media_path)
+            path = pathlib.Path(image_path)
             if not path.exists():
                 raise Http404(_('The path isn\'t valid'))
             
@@ -79,10 +89,10 @@ class CustomImageField(serializers.ImageField):
                 file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.                                              
                 # Get the file name extension:
                 file_extension = self.get_file_extension(data)
-                print(f'{file_extension}: is file extension')
+                #print(f'{file_extension}: is file extension')
 
                 complete_file_name = f'{file_name}.{file_extension}'
-                print(complete_file_name)
+                #print(complete_file_name)
                 ## <class 'django.core.files.base.ContentFile'>
                 #data = ContentFile(decoded_file, name=complete_file_name)
                 data = ContentFile(file_like, name=complete_file_name)
@@ -145,7 +155,7 @@ class CustomImageField(serializers.ImageField):
         extension = "jpg" if extension == "jpeg" else extension
         return extension
 
-        ## doesn't work check this out later
+    ## doesn't work check this out later
     # def get_file_extension(self, file_name, decoded_file):
     #     import imghdr
 
@@ -278,23 +288,6 @@ class TemporaryApiImageData(serializers.ImageField):
         # print(x)
         return data
 
-
-class CustomCharField(CharField):
-    default_error_messages = {
-        'blank': _('This field may not be blank (・－・。)'),
-        'max_length': _('Satisfy need of {max_length} characters (　・ˍ・)'),
-        'min_length': _('Ensure this field has at least {min_length} characters (・ˍ・*)')
-    }
-
-class TitleDuplicationError(APIException):
-    '''
-        Custom error that is raised when
-        the same title is already in the db
-        :raises TitleDuplicationError: throw Exception when duplicate title
-    '''
-    status_code = 400
-    default_detail = _('Title Already Exists ┐(‘～` )┌')
-
 class ProductPostSerializer(serializers.ModelSerializer):
     '''
         Serializer does 2 main things:
@@ -308,12 +301,6 @@ class ProductPostSerializer(serializers.ModelSerializer):
     #     max_length=None, use_url=True,
     #     )
 
-    # image = serializers.ImageField(
-    #     max_length=None,
-    #     allow_empty_file=True,
-    #     use_url=True
-    #     )
-
     # work for url: api/products/product/<pk>
     image = TemporaryApiImageData(
         max_length=None, 
@@ -322,6 +309,7 @@ class ProductPostSerializer(serializers.ModelSerializer):
         )
 
     manufacturers = ManufacturerPostSerializer(many=True, read_only=True)
+    
     # corresponds to CustomCharField
     # allow_blank will promotes default_error_messages
     title = CustomCharField(required=True, allow_blank=False, allow_null=False, max_length=42)
@@ -338,23 +326,17 @@ class ProductPostSerializer(serializers.ModelSerializer):
         # required fields
         required = ['title', 'manufacturers']
     
-        # 
+        # get to know!
         extra_kwargs = {
             'title': {
                 'required': True, 'allow_blank': True, 'allow_null': False
             },
         }
-        
+        # alternative to required:
+        # discludes fields of required
         read_only_fields = [
             'pk', 'user'
         ]
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-    #     for field in self.Meta.required:
-    #         self.fields[field].required = True
-    
 
     def validate_title(self, value):
         '''
@@ -367,10 +349,69 @@ class ProductPostSerializer(serializers.ModelSerializer):
         if self.instance:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise  TitleDuplicationError()
+            raise TitleDuplicationError()
         return value
 
     # validate fields + get fields info
     def get_validation_exclusions(self):
         return super().validate(self.fields)
+
+class ProductCreateSerializer(serializers.ModelSerializer):
+    
+    image = serializers.ImageField(
+        max_length=None, use_url=True,
+        allow_empty_file=True
+        )
+
+    class Meta:
+        model = Product
+        fields = [
+            'pk', 'title',
+            'content', 'price',
+            'image'
+            ]
+
+        read_only_fields = [
+            'pk', 'user'
+            ]
+    
+    def to_internal_value(self, data):
+        ''' 
+            Allows image field to upload files
+            :returns: validated data uploaded to db
+        '''
+        return data
+    
+    def validate(self, data):
+        self._kwargs["partial"] = True
+        title = data.get('title')
+        if not title:
+            raise TitleAbsenceError()
+        qs = Product.objects.filter(title__iexact=title)
+        # exclude object itself in order to post/put self instance data
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise TitleDuplicationError()
+        return super().validate(data)
         
+    # get to know what is this
+    # def to_representation(self, data):
+    #     print(data)
+
+'''
+    '__class__', '__class_getitem__', '__deepcopy__', '__delattr__', '__dict__', '__dir__', '__doc__',
+    '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__',
+    '__init_subclass__', '__iter__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
+    '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
+    '_creation_counter', '_declared_fields', '_get_model_fields', '_read_only_defaults', '_readable_fields',
+    '_writable_fields', 'bind', 'build_field', 'build_nested_field', 'build_property_field', 'build_relational_field',
+    'build_standard_field', 'build_unknown_field', 'build_url_field', 'context', 'create', 'data', 'default_empty_html',
+    'default_error_messages', 'default_validators', 'errors', 'fail', 'fields', 'get_attribute', 'get_default',
+    'get_default_field_names', 'get_extra_kwargs', 'get_field_names', 'get_fields', 'get_initial', 'get_unique_for_date_validators',
+    'get_unique_together_validators', 'get_uniqueness_extra_kwargs', 'get_validators', 'get_value', 'include_extra_kwargs', 'initial',
+    'is_valid', 'many_init', 'root', 'run_validation', 'run_validators', 'save', 'serializer_choice_field', 'serializer_field_mapping',
+    'serializer_related_field', 'serializer_related_to_field', 'serializer_url_field', 'to_internal_value', 'to_representation', 'update',
+    'url_field_name', 'validate', 'validate_empty_values', 'validated_data', 'validators']
+'''
+ # "media/products/Honda-NC750X-gray-2016-xl_oOGJZRU.jpg"
