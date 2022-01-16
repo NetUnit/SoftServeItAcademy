@@ -32,6 +32,7 @@ class CustomExceptionMiddleware(MiddlewareMixin):
        
         try:
             x_forward = request.META.get('HTTP_X_FORWARDED_FOR')
+            ## ip_address
             remote_addr = request.META.get('REMOTE_ADDR')
             # link = request.META.get('HTTP_REFERER')
             if x_forward:

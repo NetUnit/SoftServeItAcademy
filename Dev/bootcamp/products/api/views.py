@@ -28,6 +28,24 @@ from django.http.response import Http404
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
+from django.db.models import Q
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    IsAdminUser 
+    )
+
+from .permissions import (
+    IsOwnerOrReadOnly,
+    BlocklistPermission
+    )
+
+from rest_framework.exceptions import (
+    PermissionDenied,
+    NotAuthenticated,
+)
+
 ################## *** files *** ##################
 
 class ProductCrudView(generics.RetrieveUpdateDestroyAPIView):
@@ -117,6 +135,12 @@ class ProductAPIView(generics.CreateAPIView):
 class ProductMixinAPIView(mixins.CreateModelMixin,
                         mixins.UpdateModelMixin,
                         generics.ListAPIView):
+
+    '''
+        IsAuthenticated - requires auth to any of methods
+        IsAuthenticatedOrReadOnly - allows to implement GET method without auth
+    '''
+    
     model = Product
     lookup_field = 'pk'
     serializer_class =  ProductCreateSerializer
@@ -124,16 +148,42 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
         JSONParser, FormParser,
         MultiPartParser, FileUploadParser
         )
-        
+
+    permission_classes = [
+            # IsAuthenticated,
+            # IsAuthenticatedOrReadOnly,
+            # IsOwnerOrReadOnly
+    ]
+    
     # defines existing models queryset
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+
+    def perform_update(self, serializer):
+        # print(serializer, 'This is serialiazer')
+        serializer.save()
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        qs = Product.objects.all()
+        query = self.request.GET.get('q')
+        # print(query)
+        if query is not None:
+            qs = qs.filter(
+                Q(title__icontains=query)|
+                Q(content__icontains=query)
+            ).distinct()
+        return qs
 
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         # is <class 'rest_framework.request.Empty'>
         # print(self.request.__dict__)
         # dict of values: {'title': 'sdf', 'content': 'sdfdsf','price': 156, 'image': 'media/products/Honda-NC750X-gray-2016-xl_oOGJZRU.jpg'}
         # print(self.request.data)
+        # print(self.get_serializer().__dict__)
+        # print(self.get_serializer_class().__dict__)
 
         '''
             Allows to add PUT/PATCH methods
@@ -147,6 +197,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
 
             :returns: self.obj searched via title
         '''
+
         data = self.request.data
         title = data.get('title')
         if not title:
@@ -169,11 +220,60 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
     #     obj = get_object_or_404(Product, title=title)
     #     return obj
 
+    def check_permissions(self, request=None):
+        permission = IsOwnerOrReadOnly()
+        view = self.get_view_name()
+        request = self.request
+        permission_to_create = permission.has_permission(request, view)
+        permission_need = request.method in ['PUT', 'POST', 'PATCH']
+        if not permission_to_create and permission_need:
+            raise NotAuthenticated(_('This is allowed for authenticated users only ( ´･･)ﾉ(._.`)'))
+        return True
+
+    def check_object_permissions(self, request=None, obj=None):
+        '''
+            Only owners check. Allow owners of a product to edit it
+            :returns: True when user pass the permission (is author of an object)
+        '''
+        # print(obj.user) ## 
+        permission = IsOwnerOrReadOnly()
+        # will get used in this method APIView
+        view = self.get_view_name()
+        # print(view)
+        # will check permisson
+        request = self.request
+        # print(permission)
+        
+        obj = self.get_object()
+        permission_to_adjust = permission.has_object_permission(request, view, obj)
+        if not permission_to_adjust:
+            raise PermissionDenied(_('This is allowed for the owner only  (」＞＜)」'))
+        return True
+        
+    def check_auth_and_blocked(self):
+        '''
+            Check if user isn't in the Blocklist
+            :returns: True when user isnt blocked
+        '''
+        permission =  BlocklistPermission()
+        view = self.get_view_name()
+        print(view)
+        request = self.request
+        print(request)
+        permission = permission.has_permission(request, view)
+        if not permission:
+            raise PermissionDenied(_(
+            'U don\'t have permission to access: ' + 
+            self.request.META.get('REMOTE_ADDR'))
+            )
+        return True
+
     def post(self, request, *args, **kwargs):
         ''' 
             Add POST method to "Allow" list of HTTP  methods:
             :returns: new product object created 
         '''
+        self.check_permissions()
         obj = self.create(request, *args, **kwargs)
         return obj
     
@@ -182,6 +282,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
             Add PUT method to "Allow" list of HTTP  methods:
             :returns: new product object updated
         '''
+        self.check_object_permissions()
         obj = self.update(request, *args, **kwargs)
         return obj
 
@@ -190,10 +291,10 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
             Add PUT method to "Allow" list of HTTP  methods:
             :returns: new product object updated
         '''
-        obj = self.update(request, *args, **kwargs)
+        self.check_object_permissions()
+        obj = self.partial_update(request, *args, **kwargs)
         return obj
-
-
+        
     def get_inherited_methods(self):
         '''
             Will return * parent methods & attrs

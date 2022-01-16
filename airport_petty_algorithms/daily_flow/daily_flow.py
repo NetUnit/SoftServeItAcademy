@@ -89,11 +89,7 @@ class CalculateFuel:
      items = list(self.kwargs.items())
      result = list(map(lambda x: self.calculate(x), items))
      return print(result)
-     # attr = self.kwargs.get(self.attr) 
-     # iterable = self.kwargs
-     # return print(self.attr)
-     # return print(iterable)
-
+     
   def calculate_total_all(self):
     items = list(self.kwargs.items())
     result = list(map(lambda x: self.calculate_total(x), items))
