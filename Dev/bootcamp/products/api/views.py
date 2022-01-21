@@ -29,6 +29,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from django.db.models import Q
+
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
@@ -36,7 +37,7 @@ from rest_framework.permissions import (
     IsAdminUser 
     )
 
-from .permissions import (
+from bootcamp.api.permissions import (
     IsOwnerOrReadOnly,
     BlocklistPermission
     )
@@ -76,7 +77,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     
-    @action(detail=True, methods=['put', 'get', 'post'])
+    @action(detail=True, methods=['put', 'get', 'post', 'patch'])
     def product(self, request, pk=None):
         ## 'image': [<InMemoryUploadedFile: creepy_bike_c641PhV.png (image/png)>]}
         # need to post/put this as an image in the raw data
@@ -96,9 +97,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         #  update a row with partial data partial=True
         # avoid error of title as required field
         serializer = ProductPostSerializer(product, data=data, partial=True)
-        # x = serializer.get_validation_exclusions()
         y = serializer.validate_title(title)
-
 
         if not serializer.is_valid():
             print('serializer is INVALID')
@@ -137,9 +136,25 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
                         generics.ListAPIView):
 
     '''
-        IsAuthenticated - requires auth to any of methods
-        IsAuthenticatedOrReadOnly - allows to implement GET method without auth
+        ==================================================================
+        This class represents ListApiView along with create/update ability
+        ==================================================================
+        Attrs:
+        :param name: Describes the comapny name
+        :type name: str max_length = 40
+        :param country: Depicts the manufacturer's country of origin
+        :type country: str max_length = 20
+        :param year: depicts the foundation year year of a company
+        :type date: 
+
+        .. note:: 
+            permission_classes:
+            IsAuthenticated - requires auth to any of methods
+            IsAuthenticatedOrReadOnly - allows to implement GET method without auth
+            IsOwnerOrReadOnly - allows to update objects only for owners
+            ReadOnly - allows to apply only SAFE_METHODS ('GET', 'HEAD', 'OPTIONS')
     '''
+
     
     model = Product
     lookup_field = 'pk'
@@ -153,17 +168,10 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
             # IsAuthenticated,
             # IsAuthenticatedOrReadOnly,
             # IsOwnerOrReadOnly
-    ]
+            ]
     
     # defines existing models queryset
     # queryset = Product.objects.all()
-
-    def perform_update(self, serializer):
-        # print(serializer, 'This is serialiazer')
-        serializer.save()
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         qs = Product.objects.all()
@@ -232,7 +240,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
 
     def check_object_permissions(self, request=None, obj=None):
         '''
-            Only owners check. Allow owners of a product to edit it
+            Only owners check. Allow owners of a product to edit it.
             :returns: True when user pass the permission (is author of an object)
         '''
         # print(obj.user) ## 
@@ -267,6 +275,13 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
             self.request.META.get('REMOTE_ADDR'))
             )
         return True
+
+    def perform_update(self, serializer):
+        serializer.save()
+        #   serializer.save(commit=False)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def post(self, request, *args, **kwargs):
         ''' 

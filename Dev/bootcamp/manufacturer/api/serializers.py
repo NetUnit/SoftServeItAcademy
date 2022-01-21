@@ -44,6 +44,11 @@ class ManufacturerPostSerializer(serializers.ModelSerializer):
 
 class ManufacturerCreateSerializer(serializers.ModelSerializer):
 
+    '''
+        self.instance ?!
+        self.kwargs - data (instance, data, partial )
+    '''
+
     image = serializers.ImageField(
         required=False, max_length=None, 
         allow_empty_file=True, use_url=True
