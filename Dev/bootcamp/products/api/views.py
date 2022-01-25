@@ -60,6 +60,7 @@ class ProductCrudView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     serializer_class = ProductPostSerializer
     parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = [AllowAny]
     # queryset = Product.objects.all()
 
     def get_queryset(self):
@@ -76,7 +77,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductPostSerializer
     queryset = Product.objects.all()
     parser_classes = (JSONParser, FormParser, MultiPartParser)
-    
+    permission_classes = [AllowAny]
+
     @action(detail=True, methods=['put', 'get', 'post', 'patch'])
     def product(self, request, pk=None):
         ## 'image': [<InMemoryUploadedFile: creepy_bike_c641PhV.png (image/png)>]}
@@ -115,6 +117,7 @@ class ProductAPIView(generics.CreateAPIView):
     lookup_field = 'pk'
     serializer_class = ProductCreateSerializer
     parser_classes = (JSONParser, FormParser, MultiPartParser, FileUploadParser,)
+    permission_classes = [AllowAny]
     # queryset = Product.objects.all()
 
     
@@ -170,7 +173,8 @@ class ProductMixinAPIView(mixins.CreateModelMixin,
     permission_classes = [
             # IsAuthenticated,
             # IsAuthenticatedOrReadOnly,
-            # IsOwnerOrReadOnly
+            # IsOwnerOrReadOnly,
+            # AllowAny
             ]
     
     # defines existing models queryset

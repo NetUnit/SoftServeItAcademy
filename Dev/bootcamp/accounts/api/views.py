@@ -11,6 +11,13 @@ from .serializers import (
     CustomUserLoginSerializer
 )
 
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    IsAdminUser 
+    )
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import (
@@ -23,6 +30,7 @@ class CustomUserCreateView(generics.CreateAPIView):
     model = get_user_model()
     serializer_class = CustomUserCreateSerializer
     queryset = CustomUser.objects.all()
+    permission_classes = [AllowAny]
 
 
 class CustomUserLoginView(APIView):
@@ -30,11 +38,11 @@ class CustomUserLoginView(APIView):
     permission_classes = [permissions.AllowAny]
     model = get_user_model()
     serializer_class = CustomUserLoginSerializer
+    permission_classes = [AllowAny]
     queryset = CustomUser.objects.all()
+    
 
     def post(self, request, *args, **kwargs):
-        # user = self.create(request, *args, **kwargs)
-        # return user
         data = request.data
         serializer = CustomUserLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):

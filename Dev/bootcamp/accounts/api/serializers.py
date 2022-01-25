@@ -101,12 +101,20 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         ).distinct()
         
         user = user.exclude(email__isnull=True)
+        print(user)
         user = user.first()
         print(user)
-        if user:
-            correct_psw = user.check_password(data.get('password'))
+        print(data.get('password'))
+        if not user:
+            raise serializers.ValidationError(
+                {'detail': 'User wasn\'tfound (° -°）', }
+            )
+        correct_psw = user.check_password(data.get('password'))
+        if not correct_psw:
             raise serializers.ValidationError(
                 {'detail': 'Hmm passsword wasn\'t correct (° -°）', }
             )
+
         data['token'] = 'Some Random Token'
+        
         return data
