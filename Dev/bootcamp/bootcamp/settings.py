@@ -72,7 +72,7 @@ LOGOUT_URL = '/logout/'
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
-AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+# AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 # AUTH_USER_MODEL = 'accounts.MyAccountManager'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
@@ -236,6 +236,8 @@ REST_FRAMEWORK = {
 }
 
 
+# additional settings that you can override similar to
+# how you'd do it with Django REST framework
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
     'rest_framework_jwt.utils.jwt_encode_handler',
