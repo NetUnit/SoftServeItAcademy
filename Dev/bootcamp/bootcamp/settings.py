@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',                                             # crispy_forms for temapltes
     'paypal.standard.ipn',                                      # paypal gateaway
     'rest_framework_jwt',
+    # 'oauth2_provider'
     # 'rest_framework.authtoken',
 ]
 
@@ -72,7 +73,7 @@ LOGOUT_URL = '/logout/'
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
-# AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 # AUTH_USER_MODEL = 'accounts.MyAccountManager'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
@@ -235,7 +236,7 @@ REST_FRAMEWORK = {
     )
 }
 
-
+##### *** JWT Authentication SETTINGS *** #####
 # additional settings that you can override similar to
 # how you'd do it with Django REST framework
 JWT_AUTH = {

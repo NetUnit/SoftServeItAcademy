@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 from accounts.models import CustomUser
-
+from django.contrib.auth import authenticate, login
+from rest_framework import serializers
 
 from .serializers import (
     CustomUserCreateSerializer,
@@ -39,13 +40,24 @@ class CustomUserLoginView(APIView):
     model = get_user_model()
     serializer_class = CustomUserLoginSerializer
     permission_classes = [AllowAny]
-    queryset = CustomUser.objects.all()
-    
 
     def post(self, request, *args, **kwargs):
         data = request.data
+        #print(request.user)
+        #print(request.auth)
         serializer = CustomUserLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             data = serializer.data
             return Response(data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    
+    def perform_authentication(self, request):
+        email = request.data.get('email')
+        username  = request.data.get('username')
+        _password = request.data.get('password')
+        email = username if not email else email
+        user = authenticate(request, username=email, password=_password)
+        login(request, user) if user else serializers.ValidationError(
+            {'detail': 'Seem\'s like that username or email was wrong (⇀‸↼‶)'},
+        )
+
