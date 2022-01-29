@@ -67,12 +67,12 @@ INSTALLED_APPS = [
     'crispy_forms',                                             # crispy_forms for temapltes
     'paypal.standard.ipn',                                      # paypal gateaway
     ### *** api authentication *** ###
-    'rest_framework.authtoken',
+    'rest_framework.authtoken', #+++
     'rest_framework_jwt',
     ## oauth2 provider 
     'oauth2_provider',
     ## social django
-    'social_django'
+    'social_django' ## ++
 
 ]
 

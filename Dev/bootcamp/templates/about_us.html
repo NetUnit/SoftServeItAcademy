@@ -33,11 +33,36 @@
         
         .about-section {
             padding: 50px;
-            text-align: center;
-            background-color: #474e5d;
+            /* text-align: center; */
+            background-color: #2a3447;
             color: white;
+            margin-bottom: 10px;
+        }
+
+        .about-description {
+            /* font-family: SohoGothicStd; */
+            font-size: 18px;
+            /* color: #677684;
+            letter-spacing: 0; */
+            line-height: 28px;
+            /* margin: 20px; */
+            margin: 20px 2vw;
+            /* color: rgb(3, 4, 31); */
         }
         
+        .django-unit-header {
+            text-align: left;
+            padding: 10px;
+            padding-bottom: 0px;
+            font-weight: bolder;
+            /* color: rgb(3, 4, 31); */
+        }
+
+        .django-unit {
+            font-size: 18px;
+            /* color: rgb(3, 4, 31); */
+        }
+
         .container {
             padding: 0 16px;
         }
@@ -51,21 +76,29 @@
         .title {
             color: grey;
         }
+
+        .contact-button {
+            padding: 10px;
+        }
         
         .button {
             border: none;
             outline: 0;
             display: inline-block;
             padding: 8px;
-            color: white;
-            background-color: #000;
+            color: rgb(255, 255, 255);
+            background-color: rgb(3, 4, 31);
             text-align: center;
             cursor: pointer;
             width: 100%;
+            border-radius: 3px;
+            text-decoration: none;
         }
         
         .button:hover {
-            background-color: #555;
+            background-color: gainsboro;
+            color: rgb(3, 4, 31);
+            text-decoration: none;
         }
         
         @media screen and (max-width: 650px) {
@@ -79,86 +112,98 @@
 
 <body>
     <div class="about-section">
-        <h1>Panda Hardware</h1>
-        <p>Is a prototype of a tiny e-commerce website which has been built with Django/Python</p>
-        <p>
-            Panda Hardware main idea has started as a result of the first 4 modules of a Django Bootcamp and then this project had been extended to something bigger.
-            Within building apps, from time to time I was interested in adding other website tools that had led to additional raws of code and more pages.
+        <h2 style="font-weight: bolder;">Panda Hardware</h2>
+        <div class="about-description">
+            <p>Is a prototype of a tiny e-commerce website which has been built with Django/Python.</p>
+            <p>Panda Hardware main idea has started as a result of the first 4 modules of a Django Bootcamp and then this project had been extended to something bigger.</p>
+            <p>Within building apps, from time to time I was interested in adding other website tools that had led to additional raws of code and more pages.</p>
 
-            Being a big fan of motorcycles & of coourse pandas, I decided to put bikes as the product line.
-            These templates and peaces of code may seem ugly for U, so I'm eager to receive your feedback and opinion.
-            Here is the link to projects GIT repository.
-        </p> 
-        <p class="django-user" style="text-align: left;">
-            Pluses of Django as a user:
+            <p>Being a big fan of motorcycles & of coourse pandas, I decided to put bikes as a product line.</p>
+            <p>These templates and peaces of code may seem ugly for U, so I'm eager to receive your feedback and opinion.</p>
+            <p>Here is a GIT repository link:
+                <a href="https://github.com/NetUnit/SoftServeItAcademy/tree/main/Dev/bootcamp">
+                    <img src="{% static 'images/git-logomark-black.png' %}" alt="Git logo">
+                </a>
+            </p>
+
+        </div>
+        <h2 class="django-unit-header"> Benefits of Django as a user: </h2>
+        <p class="django-unit" style="text-align: left; margin-left: 50px;">
+                • Advanced functionality, tools & ease of customization 
                 <br>
-                •   
+                • Advanced business logic & high task objective execution accuracy
                 <br>
-                •
+                • Django is nice for Search Engine Optimization (SEO)
                 <br>
-                •
+                • Admin Generator mechanically generates Django Admin when changes occur
                 <br>
-                • much higher level of specificity to the brand message
+                • Much higher level of specificity to the brand message
         </p>
-        <p class="django-user" style="text-align: left;">
-            Pluses of Django as a developer:
-                <br>
-                • Python: python-based framework with it's total ease of the development;
-                <br>
-                • Versatile: one of the most popular open-source tools for achieving various goals
-                <br>
-                • SPEED: fast pace of install, configure, build & deploy tha app;
-                <br>
-                • ORM: pythonical way to create SQL, query and manipulate the database
-                <br>
-                • EFFICIENCY: from ideas to production in the shortest possible time.
-                <br>
-                • Security: Ensures that the developers don’t make silly security mistakes.
-                <br>
-                • Scalable: Consists of small pluggable applications. Apps are easily plugged into the main project.
+        <h2 class="django-unit-header"> Advantages of Django as a developer: </h2>
+        <p class="django-unit" style="text-align: left; margin-left: 50px;">
+            • Python: python-based framework with it's total ease of the development
+            <br>
+            • Versatile: one of the most popular open-source tools for achieving various goals
+            <br>
+            • SPEED: fast pace of install, configure, build & deploy tha app
+            <br>
+            • ORM: pythonical way to create SQL, query and manipulate the database
+            <br>
+            • EFFICIENCY: from ideas to production in the shortest possible time
+            <br>
+            • Security: Ensures that the developers don’t make silly security mistakes
+            <br>
+            • Scalable: Consists of small pluggable applications. Apps are easily plugged into the main project.
+            <br>
+            • Logic Independance: Model View Template Architecture provides separated concerns in software development
         </p>
     </div>
       
-    <h2 style="text-align:center">Our Team</h2>
+    <h2 style="text-align:center; color: white; padding: 10px;">Our Team</h2>
     <div class="row">
     <div class="column">
         <div class="card">
-        <img src="{% static 'images/Jane_Doe.png' %}" alt="Jane" style="width:100%">
-        <div class="container">
-            <h2>Jane Doe</h2>
-            <p class="title">Frontend developer</p>
-            <p>Amazing Woman</p>
-            <p>myXbox@bigmir.net</p>
-            <p><button class="button">Contact</button></p>
-        </div>
-        </div>
-    </div>
-    
-    <div class="column">
-        <div class="card">
-        <img src="{% static 'images/Net_Unit.png' %}" alt="NetUnit" style="width:100%">
-        <div class="container">
-            <h2>Net Unit</h2>
-            <p class="title">Trainee Backend Developer</p>
-            <p>Try to write a Python code but stuck in templates</p>
-            <p>andriyproniyk@gmail.com</p>
-            <p><button class="button">Contact</button></p>
-        </div>
+            <img src="{% static 'images/Jane_Doe.png' %}" alt="Jane" style="width:100%">
+            <div class="container">
+                <h2>Jane Doe</h2>
+                <p class="title">Frontend developer</p>
+                <p>Amazing Woman</p>
+                <p>myXbox@bigmir.net</p>
+                <p class="contact-button"><button class="button">Contact</button></p>
+            </div>
         </div>
     </div>
     
     <div class="column">
         <div class="card">
-        <img src="{% static 'images/John_Doe.png' %}" alt="John" style="width:100%">
-        <div class="container">
-            <h2>John Doe</h2>
-            <p class="title">CEO & Founder</p>
-            <p>He is not Jane's husband </p>
-            <p>john@example.com</p>
-            <p><button class="button">Contact</button></p>
-        </div>
+            <img src="{% static 'images/Net_Unit.png' %}" alt="NetUnit" style="width:100%">
+            <div class="container">
+                <h2>Net Unit</h2>
+                <p class="title">Trainee Backend Developer</p>
+                <p>Tries to write a Python code but stuck with templates</p>
+                <p>andriyproniyk@gmail.com</p>
+                <p class="contact-button">
+                    <a href="https://frosty-cori-df7b43.netlify.app/"
+                        class="button"
+                    > 
+                        Contact
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
+    
+    <div class="column">
+        <div class="card">
+            <img src="{% static 'images/John_Doe.png' %}" alt="John" style="width:100%">
+            <div class="container">
+                <h2>John Doe</h2>
+                <p class="title">CEO & Founder</p>
+                <p>He is not Jane's husband </p>
+                <p>john@example.com</p>
+                <p class="contact-button"><button class="button">Contact</button></p>
+            </div>
+        </div>
     </div>
 
 </body>
