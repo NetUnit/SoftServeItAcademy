@@ -91,7 +91,9 @@ urlpatterns = [
     re_path(r'^api/products/', include(('products.api.urls', 'api-products'), namespace='api-products')),
     re_path(r'^api/manufacturers/', include(('manufacturer.api.urls', 'api-manufacturers'), namespace='api-manufacturers')),
     re_path(r'^api/orders/', include(('orders.api.urls', 'api-orders'), namespace='api-orders')),
-    #### *** Custom API Accounts *** ####
+    
+    ### OAuth2 Authnetication urls ###
+    re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     
     ################### *** payments views *** ########################
     path('paypal/', include('paypal.standard.ipn.urls')),
