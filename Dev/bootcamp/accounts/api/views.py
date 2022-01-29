@@ -43,6 +43,7 @@ class CustomUserLoginView(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
+        print(data)
         #print(request.user)
         #print(request.auth)
         serializer = CustomUserLoginSerializer(data=data)

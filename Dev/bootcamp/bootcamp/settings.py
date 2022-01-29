@@ -58,9 +58,10 @@ INSTALLED_APPS = [
     'orders',                                                   # app#5
     'crispy_forms',                                             # crispy_forms for temapltes
     'paypal.standard.ipn',                                      # paypal gateaway
+    ### *** api authentication *** ###
+    'rest_framework.authtoken',
     'rest_framework_jwt',
-    # 'oauth2_provider'
-    # 'rest_framework.authtoken',
+    'oauth2_provider'
 ]
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -73,7 +74,7 @@ LOGOUT_URL = '/logout/'
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
-AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+# AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 # AUTH_USER_MODEL = 'accounts.MyAccountManager'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
@@ -230,51 +231,51 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        #'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.BasicAuthentication',
     )
 }
 
-##### *** JWT Authentication SETTINGS *** #####
+#### *** JWT Authentication SETTINGS *** #####
 # additional settings that you can override similar to
 # how you'd do it with Django REST framework
-JWT_AUTH = {
-    'JWT_ENCODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_encode_handler',
+# JWT_AUTH = {
+#     'JWT_ENCODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_encode_handler',
 
-    'JWT_DECODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_decode_handler',
+#     'JWT_DECODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_decode_handler',
 
-    'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
+#     'JWT_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_payload_handler',
 
-    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+#     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+#     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
 
-    'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_response_payload_handler',
+#     'JWT_RESPONSE_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_response_payload_handler',
 
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_GET_USER_SECRET_KEY': None,
-    'JWT_PUBLIC_KEY': None,
-    'JWT_PRIVATE_KEY': None,
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
-    'JWT_AUDIENCE': None,
-    'JWT_ISSUER': None,
+#     'JWT_SECRET_KEY': SECRET_KEY,
+#     'JWT_GET_USER_SECRET_KEY': None,
+#     'JWT_PUBLIC_KEY': None,
+#     'JWT_PRIVATE_KEY': None,
+#     'JWT_ALGORITHM': 'HS256',
+#     'JWT_VERIFY': True,
+#     'JWT_VERIFY_EXPIRATION': True,
+#     'JWT_LEEWAY': 0,
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+#     'JWT_AUDIENCE': None,
+#     'JWT_ISSUER': None,
 
-    'JWT_ALLOW_REFRESH': False,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+#     'JWT_ALLOW_REFRESH': False,
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    'JWT_AUTH_COOKIE': None,
-
-}
-
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+#     'JWT_AUTH_COOKIE': None,
+# }
 
 
 # Static files (CSS, JavaScript, Images)

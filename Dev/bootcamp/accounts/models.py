@@ -265,3 +265,18 @@ class CustomUser(AbstractUser):
     #     return self.get_role_display()
 
 
+#### *** Token Authentication *** ####
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    '''
+        Everytime user has been created it automatically 
+        generates a token associated with a currnet user.
+        :returns: auth token that is queried to use the API
+    '''
+    if created:
+        Token.objects.create(user=instance)
