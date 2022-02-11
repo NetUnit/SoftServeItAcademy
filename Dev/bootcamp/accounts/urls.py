@@ -55,8 +55,12 @@ urlpatterns = [
     re_path(r'^accounts/login-cbv/$', CustomLoginView.as_view(), name='login_cbv'),
     re_path(r'^accounts/login-fbv/$', login_user_view, name='login_fbv'),                                               ## +++ authenticate doesn't work - set_apssword()
     re_path(r'^accounts/login-success/$', login_success_view, name='login-success'),                                    ## +++
-    re_path(r'^accounts/login-failed/$', login_failed_view, name='login_failed'),                                       ## +++
+    re_path(r'^accounts/login-failed/$', login_failed_view, name='login_failed'),
+    
 
+    ######################### *** Social Authentication *** #######################
+    # re_path(r'^o/sighn-in-test/$', social_authentication_view, name='oauth_user-login-test'),
+    
     ######################### *** LOGOUT CBV *** #######################
     re_path(r'^accounts/log-out/$', logout_success_view, name='logout'),                                                 ## ++
 
