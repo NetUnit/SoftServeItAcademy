@@ -11,7 +11,7 @@ from .serializers import (
     CustomUserCreateSerializer,
     CustomUserLoginSerializer,
     GoogleSocialAuthSerializer
-)
+    )
 
 from rest_framework.permissions import (
     AllowAny,
@@ -26,8 +26,21 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST
-)
+    )
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import (
+    get_object_or_404,
+    render,
+    redirect
+    )
+
+from django.http import (
+    HttpResponse, 
+    JsonResponse,
+    Http404,
+    HttpResponseRedirect
+    )
 
 class CustomUserCreateView(generics.CreateAPIView):
     
@@ -79,11 +92,11 @@ class GoogleSocialAuthView(GenericAPIView):
             posted data from google with auth_token & auth_token_id
 
         '''
-        # serializer = GoogleSocialAuthSerializer()
+        
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data.get('auth_token')
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=HTTP_200_OK)
     
 
 
@@ -92,10 +105,9 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.http import JsonResponse
 import json
-from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib import messages
-
+from rest_framework.response import Response
 
 # class CustomLoginView(auth_views.LoginView):
 #     form_class = LoginForm
@@ -126,52 +138,100 @@ def social_authentication_view(request, *args, **kwargs):
     # print(request.META.get('data'))
     
     # POST method is acquired via JS in a template
-    if request.method == 'POST':
-        serializer = serializer_class()
 
+    if request.method == 'POST':
+        print('This is POST')
+        # print(request.user.is_authenticated)
+        serializer = serializer_class()
+        # decoded_string = x.decode()
+        # print(decoded_string)
+        
         try:
+            # 2 METHODS using JS POST fetch url
             # get bytes API request
-            value = request.body
-            # from bytes to str dict data
-            decoded_string = value.decode()
-            token = eval(decoded_string).get('IdToken')
-            
+            # value = request.body
+            # # from bytes to str dict data
+            # decoded_string = value.decode()
+            # token = eval(decoded_string).get('IdToken')
+
             # another way of getting IdToken
             # data = json.loads(request.body)
             # print(data)
             # token = data['IdToken']
+            
+            # raw request method data
+            raw_data = request.__dict__.get('_body')
+            # print(f'{raw_data} this are bytes')
+            decoded_string = raw_data.decode()
+            # print(f'{decoded_string} this are decoded string1')
+            decoded_string = eval(decoded_string)
+            # print(f'{decoded_string} this are decoded string2')
+            token = decoded_string.get('IdToken')
+            # print(token)
+
+            # print(request.user.is_authenticated)
+            ## print(token) ## ++
+            
+
 
             result = serializer.validate_auth_token(token)
+            # print(request.user.is_authenticated)
             # print(result) ## ++
             # print(isinstance(result, CustomUser)) ## ++
-
+            
+            # register user
             if isinstance(result, dict):
+                
                 new_user_data = result
-                new_user = serializer.register_social_user(new_user_data)
+                print(new_user_data)
+
+                ### ***** ###
+                # new_user = serializer.register_social_user(new_user_data)
+                
                 messages.success(
                 request,
                 f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
                 )
                 return redirect ('/accounts/register-fbv/')
             
+            # login user
             if isinstance(result, CustomUser):
-                print(result)
-                user = result
-                res = serializer.authenticate_social_user(request=request, user=user)
-                print(res)
+                    # print(request.method) ## POST
+                    # print(result)
 
+                # if not request.user == result:
+                #     print(result)
+                #     return redirect('accounts/check-user-auth/')
+                #     # return redirect('/accounts/login-failed/')
+                #     return render (request, 'user_status.html', context={'result': result})
+
+                user = result
+                login(request, user, backend='accounts.backends.EmailBackend')
+            
+                # WSGI POST
+                ## <Response status_code=200, "text/html; charset=utf-8">
+
+                ### ***** ###
+                # res = serializer.authenticate_social_user(request=request, user=user)
+                # print(res)
                 messages.success(
                 request,
-                f'U\'ve just successfully logined (^_-)≡☆'
+                f'U\'ve just successfully logined (^_-)≡☆;;;'
                 )
-                return redirect('/')
-
+                # print('dsd')
+                # print(user)
+                # return redirect('/accounts/login-success/')
+                print(f'CustomUser: {user}')
+                # return redirect('/accounts/login-success/')
+                return render (request, 'accounts/oauth2_login.html', context={'user': user})
+                # return redirect ('/panda-hardware/')
+                
+            
         except Exception as err:
             print(err)
-        
-        return render (request, 'accounts/oauth2_login.html', context={})
-        # return redirect ('/o/sighn-in-test/')
 
+    # user = request.user
+    # print(f'GET: {user}')
     return render (request, 'accounts/oauth2_login.html', context={})
 
 
@@ -232,3 +292,127 @@ class GoogleSocialAuthTemplateView(TemplateView, APIView):
 # from django.shortcuts import redirect
 # def test_view(request):
 #     return redirect ('/o/sighn-in-test/')
+
+# @csrf_protect
+# def social_authentication_view(request, *args, **kwargs):
+#     '''
+#         is a Google IdToken for user authnentication
+
+#         :returns: Google IdToken
+#         :rtype: str
+
+#         .. note:: 
+#             subsequent parameters: 
+#                 * body: data sent by the client to our API
+#                 * value: bytes from the body response
+#                 * decoded_string: str data from bytes 
+#                 * data: dict(), another way of getting IdToken 
+#     '''
+#     serializer_class = GoogleSocialAuthSerializer
+
+#     # print(request.META.get('PATH_INFO'))
+#     # print(f'{request.POST} This is post')
+#     # print(request.META.get('GOOGLE_CLIENT_ID'))
+#     # print(request.META.get('GOOGLE_CLIENT_SECRET'))
+#     # print(request.META.get('data'))
+#     # print(request)
+    
+#     # POST method is acquired via JS in a template
+#     # print(request.META)
+#     print(request.method)
+#     try:
+#         if request.method == 'POST':
+#             print('This is POST')
+#             # print(request.user.is_authenticated)
+#             serializer = serializer_class()
+#             # decoded_string = x.decode()
+#             # print(decoded_string)
+            
+
+#             # 2 METHODS using JS POST fetch url
+#             # get bytes API request
+#             # value = request.body
+#             # # from bytes to str dict data
+#             # decoded_string = value.decode()
+#             # token = eval(decoded_string).get('IdToken')
+
+#             # another way of getting IdToken
+#             # data = json.loads(request.body)
+#             # print(data)
+#             # token = data['IdToken']
+            
+#             # raw request method data
+#             raw_data = request.__dict__.get('_body')
+#             # print(f'{raw_data} this are bytes')
+#             decoded_string = raw_data.decode()
+#             # print(f'{decoded_string} this are decoded string1')
+#             decoded_string = eval(decoded_string)
+#             # print(f'{decoded_string} this are decoded string2')
+#             token = decoded_string.get('IdToken')
+#             # print(token)
+
+#             # print(request.user.is_authenticated)
+#             ## print(token) ## ++
+            
+
+
+#             result = serializer.validate_auth_token(token)
+#             # print(request.user.is_authenticated)
+#             # print(result) ## ++
+#             # print(isinstance(result, CustomUser)) ## ++
+            
+#             # register user
+#             if isinstance(result, dict):
+                
+#                 new_user_data = result
+#                 print(new_user_data)
+#                 ### ***** ###
+#                 # new_user = serializer.register_social_user(new_user_data)
+                
+#                 messages.success(
+#                 request,
+#                 f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
+#                 )
+#                 return redirect ('/accounts/register-fbv/')
+            
+#             # login user
+#             if isinstance(result, CustomUser):
+#                 # print(request.method) ## POST
+#                 # print(result)
+
+#                 # if not request.user == result:
+#                 #     print(result)
+#                 #     return redirect('accounts/check-user-auth/')
+#                 #     # return redirect('/accounts/login-failed/')
+#                 #     return render (request, 'user_status.html', context={'result': result})
+
+#                 user = result
+#                 login(request, user, backend='accounts.backends.EmailBackend')
+            
+#                 # WSGI POST
+#                 ## <Response status_code=200, "text/html; charset=utf-8">
+
+#                 ### ***** ###
+#                 # res = serializer.authenticate_social_user(request=request, user=user)
+#                 # print(res)
+#                 messages.success(
+#                 request,
+#                 f'U\'ve just successfully logined (^_-)≡☆;;;'
+#                 )
+#                 # print('dsd')
+#                 # print(user)
+#                 # return redirect('/accounts/login-success/')
+#                 print(f'CustomUser: {user}')
+#                 return redirect('/o/sighn-in-test/')
+#                 # return render (request, 'accounts/oauth2_login.html', context={'user': user})
+#                 # return redirect ('/panda-hardware/')
+                    
+#         if request.method == 'GET':
+#             print(request.user)
+#             # user = request.user
+#             # print(f'GET: {user}')
+#             context = {}
+#             return render (request, 'accounts/oauth2_login.html', context)
+    
+#     except Exception as err:
+#         print(err)

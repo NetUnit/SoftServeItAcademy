@@ -24,3 +24,5 @@ Direct_link
 .env
 
 .devcontainer
+
+.django-google-auth-schema.png

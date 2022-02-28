@@ -17,6 +17,7 @@ from accounts.views import (
     login_failed_view,
     #########
     profile_user_view,
+    profile_recovery_view,
     profile_list_view,
     ##########
     profile_update_view,
@@ -24,6 +25,7 @@ from accounts.views import (
     ########
     profile_delete_view,
     profile_delete_submit,
+
     ########
 
     ########
@@ -65,8 +67,11 @@ urlpatterns = [
     re_path(r'^accounts/log-out/$', logout_success_view, name='logout'),                                                 ## ++
 
     ######################### *** profile FBW ***#######################
-    re_path(r'^accounts/profile/(?P<user_id>\d+)/$', profile_user_view, name='profile'),                                ## ++
+    re_path(r'^accounts/profile/(?:(?P<user_id>\w+)/)?$', profile_user_view, name='profile'),                            ## ++
+    # re_path(r'^accounts/profile/$', profile_user_view, name='profile'),                                                ## ++
     re_path(r'^accounts/profiles/list/$', profile_list_view, name='profile_list_view'),
+
+    re_path(r'^accounts/profiles/recover/$', profile_recovery_view, name='profile-recovery'),                            ## ++
 
     ######################### *** profile DELETE FBW ***#######################
     re_path(r'^accounts/profile-delete/(?P<user_id>\d+)/$', profile_delete_view, name='profile_delete_view'),            ## ++
@@ -78,14 +83,14 @@ urlpatterns = [
     re_path(r'^accounts/update-success/(?P<user_id>\d+)/$', update_success_view, name='update_success_view'),            ## ++
 
     ######################## *** UPDATE CBV *** #######################
-    re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## +++
+    re_path(r'^accounts/check-user-auth/$', check_user_auth, name='check_user_auth'),                                    ## ++
     re_path(r'^accounts/status-update/(?P<user_id>\d+)/$', status_update_view, name='status_update'),
-    #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## 
+    #re_path(r'^accounts/check-staff-auth/$', check_staff_auth, name='check_staff_auth'),                                ## ++ 
 
     re_path(r'^accounts/media-download/(?P<user_id>\d+)/$', media_download_view, name='media_download_view'),
 
     ########################  *** show info *** ########################
-    re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                     ## +++
+    re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                      ## +++
 
     ########################## *** ban *** #######################
     re_path(r'^accounts/profiles/ban/(?P<user_id>\d+)/$', ban_user_view, name='ban_user_view'),
