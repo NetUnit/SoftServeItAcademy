@@ -25,6 +25,7 @@ from accounts.models import (
     )
 
 from django.contrib.auth import authenticate, login
+import json
 
 class CustomUserCreateSerializer(serializers.ModelSerializer):
 
@@ -134,16 +135,19 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
 
 
 from bootcamp.settings import AUTH_PROVIDERS
-from django.contrib.auth.hashers import make_password
-import random
-import string 
+from rest_framework_jwt.settings import api_settings
+from django.http import HttpResponse
+import datetime
+from django.utils import timezone
+
+# from rest_framework_jwt.compat import set_cookie_with_token
+from rest_framework_jwt import compat
+# from compat import set_cookie_with_token
 
 class GoogleSocialAuthSerializer(serializers.Serializer):
     
     auth_token = serializers.CharField() 
 
-    # register new_user here
-    # add provider later
     def register_social_user(self, data):
         user = CustomUser()
         _password = ''.join(
@@ -171,30 +175,30 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
 
 
     # authenticate user_here
-    def authenticate_social_user(self, *args, request=None, user=None):
-        username=user.email
-        print(username)
-        password=user.password
-        print(password)
+    # def authenticate_social_user(self, *args, request=None, user=None):
+    #     username=user.email
+    #     print(username)
+    #     password=user.password
+    #     print(password)
 
-        try:
-            user = authenticate(
-                username=user.email,
-                password='Aer0p0rt1715418'
-            )
-            
-            # if request:
-            #     login(request, user)
-            return user
-        except:
-            print ('Something went wrong with args')
+    #     try:
+    #         user = authenticate(
+    #             username=user.email,
+    #             password='Aer0p0rt1715418'
+    #         )
+
+    #         # if request:
+    #         #     login(request, user)
+    #         return user
+    #     except:
+    #         print ('Something went wrong with args')
 
     def validate_auth_token(self, auth_token):
 
         try:
             user_data = Google.validate(auth_token)
             user_data['sub']
-            #print(f"This is user data: {user_data}")
+            print(f"This is user data: {user_data}")
         except Exception as err:
             # print(f'Err: {err}')
             raise serializers.ValidationError(
@@ -210,27 +214,73 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     {'detail': 'Oops who are U ...', }
                 )
-
         except Exception as err2:
             print(f'Err2: {err2}')
 
+        
         user_id = user_data.get('sub')
-        print(user_id)
+        # print(user_id)
         email = user_data.get('email')
-        print(email)
+        # print(email)
         name = user_data.get('name')
-        print(name)
+       #  print(name)
 
         provider = ''.join(
             [provider for provider in AUTH_PROVIDERS
             if len(user_data['iss'].split(provider)) > 1]
         )
 
-        print(provider)
+        # print(provider)
 
         data = dict(email=email, username=name)
         user_exists = CustomUser.user_exists(data)
         if user_exists:
             return CustomUser.get_user_by_email(email=email)
         return data
+
+
+    def get_now(self) -> datetime:
+        return timezone.now()
+
+    # assighn date 
+    def user_record_login(self, user: CustomUser) -> CustomUser:
+        user.last_login = self.get_now()
+        user.save()
+        return user
+
+    # to dict user
+    def get_user(self, user: CustomUser):
+
+        return {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        }
                 
+
+    def jwt_login(self, response: HttpResponse, user: CustomUser) -> HttpResponse:
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER ## ++
+        
+
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER ## ++
+        
+
+        payload = jwt_payload_handler(user) ## ++
+        # print(payload)
+        # payload = json.loads(str(payload))
+
+        # token = jwt_encode_handler(payload) ## ++
+        # print(token)
+
+        # if api_settings.JWT_AUTH_COOKIE:
+        #     set_cookie_with_token(response, api_settings.JWT_AUTH_COOKIE, token)
+
+        self.user_record_login(user=user) 
+
+        return response
+
+    def some_function(self,  user: CustomUser) -> CustomUser:
+        self.user_record_login(user=user)
+        response = Response(data=serializer.get_user(user=user)) 
+        response = serializer.jwt_login(response=response, user=user)
+        

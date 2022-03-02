@@ -76,6 +76,7 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
 # try/except blocks will be excessive as model has it already 
 def product_list_view(request, *args, **kwargs):
     try:
+        # print(request.user.is_authenticated)
         products = Product.get_all()
         images = [str(product.image) for product in products]
         #[print(image) for image in images]
@@ -160,7 +161,7 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
             # media = request.FILES.get('media')
             # product.media = media
 
-            print(product)
+            # print(product)
             
             product.save()
             messages.success(

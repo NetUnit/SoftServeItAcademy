@@ -29,7 +29,6 @@ from products.views import (
 )
 
 from accounts.views import (
-    panda_link_view,
     contact_view,
 )
 
@@ -40,6 +39,7 @@ from bootcamp.views import (
     search_view,
     search_venues,
     feedback_form_view,
+    panda_link_view,
 )
 
 from accounts.api.views import(
@@ -114,3 +114,25 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+    # if (user==='AnonymousUser') {
+
+    #   if (confirm('1. U will be sighedin as: ' + User)) {
+    #     // on approve --> process login
+    #     formData(IdToken, User);
+    #     alert('U\'ve signed in as: ' + User);
+    #     location.replace(url2);
+      
+    #   } else {
+    #     // skip login
+    #     alert('U\'ve passed the login for: ' + User);
+    #     location.replace(url4);
+    #   }
+    # }
+    
+    # // same user is already authenticated
+    # else if (same_email) {
+    #   alert('2. U\'ve already sighed-in as: ' + User)
+    #   location.replace(url1);
+    # }
