@@ -6,5 +6,10 @@
 .Реєстр Укртатнафта Jet A-1.xlsx
 .parse_data(before_fuel_choices).py
 .xlsx
-
+.pyvenv.cfg
+lib64/
+lib/
+share/
+bin/
+.txt
 
