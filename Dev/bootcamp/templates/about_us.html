@@ -17,6 +17,7 @@
         
         *, *:before, *:after {
             box-sizing: inherit;
+            
         }
         
         .column {
@@ -61,6 +62,11 @@
         .django-unit {
             font-size: 18px;
             /* color: rgb(3, 4, 31); */
+        }
+
+        .git-logo::after {
+            content: "";
+            background-color: transparent;
         }
 
         .container {
@@ -122,7 +128,7 @@
             <p>These templates and peaces of code may seem ugly for U, so I'm eager to receive your feedback and opinion.</p>
             <p>Here is a GIT repository link:
                 <a href="https://github.com/NetUnit/SoftServeItAcademy/tree/main/Dev/bootcamp">
-                    <img src="{% static 'images/git-logomark-black.png' %}" alt="Git logo">
+                    <img src="{% static 'images/1color-darkbg@2x.png' %}" alt="Git logo" class="git-logo" style="background-color: transparent; width: 94.08px; height: 32px;">
                 </a>
             </p>
 
@@ -183,7 +189,7 @@
                 <p>Tries to write a Python code but stuck with templates</p>
                 <p>andriyproniyk@gmail.com</p>
                 <p class="contact-button">
-                    <a href="https://frosty-cori-df7b43.netlify.app/"
+                    <a href="https://happy-nobel-83b0ab.netlify.app/"
                         class="button"
                     > 
                         Contact
