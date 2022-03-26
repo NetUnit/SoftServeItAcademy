@@ -1,0 +1,11 @@
+.Звіт РТ.xlsx
+.Звіт Jet A-1.xlsx
+.Реєстр Укртатнафта РТ.xlsx
+.Реєстр Укртатнафта Jet A-1.xlsx
+*.xlsx
+.pyvenv.cfg
+lib64/
+lib/
+share/
+bin/
+*.txt
