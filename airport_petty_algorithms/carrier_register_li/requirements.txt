@@ -1,2 +1,0 @@
-et-xmlfile==1.1.0
-penpyxl==3.0.9
