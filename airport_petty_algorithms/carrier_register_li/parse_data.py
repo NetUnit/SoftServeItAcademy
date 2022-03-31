@@ -18,7 +18,6 @@ from openpyxl import (
 
 )
 
-
 class FuelArrivedField:
     '''
         ===========================================================
@@ -35,7 +34,20 @@ class FuelArrivedField:
 
     msg = 'Please enter a correct amount'
     msg2 = 'shoud be digits or 0 if no supply'
-    fuel_arrived = None
+    # fuel_arrived = None
+
+    def __init__(self, fuel_arrived=None):
+        try:
+            self.fuel_arrived = int(fuel_arrived)
+        except (TypeError, AttributeError):
+            self.fuel_arrived = None
+            self.error = self.msg
+        except ValueError:
+            self.fuel_arrived = None
+            field_name = self.__class__.__name__
+            msg3 =  self.get_classname(field_name)
+            self.error = f'{msg3} {self.msg2}'
+        
 
     @staticmethod
     def get_classname(field_name):
@@ -47,13 +59,21 @@ class FuelArrivedField:
         ).capitalize()
         return field_name
 
-    def __init__(self):
+
+class FuelTypeField(FuelArrivedField):
+    '''
+        ===========================================================
+        This class represents a 'Fuel Arrived Widget'
+        ===========================================================
+        Attrs:
+            :param msg2: error message for inappropriate field input
+            :type msg: <str>
+    '''
+
+    
+    def __init__(self, fuel_type=None):
         try:
-            self.fuel_arrived = int(
-                input(
-                    'Enter the fuel supply, kg: '
-                    )
-                )
+            self.fuel_type = fuel_type
         except (TypeError, AttributeError):
             print(self.msg)
         except ValueError:
@@ -61,7 +81,30 @@ class FuelArrivedField:
             msg3 =  self.get_classname(field_name)
             print(f'{msg3} {self.msg2}')
         finally:
-            exit() if self.fuel_arrived is None else True
+            exit() if self.fuel_type is None else True
+
+class SelectDateField(FuelArrivedField):
+    '''
+        ===========================================================
+        This class represents a 'Date Selection Widget'
+        ===========================================================
+        Attrs:
+            :param msg2: error message for inappropriate field input
+            :type msg: <str>
+    '''
+
+    
+    def __init__(self, date=None):
+        try:
+            self.date = date
+        except (TypeError, AttributeError):
+            print(self.msg)
+        except ValueError:
+            field_name = self.__class__.__name__
+            msg3 =  self.get_classname(field_name)
+            print(f'{msg3} {self.msg2}')
+        finally:
+            exit() if self.date is None else True
 
 
 class FuelResidueField(FuelArrivedField):
@@ -89,6 +132,7 @@ class FuelResidueField(FuelArrivedField):
             print(f'{msg3} {self.msg2}')
         finally:
             exit() if self.fuel_residue is None or prev_rep_date is None else True
+
 
 class LoadXLSXFileField:
     '''
@@ -204,8 +248,8 @@ class ParseXLSXData:
     registry_jet = 'Реєстр Укртатнафта Jet A-1.xlsx'
     report_jet = 'Звіт Jet A-1.xlsx'
 
-    #### *** ---> BUTTON RT Jet-A1 <--- *** ##### 
-    select_fuel = input('Please select type of fuel U want to make a report of: ')
+    ## DONE #### *** ---> BUTTON RT Jet-A1 <--- *** ##### 
+    ### select_fuel = input('Please select type of fuel U want to make a report of: ')
     
     format = '%d-%m-%Y'
     format2 = '%d.%m.%Y'
@@ -219,7 +263,8 @@ class ParseXLSXData:
             fuel_choices=fuel_choices, path=path, 
             report_rt=report_rt, registry_rt=registry_rt,
             report_jet=report_jet, registry_jet=registry_jet,
-            select_fuel=select_fuel, format=format, format2=format2
+            select_fuel=None, format=format, format2=format2,
+            date=None
         ):
         
         #### *** ---> select path from WIDGET file_initial/file_final <--- *** ##### 
@@ -259,9 +304,9 @@ class ParseXLSXData:
         # initialize date of report
         # this date is converted to satisfy needs of LibreOffice date format
         try:
-            self.date = None
+            self.date = date
             #### *** ---> select date WIDGET here <--- *** ##### 
-            date = input('Please select the date of report, use DD-MM-YYYY format: ')
+            ### date = input('Please select the date of report, use DD-MM-YYYY format: ')
 
             # correct date conditions
             blanc_input = len(date) < 1 or None
@@ -407,7 +452,7 @@ class ParseXLSXData:
             if not condition:
                 continue
             cell = sheet_initial[f'L{i}']
-            ### add for each letters
+            # add for each letters
             mistakes = [f'mistake #{i}:, cell: {cell}, symbol {cell.value}' for value in cell.value if not cell.value in string.ascii_letters] 
             print(mistakes)
 
@@ -554,7 +599,7 @@ class ParseXLSXData:
         '''
         daily_amount = sum([i for i in self.items.values()])
         return daily_amount
-
+    
     def get_fuel_residue(self, work_book_final, sheet_final):
         '''
             Get up-to-date fuel residue calculation (at the end of a previous report
@@ -642,6 +687,5 @@ class ParseXLSXData:
         self.get_fuel_residue(work_book_final, sheet_final)
             
 if __name__ == "__main__":
-
     instance = ParseXLSXData()
     instance.submain()

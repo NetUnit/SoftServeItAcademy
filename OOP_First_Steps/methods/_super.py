@@ -41,7 +41,9 @@ print(instance3.price3())
     якщо ж в параметрах super() - 
     вказаний інший клас то відповідно,
     проксі об'єкт - результат виконання методу,
-    повернеться саме з вказаного класу
+    повернеться саме з вказаного класу.
+    метод нашого класу прирівняється до методу
+    вказаного в дужках класу
 '''
 
 class InterFoo2(InterFoo):
@@ -88,3 +90,56 @@ print(obj2.b)
 
 print(obj2.func())
 ### >>> 50 (5*10)
+
+class FirstClass():
+    
+    a = 1;	
+    b = 2;	
+	
+    def __init__(self, a=a, b=b, *args, **kwargs):	
+        self.a = a	
+        self.b = b
+
+first = FirstClass()
+print(first.a ,first.b)
+
+
+class IntermediateClass(FirstClass):	
+    
+    a = 'Pastukhova'
+    b = 'Proniuk'
+
+    def __init__(self, a=a, b=b, *args, **kwargs):	
+        self.a = a	
+        self.b = b	
+        super().__init__(*args, **kwargs)
+
+class OtherClass(IntermediateClass):	
+    
+    a = 10;	
+    b = 20;	
+	
+    def __init__(self, a=a, b=b, *args, **kwargs):	
+        self.a = a	
+        self.b = b	
+        # super().__init__(*args, **kwargs)
+        # перевизначить сам себе бо OtherClass==OtherClass
+        super(IntermediateClass).__init__(*args, **kwargs)
+
+second = OtherClass()
+print(second.a, second.b)
+
+class LoveClass(IntermediateClass):	
+    
+    a = 40;	
+    b = 50;	
+
+    def __init__(self, a=a, b=b, *args, **kwargs):	
+        c = a + b
+        self.c = c
+        # super().__init__(*args, **kwargs)
+        # перевизначить сам себе бо OtherClass==OtherClass
+        super(OtherClass).__init__(*args, **kwargs)
+
+third = LoveClass()
+print(third.c)
