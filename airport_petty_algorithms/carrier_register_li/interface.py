@@ -1,5 +1,12 @@
+'''
+    KivyMD is a collection of Material Design 
+    compliant widgets for use with Kivy
+'''
+
 import kivy
-from kivy.app import App
+# from kivy.app import App
+from kivymd.app import MDApp
+
 from kivy.uix.button import (
     Button,
 )
@@ -26,24 +33,42 @@ from kivy.properties import (
 )
 
 from parse_data import (
-    FuelArrivedField,
+    FuelArrivedValidation,
+    FuelResidueValidation,
     ParseXLSXData
 )
 
+from kivymd.uix.picker import MDDatePicker
+from kivymd.uix.label import MDLabel
+from kivymd.uix.button import (
+    MDFloatingActionButton,
+    MDRaisedButton
+)
+
+from kivy.properties import ObjectProperty
+from kivy.uix.filechooser import (
+    FileChooserIconView,
+    FileChooserListView
+)
+
+
+import datetime
 
 from kivy.uix.gridlayout import GridLayout
-# from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 # from kivy.uix.anchorlayout import AnchorLayout
 
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
+from kivy.factory import Factory
 
 ### *** Layouts *** ###
 
 from kivy.uix.image import AsyncImage
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
+from kivy.clock import Clock
 
 ### time ###
 import time
@@ -51,6 +76,7 @@ import time
 ### encoding ###
 import hashlib
 import hmac
+import os
 
 from kivy.config import Config
 Config.set('graphics', 'resizable', True)
@@ -101,11 +127,13 @@ SIGNAL_WHITE = (240/255, 240/255, 240/255, 0)
 PURE_WHITE = (240/255, 240/255, 240/255, 1)
 TRAFFIC_GREY = (83/255, 83/255, 83/255, 1)
 MINT_GREEN = (155/255, 255/255, 152/255, 0.8)
+BLACK = (0/255, 0/255, 0/255, 0.7)
+
 # class RoundedRectangleWidget(Widget):
 #     def build(self):
 #         pass
 
-'''
+
 # Builder.load_string(
 # <RectangleWidget>:
 #     h: root.height/4
@@ -117,24 +145,24 @@ MINT_GREEN = (155/255, 255/255, 152/255, 0.8)
 #         Rectangle:
 #             size: (200, 75)
 # )
-'''
+
 
 ## *** Rectnagle Wifget for messages *** ###
-class RectangleWidget(FloatLayout):
-    def __init__(self, **kwargs):
-        # make sure we aren't overriding any important functionality
-        super(RectangleWidget, self).__init__(**kwargs)
+# class RectangleWidget(FloatLayout):
+#     def __init__(self, **kwargs):
+#         # make sure we aren't overriding any important functionality
+#         super(RectangleWidget, self).__init__(**kwargs)
 
-        with self.canvas.before:
-            Color(*TRAFFIC_GREY)  # green; colors range from 0-1 instead of 0-255
-            self.rect = Rectangle(size=(400, 200), pos=(200, 350))
+#         with self.canvas.before:
+#             Color(*TRAFFIC_GREY)  # green; colors range from 0-1 instead of 0-255
+#             self.rect = Rectangle(size=(400, 200), pos=(200, 350))
 
 
-        self.bind(pos=self._update_rect)
+#         self.bind(pos=self._update_rect)
 
-    def _update_rect(self, instance, value):
-        self.rect.pos = instance.pos
-        self.rect.size = instance.size
+#     def _update_rect(self, instance, value):
+#         self.rect.pos = instance.pos
+#         self.rect.size = instance.size
 
 # print(RectangleWidget().__dict__.get('rect').pos)
 # inst = RectangleWidget()
@@ -201,6 +229,9 @@ class MyTextInput(TextInput):
             return True
         return super(MyTextInput, self).on_touch_down(touch)
 
+
+### use this to build single appliaction
+## then Bulder.load_string(kv_string)
 kv_string = """
 ScreenManager:
     id: manager
@@ -217,7 +248,128 @@ ScreenManager:
                 text: 'Write Your Phone Number'
 """
 
+### filechooser settings
+Builder.load_string("""
 
+<FileChooser>:
+    
+    id: file_widget
+    BoxLayout:
+        orientation: "vertical"
+        size: 800, 600
+        padding: 5
+        spacing: 10
+
+
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size
+
+        # Image:
+        #     id: my_image
+        #     source: ""
+
+        RstDocument:
+            id: my_file
+            _source: ""
+
+        FileChooserListView:
+            id: file_chooser
+            on_selection: file_widget.select(file_chooser.selection)
+            # background_color: 0, 0, 0, 1
+            # padding: 10
+            # spacing: 10
+            size: (600, 600)
+
+            # Label:
+            #     color: (0, 1, 0, 1)
+        MDRaisedButton:
+            id: my_button
+            text: "Select File"
+            # on_release:
+            #     print('This is file_chooser')
+            #     file_widget.select(file_chooser.selection)
+            on_press:
+                # print('This is file_chooser')
+                file_widget.get_file(file_chooser.selection)
+""")
+
+
+class FileChooser(Widget):
+
+    # load = ObjectProperty(None)
+    # cancel = ObjectProperty(None)
+
+    # def __init__(self, *args):
+    #     # Clock.schedule_once(self.init_widget, 0)
+    #     return super().__init__(*args)
+
+    def select(self, filename, *args):
+        
+        # print(filename)
+        # print(self.ids.my_file.source)
+        self.ids.my_file._source = filename[0]
+        # print(filename[0])
+        # print(dir(Widget))
+        self.file_name = filename[0]
+        # print(type(self.file_name))
+
+        
+        # self.submit = MDRaisedButton(
+        #     text="Select File",
+        #     pos_hint={'center_x': .5, 'center_y': .5},
+        #     on_release=self.trigger
+        # )
+        # self.add_widget(self.submit)
+        # self.submit.bind(on_press=self.trigger)
+        # print(self.instance)
+        # self.label.text = args[1][0]
+        # except: 
+        #    pass
+    
+
+    # def on_touch_down(self, touch):
+    #     # print(touch.__dict__)
+    #     # push the current coordinate, to be able to restore it later
+    #     touch.push()
+
+    #     # transform the touch coordinate to local space
+    #     touch.apply_transform_2d(self.to_local)
+
+    #     # dispatch the touch as usual to children
+    #     # the coordinate in the touch is now in local space
+    #     ret = super(FileChooser, self).on_touch_down(touch)
+
+    #     # whatever the result, don't forget to pop your transformation
+    #     # after the call, so the coordinate will be back in parent space
+    #     touch.pop()
+
+    #     print(ret)
+    #     # return the result (depending what you want.)
+    #     return ret
+
+    # def trigger(self, *args):
+    #     print(self.file_name)
+        
+    
+    # def callback_pos(instance, value):
+    #     print('The widget', instance, 'moved to', value)
+
+    def get_file(self, filename):
+        download_path = f"This is path: {self.file_name}"
+        print(download_path)
+        MyFloatLayout.get_date_picker()
+    # def init_widget(self, *args):
+    #     fc = self.ids['file_chooser']
+    #     fc.bind(on_entry_added=self.update_file_list_entry)
+    #     fc.bind(on_subentry_to_entry=self.update_file_list_entry)
+
+    # def update_file_list_entry(self, file_chooser, file_list_entry, *args):
+    #     pass
+    #     # file_list_entry.ids['filename'].color = BLACK
+    
 
 
 class MyFloatLayout(FloatLayout):
@@ -242,7 +394,11 @@ class MyFloatLayout(FloatLayout):
     rgb_btn = PURE_WHITE
 
     rgb_submit = MINT_GREEN
+    
+    model = ParseXLSXData
+    format = '%d-%m-%Y'
 
+    
     def __init__(self, **kwargs):
         # call grid_layout contructor
         super(MyFloatLayout, self).__init__(**kwargs)
@@ -271,28 +427,51 @@ class MyFloatLayout(FloatLayout):
         #         pos_hint={'center_x': .5, 'center_y': .7}
         #         )
         #     )
-        self.date_input = TextInput(
+
+        # self.file_chooser = FileChooserListView(
+        #     # size=(100, 100),
+        #     # pos_hint={'center_x': .30, 'center_y': .88}
+        # )
+        
+        self.submit_file = MDRaisedButton(
+            text="Select File",
+            pos_hint={'center_x': .5, 'center_y': .5},
+            on_release=self.get_date_picker
+        )
+
+        self.file_chooser = FileChooser()
+        # print(self.file_chooser.__dict__)
+
+        self.residue_input = TextInput(
             multiline=False,
             size_hint=(.2, .07),
-            pos_hint={'center_x': .20, 'center_y': .7},
-            # on_release=self.process_date
+            pos_hint={'center_x': .20, 'center_y': .58},
+            # on_release=self.process_fuel_arrival
         )
 
         self.arrival_input = TextInput(
             multiline=False,
             size_hint=(.2, .07),
-            pos_hint={'center_x': .30, 'center_y': .9},
+            pos_hint={'center_x': .20, 'center_y': .48},
             # on_release=self.process_fuel_arrival
-
         )
-        
+
+        ####### ** DATE *** #######
+        self.date_input = TextInput(
+            multiline=False,
+            size_hint=(.2, .07),
+            pos_hint={'center_x': .20, 'center_y': .38},
+            # on_release=self.process_date
+        )
+
+
         ### *** button with ready made VALUE *** ###
         self.type1 = Button(
                 background_color=self.rgb_btn,
                 text="RT",
                 border = (6, 6, 6, 6),
                 size_hint=(.1, .05),
-                pos_hint={'center_x': .15, 'center_y': .2},
+                pos_hint={'center_x': .15, 'center_y': .28},
                 # on_press=self.select_fuel,
                 # on_release=self.clear_inputs
             )
@@ -305,7 +484,7 @@ class MyFloatLayout(FloatLayout):
                 text="Jet A-1",
                 border = (6, 6, 6, 6),
                 size_hint=(.1, .05),
-                pos_hint={'center_x': .15, 'center_y': .28},
+                pos_hint={'center_x': .15, 'center_y': .2},
                 # on_press=self.select_fuel,
                 # on_release=self.clear_inputs
             )
@@ -321,6 +500,21 @@ class MyFloatLayout(FloatLayout):
             pos_hint={'center_x': .15, 'center_y': .12},
             # on_release = self.process_application
         )
+
+        self.date_btn = MDRaisedButton(
+
+		    text="Open Date Picker",
+		    pos_hint={'center_x': .5, 'center_y': .5},
+		    on_release=self.show_date_picker
+        )
+
+        self.date_label = MDLabel(
+            # id='date_label', ## no such attribute
+            text="Some Stuff!",
+            pos_hint={'center_x': .95, 'center_y': .4}
+        )
+
+
 
         ##########################################################
 
@@ -346,6 +540,7 @@ class MyFloatLayout(FloatLayout):
 
     ### *** FUEL_TYPE *** ###
     def select_fuel(self, instance):
+
         # close_dialog = Button(                
         #     background_color=self.rgb_btn,
         #     text="Close",
@@ -368,7 +563,8 @@ class MyFloatLayout(FloatLayout):
 
         self.add_widget(self.process)
         ## self.process.bind(on_press=self.process_application) ## works change
-        self.process.bind(on_press=self.select_date)
+        #self.process.bind(on_press=self.select_date)
+        self.process.bind(on_press=self.get_file_chooser)
         ##################
         self.fuel_type = instance.text ## ----> convert to object
         ##################
@@ -390,67 +586,49 @@ class MyFloatLayout(FloatLayout):
         # self.process_application()
         
         dialog.open()
-        
+    
 
-    ### *** DATE *** ###
-    def select_date(self, instance=None):
+    ### *** FILE INITIAL *** ###
+    # def dismiss_popup(self):
+    #     self._popup.dismiss()
+
+
+    
+    # 2
+    def get_file_chooser(self, instance):
         try:
-            print(self.date_input)
-            self.add_widget(self.date_input)
+            self.add_widget(self.file_chooser)
+            self.submit_file.bind(on_press=get_date_picker)
+            # print(instance.__dict__.get('Builder'))
+            # x= instance.__dict__.get('_label')
+            # print(x.__dict__)
             # bind the date input
-            self.process.bind(on_press=self.process_date)
+            # self.process.bind(on_press=self.choose_file)
+            print(self.submit_file.text)
         except Exception as err:
             print(err)
 
-    def process_date(self, instance=None):
-        date = self.date_input.text
-        print(date) ### +++
-        self.process.bind(on_press=self.get_fuel_arrival)
-        ##################
-        self.date = date ## ----> convert to object
-        ##################
-        self.message = f"U have selected the next date: {date}"
-        self.dialog = DialogBox(
-            title=u'\u274C',
-            title_size="25sp",
-            content=Label(text=self.message),
-            pos=(200.0, 350.0),
-            size_hint=(0.5, 0.25),
-            size=(400, 200),
-            auto_dismiss=False,
-            )
-        self.date_input.text = ''
-        self.dialog.open()
-        
+    def choose_file(self, instance):
+        file_name = self.file_chooser.text
+        print(file_name)
 
-
-    ## *** FUEL SUPPLY *** ###
-    def get_fuel_arrival(self, instance=None):
-        try:
-            self.add_widget(self.arrival_input)
-            # bind the date input
-            self.process.bind(on_press=self.process_fuel_arrival)
-        except Exception as err:
-            print(err)
-
-    def process_fuel_arrival(self, instance=None):
-        
-        fuel_arrival = self.arrival_input.text
-        # print(fuel_arrival) ### +++
+        ########### insert field label here ############ Label(field_label)
         self.process.bind(on_press=self.something_else)
+        # print('Its ok')
         ################## **** validation **** ########################
         # self.fuel_arrival = fuel_arrival ## ----> convert to object
-        ### <class 'parse_data.FuelArrivedField'>
-        global fuel
-        fuel = FuelArrivedField(fuel_arrival)
-        print(type(fuel))
-        fuel_arrival = fuel.fuel_arrived
-    
-        self.message = f"Fuel supply is: {fuel_arrival}"
-        if fuel_arrival is None:
-            self.message = fuel.error
+        ### <class 'parse_data.FuelResidueField'>
+        # global residue
+        global file
+        file = instance
+        # print(f"{type(file)} - this is TYPE of FILE")
+        # print(f"{file} - this is file")
+
+        self.message = f"File is: {file_name}"
+        if file is None:
+            self.message = 'File hasn\'t been selected'
         ################################################################
-        self.dialog = DialogBox(
+        dialog = DialogBox(
             title=u'\u274C',
             title_size="25sp",
             content=Label(text=self.message),
@@ -460,11 +638,180 @@ class MyFloatLayout(FloatLayout):
             auto_dismiss=False,
             )
 
-        self.dialog.open()
-        return fuel_arrival
+        dialog.open()
+
+
+    ### *** DATE *** ###
+    # def select_date(self, instance=None):
+    #     try:
+    #         print(self.date_input)
+    #         self.add_widget(self.date_input)
+    #         # bind the date input
+    #         self.process.bind(on_press=self.process_date)
+    #     except Exception as err:
+    #         print(err)
+
+    # def process_date(self, instance=None):
+    #     date = self.date_input.text
+    #     # print(date) ### +++
+    #     self.process.bind(on_press=self.get_fuel_arrival)
+    #     ##################
+    #     self.date = date ## ----> convert to object
+    #     ##################
+    #     self.message = f"U have selected the next date: {date}"
+    #     dialog = DialogBox(
+    #         title=u'\u274C',
+    #         title_size="25sp",
+    #         content=Label(text=self.message),
+    #         pos=(200.0, 350.0),
+    #         size_hint=(0.5, 0.25),
+    #         size=(400, 200),
+    #         auto_dismiss=False,
+    #         )
+    #     self.date_input.text = ''
+    #     dialog.open()
+        
+    ### 2
+    @staticmethod
+    def get_date_picker(instance=None):
+        try:
+            self.add_widget(self.date_btn)
+            self.date_btn.bind(on_press=self.show_date_picker)
+        except Exception as err:
+            print(err)
+
+
+    def show_date_picker(self, instance):
+        today = datetime.date.today()
+        self.date_dialog = MDDatePicker(
+            year=today.year,
+            month=today.month,
+            day=today.day
+        )
+
+        self.date_dialog.bind(on_save=self.date_on_save, on_cancel=self.date_on_cancel)
+        self.date_dialog.open()
+    
+    def date_on_save(self, instance, value, date_range):
+        try:
+            self.date_dialog.dismiss()
+            ################
+            self.process.bind(on_press=self.get_fuel_arrival)
+            print(instance.__dict__)
+            self.message = f'Selected date is: {value}'
+            ##################
+            self.date = value ## ----> convert to object
+            print(self.date)
+            print(type(self.date))
+            ##################
+
+            self.date_dialog.dismiss()
+            dialog = DialogBox(
+                title=u'\u274C',
+                title_size="25sp",
+                content=Label(text=self.message),
+                pos=(200.0, 350.0),
+                size_hint=(0.5, 0.25),
+                size=(400, 200),
+                auto_dismiss=False,
+                )
+            dialog.open()
+        except Exception as err:
+            print(err)
+
+
+    def date_on_cancel(self, instance, value):
+        # self.ids.date_label.text = 'Date Cancelled'
+        self.date = None
+        self.date_dialog.dismiss()
+
+    ### *** FUEL SUPPLY *** ###
+    def get_fuel_arrival(self, instance=None):
+        try:
+            self.add_widget(self.arrival_input)
+            # bind the date input
+            self.process.bind(on_press=self.process_fuel_arrival)
+        except Exception as err:
+            print(err)
+
+    def process_fuel_arrival(self, instance=None):
+        fuel_arrival = self.arrival_input.text
+        # print(fuel_arrival) ### +++
+        self.process.bind(on_press=self.get_fuel_residue)
+        ################## **** validation **** ########################
+        # self.fuel_arrival = fuel_arrival ## ----> convert to object
+        ### <class 'parse_data.FuelArrivedField'>
+        global fuel
+        fuel = FuelArrivedValidation(fuel_arrival)
+        
+        # print(type(fuel))
+        fuel_arrival = fuel.fuel_arrived
+    
+        self.message = f"Fuel supply is: {fuel_arrival}"
+        if fuel_arrival is None:
+            self.message = fuel.error
+        ################################################################
+        dialog = DialogBox(
+            title=u'\u274C',
+            title_size="25sp",
+            content=Label(text=self.message),
+            pos=(150.0, 400.0),
+            size_hint=(0.5, 0.25),
+            size=(400, 200),
+            auto_dismiss=False,
+            )
+        dialog.open()
+        # return fuel_arrival
+    
+    ### *** FUEL RESIDUE *** ###  
+    def get_fuel_residue(self, instance=None):
+        try:
+            self.add_widget(self.residue_input)
+            # bind the date input
+            self.process.bind(on_press=self.process_fuel_residue)
+        except Exception as err:
+            print(err)
+
+    def process_fuel_residue(self, instance=None):
+        fuel_residue = self.residue_input.text
+        date = ParseXLSXData.to_datetime(self.date, self.format)
+        prev_rep_date = date - datetime.timedelta(days=1)
+        # print(prev_rep_date)
+
+        ########### insert field label here ############ Label(field_label)
+        # field label == f'Insert fuel residue (kg) ' + f'to date {prev_rep_date} 23:59: ')
+        # print(fuel_arrival) ### +++
+        self.process.bind(on_press=self.show_date_picker)
+        print('Its ok')
+        ################## **** validation **** ########################
+        # self.fuel_arrival = fuel_arrival ## ----> convert to object
+        ### <class 'parse_data.FuelResidueField'>
+        # global residue
+        global residue
+        residue = FuelResidueValidation(fuel_residue, prev_rep_date)
+        # print(f"{type(residue)} - this is TYPE")
+        # print(f"{residue} - this is RESIDUE")
+        fuel_residue = residue.fuel_residue
+    
+        self.message = f"Fuel residue is: {fuel_residue}"
+        if fuel_residue is None:
+            self.message = residue.error
+        ################################################################
+        dialog = DialogBox(
+            title=u'\u274C',
+            title_size="25sp",
+            content=Label(text=self.message),
+            pos=(150.0, 400.0),
+            size_hint=(0.5, 0.25),
+            size=(400, 200),
+            auto_dismiss=False,
+            )
+
+        dialog.open()
+    
 
     def something_else(self, instance):
-        self.dialog.dismiss()
+        # self.dialog.dismiss()
         fuel_arrival = self.process_fuel_arrival()
         print(fuel_arrival)
         print(instance)
@@ -504,7 +851,7 @@ class MyFloatLayout(FloatLayout):
 # print(inst.size))        
 
 
-class ParseDataInterfaceApp(App):
+class ParseDataInterfaceApp(MDApp):
     '''
         ===========================================================
         This class represents a 'A Main App Window'
@@ -531,8 +878,25 @@ class ParseDataInterfaceApp(App):
 
     
     def build(self):
-        Window.clearcolor = SIGNAL_WHITE
+        # self.theme_cls.theme_style = 'Light'
+        # self.theme_cls.primary_palette = 'BlueGray'
+
+        # Window.clearcolor = SIGNAL_WHITE
         return MyFloatLayout()
+
+        ## 2
+        # root = Bulder.load_string(kv_string)
+        # return root
+
+        ## 3
+        # kv1 = Builder.load_string(KV)
+        # kv = MyFloatLayout()
+        # img = Image(source="1611647504798.png",
+        #            size_hint_y=0.15, size_hint_x=0.15, pos_hint={'center_x': 0.5, 'center_y': 0.85}, opacity=0.8)
+        # kv.debut()
+        # kv.add_widget(img)
+        # kv.add_widget(kv1)
+        # return kv
 
     def get_application_name(self):
         _app_name = self.app_name
@@ -543,7 +907,7 @@ if __name__ == '__main__':
     ParseDataInterfaceApp().run()
     
     # print(f"This is fuel {fuel}") # fuel object is in global scope
-    
+    # print(f"This is residue {residue}") # fuel object is in global scope
 
 # x = ParseDataInterfaceApp()
 # print(dir(x))

@@ -18,7 +18,9 @@ from openpyxl import (
 
 )
 
-class FuelArrivedField:
+
+
+class FuelArrivedValidation:
     '''
         ===========================================================
         This class represents a 'Fuel Supply Widget'
@@ -34,8 +36,7 @@ class FuelArrivedField:
 
     msg = 'Please enter a correct amount'
     msg2 = 'shoud be digits or 0 if no supply'
-    # fuel_arrived = None
-
+    
     def __init__(self, fuel_arrived=None):
         try:
             self.fuel_arrived = int(fuel_arrived)
@@ -47,7 +48,6 @@ class FuelArrivedField:
             field_name = self.__class__.__name__
             msg3 =  self.get_classname(field_name)
             self.error = f'{msg3} {self.msg2}'
-        
 
     @staticmethod
     def get_classname(field_name):
@@ -60,7 +60,7 @@ class FuelArrivedField:
         return field_name
 
 
-class FuelTypeField(FuelArrivedField):
+class FuelTypeField(FuelArrivedValidation):
     '''
         ===========================================================
         This class represents a 'Fuel Arrived Widget'
@@ -83,7 +83,7 @@ class FuelTypeField(FuelArrivedField):
         finally:
             exit() if self.fuel_type is None else True
 
-class SelectDateField(FuelArrivedField):
+class SelectDateField(FuelArrivedValidation):
     '''
         ===========================================================
         This class represents a 'Date Selection Widget'
@@ -107,7 +107,7 @@ class SelectDateField(FuelArrivedField):
             exit() if self.date is None else True
 
 
-class FuelResidueField(FuelArrivedField):
+class FuelResidueValidation(FuelArrivedValidation):
     '''
         ===========================================================
         This class represents a 'Fuel Arrived Widget'
@@ -117,22 +117,22 @@ class FuelResidueField(FuelArrivedField):
             :type msg: <str>
     '''
 
-    fuel_residue = None
-    def __init__(self, prev_rep_date=None):
+    def __init__(self, fuel_residue=None, prev_rep_date=None):
+        print(fuel_residue)
         try:
-            self.fuel_residue = int(
-                input(f'Insert fuel residue (kg) ' + 
-                f'to date {prev_rep_date} 23:59: ')
-            )
+            self.fuel_residue = int(fuel_residue)
+            self.prev_rep_date = prev_rep_date
+
         except (TypeError, AttributeError):
-            print(self.msg)
-        except ValueError:
+            self.fuel_residue = None
+            self.error = self.msg
+        except ValueError as err:
+            print(err)
+            self.fuel_residue = None
             field_name = self.__class__.__name__
             msg3 =  self.get_classname(field_name)
-            print(f'{msg3} {self.msg2}')
-        finally:
-            exit() if self.fuel_residue is None or prev_rep_date is None else True
-
+            self.error = f'{msg3} {self.msg2}'
+    
 
 class LoadXLSXFileField:
     '''
@@ -231,7 +231,6 @@ class ParseXLSXData:
     '''
     fuel_choices = ['RT', 'Jet A-1']
     
-   
     path = '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li'
     path_reserve = '/home/rostyslav/Общедоступные/temp_andrii/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li'
     
@@ -249,7 +248,7 @@ class ParseXLSXData:
     report_jet = 'Звіт Jet A-1.xlsx'
 
     ## DONE #### *** ---> BUTTON RT Jet-A1 <--- *** ##### 
-    ### select_fuel = input('Please select type of fuel U want to make a report of: ')
+    select_fuel = input('Please select type of fuel U want to make a report of: ')
     
     format = '%d-%m-%Y'
     format2 = '%d.%m.%Y'
@@ -259,11 +258,11 @@ class ParseXLSXData:
     to_date = lambda date, format: datetime.date.strftime(date, format) 
     to_str = lambda date, format: datetime.date.strftime(date, format) 
     
+
     def __init__(self,
-            fuel_choices=fuel_choices, path=path, 
-            report_rt=report_rt, registry_rt=registry_rt,
-            report_jet=report_jet, registry_jet=registry_jet,
-            select_fuel=None, format=format, format2=format2,
+            path=path, report_rt=report_rt, registry_rt=registry_rt,
+            select_fuel=None, report_jet=report_jet, registry_jet=registry_jet, 
+            format=format, format2=format2,
             date=None
         ):
         
@@ -271,11 +270,11 @@ class ParseXLSXData:
         self.path = path
 
         # initialize report depending on type of fuel
-        self.fuel_choices = fuel_choices
-        self.select_fuel = select_fuel
+        select_fuel = select_fuel if select_fuel is not None else self.select_fuel
+        
         self.items = dict([])
         # correct input conditions
-        fuel_selected = select_fuel in fuel_choices
+        fuel_selected = select_fuel in self.fuel_choices
         blanc_input = len(select_fuel) < 1 or None
 
         try:
@@ -305,9 +304,9 @@ class ParseXLSXData:
         # this date is converted to satisfy needs of LibreOffice date format
         try:
             self.date = date
-            #### *** ---> select date WIDGET here <--- *** ##### 
-            ### date = input('Please select the date of report, use DD-MM-YYYY format: ')
-
+            #### *** ---> select date WIDGET here <--- *** #####
+            date = date if date is not None else input('Please select the date of report, use DD-MM-YYYY format: ')
+        
             # correct date conditions
             blanc_input = len(date) < 1 or None
 
@@ -552,7 +551,7 @@ class ParseXLSXData:
             Fuel supply recording during the day if any
             :returns REPORT sheet: save amount of fuel supply into appropriate cell
         '''
-        fuel_arrived_obj = FuelArrivedField()
+        fuel_arrived_obj = FuelArrivedValidation()
         fuel_arrived = fuel_arrived_obj.fuel_arrived
         setattr(self, 'fuel_arrived', fuel_arrived)
     
@@ -588,6 +587,7 @@ class ParseXLSXData:
             Get date of the previous DAY REPORT
             :returns prev_rep_date: <str> type date, format YYYY-MM-DD
         '''
+        
         prev_rep_date = self.date - datetime.timedelta(days=1)
         prev_rep_date = datetime.date.strftime(prev_rep_date, self.format3)
         return prev_rep_date
@@ -613,7 +613,7 @@ class ParseXLSXData:
         # get previous report date
         prev_rep_date = self.previous_report_date()
 
-        fuel_residue_obj = FuelResidueField(prev_rep_date)
+        fuel_residue_obj = FuelResidueValidation(prev_rep_date)
         fuel_residue = fuel_residue_obj.fuel_residue
 
         # this attr would be used afterwards for another 
