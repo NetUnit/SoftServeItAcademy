@@ -19,8 +19,7 @@ from openpyxl import (
 )
 
 
-
-class FuelArrivedValidation:
+class FuelArrivedField:
     '''
         ===========================================================
         This class represents a 'Fuel Supply Widget'
@@ -36,18 +35,7 @@ class FuelArrivedValidation:
 
     msg = 'Please enter a correct amount'
     msg2 = 'shoud be digits or 0 if no supply'
-    
-    def __init__(self, fuel_arrived=None):
-        try:
-            self.fuel_arrived = int(fuel_arrived)
-        except (TypeError, AttributeError):
-            self.fuel_arrived = None
-            self.error = self.msg
-        except ValueError:
-            self.fuel_arrived = None
-            field_name = self.__class__.__name__
-            msg3 =  self.get_classname(field_name)
-            self.error = f'{msg3} {self.msg2}'
+    fuel_arrived = None
 
     @staticmethod
     def get_classname(field_name):
@@ -59,8 +47,24 @@ class FuelArrivedValidation:
         ).capitalize()
         return field_name
 
+    def __init__(self):
+        try:
+            self.fuel_arrived = int(
+                input(
+                    'Enter the fuel supply, kg: '
+                    )
+                )
+        except (TypeError, AttributeError):
+            print(self.msg)
+        except ValueError:
+            field_name = self.__class__.__name__
+            msg3 =  self.get_classname(field_name)
+            print(f'{msg3} {self.msg2}')
+        finally:
+            exit() if self.fuel_arrived is None else True
 
-class FuelTypeField(FuelArrivedValidation):
+
+class FuelResidueField(FuelArrivedField):
     '''
         ===========================================================
         This class represents a 'Fuel Arrived Widget'
@@ -70,10 +74,13 @@ class FuelTypeField(FuelArrivedValidation):
             :type msg: <str>
     '''
 
-    
-    def __init__(self, fuel_type=None):
+    fuel_residue = None
+    def __init__(self, prev_rep_date=None):
         try:
-            self.fuel_type = fuel_type
+            self.fuel_residue = int(
+                input(f'Insert fuel residue (kg) ' + 
+                f'to date {prev_rep_date} 23:59: ')
+            )
         except (TypeError, AttributeError):
             print(self.msg)
         except ValueError:
@@ -81,22 +88,26 @@ class FuelTypeField(FuelArrivedValidation):
             msg3 =  self.get_classname(field_name)
             print(f'{msg3} {self.msg2}')
         finally:
-            exit() if self.fuel_type is None else True
+            exit() if self.fuel_residue is None or prev_rep_date is None else True
 
-class SelectDateField(FuelArrivedValidation):
+class FuelPickupField(FuelArrivedField):
     '''
         ===========================================================
-        This class represents a 'Date Selection Widget'
+        This class represents a 'Fuel Pickup Widget'
         ===========================================================
         Attrs:
             :param msg2: error message for inappropriate field input
             :type msg: <str>
     '''
 
-    
-    def __init__(self, date=None):
+    fuel_pickup = None
+    def __init__(self):
         try:
-            self.date = date
+            self.fuel_pickup = int(
+                input(
+                    'Enter the fuel pickup trucks/railroad tanks, kg: '
+                    )
+                )
         except (TypeError, AttributeError):
             print(self.msg)
         except ValueError:
@@ -104,35 +115,8 @@ class SelectDateField(FuelArrivedValidation):
             msg3 =  self.get_classname(field_name)
             print(f'{msg3} {self.msg2}')
         finally:
-            exit() if self.date is None else True
+            exit() if self.fuel_pickup is None else True
 
-
-class FuelResidueValidation(FuelArrivedValidation):
-    '''
-        ===========================================================
-        This class represents a 'Fuel Arrived Widget'
-        ===========================================================
-        Attrs:
-            :param msg2: error message for inappropriate field input
-            :type msg: <str>
-    '''
-
-    def __init__(self, fuel_residue=None, prev_rep_date=None):
-        print(fuel_residue)
-        try:
-            self.fuel_residue = int(fuel_residue)
-            self.prev_rep_date = prev_rep_date
-
-        except (TypeError, AttributeError):
-            self.fuel_residue = None
-            self.error = self.msg
-        except ValueError as err:
-            print(err)
-            self.fuel_residue = None
-            field_name = self.__class__.__name__
-            msg3 =  self.get_classname(field_name)
-            self.error = f'{msg3} {self.msg2}'
-    
 
 class LoadXLSXFileField:
     '''
@@ -231,6 +215,7 @@ class ParseXLSXData:
     '''
     fuel_choices = ['RT', 'Jet A-1']
     
+   
     path = '/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li'
     path_reserve = '/home/rostyslav/Общедоступные/temp_andrii/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li'
     
@@ -239,16 +224,10 @@ class ParseXLSXData:
     registry_rt = 'Реєстр Укртатнафта РТ.xlsx'
     report_rt = 'Звіт РТ.xlsx'
     
-    # for test only
-    # registry_rt = 'Реєстр Укртатнафта РТ.txt'
-    # report_rt = 'Звіт РТ.txt'
-
     # Jet A-1:
     registry_jet = 'Реєстр Укртатнафта Jet A-1.xlsx'
     report_jet = 'Звіт Jet A-1.xlsx'
 
-    ## DONE #### *** ---> BUTTON RT Jet-A1 <--- *** ##### 
-    select_fuel = input('Please select type of fuel U want to make a report of: ')
     
     format = '%d-%m-%Y'
     format2 = '%d.%m.%Y'
@@ -258,37 +237,38 @@ class ParseXLSXData:
     to_date = lambda date, format: datetime.date.strftime(date, format) 
     to_str = lambda date, format: datetime.date.strftime(date, format) 
     
-
-    def __init__(self,
-            path=path, report_rt=report_rt, registry_rt=registry_rt,
-            select_fuel=None, report_jet=report_jet, registry_jet=registry_jet, 
-            format=format, format2=format2,
-            date=None
+    def __init__(self, path_initial=None, path_final=None, file_initial=None, file_final=None,
+            select_fuel=None, date=None, fuel_arrival=0, fuel_pickup=0, fuel_residue=0,
+            format=format, format2=format2
         ):
+         
+        self.path_initial = self.path if path_initial is None else path_initial
+        self.path_final = self.path if path_final is None else path_final
         
-        #### *** ---> select path from WIDGET file_initial/file_final <--- *** ##### 
-        self.path = path
-
         # initialize report depending on type of fuel
-        select_fuel = select_fuel if select_fuel is not None else self.select_fuel
-        
+        select_fuel = input('Please select type of fuel U want to make a report of: ') if select_fuel is None else select_fuel
+        self.select_fuel = select_fuel
         self.items = dict([])
         # correct input conditions
         fuel_selected = select_fuel in self.fuel_choices
         blanc_input = len(select_fuel) < 1 or None
 
         try:
-            self.registry = None
-            self.report = None
-
             if blanc_input:
                 raise TypeError
 
             if not fuel_selected:
                 raise ValueError
             
-            self.registry = registry_rt if select_fuel=='RT' else registry_jet
-            self.report = report_rt if select_fuel=='RT' else report_jet
+            self.file_initial = self.registry_rt if select_fuel=='RT' else self.registry_jet ## +++
+            self.file_final = self.report_rt if select_fuel=='RT' else self.report_jet ## +++
+
+            self.registry = self.file_initial
+            self.report = self.file_final
+
+            self.fuel_arrival = fuel_arrival
+            self.fuel_pickup = fuel_pickup
+            self.fuel_residue = fuel_residue
 
         except TypeError:
             print('Fuel selection shoudn\'t be blanc!')
@@ -303,24 +283,25 @@ class ParseXLSXData:
         # initialize date of report
         # this date is converted to satisfy needs of LibreOffice date format
         try:
-            self.date = date
-            #### *** ---> select date WIDGET here <--- *** #####
-            date = date if date is not None else input('Please select the date of report, use DD-MM-YYYY format: ')
-        
+            date = input('Please select the date of report, use DD-MM-YYYY format: ') if date is None else date
             # correct date conditions
-            blanc_input = len(date) < 1 or None
 
+            # admissible only for manual-input not date picker
+            blanc_input = len(date) < 1 or None
+        
             if blanc_input:
                 raise TypeError
-            
+        
             # from <str> to <'datetime.datetime'>
-            date = ParseXLSXData.to_datetime(date, self.format)
-            today = datetime.datetime.today()
+            date_picker = isinstance(date, datetime.date)
+            if not date_picker:
+                date = ParseXLSXData.to_datetime(date, self.format)
             
+            today = datetime.datetime.today()
             date_in_range = date < today
             if not date_in_range:
                 raise AttributeError
-            
+        
             self.date = date
             self.today = today
 
@@ -451,7 +432,7 @@ class ParseXLSXData:
             if not condition:
                 continue
             cell = sheet_initial[f'L{i}']
-            # add for each letters
+            ### add for each letters
             mistakes = [f'mistake #{i}:, cell: {cell}, symbol {cell.value}' for value in cell.value if not cell.value in string.ascii_letters] 
             print(mistakes)
 
@@ -551,10 +532,10 @@ class ParseXLSXData:
             Fuel supply recording during the day if any
             :returns REPORT sheet: save amount of fuel supply into appropriate cell
         '''
-        fuel_arrived_obj = FuelArrivedValidation()
-        fuel_arrived = fuel_arrived_obj.fuel_arrived
-        setattr(self, 'fuel_arrived', fuel_arrived)
-    
+        fuel_arrived_obj = FuelArrivedField() if self.fuel_arrival == 0 else False
+        if fuel_arrived_obj is not False:
+            self.fuel_arrival = fuel_arrived_obj.fuel_arrived 
+
         i = 0
         for cell in sheet_final[f'C']:
             i += 1
@@ -562,7 +543,7 @@ class ParseXLSXData:
             # find appropriate cell condition to write daily fuel suppply 
             result = pattern.match(str(cell.value)) is not None
             if result:
-                sheet_final[f'E{i}'].value = fuel_arrived 
+                sheet_final[f'E{i}'].value = self.fuel_arrival
                 work_book_final.save(self.report)
         
     def date_report_record(self, work_book_final, sheet_final):
@@ -587,7 +568,6 @@ class ParseXLSXData:
             Get date of the previous DAY REPORT
             :returns prev_rep_date: <str> type date, format YYYY-MM-DD
         '''
-        
         prev_rep_date = self.date - datetime.timedelta(days=1)
         prev_rep_date = datetime.date.strftime(prev_rep_date, self.format3)
         return prev_rep_date
@@ -599,7 +579,7 @@ class ParseXLSXData:
         '''
         daily_amount = sum([i for i in self.items.values()])
         return daily_amount
-    
+
     def get_fuel_residue(self, work_book_final, sheet_final):
         '''
             Get up-to-date fuel residue calculation (at the end of a previous report
@@ -613,45 +593,53 @@ class ParseXLSXData:
         # get previous report date
         prev_rep_date = self.previous_report_date()
 
-        fuel_residue_obj = FuelResidueValidation(prev_rep_date)
-        fuel_residue = fuel_residue_obj.fuel_residue
-
-        # this attr would be used afterwards for another 
-        # functionality
-        setattr(self, 'fuel_residue', fuel_residue)
+        fuel_residue_obj = FuelResidueField(prev_rep_date) if self.fuel_residue == 0 else False
+        if fuel_residue_obj is not False:
+            self.fuel_residue = fuel_residue_obj.fuel_residue
         
         # E23
         daily_amount = self.get_daily_amount()
         
+        fuel_pickup_obj = FuelPickupField() if self.fuel_pickup == 0 else False
+        if fuel_pickup_obj is not False:
+            self.fuel_pickup = fuel_pickup_obj.fuel_pickup
+
         # E26
-        residue_today = self.fuel_residue + self.fuel_arrived - daily_amount
+        residue_today = self.fuel_residue + self.fuel_arrival - daily_amount - self.fuel_pickup
 
         # parsing the REPORT sheet for appropriate cell names
         pattern1 = re.compile('Всього видано на пероні')
-        pattern2 = re.compile('Залишок на складі ПММ')
-        
+        pattern2 = re.compile('Самовивозом зі складу ПММ')
+        pattern3 = re.compile('Залишок на складі ПММ')
+
         i = 0
         for cell in sheet_final[f'C']:
             i += 1
             search1 = pattern1.match(str(cell.value)) is not None
             search2 = pattern2.match(str(cell.value)) is not None
+            search3 = pattern3.match(str(cell.value)) is not None
 
             if search1:
-                # E23 field
+                # E21 field
                 sheet_final[f'E{i}'].value = daily_amount
                 work_book_final.save(self.report)
 
             if search2:
-                # E26 field
+                # E22 field
+                sheet_final[f'E{i}'].value = self.fuel_pickup
+                work_book_final.save(self.report)
+
+            if search3:
+                # E22 field
                 sheet_final[f'E{i}'].value = residue_today
                 work_book_final.save(self.report)
 
         print('The report has been done')
-    
+
     def submain(self):
         # open INITIAL File
         file_initial =  LoadXLSXFileField(
-            self.path,
+            self.path_initial,
             self.registry
         )
         
@@ -660,7 +648,7 @@ class ParseXLSXData:
 
         # open FINAL File
         file_final =  LoadXLSXFileField(
-            self.path,
+            self.path_final,
             self.report
         )
 
@@ -687,5 +675,6 @@ class ParseXLSXData:
         self.get_fuel_residue(work_book_final, sheet_final)
             
 if __name__ == "__main__":
+
     instance = ParseXLSXData()
     instance.submain()
