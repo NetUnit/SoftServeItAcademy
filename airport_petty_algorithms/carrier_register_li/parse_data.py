@@ -134,6 +134,7 @@ class LoadXLSXFileField:
 
     def __init__(self, path=None, document=None):
         try:
+            
             if path is None or document is None:
                 raise TypeError()
 
@@ -142,7 +143,9 @@ class LoadXLSXFileField:
                 document
                 )
             self.xlsx_file = xlsx_file
+            # print(type(xlsx_file))
             self.path = path
+            print(f"{self.path} - this is path")
             self.document = document
             print(f'File was opened: {document}')
         except TypeError:
@@ -158,15 +161,17 @@ class LoadXLSXFileField:
             :returns: loaded MS Excel object for REGISTRY/REPORT
         '''
         try:
-            work_book = open.load_workbook(self.xlsx_file)
-            # print(f'Workbook was loaded: {work_book}')
+            # print(f"{self.xlsx_file} - this is xlsx file - get_work_book")
+            work_book = open.load_workbook(self.xlsx_file) ## ++ xlsx file
+            print(f'Workbook was loaded: {work_book}')
             return work_book
         except InvalidFileException as err:
             work_book = None
-            print(f'{err}: {self.document}')
+            self.err = f'{err}: {self.document}'
+            print(self.err)
         finally:
             exit() if work_book is None else work_book
-    
+
 class ParseXLSXData:
 
     '''
@@ -285,20 +290,24 @@ class ParseXLSXData:
         try:
             date = input('Please select the date of report, use DD-MM-YYYY format: ') if date is None else date
             # correct date conditions
-
+            # print(f"This is date: {date}")
             # admissible only for manual-input not date picker
-            blanc_input = len(date) < 1 or None
-        
+            blanc_input = len(str(date)) < 1 or date is None
+            
             if blanc_input:
                 raise TypeError
         
-            # from <str> to <'datetime.datetime'>
+            # check whteher the date belongs to <'datetime.date'>
             date_picker = isinstance(date, datetime.date)
-            if not date_picker:
-                date = ParseXLSXData.to_datetime(date, self.format)
+            
+            if date_picker:
+                date = ParseXLSXData.to_str(date, self.format)
+
+            date = ParseXLSXData.to_datetime(date, self.format)
             
             today = datetime.datetime.today()
             date_in_range = date < today
+        
             if not date_in_range:
                 raise AttributeError
         
@@ -316,7 +325,7 @@ class ParseXLSXData:
         finally:
             exit() if self.date is None else True
         
-        print(f'{self.date} - This is ok: date')
+        # print(f'{self.date} - This is ok: date')
 
     def load_file_initial(self):
         '''
@@ -590,21 +599,23 @@ class ParseXLSXData:
                 * :param residue_today - final fuel amount for all carriers
                   including supply & consumtion in (kg)
         '''
-        # get previous report date
-        prev_rep_date = self.previous_report_date()
-
-        fuel_residue_obj = FuelResidueField(prev_rep_date) if self.fuel_residue == 0 else False
-        if fuel_residue_obj is not False:
-            self.fuel_residue = fuel_residue_obj.fuel_residue
         
-        # E23
+        # E22
         daily_amount = self.get_daily_amount()
         
+        # E23
         fuel_pickup_obj = FuelPickupField() if self.fuel_pickup == 0 else False
         if fuel_pickup_obj is not False:
             self.fuel_pickup = fuel_pickup_obj.fuel_pickup
-
+        
+        # get previous report date
+        prev_rep_date = self.previous_report_date()
+        
         # E26
+        fuel_residue_obj = FuelResidueField(prev_rep_date) if self.fuel_residue == 0 else False
+        if fuel_residue_obj is not False:
+            self.fuel_residue = fuel_residue_obj.fuel_residue
+
         residue_today = self.fuel_residue + self.fuel_arrival - daily_amount - self.fuel_pickup
 
         # parsing the REPORT sheet for appropriate cell names
@@ -630,7 +641,7 @@ class ParseXLSXData:
                 work_book_final.save(self.report)
 
             if search3:
-                # E22 field
+                # E26 field
                 sheet_final[f'E{i}'].value = residue_today
                 work_book_final.save(self.report)
 
@@ -642,10 +653,16 @@ class ParseXLSXData:
             self.path_initial,
             self.registry
         )
-        
+
+        # print(type(self.path_initial))
+        # print(type(self.registry))
+
+        # print(f"{self.path_initial} - this is path")
+        # print(f"{self.registry} - this is registry")
+
         # load INITIAL File
         work_book_initial = file_initial.get_work_book()
-
+        print(work_book_initial)
         # open FINAL File
         file_final =  LoadXLSXFileField(
             self.path_final,
@@ -654,6 +671,7 @@ class ParseXLSXData:
 
         # load FINAL File
         work_book_final = file_final.get_work_book()
+        print(work_book_final)
         # sheet_final = file_final.activate_work_book()
         sheet_final = work_book_final.active
         sheet_initial = work_book_initial.active
