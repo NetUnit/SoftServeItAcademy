@@ -1,0 +1,35 @@
+#:kivy 2.1.0
+
+# <MyFloatLayout>
+#     FloatLayout:
+#         # Button:
+#         #     text: "Fuel Supply"
+#         #     size_hint: (.1, .06)
+#         #     pos_hint: {'center_x': .5, 'center_y': .2}
+#         #     background_color: (240/255, 240/255, 240/255, 1)
+#         #     background_normal: ''
+
+
+<MyPopup@Popup>:
+    auto_dismiss: False
+    Button:
+        text: 'Close me!'
+        on_release: root.dismiss()
+    Button:
+        text: 'Open popup'
+        on_release: Factory.MyPopup().open()
+
+# <RoundedButton@Button>
+#     background_color: (0, 0, 0, 0)
+#     background_normal: ''
+#     canvas.before:
+#     L
+#         Color:
+#             rgba: (0, 0, 0, 0)
+#         RoundedRectangle:
+#             #size: self.size
+#             #pos: self.pos
+#             radius: [100]
+
+
+

@@ -5,6 +5,7 @@
 *.txt
 *.jpg
 *.mp3
+*.png
 .Звіт Jet A-1.xlsx
 .Реєстр Укртатнафта РТ.xlsx
 .Реєстр Укртатнафта Jet A-1.xlsx
@@ -13,3 +14,25 @@ lib64/
 lib/
 share/
 bin/
+.clock2.png
+.clock3.png
+.clock4.png
+.clock5.png
+.clock_small.png
+.reboot-mint-using-shutdown-button.png
+.date.kv
+.editor.kv
+.editor2.kv
+.editor3.kv
+.editor5.kv
+.editor6.kv
+.interface.py
+.interface_before_several_windows.py
+.interface(res).py
+.parse_data22.py
+.parse_data_with_sheet.py
+.test.py
+.test2.py
+.test3.py
+.test5.py
+.test6.py
