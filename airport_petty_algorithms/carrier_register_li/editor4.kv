@@ -1,10 +1,47 @@
 #:kivy 2.1.0
 #:import Factory kivy.factory.Factory
 
-Root:
-    
-    id: file_widget
 
+<SoundButtonCard@BoxLayout>:
+
+    id: sound_button
+    orientation: 'horizontal'
+
+    padding: dp(5)
+    spacing: dp(10)
+    # top: 0.1
+    # center_x: 0.03
+    size_hint_x: 0.0
+    size_hint_y: 0.25
+    # pos: (10.0, 10.0)
+    size: (50, 50)
+    # size_hint: (.10, .20)
+    # icon_size: "64sp"
+    # height: self.minimum_height
+
+    MDIconButton:
+        icon: "/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li/volume-speaker-icon-on.jpg"
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_color
+        icon_size: "64sp"
+        # text: "Play",
+        # size_hint: (2, 2)
+        # size_hint_y: -0.25
+        # pos_hint: {'center_x': .0, 'center_y': .90}
+        on_press: sound_button.playaudio()
+
+    MDIconButton:
+        icon: "/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li/volume-speaker-icon-off.jpg"
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_color
+        icon_size: "64sp"
+        # text: "Play",
+        # size_hint: (2, 2)
+        # pos_hint: {'center_x': .50, 'center_y': .90}
+        on_press: sound_button.stopaudio()
+
+Root:
+    id: file_widget
     BoxLayout:
         orientation: "vertical"
         size: 800, 600
@@ -17,13 +54,9 @@ Root:
             Rectangle:
                 size: self.size
 
-        Label:
-            id: song_player
-            on_press: root.select(file_chooser.selection)
-            # background_color: 0, 0, 0, 1
-            # padding: 10
-            # spacing: 10
-            size: (600, 600)
+        SoundButtonCard:
+            # size: self.size
+            # size: (400, 400)
 
         RstDocument:
             id: my_file
@@ -43,8 +76,6 @@ Root:
             # spacing: 10
             size: (600, 600)
 
-            # Label:
-            #     color: (0, 1, 0, 1)
         MDRaisedButton:
             id: my_button
             text: "Select File"
@@ -60,6 +91,7 @@ Root:
                 
 
 <LoadDialog>:
+
     id: dialog_widget
     BoxLayout:
         orientation: "vertical"
@@ -72,7 +104,7 @@ Root:
                 rgba: (83/255, 83/255, 83/255, 1)
             Rectangle:
                 size: self.size
-
+        
         RstDocument:
             id: my_file
             _source: ""
@@ -146,7 +178,6 @@ Root:
             # size_hint_x: None
             text: "RT"
             # pos_hint: {'center_x': .15, 'center_y': 0}
-
             on_press:
                 main_page.select_fuel(main_page.fuel_type1)
         

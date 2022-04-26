@@ -21,6 +21,7 @@ bin/
 .clock_small.png
 .reboot-mint-using-shutdown-button.png
 .date.kv
+.rounded_button.kv
 .editor.kv
 .editor2.kv
 .editor3.kv

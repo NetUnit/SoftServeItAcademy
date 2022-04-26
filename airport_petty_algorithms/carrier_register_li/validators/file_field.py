@@ -21,7 +21,7 @@ class LoadXLSXFileField:
             :type document: <str>
             :param type_error: error coomon for this class field
     '''
-    type_error = 'Please select xlsx file properly'
+    type_error = 'Improper file extension selected'
     extensions  = [
         '.xls', '.xlsx', '.xlsm','.xlsb',
         '.xltx', '.xlt', '.xltm', '.xml',
@@ -48,7 +48,7 @@ class LoadXLSXFileField:
 
         except TypeError:
             self.xlsx_file = None
-            self.err = f'{self.type_error}: file - {file_name}'
+            # self.err = f'{self.type_error}: file - {file_name}'
 
     def validate_file(self):
         '''
@@ -70,8 +70,9 @@ class LoadXLSXFileField:
         
         improper_file = ext not in self.extensions
         if improper_file:
-            # LOGGER.error('Columns of the report has been cleaned'
-            print('Improper extension file selected')
+            self.err = f'{self.type_error}: file - {self.file_name}'
+            # LOGGER.error(self.err)
+            print(self.err)
             raise TypeError()
             
     def get_work_book(self):

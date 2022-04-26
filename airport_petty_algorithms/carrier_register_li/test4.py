@@ -1,6 +1,8 @@
 import kivy
 # from kivy.app import App
 from kivymd.app import MDApp
+from kivymd.uix.relativelayout import MDRelativeLayout
+from kivy.core.audio import SoundLoader
 
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -23,7 +25,8 @@ from kivymd.uix.picker import MDDatePicker
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import (
     MDFloatingActionButton,
-    MDRaisedButton
+    MDRaisedButton,
+    MDIconButton
 )
 
 from kivy.properties import (
@@ -70,6 +73,7 @@ kivy.require('2.1.0')
 
 import os
 import re
+import random
 ### *** root files *** ###
 from parse_data import ParseXLSXData
 from validators.file_field import LoadXLSXFileField
@@ -108,7 +112,63 @@ class DialogBox(Popup):
             DialogBox.active = None
             return True
         return super(DialogBox, self).on_touch_down(touch)
+    
+    def close_app(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dismiss()
+            DialogBox.active = None
+            Editor4.get_running_app().stop()
 
+    
+class SoundButtonCard(BoxLayout):
+
+    app_name = 'Carrier Register'
+    music_dir = "/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li/"
+    icon_dir = "/media/netunit/storage/SoftServeItAcademy/airport_petty_algorithms/carrier_register_li/music-button.gif"
+    counter = 0
+
+    def __init__(self, *args, **kwargs):
+        # make sure we aren't overriding any important functionality
+        super(SoundButtonCard, self).__init__(*args, **kwargs)
+
+        # dir songs related values
+        self.music_files = os.listdir(self.music_dir)
+        self.song_list = [i for i in self.music_files if i.endswith(('mp3'))]
+        self.song_count = len(self.song_list)
+
+        # self.song_btn = MDIconButton(
+        #     icon=self.icon_dir,
+        #     text="Play",
+        #     # size_hint=(.1, .05),
+        #     pos_hint={'center_x': .1, 'center_y': .95},
+        #     size_hint=(.1, .05),
+        #     # md_bg_color=ASDA_GREEN,
+        #     # text_color=WHITE,
+        #     on_release=self.playaudio
+        # )
+        
+        # self.song_lbl = Label(
+        #     text="Music",
+        #     pos_hint={'center_x': 0.1, 'center_y': 0.85 },
+        #     size_hint=(1, 1),
+        #     font_size=18
+        # )
+        
+        # self.add_widget(self.song_btn)
+        # self.add_widget(self.song_lbl)        
+
+    def playaudio(self):
+        double_click = self.counter == 1
+
+        if not double_click:
+            self.song_title = self.song_list[random.randrange(0, self.song_count)]
+            self.sound = SoundLoader.load(f"{self.music_dir}{self.song_title}")        
+            self.sound.play()
+            self.counter += 1
+            
+    def stopaudio(self):
+            self.sound.stop()
+            self.counter -= 1
     
 class LoadDialog(Widget):
 
@@ -142,12 +202,14 @@ class LoadDialog(Widget):
         report = file.file_name
         
         # in case of field error
-        if file.err is None:
-            title = "Final File Selected"
+        err_free =  file.err is None
+        if err_free:
+            title = "Initial File Selected"
             self.message = f"{self.file_name}"
         else:
-            title = "Final File Error"
+            title = "Initial File Error"
             self.message = file.err
+    
         content=Label(text=self.message)
 
         ##  create separate popups when err in another function
@@ -160,7 +222,7 @@ class LoadDialog(Widget):
             size=(400, 200),
             auto_dismiss=True,
             )
-
+        self._popup.on_touch_down = self._popup.on_touch_down if err_free else self._popup.close_app
         self._popup.open()
         
         self.clear_widgets()
@@ -244,7 +306,7 @@ class MainPage(Widget):
 class DatePicker(Widget):
     
     clock_image_path = "/media/netunit/storage/SoftServeItAcademy/" \
-        + "airport_petty_algorithms/carrier_register_li/clock5.png"
+        + "airport_petty_algorithms/carrier_register_li/clock.png"
     
     format = '%d-%m-%Y'
     
@@ -367,11 +429,13 @@ class CustomDialog(FloatLayout):
         self.submit_btn.bind(on_press=self.confirm)
         self.cancel_btn.bind(on_press=self.cancel)
 
+
 class FuelSupply(Widget):
     
     tank_image = "/media/netunit/storage/SoftServeItAcademy/" \
         + "airport_petty_algorithms/carrier_register_li/fuel_track.png"
-
+    succes_msg = u"The report has been done"
+    
     def __init__(self, *args, **kwargs):
         # make sure we aren't overriding any important functionality
         super(FuelSupply, self).__init__(*args, **kwargs)
@@ -491,9 +555,17 @@ class FuelSupply(Widget):
         print('This is not Cancel')
         self.dialog.dismiss()
     
+    def finalize_report(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dismiss()
+            DialogBox.active = None
+            return True
+        exit()
+
     def confirm(self, instance):
         if supply_form.error is None:
-            print('It is Okkk')
+            # LOGGER.error("Supply form has been filled properly")
+            
             #### **** TESTING SUBMAIN **** ####
             instance = ParseXLSXData(
                 path_initial=path_initial, ## +
@@ -507,16 +579,28 @@ class FuelSupply(Widget):
                 fuel_residue=supply_form.residue, ## +
                 )
             
-            print(instance.__dict__)
+            # print(instance.__dict__)
             
             instance.submain()
+    
+            self.dialog = DialogBox(
+                title=u'\u274C',
+                title_size="25sp",
+                content=Label(text=self.succes_msg),
+                pos=(200.0, 350.0),
+                size_hint=(0.5, 0.25),
+                size=(400, 200),
+                auto_dismiss=False,
+                )
 
-            return print('It is OK')
+            self.dialog.on_touch_down = self.dialog.close_app
+            self.dialog.open()
+
         else:
             exit()
 
     def process_fuel_supply_data(self, instance):
-        #######################*** form validation *** #####################################
+        
         global supply_form
         supply_form  = FuelSupplyField(
             pickup=self.pickup_input.text,
@@ -549,20 +633,7 @@ class FuelSupply(Widget):
         self.dialog.open()
 
 class Root(Widget):
-
-    # path = StringProperty("")
-    # registry = StringProperty("")
-    def on_icon(self):
-        self.songLabel = Label(
-            pos_hint={'center_x': 0.9, 'center_y': 0.05 },
-            size_hint=(1, 1),
-            font_size=18
-        )
-        self.add_widget(self.songLabel)
     
-    def play_audio(self):
-        
-
     def dismiss_popup(self):
         self._popup.dismiss()
 
@@ -571,54 +642,32 @@ class Root(Widget):
         self.file_name = filename[0]
         print(f"INITIAL: {self.file_name}")
         
-
     def process_initial(self):
         print('#1')
         # downloading and selection widget
         widget = LoadDialog()
         self.add_widget(widget)
-        #################################
-        # full_path = self.ids.my_file._source
-        # file_name = os.path.basename(path)
-        
-        # path = full_path.split('/')[:-1]
-        # path = "/".join(path) + '/'
 
-        # # file is obj that is validated
-        # file = LoadXLSXFileField(path, file_name)
-
-        # global path_final
-        # path_final = file.path
-        
-        # global report
-        # report = file.file_name    
-        
-        # print(f"This is path final: {path_final}")
-        # print(f"This is file final: {reportl}")
-        ###############################################
         path = self.ids.my_file._source
-        # print(f"This is path: {path}")
         file_name = os.path.basename(path)
-        # print(f"This is filename: {file_name}")
-        
-        # file is obj that is validated
         file = LoadXLSXFileField(path, file_name)
+
         global path_initial
         full_path =  file.path
         path_initial = os.path.dirname(full_path)
-        # print(f"This is path: {path_initial}")
+        
         global registry
         registry = file.file_name
 
-        ##################################
-        if file.err is None:
+        err_free =  file.err is None
+        if err_free:
             title = "Initial File Selected"
             self.message = f"{self.file_name}"
         else:
             title = "Initial File Error"
             self.message = file.err
         content=Label(text=self.message)
-        ##################################
+
         self._popup = DialogBox(
             title=title,
             title_size="25sp",
@@ -628,63 +677,34 @@ class Root(Widget):
             size=(400, 200),
             auto_dismiss=True,
             )
+
+        self._popup.on_touch_down = self._popup.on_touch_down if err_free else self._popup.close_app
+        
         self._popup.open()
-        ### print(content.text) +++
-        # if file.err is None: ### ---> put condition here
         self.show_load()
     
     def show_load(self):
         self.clear_widgets()
-        #######################
-        # widget = FuelSupply()
-        #######################
         widget = LoadDialog()
         self.add_widget(widget)
-        
+
+
 class Editor4(MDApp):
     
     app_name = 'Carrier Register'
 
     def get_application_name(self):
         _app_name = self.app_name
-        _app_name.encode(encoding = 'UTF-8', errors = 'strict')
+        _app_name.encode(encoding='UTF-8', errors='strict')
         return _app_name
     
-    def on_icon(self):
-        self.songLabel = Label(
-            pos_hint={'center_x': 0.9, 'center_y': 0.05 },
-            size_hint=(1, 1),
-            font_size=18
-        )
-        self.add_widget(self.songLabel)
-
 
 Factory.register('Root', cls=Root)
-
-# Factory.register('FileChooserLayer', cls=FileChooserLayer)
-
 Factory.register('LoadDialog', cls=LoadDialog)
 Factory.register('DatePicker', cls=DatePicker)
 Factory.register('FuelSupply', cls=FuelSupply)
+Factory.register('SoundButtonCard', cls=SoundButtonCard)
 Factory.register('MainPage', cls=MainPage)
 
-
-# Factory.register('SaveDialog', cls=SaveDialog)
-
 if __name__ == '__main__':
-   
     Editor4().run()
-    
-    print(
-        f"{path_initial} |, \n\
-        {registry} |, \n\
-        {path_final} |, \n\
-        {report} |, \n\
-        {date} |, \n\
-        {fuel_type} |, \n\
-        {supply_form.pickup} |, \n\
-        {supply_form.arrival} |, \n\
-        {supply_form.residue} | "
-        )
-
-    print(dir(Editor4))
