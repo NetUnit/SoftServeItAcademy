@@ -62,6 +62,15 @@ import datetime
 # *** encoding *** #
 import hashlib
 import hmac
+
+# *** path *** #
+from settings import (
+    PathFinder,
+    RT_STICKER,
+    JET_STICKER,
+    CLOCK_IMAGE,
+    TANK_IMAGE,
+)
 import os
 
 from kivy.config import Config
@@ -85,6 +94,9 @@ MINT_GREEN = (155/255, 255/255, 152/255, 0.8)
 BLACK = (0/255, 0/255, 0/255, 0.7)
 ASDA_GREEN = (125/255, 194/255, 66/255, 1)
 FOX_RED = (222/255, 44/255, 31/255, 1)
+
+# *** path *** #
+CWD = PathFinder().cwd
 
 
 class DialogBox(Popup):
@@ -119,10 +131,7 @@ class DialogBox(Popup):
 class SoundButtonCard(BoxLayout):
 
     app_name = 'Carrier Register'
-    music_dir = "/media/netunit/storage/SoftServeItAcademy/" \
-        + "airport_petty_algorithms/carrier_register_li/"
-    icon_dir = "/media/netunit/storage/SoftServeItAcademy/" \
-        + "airport_petty_algorithms/carrier_register_li/music-button.gif"
+    music_dir = f'{CWD}/'
     counter = 0
 
     def __init__(self, *args, **kwargs):
@@ -160,7 +169,7 @@ class ProcessFinalFile(Widget):
         self.title = title,
         # preventionof overriding any important functionality
         super(ProcessFinalFile, self).__init__(*args, **kwargs)
-
+    
     def select(self, filename, *args):
         self.ids.my_file._source = filename[0]
         self.file_name = filename[0]
@@ -216,10 +225,8 @@ class ProcessFinalFile(Widget):
 class FuelSelection(Widget):
 
     label_paths = {
-        'RT': f'/media/netunit/storage/SoftServeItAcademy/' \
-            + f'airport_petty_algorithms/carrier_register_li/rt-sticker.jpg',
-        'Jet A-1': f'/media/netunit/storage/SoftServeItAcademy/' \
-            + f'airport_petty_algorithms/carrier_register_li/jet-a-1-sticker.jpg'
+        'RT': RT_STICKER,
+        'Jet A-1': JET_STICKER,
     }
 
     def __init__(self, *args, **kwargs):
@@ -289,8 +296,7 @@ class FuelSelection(Widget):
 
 class DatePicker(Widget):
 
-    clock_image_path = "/media/netunit/storage/SoftServeItAcademy/" \
-        + "airport_petty_algorithms/carrier_register_li/clock.png"
+    clock_image = CLOCK_IMAGE
     format = '%d-%m-%Y'
 
     def __init__(self, *args, **kwargs):
@@ -298,7 +304,7 @@ class DatePicker(Widget):
         super(DatePicker, self).__init__(*args, **kwargs)
 
         self.clock_image = Image(
-            source=self.clock_image_path,
+            source=self.clock_image,
             pos=(250.0, 280.0),
             size=(300.0, 300.0),
         )
@@ -313,11 +319,8 @@ class DatePicker(Widget):
         self.add_widget(self.clock_label)
 
     def get_date_picker(self):
-        try:
-            self.add_widget(self.date_btn)
-            self.date_btn.bind(on_press=self.show_date_picker)
-        except Exception as err:
-            print(err)
+        self.add_widget(self.date_btn)
+        self.date_btn.bind(on_press=self.show_date_picker)
 
     def show_date_picker(self):
         today = datetime.date.today()
@@ -410,8 +413,7 @@ class CustomDialog(FloatLayout):
 
 class FuelSupply(Widget):
 
-    tank_image = "/media/netunit/storage/SoftServeItAcademy/" \
-        + "airport_petty_algorithms/carrier_register_li/fuel_track.png"
+    tank_image = TANK_IMAGE
     succes_msg = u"THE REPORT HAS BEEN DONE"
 
     def __init__(self, *args, **kwargs):
@@ -616,6 +618,14 @@ class FuelSupply(Widget):
 
 
 class Root(Widget):
+    
+    def __init__(self, *args, **kwargs):
+        # prevention of overriding any important functionality
+        super(Root, self).__init__(*args, **kwargs)
+    
+    #     with self.canvas:
+    #         Color(83/255, 83/255, 83/255, 1)
+    #         Rectangle(pos=self.pos, size=self.size)
 
     def dismiss_popup(self):
         self._popup.dismiss()
@@ -695,3 +705,6 @@ Factory.register('FuelSelection', cls=FuelSelection)
 
 if __name__ == '__main__':
     Editor().run()
+    # print(dir(Root))
+    # print(dir(BoxLayout))
+    # print(dir(Editor))

@@ -9,3 +9,8 @@ lib64/
 lib/
 share/
 bin/
+dist/
+build/
+.coala.1
+.interface.spec
+.desktop.ini
