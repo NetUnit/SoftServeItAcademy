@@ -1,6 +1,7 @@
 import kivy
 from kivymd.app import MDApp
 from kivymd.uix.relativelayout import MDRelativeLayout
+from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -73,6 +74,18 @@ from settings import (
 )
 import os
 
+# *** COLORS *** #
+from settings import (
+    WHITE,
+    SIGNAL_WHITE,
+    PURE_WHITE,
+    TRAFFIC_GREY,
+    MINT_GREEN,
+    BLACK,
+    ASDA_GREEN,
+    FOX_RED
+)
+
 from kivy.config import Config
 Config.set('graphics', 'resizable', True)
 kivy.require('2.1.0')
@@ -84,16 +97,6 @@ import random
 from parse_data import ParseXLSXData
 from validators.file_field import LoadXLSXFileField
 from validators.supply_fields import FuelSupplyField 
-
-# *** COLORS *** #
-WHITE = (255/255, 255/255, 255/255, 1)
-SIGNAL_WHITE = (240/255, 240/255, 240/255, 0)
-PURE_WHITE = (240/255, 240/255, 240/255, 1)
-TRAFFIC_GREY = (83/255, 83/255, 83/255, 1)
-MINT_GREEN = (155/255, 255/255, 152/255, 0.8)
-BLACK = (0/255, 0/255, 0/255, 0.7)
-ASDA_GREEN = (125/255, 194/255, 66/255, 1)
-FOX_RED = (222/255, 44/255, 31/255, 1)
 
 # *** path *** #
 CWD = PathFinder().cwd
@@ -128,6 +131,51 @@ class DialogBox(Popup):
             Editor.get_running_app().stop()
 
 
+class CustomDialog(FloatLayout):
+
+    confirm = ObjectProperty(None)
+    cancel = ObjectProperty(None)
+    text = ObjectProperty(None)
+
+    def __init__(self, confirm=confirm, **kwargs):
+        self.confirm = confirm
+    # prevention of overriding any important functionality
+        super(CustomDialog, self).__init__(**kwargs)
+
+        self.submit_btn = MDRaisedButton(
+            text="Confirm",
+            # size_hint=(.1, .05),
+            pos_hint={'center_x': .35, 'center_y': .15},
+            md_bg_color=ASDA_GREEN,
+            text_color=WHITE,
+            # on_release=self.confirm
+        )
+
+        self.cancel_btn = MDRaisedButton(
+            text="Cancel",
+            # size_hint=(.1, .05),
+            pos_hint={'center_x': .65, 'center_y': .15},
+            md_bg_color=FOX_RED,
+            text_color=WHITE,
+        )
+
+        self.message = Label(
+            text=self.text,
+            pos_hint={'center_x': .5, 'center_y': .75},
+            # pos=(150.0, 80.0)
+        )
+
+        self.add_widget(self.submit_btn)
+        self.add_widget(self.cancel_btn)
+        self.add_widget(self.message)
+
+        # self.confirm is an obj par that will be
+        # acquired in the other class - function which
+        # is basically a python object too
+        self.submit_btn.bind(on_press=self.confirm)
+        self.cancel_btn.bind(on_press=self.cancel)
+
+
 class SoundButtonCard(BoxLayout):
 
     app_name = 'Carrier Register'
@@ -157,7 +205,73 @@ class SoundButtonCard(BoxLayout):
     def stopaudio(self):
             self.sound.stop()
             self.counter -= 1
+
+
+class Root(Widget):
     
+    def __init__(self, *args, **kwargs):
+        # prevention of overriding any important functionality
+        super(Root, self).__init__(*args, **kwargs)
+
+    def dismiss_popup(self):
+        self._popup.dismiss()
+
+    def select(self, filename, *args):
+        self.ids.my_file._source = filename[0]
+        self.file_name = filename[0]
+        msg = f"INITIAL FILE: {self.file_name} - SELECTED"
+        # LOGGER.info(msg)
+        print(msg)
+
+    def process_initial(self):
+        # downloading and selection widget
+        widget = ProcessFinalFile()
+        self.add_widget(widget)
+
+        path = self.ids.my_file._source
+        file_name = os.path.basename(path)
+        file = LoadXLSXFileField(path, file_name)
+
+        global path_initial
+        full_path = file.path
+        path_initial = os.path.dirname(full_path)
+
+        global registry
+        registry = file.file_name
+
+        err_free = file.err is None
+        if err_free:
+            title = "Initial File Selected"
+            self.message = f"{self.file_name}"
+        else:
+            title = "Initial File Error"
+            self.message = file.err
+
+        msg = f"INITIAL FILE: {self.file_name} - PROCESSED"
+        # LOGGER.info(msg)
+        print(msg)
+        content = Label(text=self.message)
+
+        self._popup = DialogBox(
+            title=title,
+            title_size="25sp",
+            content=Label(text=self.message),
+            pos=(200.0, 350.0),
+            size_hint=(0.5, 0.25),
+            size=(400, 200),
+            auto_dismiss=True,
+            )
+        if not err_free:
+            self._popup.on_touch_down = self._popup.close_app
+
+        self._popup.open()
+        self.show_load()
+
+    def show_load(self):
+        self.clear_widgets()
+        widget = ProcessFinalFile()
+        self.add_widget(widget)
+
 
 class ProcessFinalFile(Widget):
 
@@ -233,18 +347,6 @@ class FuelSelection(Widget):
         # preventionof overriding any important functionality
         super(FuelSelection, self).__init__(*args, **kwargs)
 
-        self.process_selection = MDRaisedButton(
-            text="Proceed",
-            # pos_hint={'center_x': .15, 'center_y': 0.75}
-            pos=(705.0, 050.0),
-            md_bg_color=ASDA_GREEN,
-            text_color=WHITE
-            # on_press=self.process_fuel_selection
-        )
-
-        self.add_widget(self.process_selection)
-        self.process_selection.bind(on_press=self.process_fuel_selection)
-
     # fuel_type selection
     def select_fuel(self, fueltype):
         label_path = self.label_paths.get(fueltype)
@@ -256,8 +358,9 @@ class FuelSelection(Widget):
         fuel_type = fueltype
         self.fuel_type = fueltype
         self.message = f"{self.fuel_type}"
+        return fuel_type
 
-    def process_fuel_selection(self, fueltype):
+    def process_fuel_selection(self, fueltype=None):
         fuel_type = self.ids.fuel_selection._source
         # fuel_type will be blanc string if no selection
         if len(fuel_type) > 0:
@@ -360,55 +463,10 @@ class DatePicker(Widget):
         self.clear_widgets()
         widget = FuelSupply()
         self.add_widget(widget)
-    
+
     def date_on_cancel(self, instance, value):
         self.date = None 
         self.date_dialog.dismiss()
-
-
-class CustomDialog(FloatLayout):
-
-    confirm = ObjectProperty(None)
-    cancel = ObjectProperty(None)
-    text = ObjectProperty(None)
-
-    def __init__(self, confirm=confirm, **kwargs):
-        self.confirm = confirm
-    # prevention of overriding any important functionality
-        super(CustomDialog, self).__init__(**kwargs)
-
-        self.submit_btn = MDRaisedButton(
-            text="Confirm",
-            # size_hint=(.1, .05),
-            pos_hint={'center_x': .35, 'center_y': .15},
-            md_bg_color=ASDA_GREEN,
-            text_color=WHITE,
-            # on_release=self.confirm
-        )
-
-        self.cancel_btn = MDRaisedButton(
-            text="Cancel",
-            # size_hint=(.1, .05),
-            pos_hint={'center_x': .65, 'center_y': .15},
-            md_bg_color=FOX_RED,
-            text_color=WHITE,
-        )
-
-        self.message = Label(
-            text=self.text,
-            pos_hint={'center_x': .5, 'center_y': .75},
-            # pos=(150.0, 80.0)
-        )
-
-        self.add_widget(self.submit_btn)
-        self.add_widget(self.cancel_btn)
-        self.add_widget(self.message)
-
-        # self.confirm is an obj par that will be
-        # acquired in the other class - function which
-        # is basically a python object too
-        self.submit_btn.bind(on_press=self.confirm)
-        self.cancel_btn.bind(on_press=self.cancel)
 
 
 class FuelSupply(Widget):
@@ -417,7 +475,7 @@ class FuelSupply(Widget):
     succes_msg = u"THE REPORT HAS BEEN DONE"
 
     def __init__(self, *args, **kwargs):
-        # prevention of overriding any important functionalit
+        # prevention of overriding any important functionality
         super(FuelSupply, self).__init__(*args, **kwargs)
 
         self.tank_image = Image(
@@ -617,79 +675,17 @@ class FuelSupply(Widget):
         self.dialog.open()
 
 
-class Root(Widget):
-    
-    def __init__(self, *args, **kwargs):
-        # prevention of overriding any important functionality
-        super(Root, self).__init__(*args, **kwargs)
-    
-    #     with self.canvas:
-    #         Color(83/255, 83/255, 83/255, 1)
-    #         Rectangle(pos=self.pos, size=self.size)
-
-    def dismiss_popup(self):
-        self._popup.dismiss()
-
-    def select(self, filename, *args):
-        self.ids.my_file._source = filename[0]
-        self.file_name = filename[0]
-        msg = f"INITIAL FILE: {self.file_name} - SELECTED"
-        # LOGGER.info(msg)
-        print(msg)
-
-    def process_initial(self):
-        # downloading and selection widget
-        widget = ProcessFinalFile()
-        self.add_widget(widget)
-
-        path = self.ids.my_file._source
-        file_name = os.path.basename(path)
-        file = LoadXLSXFileField(path, file_name)
-
-        global path_initial
-        full_path = file.path
-        path_initial = os.path.dirname(full_path)
-
-        global registry
-        registry = file.file_name
-
-        err_free = file.err is None
-        if err_free:
-            title = "Initial File Selected"
-            self.message = f"{self.file_name}"
-        else:
-            title = "Initial File Error"
-            self.message = file.err
-
-        msg = f"INITIAL FILE: {self.file_name} - PROCESSED"
-        # LOGGER.info(msg)
-        print(msg)
-        content = Label(text=self.message)
-
-        self._popup = DialogBox(
-            title=title,
-            title_size="25sp",
-            content=Label(text=self.message),
-            pos=(200.0, 350.0),
-            size_hint=(0.5, 0.25),
-            size=(400, 200),
-            auto_dismiss=True,
-            )
-        if not err_free:
-            self._popup.on_touch_down = self._popup.close_app
-
-        self._popup.open()
-        self.show_load()
-
-    def show_load(self):
-        self.clear_widgets()
-        widget = ProcessFinalFile()
-        self.add_widget(widget)
-
-
 class Editor(MDApp):
 
     app_name = 'Carrier Register'
+
+    def build(self):
+        '''
+            overriding build() is an alternative to create a root widget 
+            tree, in our case we've defined a root widget in a kv file
+        '''
+        # Window.size = (1200, 900)
+        pass
 
     def get_application_name(self):
         _app_name = self.app_name
@@ -705,6 +701,4 @@ Factory.register('FuelSelection', cls=FuelSelection)
 
 if __name__ == '__main__':
     Editor().run()
-    # print(dir(Root))
-    # print(dir(BoxLayout))
-    # print(dir(Editor))
+    print(dir(Editor))

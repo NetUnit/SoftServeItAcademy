@@ -1,9 +1,10 @@
 #:kivy 2.1.0
 #:import Factory kivy.factory.Factory
 #:import path_finder settings.path_finder
+#:import weakref weakref
+#:import asda_green settings.ASDA_GREEN
 
 <SoundButtonCard@BoxLayout>:
-
     id: sound_button
     orientation: 'horizontal'
     padding: dp(5)
@@ -29,17 +30,18 @@
 Root:
     id: file_widget
     BoxLayout:
+        id: box_layout
         orientation: "vertical"
+        padding: 5
+        spacing: 10
         # by default size is 800x600
         size: file_widget.size
-        # size_hint_x: None
-        # size_hint_y: None
-
+    
         canvas.before:
             Color:
                 rgba: (83/255, 83/255, 83/255, 1)
             Rectangle:
-                size: file_widget.size
+                size: self.size
 
         SoundButtonCard:
             size: self.size
@@ -59,43 +61,43 @@ Root:
         MDRaisedButton:
             id: my_button
             text: "Select File"
+
             on_press:
-                # print(root.__class__.__name__)
                 root.process_initial()
-                
+
 <ProcessFinalFile>:
     id: file_widget_final
 
     BoxLayout:
+        id: box_layout2
         orientation: "vertical"
         padding: 5
         spacing: 10
-        
+        size: app.root.size
+
         canvas.before:
             Color:
                 rgba: (83/255, 83/255, 83/255, 1)
             Rectangle:
-                size: root.size
-        
+                size: self.size
+
         RstDocument:
             id: my_file
             _source: ""
             text: my_file._source
-
             text_size: 50
             show_errors: True
-            
+
         FileChooserListView:
             id: file_chooser
             on_selection: root.select(file_chooser.selection)
-            size: (600, 600)
+            size: app.root.size
 
         MDRaisedButton:
             id: my_button
             text: "Select File"
-
+            
             on_press:
-                print(Factory.Root)
                 file_widget_final.process_final()
 
 <FuelSelection>:
@@ -105,48 +107,59 @@ Root:
 
     BoxLayout:
         orientation: "vertical"
-        size: 800, 600
+        size: app.root.size
         padding: 5
         spacing: 10
-
+        
         canvas.before:
             Color:
                 rgba: (83/255, 83/255, 83/255, 1)
             Rectangle:
                 size: self.size
-        
+
         Image:
             id: my_image
             source: ""
 
         RstDocument:
             id: fuel_selection
-
             _source: ""
             text: fuel_selection._source
 
-        MDRaisedButton:
-            id: fuel_type1
-            pos: self.parent.pos
-            text: "RT"
-            on_press:
-                f_select.select_fuel(f_select.fuel_type1)
-        
-        MDRaisedButton:
-            id: fuel_type2
-            pos: self.parent.pos
-            text: "JET A-1"
+        RelativeLayout:
+            size_hint: (1, 0.4)
 
-            on_press:
-                f_select.select_fuel(f_select.fuel_type2)
-        
+            MDRaisedButton:
+                id: fuel_type1
+                pos: self.parent.pos
+                text: "RT"
+                pos_hint: {'left': 1, 'top': 0.95}
+                on_press:
+                    f_select.select_fuel(f_select.fuel_type1)
+            
+            MDRaisedButton:
+                id: fuel_type2
+                pos: self.parent.pos
+                text: "JET A-1"
+                pos_hint: {'left': 1, 'bottom': 0.3}
+
+                on_press:
+                    f_select.select_fuel(f_select.fuel_type2)
+
+            MDRaisedButton:
+                pos_hint: {'right': 0.995, 'top': 0.95}
+                text: "Proceed"
+                md_bg_color: asda_green
+                on_press:
+                    f_select.process_fuel_selection()
+
+
 <DatePicker>:
-
     id: date_picker_app
 
     BoxLayout:
         orientation: "vertical"
-        size: 800, 600
+        size: app.root.size
         padding: 5
         spacing: 10
         
@@ -164,12 +177,11 @@ Root:
                 date_picker_app.show_date_picker()
 
 <FuelSupply>:
-
     id: fuel_supply
 
     BoxLayout:
         orientation: "vertical"
-        size: 800, 600
+        size: app.root.size
         padding: 5
         spacing: 10
         
@@ -178,4 +190,3 @@ Root:
                 rgba: (83/255, 83/255, 83/255, 1)
             Rectangle:
                 size: self.size
-        
