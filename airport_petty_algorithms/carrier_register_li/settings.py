@@ -14,7 +14,6 @@ class PathFinder():
 
         .. note::
             * params are str type 
-
     '''
 
     def __init__(self):
@@ -34,7 +33,7 @@ class PathFinder():
         self.tank_image = os.path.join(
             cwd, 'fuel_track.png'
         )
-        
+
         self.cwd = cwd
 
 path_finder = PathFinder()

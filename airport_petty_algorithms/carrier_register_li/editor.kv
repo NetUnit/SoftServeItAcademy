@@ -4,7 +4,7 @@
 #:import weakref weakref
 #:import asda_green settings.ASDA_GREEN
 
-<SoundButtonCard@BoxLayout>:
+<SoundButtonCard>:
     id: sound_button
     orientation: 'horizontal'
     padding: dp(5)
@@ -152,7 +152,6 @@ Root:
                 md_bg_color: asda_green
                 on_press:
                     f_select.process_fuel_selection()
-
 
 <DatePicker>:
     id: date_picker_app

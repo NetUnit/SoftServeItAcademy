@@ -22,6 +22,7 @@ class LoadXLSXFileField:
             :param type_error: error coomon for this class field
     '''
     type_error = 'Improper file extension selected'
+    empty_file = 'U should select some file'
     extensions  = [
         '.xls', '.xlsx', '.xlsm','.xlsb',
         '.xltx', '.xlt', '.xltm', '.xml',
@@ -64,17 +65,25 @@ class LoadXLSXFileField:
         path = pathlib.Path(self.path)
         full_path = os.path.join(self.path + '/' + self.file_name)
         full_path = pathlib.Path(full_path)
-        
+
         # get file extension
         ext = path.suffix if len(path.suffix) > 0 else full_path.suffix
-        
+
+        empty_file = None in [self.path, self.file_name]
+        if empty_file:
+            msg = self.empty_file
+
         improper_file = ext not in self.extensions
         if improper_file:
-            self.err = f'{self.type_error}: file - {self.file_name}'
+            msg = self.empty_file
+
+        if any([empty_file, improper_file]):
+            print(type(self.file_name))
+            self.file_name = 'None' if self.file_name == '' else self.file_name
+            self.err = f'{msg}: file - {self.file_name}'
             # LOGGER.error(self.err)
-            print(self.err)
             raise TypeError()
-            
+
     def get_work_book(self):
         '''
             accessing & loading the INITIAL/FINAL RT/JET A-1 fuel data \n\

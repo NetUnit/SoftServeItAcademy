@@ -86,11 +86,29 @@ from settings import (
     FOX_RED
 )
 
-from kivy.config import Config
-Config.set('graphics', 'resizable', True)
-kivy.require('2.1.0')
 
-import os
+kivy.require('2.1.0')
+from kivy.config import Config
+from configparser import ConfigParser
+import configparser
+
+# non-resizable window config 
+# Config.set('graphics', 'resizable', '0')
+# Config.set('graphics', 'width', '800')
+# Config.set('graphics', 'height', '600')
+
+# resizable window config
+config = ConfigParser()
+
+# parse existing file
+config.read('config.ini')
+
+# read values from a section
+resizable_val = config.get('graphics', 'resizable')
+print(resizable_val)
+Config.set('graphics', 'resizable', resizable_val)
+Config.write()
+
 import re
 import random
 # *** root files *** #
@@ -223,7 +241,7 @@ class Root(Widget):
         # LOGGER.info(msg)
         print(msg)
 
-    def process_initial(self):
+    def process_initial(self, instance=None):
         # downloading and selection widget
         widget = ProcessFinalFile()
         self.add_widget(widget)
@@ -240,10 +258,12 @@ class Root(Widget):
         registry = file.file_name
 
         err_free = file.err is None
+        # print(file.err)
         if err_free:
             title = "Initial File Selected"
             self.message = f"{self.file_name}"
         else:
+            self.file_name = str(instance)
             title = "Initial File Error"
             self.message = file.err
 
@@ -292,6 +312,7 @@ class ProcessFinalFile(Widget):
         print(msg)
 
     def process_final(self, instance=None):
+        # print(instance)
         path = self.ids.my_file._source
         file_name = os.path.basename(path)
 
@@ -310,12 +331,13 @@ class ProcessFinalFile(Widget):
             title = "Initial File Selected"
             self.message = f"{self.file_name}"
         else:
+            self.file_name = str(instance)
             title = "Initial File Error"
             self.message = file.err
 
         content = Label(text=self.message)
         msg = f"FINAL FILE: {self.file_name} - PROCESSED"
-        print(msg)
+
         self._popup = DialogBox(
             title=title,
             title_size="25sp",
@@ -678,14 +700,29 @@ class FuelSupply(Widget):
 class Editor(MDApp):
 
     app_name = 'Carrier Register'
+    _fixed_size = (800, 600)
 
     def build(self):
         '''
             overriding build() is an alternative to create a root widget 
             tree, in our case we've defined a root widget in a kv file
         '''
-        # Window.size = (1200, 900)
-        pass
+        config = self.config
+        return 
+
+    def get_fixed_size(self):
+        '''
+            setting window size as fixed with deafult values
+            'param Window': Core class for creating the default Kivy window
+        '''
+        Window.size = self._fixed_size
+        return 
+    
+    # adjust here to change size other than editor.kv file
+    # way 1
+    # Window.bind(on_resize = self.get_fixed_size)
+    # way 2, simply hradcoding teh size 
+    # Window.size = (800, 600)
 
     def get_application_name(self):
         _app_name = self.app_name
@@ -701,4 +738,5 @@ Factory.register('FuelSelection', cls=FuelSelection)
 
 if __name__ == '__main__':
     Editor().run()
-    print(dir(Editor))
+    # print(dir(Editor))
+    # print(dir(Window))
