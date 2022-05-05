@@ -717,7 +717,7 @@ class Editor(MDApp):
         '''
         Window.size = self._fixed_size
         return 
-    
+
     # adjust here to change size other than editor.kv file
     # way 1
     # Window.bind(on_resize = self.get_fixed_size)
