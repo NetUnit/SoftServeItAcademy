@@ -6,62 +6,117 @@
 
 <head>
 <style>
-    .landing-logo img {
-      margin-top: 24px;
-      display: block;
-      width: 1024px;
-      height: 800px;
-      position: absolute;
-      right: 0%;
-      top: 29.5%;
-    }
 
-    .column1 {
-      color: #4287f5;
-      text-align: left;
-    }
-    
-    .products_group {
-      color: #f5ad42;
-      font-weight: bold; 
-      position: fixed;     
-      text-align: left;    
-      bottom: 790px; 
-      width: 100%;
-    }
-    
-    .products_tagline {
-      color: #f5ad42;
-      font-weight: bold;
-      position: fixed;     
-      text-align: left;    
-      bottom: 765px; 
-      width: 100%;
-    }
+  .col1::after {
+    content: "";
+    right: 0%;
+    top: 0%;
+  }
 
-    .footer_root {
-      color: #f5ad42;
-      font-weight: bold;
-      position: fixed;     
-      text-align: left;    
-      bottom: 15px; 
-      width: 100%;
-    }
+  .col2::before {
+    content: "";
+    right: 0%;
+    top: 0%;
+    /* z-index: 2; */
+  }
+
+  .col3 { 
+    right: 0%;
+    top: 0%;
+    /* z-index: 1; */
+  }
+
+  .landing-logo-pandasident img {
+    /* margin-top: 24px; */
+    display: block;
+    width: 991px;
+    height: 633px;
+    /* position: absolute; */
+    right: 13.0%;
+    top: 6.0%;
+    /* z-index: 3; */
+  
+  }
+
+  .speech-baloon img {
+    /* margin-top: 24px; */
+    /* display: block; */
+    /* width: 480px; */
+    /* height: 437px; */
+    width: 684px;
+    height: 497px;
+    position: absolute;
+    right: -69.0%;
+    top: 95.0%;
+    z-index: 2;
+
+  }
+
+  .landing-logo-newcomer img {
+    /* margin-top: 24px; */
+    /* display: block; */
+    width: 896px;
+    height: 709px;
+    position: absolute;
+    right: -125%;
+    top: 67.0%;
+    z-index: 1; 
+
+  }
+
+  .footer_root {
+    color: #f5ad42;
+    font-weight: bold;
+    position: fixed;     
+    text-align: left;    
+    bottom: 15px; 
+    width: 100%;
+  }
 
 </style>
 
-<body>
+<!-- <body>
     <div class="main">
-        <div class="column1">
-        </div>
-        <div class='landing-logo' style="margin-top: 5px;">
-          <img src="{% static 'images/panda_logo_big4.png' %}" alt="Panda logo">
+      <div class='landing-logo-pandasident' style="margin-top: 5px;">
+        <img src="{% static 'images/pandasident-baldo-3.jpg' %}" alt="Pandasident logo">
+      </div>
+        <div class='landing-logo-newcomer' style="margin-top: 5px;">
+          <img src="{% static 'images/panda_logo_big4.png' %}" alt="Panda Newcomer logo">
         </div>
         <div class="footer_root">
           root: {{ app_name_0 }}
         </div>
     </div>
+</body> -->
+
+<body>
+  <div class="container" style="position: absolute">
+    <div class="row">
+      <div class="vl">
+        <span class="vl-innertext"></span>
+      </div>
+
+      <div class="col1">
+        <div class='landing-logo-pandasident'>
+          <img src="{% static 'images/pandasident-baldo-5.png' %}" alt="Pandasident logo">
+        </div>
+      </div>
+      
+      <div class="col2">
+        <div class='speech-baloon'>
+          <img src="{% static 'images/speech-baloon.png' %}" alt="Speech Baloon">
+        </div>
+      </div>
+    
+      <div class="col3">
+        <div class='landing-logo-newcomer'>
+          <img src="{% static 'images/panda_logo_big4.png' %}" alt="Panda Newcomer logo">
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 
 {% endblock %}
 

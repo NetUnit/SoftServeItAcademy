@@ -76,6 +76,7 @@ def api_product_detailed_view(request, product_id, *args, **kwargs):
 # try/except blocks will be excessive as model has it already 
 def product_list_view(request, *args, **kwargs):
     try:
+        # print(request.user.is_authenticated)
         products = Product.get_all()
         images = [str(product.image) for product in products]
         #[print(image) for image in images]
@@ -160,7 +161,7 @@ def product_create_view(request, *args, **kwargs): ### add user_id here from fro
             # media = request.FILES.get('media')
             # product.media = media
 
-            print(product)
+            # print(product)
             
             product.save()
             messages.success(
@@ -251,7 +252,11 @@ def product_update_view(request, product_id,  *args, **kwargs):
         pass
     
     context = {'form': form}
-    return render (request, 'products/product_update_form_as_crispy_fields.html', context)
+    return render (
+        request, 
+        'products/product_update_form_as_crispy_fields.html', 
+        context
+        )
     
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_delete_view(request, product_id, *args, **kwargs):

@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from .google import Google
+import os
 
 from rest_framework.fields import (
     CharField, 
@@ -17,8 +19,13 @@ from rest_framework.serializers import (
     )
 from rest_framework.relations import HyperlinkedIdentityField
 
-from accounts.models import CustomUser
+from accounts.models import (
+    CustomUser,
+    Token
+    )
 
+from django.contrib.auth import authenticate, login
+import json
 
 class CustomUserCreateSerializer(serializers.ModelSerializer):
 
@@ -27,7 +34,8 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
         fields = [
             'username',
             'email',
-            'password',   
+            'password',
+
         ]
 
     def create(self, validated_data):
@@ -55,7 +63,7 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'detail': 'Email already exists ┐(‘～` )┌', }
             )
-        print(email)
+        print(data)
         return data
         
 class CustomUserLoginSerializer(serializers.ModelSerializer):
@@ -80,6 +88,12 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         # print(data)
+        '''
+            we can also assighn other than rest_framework.authtoken
+            here.
+            :returns: validated data that comes from a client when auth process
+            :raise Vlidation Error: no user obj in the db or wrong auth data
+        '''
         email = data.get('email')
         username = data.get('username')
         if not email and not username:
@@ -114,9 +128,159 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'detail': 'Hmm ... passsword wasn\'t correct (° -°）', }
             )
-
-        data['token'] = 'Some Random Token'
-        
+        token = Token.objects.filter(user=user).get()
+        if token:
+            data['token'] = token.key
         return data
 
-# ['Meta', '__class__', '__class_getitem__', '__deepcopy__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_args', '_context', '_creation_counter', '_declared_fields', '_get_model_fields', '_kwargs', '_read_only_defaults', '_readable_fields', '_writable_fields', 'allow_null', 'bind', 'build_field', 'build_nested_field', 'build_property_field', 'build_relational_field', 'build_standard_field', 'build_unknown_field', 'build_url_field', 'context', 'create', 'data', 'default', 'default_empty_html', 'default_error_messages', 'default_validators', 'error_messages', 'errors', 'fail', 'field_name', 'fields', 'get_attribute', 'get_default', 'get_default_field_names', 'get_extra_kwargs', 'get_field_names', 'get_fields', 'get_initial', 'get_unique_for_date_validators', 'get_unique_together_validators', 'get_uniqueness_extra_kwargs', 'get_validators', 'get_value', 'help_text', 'include_extra_kwargs', 'initial', 'instance', 'is_valid', 'label', 'many_init', 'parent', 'partial', 'read_only', 'required', 'root', 'run_validation', 'run_validators', 'save', 'serializer_choice_field', 'serializer_field_mapping', 'serializer_related_field', 'serializer_related_to_field', 'serializer_url_field', 'source', 'style', 'to_internal_value', 'to_representation', 'update', 'url_field_name', 'validate', 'validate_empty_values', 'validated_data', 'validators', 'write_only']
+
+from bootcamp.settings import AUTH_PROVIDERS
+from rest_framework_jwt.settings import api_settings
+from django.http import HttpResponse
+import datetime
+from django.utils import timezone
+
+# from rest_framework_jwt.compat import set_cookie_with_token
+from rest_framework_jwt import compat
+# from compat import set_cookie_with_token
+
+class GoogleSocialAuthSerializer(serializers.Serializer):
+    
+    auth_token = serializers.CharField() 
+
+    def register_social_user(self, data):
+        user = CustomUser()
+        _password = ''.join(
+            [random.choice(string.digits + 
+            string.ascii_letters + 
+            string.punctuation) for i in range(0, 10)]
+            )
+
+        ## send password to the email
+        # print(password)
+        data['password'] = _password
+        # print(data)
+        user = user.create_user(data)
+        return user
+        # token = generate token
+
+    # make the same with auth2_provider_model 
+
+    # return register_social_user(
+    #     provider=provider,
+    #     user_id=user_id,
+    #     email=email,
+    #     name=name
+    # )
+
+
+    # authenticate user_here
+    # def authenticate_social_user(self, *args, request=None, user=None):
+    #     username=user.email
+    #     print(username)
+    #     password=user.password
+    #     print(password)
+
+    #     try:
+    #         user = authenticate(
+    #             username=user.email,
+    #             password='Aer0p0rt1715418'
+    #         )
+
+    #         # if request:
+    #         #     login(request, user)
+    #         return user
+    #     except:
+    #         print ('Something went wrong with args')
+
+    def validate_auth_token(self, auth_token):
+
+        try:
+            user_data = Google.validate(auth_token)
+            user_data['sub']
+            print(f"This is user data: {user_data}")
+        except Exception as err:
+            # print(f'Err: {err}')
+            raise serializers.ValidationError(
+                {'detail': 'Token is invalid or expired (︶︹︺)', }
+            )
+
+        ## user data is str -- thats why code below doesn't work
+
+        try:
+            # user_data['aud'] = 1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com
+            # print(user_data['aud'] == os.environ.get('GOOGLE_CLIENT_ID')) ## True
+            if user_data['aud'] != os.environ.get('GOOGLE_CLIENT_ID'):
+                raise serializers.ValidationError(
+                    {'detail': 'Oops who are U ...', }
+                )
+        except Exception as err2:
+            print(f'Err2: {err2}')
+
+        
+        user_id = user_data.get('sub')
+        # print(user_id)
+        email = user_data.get('email')
+        # print(email)
+        name = user_data.get('name')
+       #  print(name)
+
+        provider = ''.join(
+            [provider for provider in AUTH_PROVIDERS
+            if len(user_data['iss'].split(provider)) > 1]
+        )
+
+        # print(provider)
+
+        data = dict(email=email, username=name)
+        user_exists = CustomUser.user_exists(data)
+        if user_exists:
+            return CustomUser.get_user_by_email(email=email)
+        return data
+
+
+    def get_now(self) -> datetime:
+        return timezone.now()
+
+    # assighn date 
+    def user_record_login(self, user: CustomUser) -> CustomUser:
+        user.last_login = self.get_now()
+        user.save()
+        return user
+
+    # to dict user
+    def get_user(self, user: CustomUser):
+
+        return {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        }
+                
+
+    def jwt_login(self, response: HttpResponse, user: CustomUser) -> HttpResponse:
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER ## ++
+        
+
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER ## ++
+        
+
+        payload = jwt_payload_handler(user) ## ++
+        # print(payload)
+        # payload = json.loads(str(payload))
+
+        # token = jwt_encode_handler(payload) ## ++
+        # print(token)
+
+        # if api_settings.JWT_AUTH_COOKIE:
+        #     set_cookie_with_token(response, api_settings.JWT_AUTH_COOKIE, token)
+
+        self.user_record_login(user=user) 
+
+        return response
+
+    def some_function(self,  user: CustomUser) -> CustomUser:
+        self.user_record_login(user=user)
+        response = Response(data=serializer.get_user(user=user)) 
+        response = serializer.jwt_login(response=response, user=user)
+        

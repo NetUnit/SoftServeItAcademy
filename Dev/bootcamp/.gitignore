@@ -20,3 +20,11 @@ bin/
 coala.1
 
 Direct_link
+
+.env
+
+.devcontainer
+
+.django-google-auth-schema.png
+
+.ModelForm Form distinction
