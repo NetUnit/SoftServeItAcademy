@@ -67,6 +67,7 @@ airport_petty_algorithms/carrier_register_li/include/
 airport_petty_algorithms/carrier_register_li/logs/
 airport_petty_algorithms/carrier_register_li/share/
 
+airport_petty_algorithms/carrier_register_li/validators/__pycache__
 
 .pyvenv.cfg
 .coala.1
