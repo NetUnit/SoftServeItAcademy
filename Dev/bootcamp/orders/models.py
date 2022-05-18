@@ -12,7 +12,10 @@ import time, datetime
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
 from django.contrib import messages
-from bootcamp.settings import LOGGER
+from bootcamp.settings import (
+    LOGGER,
+    # DEBUG # remove after 
+)
     # Create your models here.
 class Order(models.Model):
         
@@ -61,7 +64,9 @@ class Order(models.Model):
     #3 
     def get_absolute_url(self, *args):
         if self.user is None:
+        
             message = f'User\'s cart wasn\'t found'
+            print(message)
             LOGGER.warning(message)
             raise Http404(message)
         return reverse_lazy(

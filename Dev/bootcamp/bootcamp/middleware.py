@@ -30,6 +30,15 @@ class CustomExceptionMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
        
+        if request.method == 'POST' and request.META.get('PATH_INFO') == '/o/sighn-in-test/':
+            try:
+                value = request.body
+                # print(value)
+            except:
+                response = self.process_response(request, response)
+                return response
+
+
         try:
             x_forward = request.META.get('HTTP_X_FORWARDED_FOR')
             ## ip_address

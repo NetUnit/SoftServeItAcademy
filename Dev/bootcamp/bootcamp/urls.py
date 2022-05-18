@@ -29,7 +29,6 @@ from products.views import (
 )
 
 from accounts.views import (
-    panda_link_view,
     contact_view,
 )
 
@@ -40,8 +39,16 @@ from bootcamp.views import (
     search_view,
     search_venues,
     feedback_form_view,
+    panda_link_view,
 )
 
+from accounts.api.views import(
+    GoogleSocialAuthView,
+    GoogleSocialAuthTemplateView,
+    social_authentication_view
+    # TeamChartData
+    # test_view
+)
 
 ############## *** handlers 400, 403, 404, 500 *** ###################
 handler400 = 'bootcamp.views.handler400'
@@ -91,8 +98,14 @@ urlpatterns = [
     re_path(r'^api/products/', include(('products.api.urls', 'api-products'), namespace='api-products')),
     re_path(r'^api/manufacturers/', include(('manufacturer.api.urls', 'api-manufacturers'), namespace='api-manufacturers')),
     re_path(r'^api/orders/', include(('orders.api.urls', 'api-orders'), namespace='api-orders')),
-    #### *** Custom API Accounts *** ####
     
+    ### OAuth2 Authnetication urls ###
+    re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    re_path(r'^o/sighn-in/$', GoogleSocialAuthView.as_view(), name='oauth_user-login'),
+
+    re_path(r'^o/sighn-in-test2/$', GoogleSocialAuthTemplateView.as_view(), name='oauth_user-login-test2'), 
+    re_path(r'^o/sighn-in-test/$', social_authentication_view, name='oauth_user-login-test'),
+
     ################### *** payments views *** ########################
     path('paypal/', include('paypal.standard.ipn.urls')),
     
@@ -101,3 +114,25 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+    # if (user==='AnonymousUser') {
+
+    #   if (confirm('1. U will be sighedin as: ' + User)) {
+    #     // on approve --> process login
+    #     formData(IdToken, User);
+    #     alert('U\'ve signed in as: ' + User);
+    #     location.replace(url2);
+      
+    #   } else {
+    #     // skip login
+    #     alert('U\'ve passed the login for: ' + User);
+    #     location.replace(url4);
+    #   }
+    # }
+    
+    # // same user is already authenticated
+    # else if (same_email) {
+    #   alert('2. U\'ve already sighed-in as: ' + User)
+    #   location.replace(url1);
+    # }

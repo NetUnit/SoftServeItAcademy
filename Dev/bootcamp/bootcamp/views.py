@@ -17,6 +17,11 @@ from bootcamp.forms import ProcessContactForm
 def some_middleware_view(request, get_response, *args, **kwargs):
     return print(f'{get_response}')
 
+################# *** Panda Hardware *** ###################
+def panda_link_view(request, *args, **kwargs):
+    return render(request, 'about_us.html', context={})
+    # return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
+
 ################ *** Custom Error Pages *** #################
 def handler404(request, exception, *args, **kwargs):
     # Http404 == 404
@@ -147,7 +152,7 @@ def search_venues(request, *args, **kwargs):
                     matched_items.append(obj)
 
         matched_items = list(set(matched_items))
-    
+
         context = {
             'searched': searched,
             'objects_list': matched_items,

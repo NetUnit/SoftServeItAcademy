@@ -1,0 +1,191 @@
+#:kivy 2.1.0
+#:import Factory kivy.factory.Factory
+#:import path_finder settings.path_finder
+#:import weakref weakref
+#:import asda_green settings.ASDA_GREEN
+
+<SoundButtonCard>:
+    id: sound_button
+    orientation: 'horizontal'
+    padding: dp(5)
+    spacing: dp(10)
+    size_hint_x: 0.0
+    size_hint_y: 0.25
+    size: (50, 50)
+
+    MDIconButton:
+        icon: '%s/volume-speaker-icon-on.jpg' % path_finder.cwd
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_color
+        icon_size: "64sp"
+        on_press: sound_button.playaudio()
+
+    MDIconButton:
+        icon: '%s/volume-speaker-icon-off.jpg' % path_finder.cwd
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_color
+        icon_size: "64sp"
+        on_press: sound_button.stopaudio()
+
+Root:
+    id: file_widget
+    BoxLayout:
+        id: box_layout
+        orientation: "vertical"
+        padding: 5
+        spacing: 10
+        # by default size is 800x600
+        size: file_widget.size
+    
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size
+
+        SoundButtonCard:
+            size: self.size
+
+        RstDocument:
+            id: my_file
+            _source: ""
+            text: my_file._source
+            text_size: 50
+            show_errors: True
+
+        FileChooserListView:
+            id: file_chooser
+            on_selection: root.select(file_chooser.selection)
+            size: (600, 600)
+
+        MDRaisedButton:
+            id: my_button
+            text: "Select File"
+
+            on_press:
+                root.process_initial()
+
+<ProcessFinalFile>:
+    id: file_widget_final
+
+    BoxLayout:
+        id: box_layout2
+        orientation: "vertical"
+        padding: 5
+        spacing: 10
+        size: app.root.size
+
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size
+
+        RstDocument:
+            id: my_file
+            _source: ""
+            text: my_file._source
+            text_size: 50
+            show_errors: True
+
+        FileChooserListView:
+            id: file_chooser
+            on_selection: root.select(file_chooser.selection)
+            size: app.root.size
+
+        MDRaisedButton:
+            id: my_button
+            text: "Select File"
+            
+            on_press:
+                file_widget_final.process_final()
+
+<FuelSelection>:
+    id: f_select
+    fuel_type1: "RT"
+    fuel_type2: "Jet A-1"
+
+    BoxLayout:
+        orientation: "vertical"
+        size: app.root.size
+        padding: 5
+        spacing: 10
+        
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size
+
+        Image:
+            id: my_image
+            source: ""
+
+        RstDocument:
+            id: fuel_selection
+            _source: ""
+            text: fuel_selection._source
+
+        RelativeLayout:
+            size_hint: (1, 0.4)
+
+            MDRaisedButton:
+                id: fuel_type1
+                pos: self.parent.pos
+                text: "RT"
+                pos_hint: {'left': 1, 'top': 0.95}
+                on_press:
+                    f_select.select_fuel(f_select.fuel_type1)
+            
+            MDRaisedButton:
+                id: fuel_type2
+                pos: self.parent.pos
+                text: "JET A-1"
+                pos_hint: {'left': 1, 'bottom': 0.3}
+
+                on_press:
+                    f_select.select_fuel(f_select.fuel_type2)
+
+            MDRaisedButton:
+                pos_hint: {'right': 0.995, 'top': 0.95}
+                text: "Proceed"
+                md_bg_color: asda_green
+                on_press:
+                    f_select.process_fuel_selection()
+
+<DatePicker>:
+    id: date_picker_app
+
+    BoxLayout:
+        orientation: "vertical"
+        size: app.root.size
+        padding: 5
+        spacing: 10
+        
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size
+
+        MDRaisedButton:
+            id: date_picker_btn
+            text: "Open Date Picker"
+
+            on_press:
+                date_picker_app.show_date_picker()
+
+<FuelSupply>:
+    id: fuel_supply
+
+    BoxLayout:
+        orientation: "vertical"
+        size: app.root.size
+        padding: 5
+        spacing: 10
+        
+        canvas.before:
+            Color:
+                rgba: (83/255, 83/255, 83/255, 1)
+            Rectangle:
+                size: self.size

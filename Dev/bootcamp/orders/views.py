@@ -42,6 +42,8 @@ def order_create_view(request, product_id, *args, **kwargs):
         if isinstance(request.user, AnonymousUser):
             order.user = None
             # print(order.user)
+            
+            ## No Link here --> change & add  
             return redirect('/order/cart/user/')
 
         order.user = request.user
@@ -90,7 +92,7 @@ def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, u
         print(error)
 
 
-def cart_view(request, user_id, *args, **kwargs):
+def cart_view(request, user_id=None, *args, **kwargs):
     '''
         context#6 corresponds to get_absolute_url() 
         method & shows limited acces from admin session 

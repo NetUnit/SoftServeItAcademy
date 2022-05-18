@@ -36,10 +36,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 ### *** exceptions *** ###
 from accounts.exceptions import CustomAuthFailed
 
-################# *** Panda Hardware *** ###################
-def panda_link_view(request, *args, **kwargs):
-    return HttpResponse('<h2> This is Panda website: add here info about the website </h2>')
-
 ############################## *** Full List *** ########################
 def accounts_list_view(request, *args, **kwargs):
     return HttpResponse('<h2> Accounts list should be here </h2>')
@@ -132,7 +128,7 @@ def login_user_view(request, *args, **kwargs):
     try:
         form = CustomUserLoginForm(request.POST or None)
         if form.is_valid():
-        
+
             email_username = form.cleaned_data.get('email_username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=email_username, password=password)
@@ -211,9 +207,16 @@ def logout_success_view(request, *args, **kwargs):
 
 ####################### *** Profile *** #######################
 
-def profile_user_view(request, user_id, *args, **kwargs):
-    user = CustomUser.get_user_by_id(user_id)
+def profile_user_view(request, user_id=None, *args, **kwargs):
+    # print(user_id)
+    # print(request.user)
+    user_id = None if user_id == 'None' else user_id
+    if user_id is None:
+        user = request.user
+    else:
+        user = CustomUser.get_user_by_id(user_id)
     auth = user.is_authenticated
+    # print(user, auth)
     context = {'user': user, 'auth': auth}
     return render (request, 'accounts/profile_view.html', context)
     
@@ -427,6 +430,7 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
         
 #################### *** Login/Logout Views *** ######################
 def login_success_view(request, *args, **kwargs):
+    print(request.user, '##1')
     messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
 
@@ -442,18 +446,26 @@ def profile_delete_submit(request, user_id, *args, **kwargs):
     time.sleep(1.5)
     return redirect('/')
 
-################# *** Contact *** ###################
+####################### *** Contact *** #######################
 ### Put your resume here ###
 ### Delete this later
 def contact_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is DEV contact: NetUnit -> (095) 013 18 25 </h2>')
 
+####################### *** Recovery *** #######################
+def profile_recovery_view(request, *args, **kwargs):
+    return HttpResponse('<h2> This is recovery view -> make html+form+snippet later </h2>')
+
+
 
 ################# *** Authenticated User or Staff Member Check *** ###################
 def check_user_auth(request, *args, **kwargs):
     user = request.user
+    print(user)
     not_staff = user.is_staff == False
+    print(user.is_authenticated, user.is_staff)
     context = {'user': user, 'not_staff': not_staff}
+    print(user.is_authenticated)
     return render (request, 'user_status.html', context)
 
 

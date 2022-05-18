@@ -1,0 +1,230 @@
+
+<style>
+  #customBtn {
+    /* google button default settings */
+    display: inline-block;
+    background: white;
+    color: #444;
+    width: 132px;
+    border-radius: 5px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
+    /* background: limegreen; */
+
+  }
+
+  #customBtn:hover {
+    cursor: pointer;
+  }
+  span.label {
+    font-family: serif;
+    font-weight: normal;
+  }
+  span.icon {
+    background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+  }
+  span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Use the Roboto font that is loaded in the <head> */
+    font-family: 'Roboto', sans-serif;
+    }
+
+    .alert {
+      padding: 20px;
+      background-color: #f44336; /* Red */
+      color: white;
+      margin-bottom: 15px;
+  }
+
+  /* .content {
+    margin-top: 5px;
+  }
+   */
+</style>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+  <script src="https://apis.google.com/js/api:client.js"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=loadAuthClient" async defer></script>
+  <script>
+  var googleUser = {};
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com', 
+        cookiepolicy: "single_host_origin",
+        
+        // Request scopes in addition to 'profile' and 'email'
+        //scope: 'additional_scope'
+      });
+      attachSignin(document.getElementById('customBtn'));
+    });
+  };
+
+  var email = '{{ user.email }}'
+  var user = '{{ user }}'
+  // var user2 = '{{ request.user }}'
+
+  function attachSignin(element) {
+    console.log(element.id);
+    // alert(element)
+    auth2.attachClickHandler(element, {},
+        function(googleUser) {
+          // getting Google Auth Token
+          var IdToken = googleUser.getAuthResponse().id_token;
+          // getting User object
+          var User = googleUser.getBasicProfile().getName();
+          var Email = googleUser.getBasicProfile().getEmail();
+          document.getElementById('token').innerText = "SignIn as: " + 
+          User
+          
+          // alert('Name' + googleUser.getBasicProfile().getName() +
+          //       "\n\nEmail" + googleUser.getBasicProfile().getEmail()
+          //  )
+          
+          // ++++ 1st Token + User
+          alert("User Token: " + IdToken +
+                "\n\nUser: " + user +
+                "\n\nEmailUser: " + ' ' + Email +
+                "\n\nemail: " + email
+          )
+          
+        
+        alert("This is response")
+        FinalizeResponse(IdToken, User, Email);
+        alert("This is response2")
+        
+        // neeed to implmement POST METHOD
+        // formData(IdToken, User);
+
+          return IdToken, User, Email;
+
+        }, function(error) {
+          alert(JSON.stringify(error, undefined, 2));
+        });
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      // alert('Cookies' + cookies)
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    // alert('Cookie Value' + cookieValue)
+    return cookieValue;
+  }
+
+  const csrftoken = getCookie('csrftoken');
+
+  // Finalize POST request to the backend
+  // Responsible for the authentication also
+
+  function formData(IdToken, User, Email) {
+    var url = "{% url 'oauth_user-login-test' %}"
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        // redirect: 'follow', // manual, *follow, error
+        body:JSON.stringify({'IdToken': IdToken, 'User': User, 'Email': Email})
+    })
+  }
+
+  function FinalizeResponse(IdToken, User, Email) {
+
+    // redirect urls
+    // var url1 = "{% url 'index' %}" // main page
+
+    var url1 = "{% url 'accounts:profile' %}"
+    var url2 = "{% url 'accounts:login-success' %}"
+    var url3 = "{% url 'accounts:login_failed' %}"
+    var url4 = "{% url 'oauth_user-login-test' %}"
+    var same_email = email === Email
+
+    if (!same_email && user !== 'AnonymousUser') {
+      
+      if (confirm('1. U will be sighedin as: ' + User +
+        "\n\n and logout from: " + user)) { 
+        // Save it!
+        formData(IdToken, User);
+        alert('U\'ve signed in as: ' + User);
+        location.replace(url2);
+      } else {
+        // Do nothing!
+        alert('U\'ve passed the login for: ' + User);
+        location.replace(url4);
+      }
+    }
+
+    else if (same_email) {
+      alert('2. U\'ve already sighed-in as: ' + User)
+      location.replace(url1);
+    }
+
+    else if ('AnonymousUser') {
+      // alert('3: U will be sighedin as: ' + User)
+      // add on approve
+
+      if (confirm('1. U will be sighedin as: ' + User)) {
+        // Save it!
+        formData(IdToken, User);
+        alert('U\'ve signed in as: ' + User);
+        location.replace(url2);
+      } else {
+        // Do nothing!
+        alert('U\'ve passed the login for: ' + User);
+        location.replace(url4);
+      }
+    }
+
+    else {
+      alert('Login failed for: ' + User)
+      // add on approve
+      // FinalizeResponse(IdToken, User);
+      location.replace(url3);
+    }
+  }
+
+  </script>
+
+  <form action="." method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  
+  <!-- In the callback, you would hide the gSignInWrapper element on a
+  successful sign in -->
+    <div id="gSignInWrapper">
+      <!-- <span class="label">Sign in with:</span> -->
+      <div id="customBtn" class="customGPlusSignIn"> 
+      <!-- <div id="customBtn" class="btn btn-primary" type="submit"> -->
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+    <div id="token"></div>
+
+    <script>startApp();</script>
+    
+  </form>
+</head>
