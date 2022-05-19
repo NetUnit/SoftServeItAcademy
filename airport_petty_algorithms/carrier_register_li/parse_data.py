@@ -504,8 +504,8 @@ class ParseXLSXData:
         if fuel_residue_obj is not False:
             self.fuel_residue = fuel_residue_obj.fuel_residue
 
-        residue_today = self.fuel_residue + self.fuel_arrival
-        - self.daily_amount - self.fuel_pickup
+        residue_today = (self.fuel_residue + self.fuel_arrival -
+        self.daily_amount - self.fuel_pickup)
 
         # parsing the REPORT sheet for appropriate cell names
         pattern1 = re.compile('Всього видано на пероні')
