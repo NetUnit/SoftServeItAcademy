@@ -4,6 +4,8 @@ from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .google import Google
+from .facebook import Facebook
+from bootcamp.settings import LOGGER
 import os
 
 from rest_framework.fields import (
@@ -17,6 +19,7 @@ from rest_framework.serializers import (
     SerializerMethodField, 
     ValidationError
     )
+
 from rest_framework.relations import HyperlinkedIdentityField
 
 from accounts.models import (
@@ -26,6 +29,7 @@ from accounts.models import (
 
 from django.contrib.auth import authenticate, login
 import json
+from .register import register_social_user
 
 class CustomUserCreateSerializer(serializers.ModelSerializer):
 
@@ -85,7 +89,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password':
                 {'write_only': True}
             }
-    
+
     def validate(self, data):
         # print(data)
         '''
@@ -100,7 +104,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'detail': 'Email/Username are required ┐(°,ʖ°)┌', }
             )
-        
+
         data = dict(data)
         user_exists = CustomUser.user_exists(data)
             
@@ -132,6 +136,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         if token:
             data['token'] = token.key
         return data
+    
 
 
 from bootcamp.settings import AUTH_PROVIDERS
@@ -144,11 +149,11 @@ from django.utils import timezone
 from rest_framework_jwt import compat
 # from compat import set_cookie_with_token
 
-class GoogleSocialAuthSerializer(serializers.Serializer):
-    
-    auth_token = serializers.CharField() 
+class SocialAuth:
 
-    def register_social_user(self, data):
+    @staticmethod
+    def register_social_user(data):
+
         user = CustomUser()
         _password = ''.join(
             [random.choice(string.digits + 
@@ -162,16 +167,30 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         # print(data)
         user = user.create_user(data)
         return user
-        # token = generate token
 
     # make the same with auth2_provider_model 
+    @staticmethod
+    def check_user_exists(email=None, username=None):
+        print(email)
+        print(username)
 
-    # return register_social_user(
-    #     provider=provider,
-    #     user_id=user_id,
-    #     email=email,
-    #     name=name
-    # )
+        user = CustomUser.objects.filter(
+                    Q(email=email) |
+                    Q(username=username)
+                ).distinct()
+
+        users = user.exclude(email__isnull=True)
+        user_exists = len(users) > 0
+        user = user.first()
+        return user if user_exists else None
+
+class GoogleSocialAuthSerializer(serializers.Serializer):
+    
+    auth_token = serializers.CharField() 
+
+        # token = generate token
+
+    
 
 
     # authenticate user_here
@@ -192,6 +211,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
     #         return user
     #     except:
     #         print ('Something went wrong with args')
+
 
     def validate_auth_token(self, auth_token):
 
@@ -214,30 +234,37 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     {'detail': 'Oops who are U ...', }
                 )
-        except Exception as err2:
-            print(f'Err2: {err2}')
+        except Exception:
+            identifier = serializers.ValidationError(
+                {'detail': 'Token is invalid or expired (︶︹︺)', }
+            )
+            LOGGER.WARNING(f'{identifier}')
+            raise identifier
 
-        
         user_id = user_data.get('sub')
-        # print(user_id)
         email = user_data.get('email')
-        # print(email)
         name = user_data.get('name')
-       #  print(name)
 
         provider = ''.join(
             [provider for provider in AUTH_PROVIDERS
             if len(user_data['iss'].split(provider)) > 1]
         )
 
+        # include provider for different than CustomUser auth model
         # print(provider)
 
-        data = dict(email=email, username=name)
-        user_exists = CustomUser.user_exists(data)
-        if user_exists:
-            return CustomUser.get_user_by_email(email=email)
-        return data
+        user = SocialAuth.check_user_exists(email=email, username=username)
 
+        if user is None:
+
+            user = SocialAuth.register_social_user(
+                user_id=user_id,
+                email=email,
+                username=name,
+                # provider=provider
+            )
+
+        return user
 
     def get_now(self) -> datetime:
         return timezone.now()
@@ -256,7 +283,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             'username': user.username,
             'email': user.email
         }
-                
+
 
     def jwt_login(self, response: HttpResponse, user: CustomUser) -> HttpResponse:
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER ## ++
@@ -283,4 +310,42 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         self.user_record_login(user=user)
         response = Response(data=serializer.get_user(user=user)) 
         response = serializer.jwt_login(response=response, user=user)
-        
+
+
+class FacebookSocialAuthSerializer(serializers.Serializer):
+    '''
+        Handles Serialization of Facebook Auth Data
+    '''
+
+    def validate_auth_token(self, auth_token):
+
+        try:
+            user_data = Facebook.validate(auth_token)
+            print(f"This is user data:  {user_data}")
+            email = user_data.get('email')
+            username = user_data.get('name')
+            provider = 'facebook'
+
+            user = SocialAuth.check_user_exists(email=email, username=username)
+
+            # None if user doesn't exists in db
+            if user is None:
+
+                user_id = user_data['id']
+
+                user = SocialAuth.register_social_user(
+                    user_id=user_id,
+                    email=email,
+                    username=username,
+                    # provider=provider
+                )
+
+            ### print(f'This is user: {user}') ## +++
+            return user
+
+        except Exception:
+            identifier = serializers.ValidationError(
+                {'detail': 'Token is invalid or expired (︶︹︺)', }
+            )
+            LOGGER.warning(f'{identifier}')
+            raise identifier

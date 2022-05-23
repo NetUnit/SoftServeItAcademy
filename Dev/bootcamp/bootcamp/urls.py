@@ -45,7 +45,8 @@ from bootcamp.views import (
 from accounts.api.views import(
     GoogleSocialAuthView,
     GoogleSocialAuthTemplateView,
-    social_authentication_view
+    google_authentication_view,
+    fb_authentication_view
     # TeamChartData
     # test_view
 )
@@ -104,7 +105,8 @@ urlpatterns = [
     re_path(r'^o/sighn-in/$', GoogleSocialAuthView.as_view(), name='oauth_user-login'),
 
     re_path(r'^o/sighn-in-test2/$', GoogleSocialAuthTemplateView.as_view(), name='oauth_user-login-test2'), 
-    re_path(r'^o/sighn-in-test/$', social_authentication_view, name='oauth_user-login-test'),
+    re_path(r'^o/sighn-in-test/$', google_authentication_view, name='oauth_user-login-test'),
+    re_path(r'^o/fb-sighn-in-test/$', fb_authentication_view, name='fb-user-login-test'),
 
     ################### *** payments views *** ########################
     path('paypal/', include('paypal.standard.ipn.urls')),

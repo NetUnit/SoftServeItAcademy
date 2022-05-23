@@ -10,7 +10,8 @@ from rest_framework import serializers
 from .serializers import (
     CustomUserCreateSerializer,
     CustomUserLoginSerializer,
-    GoogleSocialAuthSerializer
+    GoogleSocialAuthSerializer,
+    FacebookSocialAuthSerializer
     )
 
 from rest_framework.permissions import (
@@ -42,13 +43,14 @@ from django.http import (
     HttpResponseRedirect
     )
 
+import os
+
 class CustomUserCreateView(generics.CreateAPIView):
     
     model = get_user_model()
     serializer_class = CustomUserCreateSerializer
     queryset = CustomUser.objects.all()
     permission_classes = [AllowAny]
-
 
 class CustomUserLoginView(APIView):
     
@@ -82,7 +84,7 @@ class CustomUserLoginView(APIView):
 from rest_framework.renderers import TemplateHTMLRenderer
 class GoogleSocialAuthView(GenericAPIView):
 
-    template = 'accounts/oauth2_login.html'
+    template = 'accounts/snippets/google_login.html'
     serializer_class = GoogleSocialAuthSerializer
     # renderer_classes = [TemplateHTMLRenderer, template]
 
@@ -99,7 +101,6 @@ class GoogleSocialAuthView(GenericAPIView):
         return Response(serializer.data, status=HTTP_200_OK)
     
 
-
 from django.views.generic import TemplateView
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -115,7 +116,7 @@ from rest_framework.response import Response
 
 # @csrf_exempt
 @csrf_protect
-def social_authentication_view(request, *args, **kwargs):
+def google_authentication_view(request, *args, **kwargs):
     '''
         is a Google IdToken for user authnentication
 
@@ -140,7 +141,7 @@ def social_authentication_view(request, *args, **kwargs):
     # POST method is acquired via JS in a template
 
     if request.method == 'POST':
-        print('This is POST')
+        print('This is POST method')
         # print(request.user.is_authenticated)
         serializer = serializer_class()
         # decoded_string = x.decode()
@@ -171,29 +172,23 @@ def social_authentication_view(request, *args, **kwargs):
 
             # print(request.user.is_authenticated)
             ## print(token) ## ++
-            
-
 
             result = serializer.validate_auth_token(token)
             # print(request.user.is_authenticated)
             # print(result) ## ++
             # print(isinstance(result, CustomUser)) ## ++
-            
+
             # register user
             if isinstance(result, dict):
-                
-                new_user_data = result
-                print(new_user_data)
 
-                ### ***** ###
-                # new_user = serializer.register_social_user(new_user_data)
-                
+                new_user_data = result
+                # print(new_user_data) ## +++
                 messages.success(
                 request,
                 f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
                 )
                 return redirect ('/accounts/register-fbv/')
-            
+
             # login user
             if isinstance(result, CustomUser):
                     # print(request.method) ## POST
@@ -207,7 +202,10 @@ def social_authentication_view(request, *args, **kwargs):
 
                 user = result
                 login(request, user, backend='accounts.backends.EmailBackend')
-            
+                print(user.is_authenticated)
+                print(os.environ) 
+
+                ### google client id will be here: 'GOOGLE_CLIENT_ID': '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com'
                 # WSGI POST
                 ## <Response status_code=200, "text/html; charset=utf-8">
 
@@ -215,31 +213,98 @@ def social_authentication_view(request, *args, **kwargs):
                 # res = serializer.authenticate_social_user(request=request, user=user)
                 # print(res)
                 messages.success(
-                request,
-                f'U\'ve just successfully logined (^_-)≡☆;;;'
+                    request,
+                    f'U\'ve just successfully logined (^_-)≡☆;;;'
                 )
                 # print('dsd')
                 # print(user)
                 # return redirect('/accounts/login-success/')
                 print(f'CustomUser: {user}')
                 # return redirect('/accounts/login-success/')
-                return render (request, 'accounts/oauth2_login.html', context={'user': user})
+                return render (request, 'accounts/snippets/google_login.html', context={'user': user})
                 # return redirect ('/panda-hardware/')
-                
-            
+
         except Exception as err:
             print(err)
 
     # user = request.user
     # print(f'GET: {user}')
-    return render (request, 'accounts/oauth2_login.html', context={})
+    return render (request, 'accounts/snippets/google_login.html', context={})
+
+import facebook
+
+@csrf_protect
+def fb_authentication_view(request, *args, **kwargs):
+
+    auth_token = "EAAOltYYj3GsBAJLX4tTqW5BOnt1xbMZAWh17GmUrLafwBuZAJn0WoPV3wztm243sjlCdCOfSMKghZC0MVj5cVmTIjOJ70ZAd7I75nD2r4vu6x2q34MkZAegddOjTUDZAlmrwQVp9bJmH44YMdZB1ZCI7MCYGB4nmY1t7dkiILCtaVEeGTnG9t2fkyrt6IM4P6XwkZA3eL73e67ZBjQIvtxAECB1p22hD1M87ZA46L0xZB0tINkjoCERnDM6UU6ZAHrgAoHjkZD"
+
+    raw_data = request.body
+    print(raw_data)
+
+    # graph = facebook.GraphAPI(access_token="EAAOltYYj3GsBAL1OILvbN5OpCx7augQjYDqZAxUeLGcggZCam56X7uUkz8aqsvG7ApSqlxzqQZCC1tmOw8wG3X1Vnrf9mhZAQ3JTbcTZB5HZCVBkf4FRzNtouAVfsBlI040cijP3IPtnEmKnmw9jX752wLCrNS5phEI44ZAq8i0SHrHrkZBIwdrbtRIM4l0jVfl3n4qLTI9tl4lyoi6H2zUi")
+    # profile = graph.request('/me?fields=name,email')
+    # print(profile)
+
+    # b'{"obj":{"name":"Andrii Proniuk","id":"1683003735383969"}}
+    raw_data = request.__dict__.get("COOKIES")  
+    serializer_class = FacebookSocialAuthSerializer
+    # print(request.user.is_authenticated)
+    serializer = serializer_class()
+
+    # getting user or exception while validating token
+    result = serializer.validate_auth_token(auth_token)
+
+    # print(result)
+    if isinstance(result, dict):
+        new_user_data = result
+        # print(new_user_data) ## +++
+        messages.success(
+            request,
+            f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
+        )
+        return redirect ('/accounts/register-fbv/')
+    
+    if isinstance(result, CustomUser):
+        # print(request.method) ## POST
+        # print(result)
+
+        # if not request.user == result:
+        #     print(result)
+        #     return redirect('accounts/check-user-auth/')
+        #     # return redirect('/accounts/login-failed/')
+        #     return render (request, 'user_status.html', context={'result': result})
+
+        user = result
+        login(request, user, backend='accounts.backends.EmailBackend')
+
+        print(f"AUTHENTICATED: {user.is_authenticated}")
+        print(user)
+
+        ### google client id will be here: 'GOOGLE_CLIENT_ID': '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com'
+        # WSGI POST
+        ## <Response status_code=200, "text/html; charset=utf-8">
+
+        ### ***** ###
+        # res = serializer.authenticate_social_user(request=request, user=user)
+        # print(res)
+        messages.success(
+            request,
+            f'U\'ve just successfully logined (^_-)≡☆;;;'
+        )
+        # print('dsd')
+        # print(user)
+        # return redirect('/accounts/login-success/')
+        print(f'CustomUser: {user}')
+        return render (request, 'accounts/snippets/fb_login.html', context={'user': user})
+        # return render (request, 'accounts/snippets/fb_login.html', context={})
 
 
+    return render (request, 'accounts/snippets/fb_login.html', context={'user': user})
 
 class GoogleSocialAuthTemplateView(TemplateView, APIView):
 
     serializer_class = GoogleSocialAuthSerializer
-    template_name = 'accounts/oauth2_login.html'
+    template_name = 'accounts/snippets/google_login.html'
 
     def get(self, request, *args, **kwargs):
         print(args)

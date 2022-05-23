@@ -250,13 +250,13 @@
                 <div class="card-body">
                     <h5 class="card-title"> Login with Social Media </h5>
                     <div class="card-item">
-                        {% include 'accounts/oauth2_login.html' %}
+                        {% include 'accounts/snippets/google_login.html' %}
                     </div>
                     <div class="card-item">
-                        {% include 'accounts/oauth2_login.html' %}
+                        {% include 'accounts/snippets/fb_login.html' %}
                     </div>
                     <div class="card-item">
-                        {% include 'accounts/oauth2_login.html' %}
+                        {% include 'accounts/snippets/twitter_login.html' %}
                     </div>
                     <div class="mt-4"  style="color: rgb(3, 4, 31); font-weight: bold; padding-top: 65px;">
                         <div class="d-flex justify-content-center links" >
@@ -268,7 +268,7 @@
         </div>
       </div>
   </div>
-  
+
 {%endblock %}
 
 {%block footer %}
