@@ -206,7 +206,6 @@ def logout_success_view(request, *args, **kwargs):
     return render(request, 'accounts/logout_success.html', context)
 
 ####################### *** Profile *** #######################
-
 def profile_user_view(request, user_id=None, *args, **kwargs):
     # print(user_id)
     # print(request.user)
@@ -219,7 +218,6 @@ def profile_user_view(request, user_id=None, *args, **kwargs):
     # print(user, auth)
     context = {'user': user, 'auth': auth}
     return render (request, 'accounts/profile_view.html', context)
-    
 
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def profile_list_view(request, *args, **kwargs):
@@ -245,7 +243,6 @@ def update_success_view(request, user_id, *args, **kwargs):
         return render(request, 'accounts/update_success.html', context)
     except Exception as err:
         print(err)
-
 
 def status_update_view(request, user_id, *args):
     try:

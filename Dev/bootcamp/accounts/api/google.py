@@ -12,7 +12,7 @@ class Google:
     def validate(auth_token):
         
         # print(auth_token)
-        print(requests.Request())
+        # print(requests.Request())
 
         '''
             Querying the Google oauth2 api to fetch the user info
