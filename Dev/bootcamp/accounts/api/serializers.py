@@ -151,9 +151,31 @@ from rest_framework_jwt import compat
 
 class SocialAuth:
 
+    '''
+    ===========================================================
+    Represents replicable logic responsible for Social Auth
+    ===========================================================
+
+    .. note:: 
+        CustomUser - auth user model for authentication
+    '''
+    
+    @staticmethod
+    def send_password():
+        '''
+        sends data to users email ("e.g." password or login data)
+        :returns: ...
+        https://realpython.com/python-send-email/
+        '''
+        pass
+
+
     @staticmethod
     def register_social_user(data):
-
+        '''
+        creates a new user object with dragged email & generates passowrd
+        :returns: new user object
+        '''
         user = CustomUser()
         _password = ''.join(
             [random.choice(string.digits + 
@@ -161,8 +183,11 @@ class SocialAuth:
             string.punctuation) for i in range(0, 10)]
             )
 
-        ## send password to the email
+        ##############################################################
+        # *** build logic with sending the password to the email *** #
         # print(password)
+        ##############################################################
+
         data['password'] = _password
         # print(data)
         user = user.create_user(data)
@@ -171,6 +196,10 @@ class SocialAuth:
     # make the same with auth2_provider_model 
     @staticmethod
     def check_user_exists(email=None, username=None):
+        '''
+        checks whether user object with such email already exists in the db
+        :returns: user object id exists or None if opposite
+        '''
         print(email)
         print(username)
 
@@ -184,34 +213,12 @@ class SocialAuth:
         user = user.first()
         return user if user_exists else None
 
+    # build authentication here with JWT token  
+    # integrate with with auth2_provider_model
+
 class GoogleSocialAuthSerializer(serializers.Serializer):
     
-    auth_token = serializers.CharField() 
-
-        # token = generate token
-
-    
-
-
-    # authenticate user_here
-    # def authenticate_social_user(self, *args, request=None, user=None):
-    #     username=user.email
-    #     print(username)
-    #     password=user.password
-    #     print(password)
-
-    #     try:
-    #         user = authenticate(
-    #             username=user.email,
-    #             password='Aer0p0rt1715418'
-    #         )
-
-    #         # if request:
-    #         #     login(request, user)
-    #         return user
-    #     except:
-    #         print ('Something went wrong with args')
-
+    auth_token = serializers.CharField()
 
     def validate_auth_token(self, auth_token):
 
@@ -238,7 +245,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             identifier = serializers.ValidationError(
                 {'detail': 'Token is invalid or expired (︶︹︺)', }
             )
-            LOGGER.WARNING(f'{identifier}')
+            LOGGER.warning(f'{identifier}')
             raise identifier
 
         user_id = user_data.get('sub')

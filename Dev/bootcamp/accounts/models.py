@@ -102,7 +102,7 @@ class CustomUser(AbstractUser):
         '''
             Magic method is redefined to show basic information
             about a User in UI (admin interface)
-            :return: user username
+            :returns: user username
         '''
         return f'{self.username}'
     
@@ -179,7 +179,7 @@ class CustomUser(AbstractUser):
     # make api info from this
     def to_dict(self):
         '''
-            :return: user email, user password, user username, user created_at, user is_active
+            :returns: user email, user password, user username, user created_at, user is_active
             :Example:
             | {
             |   'email': John@Dillinger.yahoo.com,
@@ -200,7 +200,7 @@ class CustomUser(AbstractUser):
     def get_user_by_email(email=None):
         '''
             This method is getting a user by it's email
-            :return: user object via email
+            :returns: user object via email
         '''
         try:
             user = CustomUser.objects.all().filter(email=email).get()
@@ -216,7 +216,7 @@ class CustomUser(AbstractUser):
     def get_user_by_username(username=None):
         '''
             This method is getting a user by it's username
-            :return: user object via username
+            :returns: user object via username
         '''
         try:
             user = CustomUser.objects.all().filter(username=username).get()
