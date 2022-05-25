@@ -7,11 +7,15 @@ from accounts.models import CustomUser
 from django.contrib.auth import authenticate, login
 from rest_framework import serializers
 
+from bootcamp.settings import LOGGER
+import logging
+import sys
+
 from .serializers import (
     CustomUserCreateSerializer,
     CustomUserLoginSerializer,
     GoogleSocialAuthSerializer,
-    FacebookSocialAuthSerializer
+    FBSocialAuthSerializer
     )
 
 from rest_framework.permissions import (
@@ -232,32 +236,119 @@ def google_authentication_view(request, *args, **kwargs):
     return render (request, 'accounts/snippets/google_login.html', context={})
 
 import facebook
+import traceback
+import requests
+from requests.packages.urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
+import collections
 
 @csrf_protect
 def fb_authentication_view(request, *args, **kwargs):
 
-    auth_token = "EAAOltYYj3GsBAJLX4tTqW5BOnt1xbMZAWh17GmUrLafwBuZAJn0WoPV3wztm243sjlCdCOfSMKghZC0MVj5cVmTIjOJ70ZAd7I75nD2r4vu6x2q34MkZAegddOjTUDZAlmrwQVp9bJmH44YMdZB1ZCI7MCYGB4nmY1t7dkiILCtaVEeGTnG9t2fkyrt6IM4P6XwkZA3eL73e67ZBjQIvtxAECB1p22hD1M87ZA46L0xZB0tINkjoCERnDM6UU6ZAHrgAoHjkZD"
+    # print(True, True, True)
+    auth_token = "EAAOltYYj3GsBAIznd5J8DZByW9NgPq07g6Fe9XOgubk7uXkRPz6ZCs5ukZAcJ0VNMGRbCy8bxbZCnDeZCNX88QeZB4NZB1389vkiibEZAywkzvdwuuQvK4UC6aBdrNEvZCM4RTqC4TYxu83tqkHiPZCknJCnS5H5yPi3c6sURYWKLpqT8ZAPlJqGqy2RTjFQVcCuNToolm7ET2jDx2warpsftwKMZAHJqqbR1Lm3KYMZAfvP1TgZDZD"
+    
 
-    raw_data = request.body
-    print(raw_data)
 
     # graph = facebook.GraphAPI(access_token="EAAOltYYj3GsBAL1OILvbN5OpCx7augQjYDqZAxUeLGcggZCam56X7uUkz8aqsvG7ApSqlxzqQZCC1tmOw8wG3X1Vnrf9mhZAQ3JTbcTZB5HZCVBkf4FRzNtouAVfsBlI040cijP3IPtnEmKnmw9jX752wLCrNS5phEI44ZAq8i0SHrHrkZBIwdrbtRIM4l0jVfl3n4qLTI9tl4lyoi6H2zUi")
     # profile = graph.request('/me?fields=name,email')
     # print(profile)
 
     # b'{"obj":{"name":"Andrii Proniuk","id":"1683003735383969"}}
-    raw_data = request.__dict__.get("COOKIES")  
-    serializer_class = FacebookSocialAuthSerializer
+    raw_data = request.__dict__.get("COOKIES")
+    req_data = request.__dict__
+    # print(raw_data) ## no token
+    # print(req_data) ## no token
+    serializer_class = FBSocialAuthSerializer
     # print(request.user.is_authenticated)
     serializer = serializer_class()
 
     # getting user or exception while validating token
     result = serializer.validate_auth_token(auth_token)
 
+    ###########################################
+    raw_data = request.body
+    print(raw_data)
+    
+    logger = logging.getLogger()
+    # print(logger.handlers)
+
+    # print(f"{request.META.get('messages')} - This is messages")
+    # print(request.META)
+
+    # x = traceback.extract_stack(f=None, limit=None)
+    # print(x)
+
+    # console_handler = logging.StreamHandler(stream=sys.stdout)
+    # print(console_handler)
+
+    exc = traceback.print_exc()
+    # print(f'This is: {exc}')
+    
+    # sys.stdout.flush()
+    # print(f'This is traceback: {x}')
+    # traceback.print_stack(file=sys.stdout)
+    # traceback.extract_stack()
+
+    # print(f"This is requests: {requests.Session().__dict__.get('adapters')}")
+
+    # print(f"This is session: {session}")
+
+    session = requests.Session()
+    print(f"This is session: {session}")
+
+
+    adapters = requests.Session().__dict__.get('adapters')
+    adapters = list(adapters.items())
+    
+    adapter1 = adapters[0]
+    poolmanager = adapter1[1].__dict__.get('poolmanager')
+    item = poolmanager.__dict__
+    
+    https = item.get('https')
+    pools = item.get('pools').__dict__
+    obj = pools.get('_container')
+    print(obj.__dict__) ## empty
+
+    adapter2 = adapters[1]
+
+    retries=3
+    backoff_factor=0.3
+    status_forcelist=(500, 502, 504)
+    
+
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+    )
+
+    adapter1 = HTTPAdapter(max_retries=retry)
+    # httpAdapter = HTTPAdapter(pool_connections=10, pool_maxsize=100)
+
+    # session.mount("https://graph.facebook.com:443")
+    session.mount('http://', adapter1)
+    
+    print(session)
+
+    sss = request.session
+    print(sss.serializer.__dict__.get('__dict__'))
+
+
+    # urlopen(method, url, body=None, headers=None, retries=None, redirect=True, assert_same_host=True, timeout=<object object>, pool_timeout=None, release_conn=None, chunked=False, body_pos=None, **response_kw)
+
+    ###########################################################
     # print(result)
     if isinstance(result, dict):
         new_user_data = result
-        # print(new_user_data) ## +++
+
+        ################################################
+        print(new_user_data) ## +++
+        # add register_social_user here
+        ################################################
+
         messages.success(
             request,
             f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
