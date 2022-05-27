@@ -427,7 +427,6 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
         
 #################### *** Login/Logout Views *** ######################
 def login_success_view(request, *args, **kwargs):
-    print(request.user, '##1')
     messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
 

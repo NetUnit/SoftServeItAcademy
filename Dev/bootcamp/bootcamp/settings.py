@@ -15,13 +15,19 @@ import os
 import logging
 import datetime
 
+# google app settings
 os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
 os.environ['GOOGLE_CLIENT_SECRET']="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"
+
+# fb app settings
+os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
+os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
+
+
 AUTH_PROVIDERS = (
     'google', 
     'facebook', 
     'twitter', 
-    'VK'
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -207,7 +213,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'file',
-            'filename': '/media/netunit/storage/SoftServeItAcademy/Dev/bootcamp/debug.log'
+            'filename': os.path.join(BASE_DIR, 'debug.log')
         }
     },
     'loggers': {
@@ -215,6 +221,12 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['console', 'file'],
             'propagate': False
+        },
+        'bootcamp': {  # Specific logger for your app
+            'class': 'logging.StreamHandler',
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
         # handles any exceptions that occur due to 
         # Cross-Site Request Forgery (CSRF) attacks

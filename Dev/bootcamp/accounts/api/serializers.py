@@ -172,6 +172,7 @@ class SocialAuth:
 
     @staticmethod
     def register_social_user(data):
+        print(data)
         '''
         creates a new user object with dragged email & generates passowrd
         :returns: new user object
@@ -192,7 +193,7 @@ class SocialAuth:
         # print(data)
         print(_password)
 
-        # user = user.create_user(data)
+        # user = user.create_user(**data)
         # return user
         return data
 
@@ -353,6 +354,7 @@ class FBSocialAuthSerializer(serializers.Serializer):
     def validate_auth_token(self, auth_token):
 
         try:
+            # user data is dict
             user_data = Facebook.validate(auth_token)
             print(f"This is user data:  {user_data}")
             email = user_data.get('email')
