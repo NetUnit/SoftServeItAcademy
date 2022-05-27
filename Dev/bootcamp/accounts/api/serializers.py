@@ -190,8 +190,11 @@ class SocialAuth:
 
         data['password'] = _password
         # print(data)
-        user = user.create_user(data)
-        return user
+        print(_password)
+
+        # user = user.create_user(data)
+        # return user
+        return data
 
     # make the same with auth2_provider_model 
     @staticmethod
@@ -217,11 +220,21 @@ class SocialAuth:
     # integrate with with auth2_provider_model
 
 class GoogleSocialAuthSerializer(serializers.Serializer):
-    
+
     auth_token = serializers.CharField()
 
     def validate_auth_token(self, auth_token):
+        '''
+        validates acquired with google lib token
+        checks if token is not outdated.
+        checks if request is being sent with 'Django Bootcamp'
+        & GOOGLE_CLIENT_ID isn't fake
+        :returns: user obj or new user object if such user isnt exist in the db
 
+        .. note:: 
+            google-auth lib used to achieve Token, GoogleUser and validation
+            querying the Google oauth2 api
+        '''
         try:
             user_data = Google.validate(auth_token)
             user_data['sub']
@@ -237,7 +250,9 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         try:
             # user_data['aud'] = 1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com
             # print(user_data['aud'] == os.environ.get('GOOGLE_CLIENT_ID')) ## True
-            if user_data['aud'] != os.environ.get('GOOGLE_CLIENT_ID'):
+            if user_data['aud'] != os.environ.get(
+                'GOOGLE_CLIENT_ID'
+            ):
                 raise serializers.ValidationError(
                     {'detail': 'Oops who are U ...', }
                 )
@@ -260,7 +275,10 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         # include provider for different than CustomUser auth model
         # print(provider)
 
-        user = SocialAuth.check_user_exists(email=email, username=username)
+        user = SocialAuth.check_user_exists(
+            email=email,
+            username=username
+        )
 
         if user is None:
 
@@ -319,11 +337,19 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         response = serializer.jwt_login(response=response, user=user)
 
 
-class FacebookSocialAuthSerializer(serializers.Serializer):
+class FBSocialAuthSerializer(serializers.Serializer):
     '''
         Handles Serialization of Facebook Auth Data
-    '''
+        checks if token is not outdated.
+        checks if request is being sent with 'Django Bootcamp'
+        & GOOGLE_CLIENT_ID isn't fake
+        :returns: user obj or new user object if such user isnt exist in the db
+        :raises: ValidationError if Token is either fake or expired
 
+        .. note:: 
+            facebook-sdk lib used to achieve user data and validation
+            querying the FB GraphAPI
+    '''
     def validate_auth_token(self, auth_token):
 
         try:
@@ -338,10 +364,10 @@ class FacebookSocialAuthSerializer(serializers.Serializer):
             # None if user doesn't exists in db
             if user is None:
 
-                user_id = user_data['id']
+                # user_id = user_data['id']
 
                 user = SocialAuth.register_social_user(
-                    user_id=user_id,
+                    # user_id=user_id,
                     email=email,
                     username=username,
                     # provider=provider

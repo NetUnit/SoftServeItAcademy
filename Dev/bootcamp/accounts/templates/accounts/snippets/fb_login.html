@@ -36,19 +36,27 @@
         statusChangeCallback(response);        // Returns the login status.
       });
     };
-   
+
     // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    // photos - ptianl key for iuser photos
+    // picture / profile picture
+    
     function testAPI() {                      
       console.log('Welcome!  Fetching your information.... ');
       FB.api('/me', {"fields": "id,name,email"}, function(response) {
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
-          'Thanks for logging in, ' + response.name + '!' + response.email;
+          'Thanks for logging in, ' + response.photo + response.name + '!' + response.email;
+
           const Response = response
           const User = response.name
           const Email = response.email
-          // alert(User, 
-          
+          //const Picture = response.picture
+
+          bbb = JSON.stringify(response)
+
+          alert(bbb)
+
           FinalizeResponse(Response, User, Email)
 
           // alert("This is response: " + response.name)
@@ -66,7 +74,9 @@
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
-        // alert('Cookies' + cookies)
+        
+        alert('Cookies' + cookies)
+        
         for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i].trim();
           if (cookie.substring(0, name.length + 1) === (name + '=')) {
