@@ -27,7 +27,8 @@ urlpatterns = [
     # registration view already exists
     # use postman to send POST requests
     re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
-
+    re_path(r'^auth-social/register-success/$', RegisterSuccesView.as_view(), name='register-success'),
+    
     ### OAuth2 urls ###
     # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
 

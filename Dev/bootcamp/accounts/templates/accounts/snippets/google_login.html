@@ -94,8 +94,8 @@
           // ++++ 1st Token + User
           alert("User Token: " + IdToken +
                 "\n\nUser: " + user +
-                "\n\nEmailUser: " + ' ' + Email +
-                "\n\nemail: " + email
+                "\n\nEmailUser: <-" + ' ' + Email +
+                "\n\nswitched from email: ->" + email
           )
           
         
@@ -165,7 +165,7 @@
       if (confirm('1. U will be sighedin as: ' + User +
         "\n\n and logout from: " + user)) { 
         // Save it!
-        formData(IdToken, User);
+        formData(IdToken, User, Email);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
       } else {
@@ -186,10 +186,10 @@
 
       if (confirm('1. U will be sighedin as: ' + User)) {
         // Save it!
-        formData(IdToken, User);
+        formData(IdToken, User, Email);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
-        
+
       } else {
         // Do nothing!
         alert('U\'ve passed the login for: ' + User);

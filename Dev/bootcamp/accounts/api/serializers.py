@@ -8,6 +8,10 @@ from .facebook import Facebook
 from bootcamp.settings import LOGGER
 import os
 
+# generate password imports 
+import random
+import string
+
 from rest_framework.fields import (
     CharField, 
     EmailField
@@ -159,43 +163,42 @@ class SocialAuth:
     .. note:: 
         CustomUser - auth user model for authentication
     '''
-    
-    @staticmethod
-    def send_password():
-        '''
-        sends data to users email ("e.g." password or login data)
-        :returns: ...
-        https://realpython.com/python-send-email/
-        '''
-        pass
 
 
     @staticmethod
     def register_social_user(data):
-        print(data)
         '''
         creates a new user object with dragged email & generates passowrd
         :returns: new user object
         '''
         user = CustomUser()
+        print(f"This is data: {data} is serializer")
+        # generates user password
         _password = ''.join(
             [random.choice(string.digits + 
             string.ascii_letters + 
             string.punctuation) for i in range(0, 10)]
             )
 
+        # print(f"This is user password: {_password}") ## +++ password
         ##############################################################
-        # *** build logic with sending the password to the email *** #
-        # print(password)
+        # *** build logic with sending the password to the email  before hashing it *** 
+
+        '''
+            sends data to users email ("e.g." password or login data)
+            :returns: ...
+            https://realpython.com/python-send-email/
+        '''
+        
+        # ---> send password here
         ##############################################################
 
-        data['password'] = _password
-        # print(data)
+        # creates user and hash the password here
         print(_password)
-
-        # user = user.create_user(**data)
-        # return user
-        return data
+        data['password'] = _password
+        user = user.create_user(data)
+        return user
+        # return data
 
     # make the same with auth2_provider_model 
     @staticmethod
@@ -237,9 +240,9 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             querying the Google oauth2 api
         '''
         try:
-            user_data = Google.validate(auth_token)
-            user_data['sub']
-            print(f"This is user data: {user_data}")
+            google_user_data = Google.validate(auth_token)
+            LOGGER.info(f"This is google user data: {google_user_data}")
+
         except Exception as err:
             # print(f'Err: {err}')
             raise serializers.ValidationError(
@@ -251,7 +254,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         try:
             # user_data['aud'] = 1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com
             # print(user_data['aud'] == os.environ.get('GOOGLE_CLIENT_ID')) ## True
-            if user_data['aud'] != os.environ.get(
+            if google_user_data['aud'] != os.environ.get(
                 'GOOGLE_CLIENT_ID'
             ):
                 raise serializers.ValidationError(
@@ -263,33 +266,31 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             )
             LOGGER.warning(f'{identifier}')
             raise identifier
-
-        user_id = user_data.get('sub')
-        email = user_data.get('email')
-        name = user_data.get('name')
-
+        
+        # assighn user_id/provider if other thah Customuser is saved
+        user_id = google_user_data.get('sub')
         provider = ''.join(
             [provider for provider in AUTH_PROVIDERS
-            if len(user_data['iss'].split(provider)) > 1]
+            if len(google_user_data['iss'].split(provider)) > 1]
         )
 
-        # include provider for different than CustomUser auth model
-        # print(provider)
-
+        data = dict()
+        data['email'] = google_user_data.get('email')
+        data['username'] = google_user_data.get('name')
+        # google image is secure content
+        # data['image'] = google_user_data.get('picture')
+        # get to know how to save to social_auth db
+        # data['user_id'] = user_id
+        # data['provider'] = provider
+        # print(f"this is username: {username}") ## +++
+        
         user = SocialAuth.check_user_exists(
-            email=email,
-            username=username
+            email=data['email'],
+            username=data['username']
         )
 
         if user is None:
-
-            user = SocialAuth.register_social_user(
-                user_id=user_id,
-                email=email,
-                username=name,
-                # provider=provider
-            )
-
+            return data
         return user
 
     def get_now(self) -> datetime:
@@ -310,14 +311,11 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             'email': user.email
         }
 
-
     def jwt_login(self, response: HttpResponse, user: CustomUser) -> HttpResponse:
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER ## ++
         
-
         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER ## ++
         
-
         payload = jwt_payload_handler(user) ## ++
         # print(payload)
         # payload = json.loads(str(payload))

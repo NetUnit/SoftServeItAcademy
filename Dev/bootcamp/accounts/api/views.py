@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 from accounts.models import CustomUser
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import authenticate, login
 from rest_framework import serializers
 
@@ -129,9 +130,10 @@ class GoogleSocialAuthView(GenericAPIView):
         return Response(serializer.data, status=HTTP_200_OK)
     
 
-# class CustomLoginView(auth_views.LoginView):
-#     form_class = LoginForm
-#     template_name = 'accounts/login_form_as_p.html'
+###### *** Social Register Succes View + Force Logout *** ######
+class RegisterSuccesView(TemplateView):
+
+    template_name = 'accounts/sm_register_success.html'
 
 # @csrf_exempt
 @csrf_protect
@@ -160,12 +162,9 @@ def google_authentication_view(request, *args, **kwargs):
     # POST method is acquired via JS in a template
 
     if request.method == 'POST':
-        print('This is POST method')
         # print(request.user.is_authenticated)
         serializer = serializer_class()
-        # decoded_string = x.decode()
-        # print(decoded_string)
-        
+
         try:
             # 2 METHODS using JS POST fetch url
             # get bytes API request
@@ -178,7 +177,7 @@ def google_authentication_view(request, *args, **kwargs):
             # data = json.loads(request.body)
             # print(data)
             # token = data['IdToken']
-            
+
             # raw request method data
             raw_data = request.__dict__.get('_body')
             # print(f'{raw_data} this are bytes')
@@ -189,25 +188,15 @@ def google_authentication_view(request, *args, **kwargs):
             token = decoded_string.get('IdToken')
             # print(token)
 
-            # print(request.user.is_authenticated)
-            ## print(token) ## ++
-
+            # result is user data from google db
             result = serializer.validate_auth_token(token)
-            # print(request.user.is_authenticated)
-            # print(result) ## ++
-            # print(isinstance(result, CustomUser)) ## ++
+
+            # print(f"This is user result:  {type(result)}")
 
             # register user here 
             if isinstance(result, dict):
-
-                data = dict()
-                data['username'] = result.get('name')
-                data['email'] = result.get('email')
-                data['image'] = result.get('picture')
-                
-                # print(new_user_data) ## +++
-
-                print(f"This is user_data: {data}")
+                user_data = result
+                print(f"This is user_data | view: {user_data}")
 
                 # This is user data: {'iss': 'accounts.google.com', 'azp': '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com', 
                 # 'aud': '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com', 
@@ -217,52 +206,42 @@ def google_authentication_view(request, *args, **kwargs):
                 # 'picture': 'https://lh3.googleusercontent.com/a/AATXAJzUW8FcnKzhSWLxQLNvfqvCv-k2TwCc29PouHvM=s96-c', 'given_name': 'Johny',
                 # 'family_name': 'D', 'locale': 'uk', 'iat': 1653684566, 'exp': 1653688166, 'jti': '498f06bbdb636241a5c5ff50e5b01833fb67e482'}
 
-                messages.success(
-                request,
-                f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
+                user = SocialAuth.register_social_user(
+                    user_data
+                    )
+
+                # print(f"This is user created in view | {user}")
+                
+                user = AnonymousUser
+                # login(request, user, backend='accounts.backends.EmailBackend')
+                # print(user.is_authenticated) +++
+
+                messages.success(   
+                    request,
+                    f'U\'ve just created the next user: {user} (^_-)≡☆'
                 )
-                return redirect ('/accounts/register-fbv/')
+                return user
+                # user = AnonymousUser
 
             # login user
             if isinstance(result, CustomUser):
-                    # print(request.method) ## POST
-                    # print(result)
-
-                # if not request.user == result:
-                #     print(result)
-                #     return redirect('accounts/check-user-auth/')
-                #     # return redirect('/accounts/login-failed/')
-                #     return render (request, 'user_status.html', context={'result': result})
-
                 user = result
                 login(request, user, backend='accounts.backends.EmailBackend')
-                print(user.is_authenticated)
-                print(os.environ) 
+                # print(user.is_authenticated) ## ++
+                # print(os.environ) ## ++
 
-                ### google client id will be here: 'GOOGLE_CLIENT_ID': '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com'
-                # WSGI POST
-                ## <Response status_code=200, "text/html; charset=utf-8">
-
-                ### ***** ###
-                # res = serializer.authenticate_social_user(request=request, user=user)
-                # print(res)
                 messages.success(
                     request,
                     f'U\'ve just successfully logined (^_-)≡☆;;;'
                 )
-                # print('dsd')
-                # print(user)
+                
+                # print(f'CustomUser: {user}')
                 # return redirect('/accounts/login-success/')
-                print(f'CustomUser: {user}')
-                # return redirect('/accounts/login-success/')
-                return render (request, 'accounts/snippets/google_login.html', context={'user': user})
-                # return redirect ('/panda-hardware/')
+                # return render (request, 'accounts/snippets/google_login.html', context={'user': user})
 
         except Exception as err:
             print(err)
 
-    # user = request.user
-    # print(f'GET: {user}')
     return render (request, 'accounts/snippets/google_login.html', context={})
 
 

@@ -329,9 +329,8 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
             'password', 'first_name',
             'last_name', 'image', 'media'
         )
-    
-    # slug_field = 'slug'
 
+    # slug_field = 'slug'
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         if not hasattr(self, 'object'):
@@ -429,7 +428,6 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
 def login_success_view(request, *args, **kwargs):
     messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
-
 
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
