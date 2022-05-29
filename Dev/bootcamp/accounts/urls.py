@@ -70,7 +70,6 @@ urlpatterns = [
     re_path(r'^accounts/profile/(?:(?P<user_id>\w+)/)?$', profile_user_view, name='profile'),                            ## ++
     # re_path(r'^accounts/profile/$', profile_user_view, name='profile'),                                                ## ++
     re_path(r'^accounts/profiles/list/$', profile_list_view, name='profile_list_view'),
-
     re_path(r'^accounts/profiles/recover/$', profile_recovery_view, name='profile-recovery'),                            ## ++
 
     ######################### *** profile DELETE FBW ***#######################
@@ -93,7 +92,6 @@ urlpatterns = [
     re_path(r'^accounts/show-info/$', show_info, name='show_info'),                                                      ## +++
 
     ########################## *** ban *** #######################
-    re_path(r'^accounts/profiles/ban/(?P<user_id>\d+)/$', ban_user_view, name='ban_user_view'),
-    
+    re_path(r'^accounts/profiles/ban/(?P<user_id>\d+)/$', ban_user_view, name='ban_user_view'),                          ## +++
 
 ]

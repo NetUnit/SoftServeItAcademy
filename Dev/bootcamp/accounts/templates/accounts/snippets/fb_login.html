@@ -1,8 +1,27 @@
+{%extends 'base.html'%}
+
+{%block title%} Facebook Login {%endblock%} 
+
+{%load crispy_forms_tags%} 
+
+{%block content%}
+
+{% load static %}
+
+{%load crispy_forms_tags%}
+
 <head>
 <title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
 </head>
 <body>
+
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  
+  <!-- defines style for social auth buttons specifically -->
+  <link rel="stylesheet" href="{% static 'css/social_buttons.css' %}">
+
   <script>
   
     function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
@@ -12,7 +31,7 @@
         testAPI();  
       } else {                                 // Not logged into your webpage or we are unable to tell.
         document.getElementById('status').innerHTML = 'Please log ' +
-          'into this webpage.';
+          'into this webpage.'
       }
     }
 
@@ -21,8 +40,7 @@
         statusChangeCallback(response);
       });
     }
-  
-  
+
     window.fbAsyncInit = function() {
       FB.init({
         appId      : '1026623988292715',
@@ -30,8 +48,7 @@
         xfbml      : true,                     // Parse social plugins on this webpage.
         version    : 'v13.0'           // Use this Graph API version for this call.
       });
-  
-  
+
       FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
         statusChangeCallback(response);        // Returns the login status.
       });
@@ -40,20 +57,25 @@
     // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     // photos - ptianl key for iuser photos
     // picture / profile picture
-    
+    // response.email;
+
     function testAPI() {                      
       console.log('Welcome!  Fetching your information.... ');
       FB.api('/me', {"fields": "id,name,email,picture"}, function(response) {
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
-          'Thanks for logging in, ' + response.picture + response.name + '!' + response.email;
-
+          'Thanks for logging in: ' + response.name + '!'
+          
           const Response = response
           const User = response.name
           const Email = response.email
-          const Picture = response.picture
+          // const Picture = response.picture
 
-          FinalizeResponse(Response, User, Email, Picture)
+          alert("This is response from FBGraphAPI: " + Response + 
+          "\n\nUser: " + User + 
+          "\n\nEmail: " + Email)
+
+          FinalizeResponse(Response, User, Email)
       });
     }
 
@@ -62,7 +84,7 @@
       if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         
-        alert('Cookies' + cookies)
+        // alert('Cookies' + cookies)
         
         for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i].trim();
@@ -73,22 +95,21 @@
         }
       }
     
-    alert('Cookie Value' + cookieValue)
+    // alert('Cookie Value' + cookieValue)
     return cookieValue;
   }
 
-
   // alert(Response)
-  // const csrftoken = getCookie('csrftoken')
-
+  const csrftoken = getCookie('csrftoken')
+  // alert(csrftoken)
   // Finalize POST request to the backend
   // Responsible for the authentication also
 
   var email = '{{ user.email }}'
   var user = '{{ user }}'
 
-  function formData(Response, User, Email, Picture) {
-    var url = "{% url 'fb-user-login-test' %}"
+  function formData(Response, User, Email) {
+    var url = "{% url 'accounts_api:fb-user-login-test' %}"
 
     fetch(url, {
         method: 'POST',
@@ -97,26 +118,26 @@
             'X-CSRFToken': csrftoken,
         },
         // redirect: 'follow', // manual, *follow, error
-        body:JSON.stringify({'response': Response, 'User': User, 'Email': Email, 'Picture': Picture})
+        body:JSON.stringify({'response': Response, 'User': User, 'Email': Email})
     })
   }
 
-  function FinalizeResponse(Response, User, Email, Picture) {
-    
+  function FinalizeResponse(Response, User, Email) {
+
     var url1 = "{% url 'accounts:profile' %}"
     var url2 = "{% url 'accounts:login-success' %}"
     var url3 = "{% url 'accounts:login_failed' %}"
-    var url4 = "{% url 'fb-user-login-test' %}"
+    var url4 = "{% url 'accounts:login_cbv' %}"
 
     var same_email = email === Email
 
     if (!same_email && user !== 'AnonymousUser') {
       
-      if (confirm('1. U will be sighedin as: ' + User +
+      if (confirm('1. U will be signedin as: ' + User +
         "\n\n and logout from: " + user)) { 
         
-          // Save it!
-        formData(Response, User, Email, Picture);
+        // Save it!
+        formData(Response, User, Email);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
       } else {
@@ -138,9 +159,9 @@
       // var b = getCookie('access_token');
       // alert(b + 'This is access Token');
 
-      if (confirm('1. U will be sighedin as: ' + User + Picture)) {
+      if (confirm('3. U will be signedin as: ' + User)) {
         // Save it!
-        formData(Response, User, Email, Picture);
+        formData(Response, User, Email);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
       } else {
@@ -158,18 +179,53 @@
     }
   }
   
+  // function triggerFunc() {
+  //   checkLoginState();
+  //   testAPI()
+  //   // anotherFunction();
+  //   // YetAnotherFunction();
+  //   return x, y
+  // }
+
   </script>
   
-  <!-- The JS SDK Login Button -->
-  <!-- id="fb-login-button" style="width: 120px; height: 45px;" -->
-  <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-  </fb:login-button>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto mt-5">
+      <div class="header1">
+        <div class="header2">
+          <div class="check"> <i class="fa fa-dot-circle-o"></i></div>
+        </div>
+        <div class="content">
+          <h1> U're going to login with facebook as a: </h1>
+          <h2> {{ user }} </h2>
+          <p>
+            <form action="." method="post" enctype="multipart/form-data">
+              {% csrf_token %}
 
+              <!-- The JS SDK Login Button -->
+              <p style="text-align: center;">
+                <fb:login-button size="xlarge" scope="public_profile,email" onlogin="checkLoginState();">
+                </fb:login-button>
+                <!-- <div>
+                  <button onclick="triggerFunc()">
+                    <img class="social-auth-logo" src="{% static 'images/social_buttons/facebook-trigger-btn.png' %}" alt="google-trigger-btn">
+                  </button>
+                </div> -->
 
-  <div id="status">
+              </p>
+              <div class="header1" style="padding: 0px; margin-top: 0px; text-align: center; height: 40px;">
+                <div id="status" style="text-align: center; margin-top: 5px;"> </div>
+              </div>
+              <!-- Load the JS SDK asynchronously -->
+              <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+            </form>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <!-- Load the JS SDK asynchronously -->
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-
+</div>
 </body>
+
+{% endblock %}

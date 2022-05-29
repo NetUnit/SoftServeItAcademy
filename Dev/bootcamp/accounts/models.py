@@ -118,6 +118,20 @@ class CustomUser(AbstractUser):
 
     # def __del__(self):
 	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
+    
+    @property
+    def first_login(self):
+        '''
+            @proprty decorator allows to call CustomUser model 
+            methods as if they were normal model attributes
+        '''
+        first_login = True
+        self._first_login = first_login
+        return self._first_login
+
+    @first_login.setter
+    def first_login(self, value):
+        self._first_login = value
 
     @staticmethod
     def get_user_by_id(user_id=None):
@@ -275,7 +289,7 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     '''
         Everytime user has been created it automatically 
-        generates a token associated with a currnet user.
+        generates a token associated with a current user.
         :returns: auth token that is queried to use the API
     '''
     if created:

@@ -95,7 +95,6 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
             }
 
     def validate(self, data):
-        # print(data)
         '''
             we can also assighn other than rest_framework.authtoken
             here.
@@ -123,20 +122,22 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
         ).distinct()
         
         user = user.exclude(email__isnull=True)
-        #print(user)
+        print(user)
         user = user.first()
-        #print(user)
+        print(user)
         #print(data.get('password'))
         if not user:
             raise serializers.ValidationError(
                 {'detail': 'User wasn\'tfound (° -°）', }
             )
         correct_psw = user.check_password(data.get('password'))
+        print(correct_psw)
         if not correct_psw:
             raise serializers.ValidationError(
                 {'detail': 'Hmm ... passsword wasn\'t correct (° -°）', }
             )
         token = Token.objects.filter(user=user).get()
+        print(token)
         if token:
             data['token'] = token.key
         return data
@@ -163,8 +164,6 @@ class SocialAuth:
     .. note:: 
         CustomUser - auth user model for authentication
     '''
-
-
     @staticmethod
     def register_social_user(data):
         '''
@@ -186,18 +185,20 @@ class SocialAuth:
 
         '''
             sends data to users email ("e.g." password or login data)
-            :returns: ...
+            :returns: dict with prepared data for registartion
             https://realpython.com/python-send-email/
         '''
-        
-        # ---> send password here
+    
+        # ---> send password here logic
         ##############################################################
 
         # creates user and hash the password here
         print(_password)
         data['password'] = _password
-        user = user.create_user(data)
-        return user
+        
+        ## user = user.create_user(data)
+        return data
+        ## return user
         # return data
 
     # make the same with auth2_provider_model 
@@ -241,6 +242,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         '''
         try:
             google_user_data = Google.validate(auth_token)
+            # print(google_user_data)
             LOGGER.info(f"This is google user data: {google_user_data}")
 
         except Exception as err:
@@ -326,8 +328,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         # if api_settings.JWT_AUTH_COOKIE:
         #     set_cookie_with_token(response, api_settings.JWT_AUTH_COOKIE, token)
 
-        self.user_record_login(user=user) 
-
+        self.user_record_login(user=user)
         return response
 
     def some_function(self,  user: CustomUser) -> CustomUser:
@@ -349,12 +350,14 @@ class FBSocialAuthSerializer(serializers.Serializer):
             facebook-sdk lib used to achieve user data and validation
             querying the FB GraphAPI
     '''
+    auth_token = serializers.CharField()
+
     def validate_auth_token(self, auth_token):
 
         try:
             # user data is dict
             user_data = Facebook.validate(auth_token)
-            print(f"This is user data:  {user_data}")
+            print(f"This is user data FACEBOOK:  {user_data}")
             email = user_data.get('email')
             username = user_data.get('name')
             provider = 'facebook'

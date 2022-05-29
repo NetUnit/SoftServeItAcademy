@@ -1,56 +1,24 @@
-<style>
-  #customBtn {
-    /* google button default settings */
-    display: inline-block;
-    background: white;
-    color: #444;
-    width: 132px;
-    border-radius: 5px;
-    border: thin solid #888;
-    box-shadow: 1px 1px 1px grey;
-    white-space: nowrap;
-    /* background: limegreen; */
-  }
+{%extends 'base.html'%}
 
-  #customBtn:hover {
-    cursor: pointer;
-  }
-  span.label {
-    font-family: serif;
-    font-weight: normal;
-  }
-  span.icon {
-    background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-    width: 42px;
-    height: 42px;
-  }
-  span.buttonText {
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 0px;
-    padding-right: 0px;
-    font-size: 14px;
-    font-weight: bold;
-    /* Use the Roboto font that is loaded in the <head> */
-    font-family: 'Roboto', sans-serif;
-    }
+{%block title%} Google Login {%endblock%} 
 
-  .alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-bottom: 15px;
-  }
+{%load crispy_forms_tags%} 
 
-  /* .content {
-    margin-top: 5px;
-  }
-   */
-</style>
+{%block content%}
+
+{% load static %}
+
+{%load crispy_forms_tags%}
+
 
 <head>
+  <meta name="google-signin-scope" content="profile email">
+  <meta name="google-signin-client_id" content="MY_CLIENT_ID_ON_GOOGLE_DEV.apps.googleusercontent.com">
+
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="{% static 'css/social_buttons.css' %}">
+
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
   <script src="https://apis.google.com/js/api:client.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=loadAuthClient" async defer></script>
@@ -72,6 +40,9 @@
 
   var email = '{{ user.email }}'
   var user = '{{ user }}'
+  var is_active = '{{ user.is_active }}'
+  var user_id = '{{ request.user.id }}'
+
   // var user2 = '{{ request.user }}'
 
   function attachSignin(element) {
@@ -97,8 +68,7 @@
                 "\n\nEmailUser: <-" + ' ' + Email +
                 "\n\nswitched from email: ->" + email
           )
-          
-        
+
         alert("This is response")
         FinalizeResponse(IdToken, User, Email);
         alert("This is response2")
@@ -136,7 +106,7 @@
   // Responsible for the authentication also
 
   function formData(IdToken, User, Email) {
-    var url = "{% url 'oauth_user-login-test' %}"
+    var url = "{% url 'accounts_api:google-user-login-test' %}"
 
     fetch(url, {
         method: 'POST',
@@ -157,7 +127,8 @@
     var url1 = "{% url 'accounts:profile' %}"
     var url2 = "{% url 'accounts:login-success' %}"
     var url3 = "{% url 'accounts:login_failed' %}"
-    var url4 = "{% url 'oauth_user-login-test' %}"
+    var url4 = "{% url 'accounts:login_cbv' %}"
+    
     var same_email = email === Email
 
     if (!same_email && user !== 'AnonymousUser') {
@@ -181,11 +152,15 @@
     }
 
     else if ('AnonymousUser') {
+      
       // alert('3: U will be sighedin as: ' + User)
       // add on approve
 
-      if (confirm('1. U will be sighedin as: ' + User)) {
+      if (confirm('3. U will be sighedin as: ' + User)) {
         // Save it!
+        
+        // alert(user === 'AnonymousUser')
+        // alert(user.is_active)
         formData(IdToken, User, Email);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
@@ -193,7 +168,7 @@
       } else {
         // Do nothing!
         alert('U\'ve passed the login for: ' + User);
-        location.replace(url4);
+        location.replace(url3);
       }
     }
 
@@ -207,24 +182,44 @@
 
   </script>
 
-  <form action="." method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  
-  <!-- In the callback, you would hide the gSignInWrapper element on a
-  successful sign in -->
-    <div id="gSignInWrapper">
-      <!-- <span class="label">Sign in with:</span> -->
-      <div id="customBtn" class="customGPlusSignIn"> 
-      <!-- <div id="customBtn" class="btn btn-primary" type="submit"> -->
-        <span class="icon">
-        </span>
-        <span class="buttonText">Google</span>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto mt-5">
+      <div class="header1">
+        <div class="header2">
+          <div class="check"> <i class="fa fa-dot-circle-o"></i></div>
+        </div>
+        <div class="content">
+          <h1> U're going to login with google as a: </h1>
+          <h2> {{ user }} </h2>
+          <p>
+            <form action="." method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <!-- In the callback, you would hide the gSignInWrapper element on a
+              successful sign in -->
+              <div id="gSignInWrapper" style="text-align: center;">
+                <!-- <span class="label">Sign in with:</span> -->
+                <div id="customBtn" class="customGPlusSignIn">
+                  <!-- for button with logo -->
+                  <!-- <span class="icon">
+                    <img class="g-normal-logo" src="{% static 'images/social_buttons/g-normal.png' %}">
+                  </span> -->
+                  <span class="buttonText">Google</span>
+                </div>
+              </div>
+              <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+              <div id="token"></div>
+            
+              <script>startApp();</script>
+                
+            </form>
+          </p>
+        </div>
       </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-    <div id="token"></div>
-
-    <script>startApp();</script>
-    
-  </form>
+  </div>
+</div>
 </head>
+
+{% endblock %}

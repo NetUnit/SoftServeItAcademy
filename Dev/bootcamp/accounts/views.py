@@ -81,6 +81,7 @@ def register_user_view(request, *args, **kwargs):
         print(err)
         pass
 
+
 ## Class-based View
 from django.views.generic import CreateView
 class RegisterView(CreateView):
@@ -449,8 +450,6 @@ def contact_view(request, *args, **kwargs):
 ####################### *** Recovery *** #######################
 def profile_recovery_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is recovery view -> make html+form+snippet later </h2>')
-
-
 
 ################# *** Authenticated User or Staff Member Check *** ###################
 def check_user_auth(request, *args, **kwargs):
