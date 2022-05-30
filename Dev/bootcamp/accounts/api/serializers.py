@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .google import Google
 from .facebook import Facebook
+from .twitter import Twitter
 from bootcamp.settings import LOGGER
 import os
 
@@ -380,6 +381,48 @@ class FBSocialAuthSerializer(serializers.Serializer):
             return user
 
         except Exception:
+            identifier = serializers.ValidationError(
+                {'detail': 'Token is invalid or expired (︶︹︺)', }
+            )
+            LOGGER.warning(f'{identifier}')
+            raise identifier
+
+class TwitterSocialAuthSerializer(serializers.Serializer):
+    '''
+        Handles Serialization of Twiter Auth Data
+        checks if token is not outdated.
+        checks if request is being sent with 'Django Bootcamp'
+        & GOOGLE_CLIENT_ID isn't fake
+        :returns: user obj or new user object if such user isnt exist in the db
+        :raises: ValidationError if Token is either fake or expired
+
+        .. note:: 
+            facebook-sdk lib used to achieve user data and validation
+            querying the FB GraphAPI
+    '''
+    access_token_key = serializers.CharField()
+    access_token_secret = serializers.CharField()
+
+    def validate_auth_token(self, **kwargs):
+
+        try:
+            access_token_key = kwargs.get('access_token_key')
+            # print(access_token_key)
+
+            access_token_secret = kwargs.get('access_token_secret')
+            # print(access_token_secret)
+
+            user_data = Twitter.validate_twitter_auth_tokens(
+                access_token_key,
+                access_token_secret
+            )
+            
+            # print(f"This is user data Twitter:  {user_data}")
+
+            return user_data
+
+        except Exception as err:
+            print(err)
             identifier = serializers.ValidationError(
                 {'detail': 'Token is invalid or expired (︶︹︺)', }
             )

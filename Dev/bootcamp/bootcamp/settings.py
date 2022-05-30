@@ -23,11 +23,14 @@ os.environ['GOOGLE_CLIENT_SECRET']="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"
 os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
 os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
 
+# twitter app settings
+os.environ['TWITTER_API_KEY']="PzUCCCvZOSYFTWQD5g7Lw9eOt"
+os.environ['TWITTER_CONSUMER_SECRET']="JE4eMNRZgUIrFxqhXMNWH1GrBY3RHUiEzMvXiNKymzGHxGCZb5" 
 
 AUTH_PROVIDERS = (
-    'google', 
-    'facebook', 
-    'twitter', 
+    'google',
+    'facebook',
+    'twitter',
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

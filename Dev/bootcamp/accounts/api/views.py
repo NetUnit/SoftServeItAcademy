@@ -47,6 +47,7 @@ from .serializers import (
     CustomUserLoginSerializer,
     GoogleSocialAuthSerializer,
     FBSocialAuthSerializer,
+    TwitterSocialAuthSerializer,
     SocialAuth
     )
 
@@ -344,7 +345,29 @@ def fb_auth_view(request, *args, **kwargs):
 
 def twitter_auth_view(request, *args, **kwargs):
     user = request.user
-    return render (request, 'accounts/snippets/twitter_login.html', context={'user': user})
+    serializer_class = TwitterSocialAuthSerializer
+    # print(request.body)
+
+    access_token_key = "787326616955457536-MXCKI8kVhhSWq3d6A3iifK45kTftjYl"
+    access_token_secret = "5hsD5dCty0TfFkYgXAMfHxJ5sLMAZMhAA58KNQn5XJmO2"
+
+    serializer = serializer_class()
+
+    result = serializer.validate_auth_token(
+        access_token_key=access_token_key,
+        access_token_secret=access_token_secret
+    )
+
+
+
+    # print(result)
+
+    # user_id = user_data.get('id_str')
+    # email = user_data.get('email')
+    # name = user_data.get('name')
+    # provider = user_data.get('twitter')
+
+    return render (request, 'accounts/snippets/twitter_login2.html', context={'user': user})
 
 class GoogleSocialAuthTemplateView(TemplateView, APIView):
 
