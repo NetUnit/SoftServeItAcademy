@@ -76,3 +76,4 @@ airport_petty_algorithms/carrier_register_li/share/
 
 .interface.spec
 .desktop.ini
+.env

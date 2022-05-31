@@ -209,8 +209,8 @@ class SocialAuth:
         checks whether user object with such email already exists in the db
         :returns: user object id exists or None if opposite
         '''
-        print(email)
-        print(username)
+        # print(email)
+        # print(username)
 
         user = CustomUser.objects.filter(
                     Q(email=email) |
@@ -341,9 +341,12 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
 class FBSocialAuthSerializer(serializers.Serializer):
     '''
         Handles Serialization of Facebook Auth Data
-        checks if token is not outdated.
-        checks if request is being sent with 'Django Bootcamp'
-        & GOOGLE_CLIENT_ID isn't fake
+        checks if access_token is not outdated.
+        access token is an opaque string that identifies a user, app, or Page
+        & can be used by the app to make graph API calls. 
+        When someone connects with an app using Facebook Login and approves the
+        request for permissions, the app obtains an access token that provides 
+        temporary, secure access to Facebook APIs.
         :returns: user obj or new user object if such user isnt exist in the db
         :raises: ValidationError if Token is either fake or expired
 
@@ -387,7 +390,7 @@ class FBSocialAuthSerializer(serializers.Serializer):
             LOGGER.warning(f'{identifier}')
             raise identifier
 
-class TwitterSocialAuthSerializer(serializers.Serializer):
+class TwitterAuthSerializer(serializers.Serializer):
     '''
         Handles Serialization of Twiter Auth Data
         checks if token is not outdated.
@@ -403,21 +406,34 @@ class TwitterSocialAuthSerializer(serializers.Serializer):
     access_token_key = serializers.CharField()
     access_token_secret = serializers.CharField()
 
-    def validate_auth_token(self, **kwargs):
+    def validate(self, attrs):
+
+        # print(f"This is access_token: {self.access_token_key}")
+        # print(f"This is access_token_secret: {self.access_token_secret}")
+
+        # print(f"This is self.__dict__ : {self.__dict__}")
 
         try:
-            access_token_key = kwargs.get('access_token_key')
+            print(f"This r attrs: {attrs}")
+
+            access_token_key  = attrs.get('access_token_key')
+            access_token_secret = attrs.get('access_token_secret')
+
+            print(access_token_key)
+            print(access_token_secret)
+
+            # access_token_key = kwargs.get('access_token_key')
             # print(access_token_key)
 
-            access_token_secret = kwargs.get('access_token_secret')
+            # access_token_secret = kwargs.get('access_token_secret')
             # print(access_token_secret)
 
             user_data = Twitter.validate_twitter_auth_tokens(
                 access_token_key,
                 access_token_secret
             )
-            
-            # print(f"This is user data Twitter:  {user_data}")
+    
+            print(f"This is user data Twitter:  {user_data}")
 
             return user_data
 

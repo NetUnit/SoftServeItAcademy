@@ -11,7 +11,7 @@
 {%load crispy_forms_tags%}
 
 <head>
-<title>Facebook Login JavaScript Example</title>
+<title>Facebook Login JS Example</title>
 <meta charset="UTF-8">
 </head>
 <body>
@@ -109,7 +109,7 @@
   var user = '{{ user }}'
 
   function formData(Response, User, Email) {
-    var url = "{% url 'accounts_api:fb-user-login-test' %}"
+    var url = "{% url 'accounts_api:fb-user-login' %}"
 
     fetch(url, {
         method: 'POST',
@@ -199,28 +199,28 @@
         <div class="content">
           <h1> U're going to login with facebook as a: </h1>
           <h2> {{ user }} </h2>
-          <p>
-            <form action="." method="post" enctype="multipart/form-data">
-              {% csrf_token %}
+        
+          <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-              <!-- The JS SDK Login Button -->
-              <p style="text-align: center;">
-                <fb:login-button size="xlarge" scope="public_profile,email" onlogin="checkLoginState();">
-                </fb:login-button>
-                <!-- <div>
-                  <button onclick="triggerFunc()">
-                    <img class="social-auth-logo" src="{% static 'images/social_buttons/facebook-trigger-btn.png' %}" alt="google-trigger-btn">
-                  </button>
-                </div> -->
+            <!-- The JS SDK Login Button -->
+            <p id="social-button">
+              <fb:login-button size="xlarge" scope="public_profile,email" onlogin="checkLoginState();">
+              </fb:login-button>
+              <!-- <div>
+                <button onclick="triggerFunc()">
+                  <img class="social-auth-logo" src="{% static 'images/social_buttons/facebook-trigger-btn.png' %}" alt="google-trigger-btn">
+                </button>
+              </div> -->
 
-              </p>
-              <div class="header1" style="padding: 0px; margin-top: 0px; text-align: center; height: 40px;">
-                <div id="status" style="text-align: center; margin-top: 5px;"> </div>
-              </div>
-              <!-- Load the JS SDK asynchronously -->
-              <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-            </form>
-          </p>
+            </p>
+            <div class="header1" style="padding: 0px; margin-top: 0px; text-align: center; height: 40px;">
+              <div id="status" style="text-align: center; margin-top: 5px;"> </div>
+            </div>
+            <!-- Load the JS SDK asynchronously -->
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+          </form>
+        
         </div>
       </div>
     </div>

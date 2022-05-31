@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import logging
 import datetime
+import dotenv
 
 # google app settings
 os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
@@ -24,8 +25,11 @@ os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
 os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
 
 # twitter app settings
-os.environ['TWITTER_API_KEY']="PzUCCCvZOSYFTWQD5g7Lw9eOt"
-os.environ['TWITTER_CONSUMER_SECRET']="JE4eMNRZgUIrFxqhXMNWH1GrBY3RHUiEzMvXiNKymzGHxGCZb5" 
+# os.environ['TWITTER_API_KEY']="oxjqJpV9wLvlFtjgAHeRN06Fi"
+# os.environ['TWITTER_CONSUMER_SECRET']="SMVGSO8aNCP1sWhDFHY7iZkH5kcHYkKHL4PgwgUWNnIRKxY1Af"
+# os.environ['ACCESS_TOKEN_KEY'] = "787326616955457536-75g66y9hLLprwdYZ9zhTqJs9MHYk5Da" 
+# os.environ['ACCESS_TOKEN_SECRET'] = "cGEGyaE0h1AU724CWZj7acN1GgyIU32OGONA84ZcYuPm7"
+
 
 AUTH_PROVIDERS = (
     'google',
@@ -36,6 +40,13 @@ AUTH_PROVIDERS = (
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# reading key-value pairs from a .env file & set them as environment variables. 
+# helps in the development of applications following the 12-factor principles.
+DOT_ENV = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(DOT_ENV):
+    dotenv.load_dotenv(DOT_ENV)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
