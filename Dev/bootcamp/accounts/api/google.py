@@ -18,17 +18,20 @@ class Google:
             Querying the Google oauth2 api to fetch the user info
             :returns: google info
         '''
-        # print(auth_token) ### +++
+        
+        print(f"This is auth_token_in google: {auth_token}") ### +++
+        
         try:
             idinfo = id_token.verify_oauth2_token(
                 auth_token, requests.Request()
             )
 
-            # print(f'This is id_info: {idinfo}')
+            print(f'This is id_info: {idinfo}')
+            
             request = requests.Request()
 
-            ## This is request in API View
-            ## print(request.__dict__.get('session').__dict__) + print('This is request from google')
+            # This is request in API View
+            print(f"This is request from google: {request.__dict__.get('session').__dict__}")
             
             if 'accounts.google.com' in idinfo['iss']:
                 return idinfo

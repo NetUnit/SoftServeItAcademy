@@ -17,12 +17,12 @@ import datetime
 import dotenv
 
 # google app settings
-os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
-os.environ['GOOGLE_CLIENT_SECRET']="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"
+# os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
+# os.environ['GOOGLE_CLIENT_SECRET']="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"
 
-# fb app settings
-os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
-os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
+# # fb app settings
+# os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
+# os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
 
 # twitter app settings
 # os.environ['TWITTER_API_KEY']="oxjqJpV9wLvlFtjgAHeRN06Fi"

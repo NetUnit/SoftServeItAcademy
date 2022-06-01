@@ -50,7 +50,7 @@ from .serializers import (
     CustomUserLoginSerializer,
     GoogleSocialAuthSerializer,
     FBSocialAuthSerializer,
-    TwitterAuthSerializer,
+    TwitterSocialAuthSerializer,
     SocialAuth
 )
 
@@ -126,6 +126,18 @@ class GoogleSocialAuthAPIView(GenericAPIView):
     template = 'accounts/snippets/google_login.html'
     serializer_class = GoogleSocialAuthSerializer
     # renderer_classes = [TemplateHTMLRenderer, template]
+    excessive_fields = [
+        '_state', 'last_login', 'password', 'auth_token',
+        '_access_token_key', '_access_token_secret'
+    ]
+
+    def remove_excessive_fields(self, user):
+        # print(f"This is user dict keys: {user.__dict__.keys()}")
+        fields = user.__dict__.keys()
+        exc = self.excessive_fields
+        [user.__delattr__(field) for field in exc if field in fields]
+        user_data = user.__dict__
+        return user_data
 
     def post(self, request, *args, **kwargs):
         '''
@@ -135,16 +147,17 @@ class GoogleSocialAuthAPIView(GenericAPIView):
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # data = serializer.validated_data
-        data = dict(serializer.validated_data)
-        user = data.get('auth_token')
+        validated_data = serializer.validated_data
+        user = validated_data.get('auth_token')
+        user_data = self.remove_excessive_fields(user)
+
         # django serializer to_str
         # user_data = dj_serializer.serialize('json', [user, ])
         # data = serializer.validated_data.get('auth_token')
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response(user_data, status=HTTP_200_OK)
 
 
-class FBSocialAuthAPIView(GenericAPIView):
+class FBSocialAuthAPIView(GoogleSocialAuthAPIView):
 
     serializer_class = FBSocialAuthSerializer
 
@@ -152,30 +165,37 @@ class FBSocialAuthAPIView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         # data = serializer.validated_data
-        data = dict(serializer.validated_data)
-        print(f"This is serializer data FB: {data}")
+        validated_data = serializer.validated_data
+        user = validated_data.get('auth_token')
+        user_data = self.remove_excessive_fields(user)
+
+        # print(f"This is serializer data FB: {data}")
         # user = data.get('auth_token')
         # django serializer to_str
         # user_data = dj_serializer.serialize('json', [user, ])
         # data = serializer.validated_data.get('auth_token')
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response(user_data, status=HTTP_200_OK)
 
 
-class TwitterSocialAuthAPIView(GenericAPIView):
-    
-    serializer_class = TwitterAuthSerializer
+class TwitterSocialAuthAPIView(GoogleSocialAuthAPIView):
 
-    def post(self, request, format=None):
+    serializer_class = TwitterSocialAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+
         serializer = self.serializer_class(data=request.data)
+    
+        # checks whether serializer returned result
         serializer.is_valid(raise_exception=True)
-        # data = serializer.validated_data
-        data = dict(serializer.validated_data)
-        print(f"This is serializer data Twitter: {data}")
-        user = data.get('auth_token')
-        # django serializer to_str
-        # user_data = dj_serializer.serialize('json', [user, ])
-        # data = serializer.validated_data.get('auth_token')
-        return Response(serializer.data, status=HTTP_200_OK)
+        # serializer.validated_data is serializers internal result
+        user = serializer.validated_data
+
+        # inherited form google API View
+        user_data = self.remove_excessive_fields(user)
+        print(user_data)
+        # Response() class in charge of serialization user to json
+        return Response(user_data, status=HTTP_200_OK)
+
 
 def google_auth_view(request, *args, **kwargs):
     '''
@@ -222,27 +242,28 @@ def google_auth_view(request, *args, **kwargs):
             raw_data = request.body
             # print(f'{raw_data} this are bytes')
             decoded_string = raw_data.decode()
-            # print(f'{decoded_string} this are decoded string1')
+            # print(f'This are decoded string1: {decoded_string}')
             decoded_string = eval(decoded_string)
-            # print(f'{decoded_string} this are decoded string2')
+            # print(f'This are decoded string2: {decoded_string}')
+            # print(True)
             token = decoded_string.get('IdToken')
-            print(token)
+            #print(token)
 
             # result is user data from google db
             result = serializer.validate_auth_token(token)
 
-            print(f'This is result: {result}')
+            # print(f'This is result: {result}')
 
             # register user here
             if isinstance(result, dict):
                 user_data = result
-                print(f"This is user_data | view: {user_data}")
+                # print(f"This is user_data | view: {user_data}")
 
                 user_data = SocialAuth.register_social_user(
                     user_data
                 )
 
-                print(f'This is user_data in a view: {user_data}')
+                # print(f'This is user_data in a view: {user_data}')
 
                 email = user_data.get('email')
                 _password = user_data.get('password')
@@ -379,21 +400,34 @@ def fb_auth_view(request, *args, **kwargs):
     return render(request, 'accounts/snippets/fb_login.html', context={'user': user})
 
 @csrf_protect
+
 def twitter_auth_view(request, *args, **kwargs):
+    '''
+    OAuth JS SDK form Oauth.io integrated into html <script>
+    in order to send request to Twitter API and get appropriate response
+    https://oauth.io/
+        .. note:: 
+            can be used to parse a valid JSON string &
+            convert it into a Python Dictionary
+
+            csrf token is inside html
+    '''
     user = request.user
     serializer_class = TwitterSocialAuthSerializer
 
     access_token_key = os.environ.get('ACCESS_TOKEN_KEY')
     access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
-
     
     print(access_token_key, access_token_secret)
 
     serializer = serializer_class()
+    tokens = {}
+    tokens['access_token_key'] = access_token_key
+    tokens['access_token_secret'] = access_token_secret
 
-    result = serializer.validate_auth_token(
-        access_token_key=access_token_key,
-        access_token_secret=access_token_secret
+    # result will an obj
+    result = serializer.validate(
+        tokens
     )
 
     print(f"This is result of validation VIEW: {result}")
@@ -401,28 +435,13 @@ def twitter_auth_view(request, *args, **kwargs):
     # user_id = user_data.get('id_str')
     # provider = user_data.get('twitter')
 
-    email = result.get('email')
-    username = result.get('screen_name')
+    if isinstance(result, dict):
+        user_data = dict()
+        result['username'] = result.get('screen_name')
+        resut['email'] = result.get('email')
+        data['image'] = result.get('profile_image_url')
 
-    print(username)
-
-    result = SocialAuth.check_user_exists(
-        email=email,
-        username=username
-    )
-
-    # print(result)
-    # print(request.body)
-
-    if result == None:
-        # print(new_user_data) ## +++
-        # creates new user object & assighn password automatically
-        data = dict()
-        data['username'] = username
-        data['email'] = email
-        data['image'] = result.get['profile_image_url']
-
-        new_user = Social_Auth.register_social_user(data)
+        new_user = Social_Auth.register_social_user(user_data)
         print(new_user)
 
         messages.success(

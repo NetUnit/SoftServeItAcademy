@@ -8,9 +8,9 @@ class Twitter:
     separated with space
 
         .. note:: 
-            While the Consumer Keys (API keys) give the API context 
+            *** While the Consumer Keys (API keys) give the API context 
             about the developer App that is sending a request, 
-            the Access Tokens provide context about the Twitter 
+            *** the Access Tokens provide context about the Twitter 
             user on behalf of whom the App is sending the request
     '''
 

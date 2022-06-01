@@ -158,18 +158,18 @@ from rest_framework_jwt import compat
 class SocialAuth:
 
     '''
-    ===========================================================
-    Represents replicable logic responsible for Social Auth
-    ===========================================================
+        ===========================================================
+        Represents replicable logic responsible for Social Auth
+        ===========================================================
 
-    .. note:: 
-        CustomUser - auth user model for authentication
+        .. note:: 
+            CustomUser - auth user model for authentication
     '''
     @staticmethod
     def register_social_user(data):
         '''
-        creates a new user object with dragged email & generates passowrd
-        :returns: new user object
+            creates a new user object with dragged email & generates passowrd
+            :returns: new user object
         '''
         user = CustomUser()
         print(f"This is data: {data} is serializer")
@@ -206,8 +206,8 @@ class SocialAuth:
     @staticmethod
     def check_user_exists(email=None, username=None):
         '''
-        checks whether user object with such email already exists in the db
-        :returns: user object id exists or None if opposite
+            checks whether user object with such email already exists in the db
+            :returns: user object id exists or None if opposite
         '''
         # print(email)
         # print(username)
@@ -231,25 +231,25 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
 
     def validate_auth_token(self, auth_token):
         '''
-        validates acquired with google lib token
-        checks if token is not outdated.
-        checks if request is being sent with 'Django Bootcamp'
-        & GOOGLE_CLIENT_ID isn't fake
-        :returns: user obj or new user object if such user isnt exist in the db
+            validates acquired with google lib token
+            checks if token is not outdated.
+            checks if request is being sent with 'Django Bootcamp'
+            & GOOGLE_CLIENT_ID isn't fake
+            :returns: user obj or new user object if such user isnt exist in the db
 
-        .. note:: 
-            google-auth lib used to achieve Token, GoogleUser and validation
-            querying the Google oauth2 api
+            .. note:: 
+                google-auth lib used to achieve Token, GoogleUser and validation
+                querying the Google oauth2 api
         '''
         try:
             google_user_data = Google.validate(auth_token)
-            # print(google_user_data)
+            print(f'This is google user data: {google_user_data}')
             LOGGER.info(f"This is google user data: {google_user_data}")
 
         except Exception as err:
-            # print(f'Err: {err}')
+            print(f'Err Validation Serializer: {err}')
             raise serializers.ValidationError(
-                {'detail': 'Token is invalid or expired (︶︹︺)', }
+                {'detail': 'Token is either invalid or expired (︶︹︺)', }
             )
 
         ## user data is str -- thats why code below doesn't work
@@ -380,63 +380,67 @@ class FBSocialAuthSerializer(serializers.Serializer):
                     # provider=provider
                 )
 
-            ### print(f'This is user: {user}') ## +++
             return user
 
         except Exception:
             identifier = serializers.ValidationError(
-                {'detail': 'Token is invalid or expired (︶︹︺)', }
+                {'detail': 'Token is either invalid or expired (︶︹︺)', }
             )
             LOGGER.warning(f'{identifier}')
             raise identifier
 
-class TwitterAuthSerializer(serializers.Serializer):
+class TwitterSocialAuthSerializer(serializers.Serializer):
     '''
-        Handles Serialization of Twiter Auth Data
-        checks if token is not outdated.
-        checks if request is being sent with 'Django Bootcamp'
-        & GOOGLE_CLIENT_ID isn't fake
-        :returns: user obj or new user object if such user isnt exist in the db
+        Handles Serialization of user object obtained
+        via retrieved Twiter Auth Data.
+        As access tokens provide info about user from Twitter API
+        2 parameter fields has been set   
+        Checks also if request is being sent with 'Django Bootcamp'
+        with validate_twitter_auth_tokens() and cosumer keys 
+        passed to last, consumer keys aren't fake
+        :returns: user obj or new user data if such user isnt exists
+        in the db
         :raises: ValidationError if Token is either fake or expired
 
-        .. note:: 
-            facebook-sdk lib used to achieve user data and validation
-            querying the FB GraphAPI
+            .. note::
+
+                parsing the db with received data from twiiter API
+                & checks wheteher such user already exist
+
+                creates new user object, assighns psw automatically
+                & sends it to user's email if such a user not present in 
+                the db
     '''
     access_token_key = serializers.CharField()
     access_token_secret = serializers.CharField()
 
     def validate(self, attrs):
 
-        # print(f"This is access_token: {self.access_token_key}")
-        # print(f"This is access_token_secret: {self.access_token_secret}")
-
-        # print(f"This is self.__dict__ : {self.__dict__}")
-
         try:
-            print(f"This r attrs: {attrs}")
-
             access_token_key  = attrs.get('access_token_key')
             access_token_secret = attrs.get('access_token_secret')
-
-            print(access_token_key)
-            print(access_token_secret)
-
-            # access_token_key = kwargs.get('access_token_key')
-            # print(access_token_key)
-
-            # access_token_secret = kwargs.get('access_token_secret')
-            # print(access_token_secret)
 
             user_data = Twitter.validate_twitter_auth_tokens(
                 access_token_key,
                 access_token_secret
             )
-    
-            print(f"This is user data Twitter:  {user_data}")
 
-            return user_data
+            # return user_data
+            email = user_data.get('email')
+            username = user_data.get('screen_name')
 
+            result = SocialAuth.check_user_exists(
+                email=email,
+                username=username
+            )
+
+            result.access_token_key = access_token_key
+            result.access_token_secret = access_token_secret
+
+            if result is None:
+                return user_data
+            return result
+        
         except Exception as err:
             print(err)
             identifier = serializers.ValidationError(
