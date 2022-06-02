@@ -242,6 +242,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 querying the Google oauth2 api
         '''
         try:
+            print(auth_token)
             google_user_data = Google.validate(auth_token)
             print(f'This is google user data: {google_user_data}')
             LOGGER.info(f"This is google user data: {google_user_data}")
