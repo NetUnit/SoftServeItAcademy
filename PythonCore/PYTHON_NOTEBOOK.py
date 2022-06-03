@@ -1984,6 +1984,7 @@ sorted() - функція. ВІДСОРТУЄ СПИСОК по алфавіту
 
     ## поверне BOOL значенння
 
+
  #2) МЕОД ALL - ПОВЕРТАЄ BOOLEAN ЗНАЧЕННЯ ПРИ ЗАСТОСУВАННІ ДО ДАНИХ ФОРМАТУ 'STR' - ВКАЗУЄ НА НАЯВНІСТЬ СИМВОЛУ 
 
  	!!! Математичні опреатори які не стоять біля числа не належать до int(), не входять також до i.isdigit()
@@ -2032,8 +2033,6 @@ sorted() - функція. ВІДСОРТУЄ СПИСОК по алфавіту
 
 
 
-
-
  #3)  FINDING COMMON ELEMENTS IN THE LIST: set.intersection(*map(set, [a, b, c]))
  	  # виведе список однакових елементів характерних для інших списків
 
@@ -2064,11 +2063,10 @@ sorted() - функція. ВІДСОРТУЄ СПИСОК по алфавіту
 		lst1 = ['humid', 'warm', 'indoor', '25']
 		lst2 = ['warm', 'humid', 'indoor', '25'] 
 
-		lst1 = list(map(lambda x,y: x==y, lst1, lst2))
+		lst1 = list(map(lambda x, y: x==y, lst1, lst2))
      	>>> [False, False, True, True]
 
-  
-
+ 
 
  #2) i.islower() та і.isupper() методи:
 ### ПОТРІБНО ПРИВЕСТИ ДАНІ ДО ФОРМАТУ 'LIST' - СФОРМУВАТИ 1ИН ЗАГАЛЬНИЙ СПИСОК ЗІ ВСІХ СИМВОЛІВ - ІТЕРОВАНИЙ ОБ'ЄКТ ЗА ДОПОМОГОЮ extend() 
@@ -2084,7 +2082,7 @@ i.isdigit() - find digit in the 'list' (password) #BOOL # isdigit() method retur
 i.isupper() - find Uppercase letter in 'list' (the password) #BOOL
 i.isalpha() - methods returns “True” if all characters in the string are alphabets, Otherwise, It returns “False” #BOOL
 # compares symbol_lst with psw_lst (if symbols exists in in list
-# 
+
 
 result = any ([i.islower() for i in character_lst]) result = any ([i.islower() for i in character_lst]) and any([i.isupper() for i in character_lst]) and any([i.isdigit() for i in character_lst ]) and any([i in character_lst for i in symbol_lst])
 
@@ -2344,120 +2342,121 @@ ADVANCED FORMATTING: Форматування з допомогою операт
 
 НАСЛІДУВАННЯ: 
 
-		'''
-		    ЕКЗЕМПЛЯР КЛАСУ ЦЕ - ГЛОБАЛЬНИЙ ОБ'ЄКТ, ЩО МОЖНА ВИКЛИКАТИ ВСЕРЕДИНІ
-		    ІНШОГО КЛАСУ І ВІН ТАКИМ ЧИНОМ ВШИЄТЬСЯ В ЦЕЙ КЛАС, І ТОДІ ВЖЕ ВІД instance, 
-		    викликаємо будь-який атрибут з іншого класу 
-		'''
+	'''
+	    ЕКЗЕМПЛЯР КЛАСУ ЦЕ - ГЛОБАЛЬНИЙ ОБ'ЄКТ, ЩО МОЖНА ВИКЛИКАТИ ВСЕРЕДИНІ
+	    ІНШОГО КЛАСУ І ВІН ТАКИМ ЧИНОМ ВШИЄТЬСЯ В ЦЕЙ КЛАС, І ТОДІ ВЖЕ ВІД instance, 
+	    викликаємо будь-який атрибут з іншого класу 
+	'''
 
 
-		### наслідування - без передачі класу А в клас B 
-		### instances B - не відбудуться
-		class A:
+	### наслідування - без передачі класу А в клас B 
+	### instances B - не відбудуться
+	class A:
 
-		    a = 10; b = 20;
+	    a = 10; b = 20;
 
-		    def __init__(self, a=a, b=b):
-		        self.a = a
-		        self.b = b
-		    
-		    def calc(self, a=a, b=b):
-		        # multipliacation
-		        mult = a * b
-		        return mult
-		
-		# без передачі Class A в Сlass B
-		# instance_b - не виконається
-		class B(A):
-		    # class B launch class A
-		    pass
-
-
-		instance_a = A()
-		print(instance_a.calc())
-		###>>> 200
-
-		instance_b = B()
-		print(instance_b.calc())
-		###>>> 200
+	    def __init__(self, a=a, b=b):
+	        self.a = a
+	        self.b = b
+	    
+	    def calc(self, a=a, b=b):
+	        # multipliacation
+	        mult = a * b
+	        return mult
+	
+	# без передачі Class A в Сlass B
+	# instance_b - не виконається
+	class B(A):
+	    # class B launch class A
+	    pass
 
 
-	Звертання до атрибутів класу:
+	instance_a = A()
+	print(instance_a.calc())
+	###>>> 200
 
-		class ClassA:
+	instance_b = B()
+	print(instance_b.calc())
+	###>>> 200
 
-			a = 10; b = 50 # атрибут ClassA - дані що містить СlassA, котрими ми будемо розпоряджатися
 
-			def function(self):
-				print('Do something')
+Звертання до атрибутів класу:
 
-		# параметр self буде містити інфу про instance, від instance викликаємо метод function.
-		# без 'self' параметра не отримаємо доступ 
+	class ClassA:
 
-		instance1 = ClassA()
-		instance1.function()
+		a = 10; b = 50 # атрибут ClassA - дані що містить СlassA, котрими ми будемо розпоряджатися
 
-		# звертання до атрибутів класу - через екземпляр ClassA - instance1
-		print(instance1.__class__.a)
-		#>>> 10
+		def function(self):
+			return print('Do something')
+
+	# параметр self буде містити інфу про instance, від instance викликаємо метод function.
+	# без 'self' параметра не отримаємо доступ 
+
+	instance1 = ClassA()
+	instance1.function()
+
+	# звертання до атрибутів класу - через екземпляр ClassA - instance1
+	print(instance1.__class__.a)
+	#>>> 10
 		
 
 	Використання атрибутів взятих із класу:
 
 
-		Оримання атрибуту через екземпляр класу
+	Оримання атрибуту через екземпляр класу
 
-		class A:
+	class A:
 
-    		x = 4;
-    		y = 5;
+		x = 4;
+		y = 5;
 
-		    #загрузка параметрів з body
-		    def __init__(self, x=x, y=y):
-		        self.x = x
-		        self.y = y
+	    #загрузка параметрів з body
+	    def __init__(self, x=x, y=y):
+	        self.x = x
+	        self.y = y
 
-		    def create(self):
-		        return x * y
+	    def create(self):
+	        return x * y
 
-		inst = A()
-		print(inst.x)
-		### >>> 4
+	inst = A()
+	print(inst.x)
+	### >>> 4
 
 
-		#1 отримання доступу до атрибуту класу - з body, класу
-		class classA:
+	#1 отримання доступу до атрибуту класу - з body, класу
+	class classA:
 
-		    x = 4; y = 8
+	    x = 4; y = 8
 
-		    def __init__(self, x = x, y = y):
-		        self.x = x
-		        self.y = y
-		    
-		    def execution(self, x, y):
-		        return x * y
+	    def __init__(self, x = x, y = y):
+	        self.x = x
+	        self.y = y
+	    
+	    def execution(self, x, y):
+	        return x * y
 
-		exempliar = classA()
-		print(exempliar.execution(4, 8))
-		#>>> 32
+	exempliar = classA()
+	print(exempliar.execution(4, 8))
+	#>>> 32
 
-		#2 звертання до атрибутів класу
-		class ClassA:
+	#2 звертання до атрибутів класу
+	class ClassA:
 
-		    '''
-		        Звертання до атрибутів КЛАСУ
-		    '''
-		    
-		    a = 10; b = 50 # атрибути ClassA - дані що містить СlassA, котрими ми будемо розпоряджатися
+	    '''
+	        Звертання до атрибутів КЛАСУ
+	    '''
+	    
+	    # атрибути ClassA - дані що містить СlassA, до котрих хочемо отримати доступ
+	    a = 10; b = 50 
 
-		    def function(self):
-		        return 'Do something'
+	    def function(self):
+	        return 'Do something'
 
 		# звертання до атрибуту класу через екземпляр класу, без використання параметрів
 		# при виклику методу
 
 		instance1 = ClassA()
-		print(instance1.__class__.a) ####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#####################
+		print(instance1.__class__.a)
 		#>>> 10
 
 
@@ -2466,16 +2465,48 @@ ADVANCED FORMATTING: Форматування з допомогою операт
 
 		    a = 10; b = 40
 
-		    def __init__(self, a=a, b=b): ####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#####################
+		    def __init__(self, a=a, b=b):
 		        self.a = a
 		        self.b = b
 
-		    def multiplication(self, a=a, b=b): ####!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#####################
+		    def multiplication(self, a=a, b=b):
 		        return self.a * self.b
+
 
 		instance = ClassA()
 		print(getattr(instance, 'a'))
-		#>>> 10
+		# >>> 10
+
+setattr(obj, name, value) - # function sets the value of the attribute of an object setattr(obj, name, value) - takes 3 parameters
+	    :param obj: object whose attribute has to be set
+	    :param name: attribute name
+	    :param value: value given to the attribute
+
+    	setattr(instance, 'd', 100)
+    	print(instance.d)
+    	# >>> 100
+
+getattr(object, name[, default]) -  # Метод getattr() повертає значення названого атрибута an об'єкт.
+		# Якщо не знайдено,він повертає значення за замовчуванням, надане до
+     	# функція. Значення, яке повертається, коли названий атрибут не знайдено
+
+
+
+		print(getattr(instance, 'c'))
+		# >>> returns None when attribute not found
+
+		print(getattr(instance, 'c', 70))
+		# >>> returns 70 if not c attr value
+
+
+delattr(object, name)
+
+		delattr(instance, 'b')
+		print(instance.__dict__)
+		# >>> {'a': 10} b - has been deleted
+
+		print(delattr(user, 'c'))
+		# >>> AttributeError: first_name
 
 		print(instance.multiplication())
 		#>>> 400

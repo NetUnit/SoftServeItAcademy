@@ -1,17 +1,16 @@
 '''
-    Припустимо є 2 стандартні типи:
-    int і str. type(int) - вбудований клас Python
-               type(str) - вбудований клас Python
+    Supposingly we have 2 python default types:
+    int & str. type(int), type(str) etc. - built-in Python class
 '''
 
-## прналежність до класів
-print(type(str))  ## <class 'type'>
-print(type(int)) ## <class 'type'>
+## belonging to classes
+# print(type(str))  ## <class 'type'>
+# print(type(int)) ## <class 'type'>
 
-################################################ Поліморфізм #######################################################
-### example1
-### return methods
-class Summation:
+################################## *** Polymorphism *** ##################################
+# ex1
+# return methods
+class Behaviour:
 
     a = 0;
     b = 0;
@@ -20,39 +19,25 @@ class Summation:
         self.a = a
         self.b = a
     
-    def behaviour(self, a=a, b=b):
+    def summation(self, a=a, b=b):
         return int(a) + int(b)
 
-class Concatenation:
-
-    a = 0;
-    b = 0;
-
-    def __init__(self, a=a, b=b):
-        self.a = a
-        self.b = b
-
-    def behaviour(self, a, b):
+    def concatenation(self, a=a, b=b):
         return str(a) + str(b)
 
-# створення екземплярів класу
-instance_1 =  Summation()
-instance_2 = Concatenation()
+    def behaviour(self, a=a, b=b):
+        if list(map(int, [a, b])):
+            return a + b
+        if list(map(str, [a, b])):
+            return f"'{a + b}'"
 
-# надання екзмплярам атрибутів
-print(instance_1.behaviour(10, 10)) ### 20
-print(instance_2.behaviour(10, 10)) ### '1010'
-
-
-'''
-## complex
-## Перевизначення класу
-## example 2
-## return a, b - різниця
+## ex2 redefine clasess
+# return a, b - difference
 class Complex:
     
-    #a = 0;
-    #b = 0;
+    # a = 0;
+    # b = 0;
+
     def __init__(self, a, b):
         self.a = a
         self.b = b
@@ -62,12 +47,8 @@ class Complex:
         b = self.b + other.b
         return a, b
         #return Complex(a, b)
-#
-instance_c1 = Complex(50, 50)
-instance_c2 = Complex(20, 20)
-print(instance_c1 + instance_c2)
 
-## return Point()
+# return Point()
 class Point:
     
     def __init__(self, x, y, z):
@@ -79,72 +60,46 @@ class Point:
         x = self.x + other.x
         y = self.y + other.y
         z = self.z + other.z
-
         return Point(x, y, z)
 
 
-p1 = Point(1, 2, 3)
-p2 = Point(4, 5, 6)
-
-## витягуємо атрибути ## p1
-print(getattr(p1, 'x'))
-print(getattr(p1, 'y'))
-print(getattr(p1, 'z'))
-
-## витягуємо атрибути ## p2
-print(getattr(p2, 'x'))
-print(getattr(p2, 'y'))
-print(getattr(p2, 'z'))
-
-## пробуємо додати instancu 
-print(p1 + p2) ### >>> <__main__.Point object at 0x000001C086C1F820>
-'''
-
-
-
-### 3
-### @ classmethod 
-### @ staticmethod
-#####################################
-class Human:
-    # Атрибут класу
-    species = "Homosapiens"
-    name = 'Jacky'
-    # Конструктор
-    def __init__(self, name=name):
-        self.name = name
+if __name__ == "__main__":
     
-    #метод екземпляру класу
-    def say(self, msg):
-        return "{name}>>> {message}".format(name=self.name, message=msg)
-    
-    # Метод класу
-    @classmethod
-    def get_species(cls):
-        return cls.species
-    # Статичний метод викликається без посилання на класс чи екземпляр
-    @staticmethod
-    def grunt():
-        return "*Static*"
+    # ex1
+    # the same class has different behavioural features
+    # instantiating classes
+    instance_1 =  Behaviour()
+    instance_2 = Behaviour()
 
-instance = Human()
+    # assign class attributes
+    print(instance_1.summation(10, 10)) # >>> 20
+    print(instance_2.concatenation(10, 10)) # >>> '1010'
+    print(instance_2.behaviour('10', '20'))
+    print(instance_2.behaviour(10, 20))
 
-# classmethod
-# @classmethod - це звичайний метод класу, що має доступ до всіх атрибутам класу, 
-# через який він був визван. Следовательно, classmethod - це метод, який прив'язується
-# до класу, а не до екземпляру класу
-print(Human.get_species())
+    # ex2
+    # summation of complex numbers
+    instance_c1 = Complex(50, 50)
+    instance_c2 = Complex(20, 20)
+    print(instance_c1 + instance_c2)
 
-# staticmethod - метод без параметру self, можна викликати поза класом за допомогою будь-якого instance
-# @staticmethod використовується, коли ми хочемо повернтуи одне і те ж, незалежно від викликаного дочірнього класу
-print(Human.grunt()) ## функція всередині класу котру можна викликати як від екз так і від самого класу
-print(instance.grunt())
+    # ex3
+    # create matrix from points
+    p1 = Point(1, 2, 3)
+    p2 = Point(4, 5, 6)
 
-# method say
-print(instance.say('say something'))
+    # get attributes from p1 instance
+    print(getattr(p1, 'x'))
+    print(getattr(p1, 'y'))
+    print(getattr(p1, 'z'))
 
+    # get attributes from p2 instance
+    print(getattr(p2, 'x'))
+    print(getattr(p2, 'y'))
+    print(getattr(p2, 'z'))
 
-
-
-
-
+    # adding instances
+    p = (p1 + p2) ### >>> <__main__.Point object at 0x000001C086C1F820>
+    print(getattr(p, 'x'))
+    print(getattr(p, 'y'))
+    print(getattr(p, 'z'))
