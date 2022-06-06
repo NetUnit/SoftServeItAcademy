@@ -1,0 +1,12 @@
+{% load static %}
+
+{%load crispy_forms_tags%} 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./style.css">
+
+<div>
+  <a class="social-auth-link" href="{% url 'accounts_api:twitter-user-login-test' %}">
+    <img class="social-auth-logo" src="{% static 'images/social_buttons/twitter-trigger-btn.png' %}" alt="twitter-trigger-btn">
+  </a>
+</div>

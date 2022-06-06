@@ -1,119 +1,31 @@
+{%extends 'base.html'%}
 
-<style>
-  #customBtn {
-    /* google button default settings */
-    display: inline-block;
-    background: white;
-    color: #444;
-    width: 132px;
-    border-radius: 5px;
-    border: thin solid #888;
-    box-shadow: 1px 1px 1px grey;
-    white-space: nowrap;
-    /* background: limegreen; */
+{%block title%} Twitter Login {%endblock%} 
 
-  }
+{%load crispy_forms_tags%} 
 
-  #customBtn:hover {
-    cursor: pointer;
-  }
-  span.label {
-    font-family: serif;
-    font-weight: normal;
-  }
-  span.icon {
-    background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-    width: 42px;
-    height: 42px;
-  }
-  span.buttonText {
-    display: inline-block;
-    vertical-align: middle;
-    padding-left: 0px;
-    padding-right: 0px;
-    font-size: 14px;
-    font-weight: bold;
-    /* Use the Roboto font that is loaded in the <head> */
-    font-family: 'Roboto', sans-serif;
-    }
+{%block content%}
 
-    .alert {
-      padding: 20px;
-      background-color: #f44336; /* Red */
-      color: white;
-      margin-bottom: 15px;
-  }
+{% load static %}
 
-  /* .content {
-    margin-top: 5px;
-  }
-   */
-</style>
+{%load crispy_forms_tags%}
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-  <script src="https://apis.google.com/js/api:client.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=loadAuthClient" async defer></script>
+<title>Twitter Login Example</title>
+<meta charset="UTF-8">
+</head>
+
+<body>
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  
+  <!-- defines style for social auth buttons specifically -->
+  <link rel="stylesheet" href="{% static 'css/social_buttons.css' %}">
+
   <script>
-  var googleUser = {};
-  var startApp = function() {
-    gapi.load('auth2', function(){
-      // Retrieve the singleton for the GoogleAuth library and set up the client.
-      auth2 = gapi.auth2.init({
-        client_id: '1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com', 
-        cookiepolicy: "single_host_origin",
-        
-        // Request scopes in addition to 'profile' and 'email'
-        //scope: 'additional_scope'
-      });
-      attachSignin(document.getElementById('customBtn'));
-    });
-  };
 
-  var email = '{{ user.email }}'
-  var user = '{{ user }}'
-  // var user2 = '{{ request.user }}'
 
-  function attachSignin(element) {
-    console.log(element.id);
-    // alert(element)
-    auth2.attachClickHandler(element, {},
-        function(googleUser) {
-          // getting Google Auth Token
-          var IdToken = googleUser.getAuthResponse().id_token;
-          // getting User object
-          var User = googleUser.getBasicProfile().getName();
-          var Email = googleUser.getBasicProfile().getEmail();
-          document.getElementById('token').innerText = "SignIn as: " + 
-          User
-          
-          // alert('Name' + googleUser.getBasicProfile().getName() +
-          //       "\n\nEmail" + googleUser.getBasicProfile().getEmail()
-          //  )
-          
-          // ++++ 1st Token + User
-          alert("User Token: " + IdToken +
-                "\n\nUser: " + user +
-                "\n\nEmailUser: " + ' ' + Email +
-                "\n\nemail: " + email
-          )
-          
-        
-        alert("This is response")
-        FinalizeResponse(IdToken, User, Email);
-        alert("This is response2")
-        
-        // neeed to implmement POST METHOD
-        // formData(IdToken, User);
 
-          return IdToken, User, Email;
-
-        }, function(error) {
-          alert(JSON.stringify(error, undefined, 2));
-        });
-  }
 
   function getCookie(name) {
     let cookieValue = null;
@@ -138,7 +50,7 @@
   // Responsible for the authentication also
 
   function formData(IdToken, User, Email) {
-    var url = "{% url 'oauth_user-login-test' %}"
+    var url = "{% url 'accounts_api:twitter-user-login-test' %}"
 
     fetch(url, {
         method: 'POST',
@@ -159,7 +71,8 @@
     var url1 = "{% url 'accounts:profile' %}"
     var url2 = "{% url 'accounts:login-success' %}"
     var url3 = "{% url 'accounts:login_failed' %}"
-    var url4 = "{% url 'oauth_user-login-test' %}"
+    var url4 = "{% url 'accounts:login_cbv' %}"
+    
     var same_email = email === Email
 
     if (!same_email && user !== 'AnonymousUser') {
@@ -208,23 +121,27 @@
 
   </script>
 
-  <form action="." method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  
-  <!-- In the callback, you would hide the gSignInWrapper element on a
-  successful sign in -->
-    <div id="gSignInWrapper">
-      <!-- <span class="label">Sign in with:</span> -->
-      <div id="customBtn" class="customGPlusSignIn"> 
-      <!-- <div id="customBtn" class="btn btn-primary" type="submit"> -->
-        <span class="icon"></span>
-        <span class="buttonText">Google</span>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto mt-5">
+      <div class="header1">
+        <div class="header2">
+          <div class="check"> <i class="fa fa-dot-circle-o"></i></div>
+        </div>
+        <div class="content">
+          <h1> U're going to login with twitter as a: </h1>
+          <h2> {{ user }} </h2>
+          <p>
+            <form action="." method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+            </form>
+          </p>
+        </div>
       </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-    <div id="token"></div>
+  </div>
+</div>
+</body>
 
-    <script>startApp();</script>
-    
-  </form>
-</head>
+{% endblock %}

@@ -12,7 +12,16 @@ from .views import (
     CustomUserLoginView,
 )
 
+from accounts.api.views import(
+    google_auth_view,
+    fb_auth_view,
+    twitter_auth_view,
+    redir_to_fb_login,
+)
+
 from rest_framework.authtoken.views import obtain_auth_token
+
+app_name = 'accounts_api'
 
 urlpatterns = [
     re_path(r'^user/sighn-up/$', CustomUserCreateView.as_view(), name='user-create'),
@@ -31,4 +40,12 @@ urlpatterns = [
     ### OAuth2 urls ###
     # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
 
+    ### Social Auth urls ###
+    re_path(r'^o/google-sighn-in-test/$', google_auth_view, name='google-user-login-test'),
+    re_path(r'^o/fb-sighn-in-test/$', fb_auth_view, name='fb-user-login-test'),
+    re_path(r'^o/twitter-sighn-in-test/$', twitter_auth_view, name='twitter-user-login-test'),
+
+    ### redirect urls ###
+    re_path(r'^o/fb-sighn-in-test-redir/$', redir_to_fb_login, name='fb-user-login-test-redir'),
+    
 ]

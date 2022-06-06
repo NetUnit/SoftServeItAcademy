@@ -81,6 +81,7 @@ def register_user_view(request, *args, **kwargs):
         print(err)
         pass
 
+
 ## Class-based View
 from django.views.generic import CreateView
 class RegisterView(CreateView):
@@ -329,9 +330,8 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
             'password', 'first_name',
             'last_name', 'image', 'media'
         )
-    
-    # slug_field = 'slug'
 
+    # slug_field = 'slug'
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         if not hasattr(self, 'object'):
@@ -427,10 +427,8 @@ class  EditProfilePageView(generic.UpdateView, CustomUser): #CustomUserUpdateFor
         
 #################### *** Login/Logout Views *** ######################
 def login_success_view(request, *args, **kwargs):
-    print(request.user, '##1')
     messages.success(request, f'U\'ve been successfully logged in (・_・)ノ')
     return render(request, 'accounts/login_success.html', context={})
-
 
 ####################### *** Delete User *** #######################
 def profile_delete_view(request, user_id, *args, **kwargs):
@@ -452,8 +450,6 @@ def contact_view(request, *args, **kwargs):
 ####################### *** Recovery *** #######################
 def profile_recovery_view(request, *args, **kwargs):
     return HttpResponse('<h2> This is recovery view -> make html+form+snippet later </h2>')
-
-
 
 ################# *** Authenticated User or Staff Member Check *** ###################
 def check_user_auth(request, *args, **kwargs):
