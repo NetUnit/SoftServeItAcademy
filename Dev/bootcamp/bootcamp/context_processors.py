@@ -4,12 +4,15 @@ The context_processor file serves to crete our own Python function (Context Proc
 that will be added to pre-build Django batteries, in order to render customized HTML data
 """
 
-
 from django.conf import settings
-
 
 ##################### *** custom context_processor *** #########################
 def products(request, *args, **kwargs):
+    '''
+    :request: HttpRequest object
+    :returns: dictionary that gets added to the request context
+              of products app
+    '''
     return {
         'products_group': settings.PRODUCTS_GROUP,
         'products_tagline': settings.PRODUCTS_TAGLINE
@@ -37,19 +40,16 @@ def footer_app_name(request, *args, **kwargs):
         'company_name_tagline': settings.COMPANY_NAME_TAGLINE,
     }
 
-
 ####################  *** get root path *** #########################
 def root(request, *args, **kwargs):
     return {
         'root': request.path
     }
 
-
 def detailed_method(request, *args, **kwargs):
     return {
         'method': settings.METHOD,
     }
-
 
 ## disabled ---> auto setting through getting the name of app
 # from django.urls import (get_resolver, get_urlconf, resolve, reverse, NoReverseMatch)

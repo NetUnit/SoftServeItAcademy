@@ -40,6 +40,7 @@ from bootcamp.views import (
     search_venues,
     feedback_form_view,
     panda_link_view,
+    test_request_context_view
 )
 
 from accounts.api.views import(
@@ -78,17 +79,14 @@ urlpatterns = [
     ################### *** just for getting a method *** ########################
     re_path(r'^methods/$', method_view, name='method_view'),
     
-    ################### *** search view *** ########################
+    ################### *** search + other features views *** ########################
     re_path(r'^search/$', search_view, name='search_view'),             # same_3
     re_path(r'^search-venues/$', search_venues, name='search_venues'),  # same_3
-
-    #### **** exceptions *** ####
-    ## add 500, 400 & 403 exceptions here
     
     re_path(r'^feedback/$', feedback_form_view, name='feedback_form_view'),
     re_path(r'^access-status/$', TemplateView.as_view(template_name='access_status.html'), name='access_status'),
 
-    ## 
+    # include other apps urls
     re_path(r'^', include('products.urls')),
     re_path(r'^', include('manufacturer.urls')),
     re_path(r'^', include('orders.urls')),
@@ -111,6 +109,8 @@ urlpatterns = [
     ################### *** payments views *** ########################
     path('pypal/', include('paypal.standard.ipn.urls')),
     
+    ################### *** Context, RequestContext test views *** ###################
+    re_path(r'^request-context/test/$', test_request_context_view, name='request_context-view'),
 ]
 
 if settings.DEBUG:

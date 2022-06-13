@@ -135,10 +135,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bootcamp.urls'
 
-#TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+# TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # setup other roots to specified template sources 
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
                 # os.path.join(BASE_DIR, 'products/templates'),                             # additional path in order to avoid app/'some_template.html'
         ],
@@ -146,7 +147,8 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                # this sets the request variable in the context
+                'django.template.context_processors.request', 
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'bootcamp.context_processors.products',                                         # custom context for products app
@@ -170,13 +172,6 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {

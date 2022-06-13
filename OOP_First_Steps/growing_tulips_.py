@@ -22,7 +22,7 @@ class Tulips:
 
     def selection(self, decent=decent, tolerated=tolerated, irrelevant=irrelevant):
         inquiry_lst = list(
-            map(str, input('Please select conditions for growing tuplips: ').split()))
+            map(str, input('Please select conditions for growing tulips: ').split()))
         # return inquiry_lst
         # >>> inquiry_lst = ['warm', 'humid', 'indoor', '25']
 
@@ -34,10 +34,9 @@ class Tulips:
         try:
             if len(common1) > 3.5:
                 return f'These weather conditions are: decent for growing tulips.'
-
             elif 2.5 < len(common2) < 3.5:
                 return f'These weather conditions are: tolerated for growing tulips,\
-pay attention to the temeprature though'
+pay attention to the temperature though'
             elif 0 < len(common3) < 2.5:
                 return f'These weather conditions are: irrelevant, it\'s too hot,\
 the air may be excessively dry and plants don\'t need so much of the sun'
