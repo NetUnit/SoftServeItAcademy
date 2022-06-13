@@ -87,7 +87,7 @@ class CustomUser(AbstractUser):
         blank=True
         )
     
-    #username = None
+    # username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     
@@ -115,9 +115,6 @@ class CustomUser(AbstractUser):
 
     def get_absolute_url(self):
         return reverse_lazy('accounts:profile', args=[str(self.id)])
-
-    # def __del__(self):
-	#     print('Got rid of the next params: %s %s' % (self.id, self._state ))
     
     @property
     def first_login(self):
