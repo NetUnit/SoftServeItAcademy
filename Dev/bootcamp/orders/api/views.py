@@ -3,11 +3,12 @@ from .serializers import OrderPostSerializer
 from rest_framework import generics
 from orders.models import Order
 
+
 class OrderCrudView(generics.RetrieveUpdateDestroyAPIView):
     '''
-        Concrete view for the main CRUD operations:
-        retrieving, updating or deleting a model instance.
-        Shifts such classes as: DetailView, CreateView, UpdateView, Form View
+    Concrete view for the main CRUD operations:
+    retrieving, updating or deleting a model instance.
+    Shifts such classes as: DetailView, CreateView, UpdateView, Form View
     '''
     model = Order
     lookup_field = 'pk'

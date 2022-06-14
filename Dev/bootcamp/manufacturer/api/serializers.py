@@ -6,19 +6,19 @@ from bootcamp.api.exceptions import (
     CustomCharField,
     TitleDuplicationError,
     TitleAbsenceError
-    )
+)
+
 
 class ManufacturerPostSerializer(serializers.ModelSerializer):
     '''
-        Serializer does 2 main things:
-        :converts to JSON
-        :validate data passed
+    Serializer does 2 main things:
+    :converts to JSON
+    :validate data passed
     '''
-
     image = CustomImageField(
         max_length=None, use_url=True,
-        )
-    
+    )
+
     class Meta:
         model = Manufacturer
         fields = [
@@ -32,7 +32,7 @@ class ManufacturerPostSerializer(serializers.ModelSerializer):
         ]
 
     def validate_title(self, value):
-        qs = Manufacturer.objects.filter(title__iexact=value)        
+        qs = Manufacturer.objects.filter(title__iexact=value)
         if self.instance:
             qs.exclude(pk=self.instance.pk)
         if qs.exists():
@@ -45,14 +45,13 @@ class ManufacturerPostSerializer(serializers.ModelSerializer):
 class ManufacturerCreateSerializer(serializers.ModelSerializer):
 
     '''
-        self.instance ?!
-        self.kwargs - data (instance, data, partial )
+    self.instance ?!
+    self.kwargs - data (instance, data, partial)
     '''
-
     image = serializers.ImageField(
-        required=False, max_length=None, 
+        required=False, max_length=None,
         allow_empty_file=True, use_url=True
-        )
+    )
 
     class Meta:
         model = Manufacturer
@@ -82,5 +81,3 @@ class ManufacturerCreateSerializer(serializers.ModelSerializer):
         if qs.exists():
             raise TitleDuplicationError()
         return super().validate(data)
-
-# "media/manufacturers/c69d6a2f-27f.png"

@@ -104,7 +104,7 @@ class CustomUser(AbstractUser):
         blank=True
         )
     media = models.FileField(
-        storage=ProtectedStorage,
+        storage=ProtectedStorage(),
         upload_to='protected/accounts/',
         null=True,
         blank=True

@@ -42,7 +42,7 @@ class Manufacturer(models.Model):
         blank=True
     )
     media = models.FileField(
-        storage=ProtectedStorage,
+        storage=ProtectedStorage(),
         upload_to='protected/manufacturers/',
         null=True,
         blank=True

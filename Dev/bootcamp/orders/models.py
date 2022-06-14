@@ -3,25 +3,26 @@ from django.db.utils import InterfaceError
 from django.utils.translation import gettext as _
 from django.db import models, DataError, IntegrityError
 
+import time
 import datetime
 
 from django.http.response import Http404, HttpResponse
 from products.models import Product
 from accounts.models import CustomUser
-import time, datetime
+
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
 from django.contrib import messages
 from bootcamp.settings import (
     LOGGER,
-    # DEBUG # remove after 
 )
-    # Create your models here.
+
+
 class Order(models.Model):
-        
+
     '''
     This class represents the order that'll be added to a cart
-    
+
     Args:
         :param 'product': Outlines the product that will be added to a cart
         :type 'product': Foreign Key - constraint that references to a primary
@@ -38,7 +39,7 @@ class Order(models.Model):
             custom message
     '''
 
-    #id is the autofield
+    # id is autofield
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     user = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
@@ -49,11 +50,13 @@ class Order(models.Model):
         Magic method aims to show basic info about the order object
         :returns: order id, converted creted time & user if such exists
         '''
-        is_user = lambda user: f'-{self.user}' if self.user != None else ''
-        convert_time = lambda created_at: f'-{self.created_at.strftime("%d/%m/%Y")}' if True else ''
+        def is_user(
+            user): return f'-{self.user}' if self.user is not None else ''
+        def convert_time(
+            created_at): return f'-{self.created_at.strftime("%d/%m/%Y")}' if True else ''
         return f'Order№{self.id} ({self.product}' + \
-                    convert_time(self.created_at) + \
-                    is_user(self.user) +')'
+            convert_time(self.created_at) + \
+            is_user(self.user) + ')'
 
     # 2
     def __repr__(self):
@@ -63,10 +66,10 @@ class Order(models.Model):
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
-    #3 
+    # 3
     def get_absolute_url(self, *args):
         '''
-        redefines the model's class with an object-editing page 
+        redefines the model's class with an object-editing page
         feature: “View on site” link in the admin app.
         jump directly to the object’s public view, as given by
         get_absolute_url()
@@ -80,13 +83,13 @@ class Order(models.Model):
         return reverse_lazy(
             'orders:cart_view',
             args=[str(self.user.id)]
-            )
+        )
 
     # 4
     @staticmethod
     def create(product):
         '''
-        This magic method is redefined to create order based on particular product 
+        This magic method is redefined to create order based on particular product
         and saved to db
         :returns: order object
         '''
@@ -108,10 +111,10 @@ class Order(models.Model):
         '''
         condition = len([
             product for product in Product.get_all()
-            ]) > 0
+        ]) > 0
         return [
             order for order in Order.objects.all()
-            ] if condition else list()
+        ] if condition else list()
 
     # 6
     @staticmethod
@@ -127,7 +130,7 @@ class Order(models.Model):
             message = f'Order does not exist'
             LOGGER.warning(message)
             raise Http404(_(message))
-            
+
     # 7
     @staticmethod
     def delete_by_id(order_id):
@@ -143,8 +146,6 @@ class Order(models.Model):
             message = 'Order does not exist'
             LOGGER.warning(message)
             raise Http404(_(message))
-        #     pass
-        # return False
 
     # 8
     @staticmethod
@@ -155,10 +156,10 @@ class Order(models.Model):
         '''
         product_exist = len([
             product for product in Product.get_all()
-            ]) > 0
+        ]) > 0
         order_exist = len([
             order for order in Order.get_all()
-            ]) > 0
+        ]) > 0
 
         if product_exist and order_exist:
             return Order.objects.all().filter(user_id=user_id).delete()
@@ -178,41 +179,43 @@ class Order(models.Model):
         '''
         return Order.objects.all().filter(user_id=user_id)
 
-    ## *** CART FUNCTIONALITY *** ##
+    # *** CART FUNCTIONALITY *** #
     # 10
     @staticmethod
     def create_cart(user_id=None):
-        
-        products = [order.product.title for order in Order.get_orders_by_user(user_id)] ### +++
-        orders = Order.get_orders_by_user(user_id) ### +++
+
+        products = [
+            order.product.title for order in Order.get_orders_by_user(user_id)]
+        orders = Order.get_orders_by_user(user_id)
         zipped = dict(zip(products, orders))
 
-        ## form empty basket: key - order, value - list of products
+        # form empty basket:
+        # key - order, value - list of products
         basket = {}
         for i in range(len(zipped)):
             basket[list(zipped.values())[i]] = []
 
-        ## fill the dict-type basket
+        # fill the dict-type basket
         try:
             for i in range(len(products)):
                 iteration = i <= len(basket) - 1
-                for product in products if iteration else 0: ### +++
-                    similar_product = product == list(basket.keys())[i].product.title
-                    list(basket.values())[i].append(product) if similar_product else 0 ### +++
+                for product in products if iteration else 0:
+                    similar_product = product == list(
+                        basket.keys())[i].product.title
+                    list(basket.values())[i].append(
+                        product) if similar_product else 0
         except TypeError as err:
             LOGGER.error(f'{err}')
             pass
         return basket
-    
+
     # 11
     @staticmethod
-    def cart_items_amount(user_id=None):  ## add user_id late
+    def cart_items_amount(user_id=None):
         basket = Order.create_cart(user_id)
-        #products_amount = 0
+
         for order, products in basket.items():
             basket[order] = len(products)
-            #products_amount += len(products)
-        
         return basket
 
     # 12
@@ -220,46 +223,46 @@ class Order(models.Model):
     def products_amount(user_id=None):
         basket = Order.cart_items_amount(user_id)
         return sum(list(basket.values()))
-        
+
     # 13
     @staticmethod
     def total_value(user_id=None):
         try:
             total_value = float(sum([
                 order.product.price for order in Order.get_orders_by_user(user_id)
-                ]))
+            ]))
             return total_value
         except (IntegrityError, AttributeError, DataError, ValueError):
             LOGGER.warning(_('Check if price entries r digits'))
             raise ValidationError(_('Check if price entries r digits'))
-    
+
     # 14
     @staticmethod
     def get_discount(user_id=None):
         products_amount = Order.products_amount(user_id)
-        disc_ratio = ((products_amount//5)*5)/100
-        max_disc = int(disc_ratio*100) not in range(0, 50)
-                    
+        disc_ratio = ((products_amount // 5) * 5) / 100
+        max_disc = int(disc_ratio * 100) not in range(0, 50)
+
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
-    
+
     # *** RECEIPT ADDITIONAL FUNCTIONALITY *** #
     # 14
     def get_value_per_amount(self, user_id=None):
-        ''' 
+        '''
         instantiate form Order class to use this method
         param user_id: SERIAL: the id of an Order to be found in the DB
-        returns: total amount per single item 
+        returns: total amount per single item
         '''
         basket = Order.cart_items_amount(user_id)
-        amounts = [k.product.price * v  for k, v in basket.items()]
+        amounts = [k.product.price * v for k, v in basket.items()]
         for i in range(len(amounts)):
             list(basket.keys())[i].amounts = amounts[i]
         return basket
-    
+
     # 15
     def calculate_shipping(self, user_id=None):
-        ''' 
+        '''
         ..note:: elaborate shipping formula aforehand (company policy)
 
             param user_id: SERIAL: the id of an Order to be found in the DB

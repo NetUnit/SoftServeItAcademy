@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from orders.models import Order
 
+
 class OrderPostSerializer(serializers.ModelSerializer):
     '''
         Serializer does 2 main things:
@@ -14,7 +15,7 @@ class OrderPostSerializer(serializers.ModelSerializer):
             'created_at',
             'user',
         ]
-    
+
         read_only_fields = [
             'pk', 'user'
         ]

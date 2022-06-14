@@ -149,6 +149,7 @@ def product_create_view(request, *args, **kwargs):
         if form.is_valid():
             form.check_title()
             data = form.cleaned_data
+            print(f'This is product data from HTML: {data}')
             product = Product.create(**data)
             product.user = request.user
             product.save()

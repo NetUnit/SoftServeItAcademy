@@ -60,7 +60,7 @@ class Product(models.Model):
         blank=True
     )
     media = models.FileField(
-        storage=ProtectedStorage,
+        storage=ProtectedStorage(),
         upload_to='protected/products/',
         null=True,
         blank=True
@@ -167,6 +167,7 @@ class Product(models.Model):
             price=price, user=user,
             image=image, media=media
             )
+        print(f'This is product in the DB: {product.__dict__}')
         try:
             product.save()
             manufacturer_exists = manufacturers is not None

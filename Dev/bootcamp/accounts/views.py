@@ -72,43 +72,40 @@ def accounts_list_view(request, *args, **kwargs):
 
 # *** Registration FBV + CBV  *** #
 def register_user_view(request, *args, **kwargs):
-    try:
-        form = CustomUserCreationForm(
-            request.POST or None,
-            request.FILES or None
-            )
-        if form.is_valid():
-            user = form.save(commit=False)
-            data = form.cleaned_data
-            # assighn single password
-            data['password'] = data.get('password2')
-            # del password1/password2 pairs
-            [data.pop(f'password{i}') for i in range(1, 3)]
-            user = CustomUser()
-            # encrypted password will be setup autmatically via model
-            new_user = user.create_user(data)
-            if not new_user:
-                raise ValidationError(
-                    _(f'User hasn\'t been created'),
-                    code='invalid'
-                )
-            messages.success(
-                request,
-                f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
-            )
-            return redirect('/accounts/register-fbv/')
 
-        form = CustomUserCreationForm()
-        context = {'form': form}
-        return render(
-            request,
-            'accounts/register_user_form_as_crispy_fields.html',
-            context
+    form = CustomUserCreationForm(
+        request.POST or None,
+        request.FILES or None
         )
+    if form.is_valid():
+        user = form.save(commit=False)
+        data = form.cleaned_data
+        # assighn single password
+        data['password'] = data.get('password2')
+        # del password1/password2 pairs
+        [data.pop(f'password{i}') for i in range(1, 3)]
+        user = CustomUser()
+        # encrypted password will be setup automatically inside
+        # current method
+        new_user = user.create_user(data)
+        if not new_user:
+            raise ValidationError(
+                _(f'User hasn\'t been created'),
+                code='invalid'
+            )
+        messages.success(
+            request,
+            f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
+        )
+        return redirect('/accounts/register-fbv/')
 
-    except Exception as err:
-        print(err)
-        pass
+    form = CustomUserCreationForm()
+    context = {'form': form}
+    return render(
+        request,
+        'accounts/register_user_form_as_crispy_fields.html',
+        context
+    )
 
 
 # *** user creation generic Class-based View *** #
