@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class BlocklistPermission(permissions.BasePermission):
     """
     Global permission check for blocked IPs.
@@ -10,12 +11,12 @@ class BlocklistPermission(permissions.BasePermission):
         blocked = Blocklist.objects.filter(ip_addr=ip_addr).exists()
         return not blocked
 
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     Object-level permission to only allow owners of an object to edit it.
     Assumes the model instance has an `owner` attribute.
     """
-
     def has_permission(self, request, view):
         if request.user.is_authenticated:
             return True

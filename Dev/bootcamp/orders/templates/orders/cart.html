@@ -163,7 +163,7 @@
     
   </div>
   <div class='basket'>
-    {%for order, number in basket.items %}
+    {% for order, number in basket.items %}
     <!-- add if manufcturer would not shwo product un the cart -->
       {% for manufacturer in order.product.manufacturers.all %}
       <div class="card" style="margin-left: 30px">

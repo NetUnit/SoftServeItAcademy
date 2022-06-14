@@ -141,7 +141,7 @@ class GoogleSocialAuthAPIView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         '''
-            posted data from google with auth_token & auth_token_id
+        posted data from google with auth_token & auth_token_id
 
         '''
 
@@ -168,12 +168,6 @@ class FBSocialAuthAPIView(GoogleSocialAuthAPIView):
         validated_data = serializer.validated_data
         user = validated_data.get('auth_token')
         user_data = self.remove_excessive_fields(user)
-
-        # print(f"This is serializer data FB: {data}")
-        # user = data.get('auth_token')
-        # django serializer to_str
-        # user_data = dj_serializer.serialize('json', [user, ])
-        # data = serializer.validated_data.get('auth_token')
         return Response(user_data, status=HTTP_200_OK)
 
 
@@ -184,7 +178,6 @@ class TwitterSocialAuthAPIView(GoogleSocialAuthAPIView):
     def post(self, request, *args, **kwargs):
 
         serializer = self.serializer_class(data=request.data)
-    
         # checks whether serializer returned result
         serializer.is_valid(raise_exception=True)
         # serializer.validated_data is serializers internal result
@@ -199,71 +192,39 @@ class TwitterSocialAuthAPIView(GoogleSocialAuthAPIView):
 
 def google_auth_view(request, *args, **kwargs):
     '''
-        is a Google IdToken for user authnentication
+    is a Google IdToken for user authnentication
 
-        :returns: Google IdToken
-        :rtype: str
+    :returns: Google IdToken
+    :rtype: str
 
-        .. note:: 
-            subsequent parameters: 
-                * body: data sent by the client to our API
-                * value: bytes from the body response
-                * decoded_string: str data from bytes 
-                * data: dict(), another way of getting IdToken 
+    .. note::
+        subsequent parameters:
+            * body: data sent by the client to our API
+            * value: bytes from the body response
+            * decoded_string: str data from bytes
+            * data: dict(), another way of getting IdToken
     '''
     serializer_class = GoogleSocialAuthSerializer
     user = CustomUser()
-    # print(request.META.get('PATH_INFO'))
-    # print(f'{request.POST} This is post')
-    # print(request.META.get('GOOGLE_CLIENT_ID'))
-    # print(request.META.get('GOOGLE_CLIENT_SECRET'))
-    # print(request.META.get('data'))
-
-    # POST method is acquired via JS in a template
-
+    # POST method is acquired via JS fetch() method in a template
     if request.method == 'POST':
-        # print(request.user.is_authenticated)
         serializer = serializer_class()
 
         try:
-            # 2 METHODS using JS POST fetch url
-            # get bytes API request
-            # value = request.body
-            # # from bytes to str dict data
-            # decoded_string = value.decode()
-            # token = eval(decoded_string).get('IdToken')
-
-            # another way of getting IdToken
-            # data = json.loads(request.body)
-            # print(data)
-            # token = data['IdToken']
-
             # raw request method data
             raw_data = request.body
-            # print(f'{raw_data} this are bytes')
             decoded_string = raw_data.decode()
-            # print(f'This are decoded string1: {decoded_string}')
             decoded_string = eval(decoded_string)
-            # print(f'This are decoded string2: {decoded_string}')
-            # print(True)
             token = decoded_string.get('IdToken')
-            # print(token)
-
             # result is user data from google db
             result = serializer.validate_auth_token(token)
-
-            # print(f'This is result: {result}')
 
             # register user here
             if isinstance(result, dict):
                 user_data = result
-                # print(f"This is user_data | view: {user_data}")
-
                 user_data = SocialAuth.register_social_user(
                     user_data
                 )
-
-                # print(f'This is user_data in a view: {user_data}')
 
                 email = user_data.get('email')
                 _password = user_data.get('password')
@@ -280,24 +241,26 @@ def google_auth_view(request, *args, **kwargs):
                     request,
                     f'U\'ve just created the next user: {user} (^_-)≡☆'
                 )
-
-                # return render (request, 'accounts/sm_register_success.html', context={'user': user})
-                return render(request, 'accounts/snippets/google_login.html', context={'user': user})
+                return render(
+                    request,
+                    'accounts/snippets/google_login.html',
+                    context={'user': user}
+                )
 
             # login user
             if isinstance(result, CustomUser):
                 user = result
-                # user authenticate here
+                # user authentication here
                 login(request, user, backend='accounts.backends.EmailBackend')
-                # print(user.is_authenticated) ## ++
-                # print(os.environ) ## ++
-
                 messages.success(
                     request,
                     f'U\'ve just successfully logined (^_-)≡☆;;;'
                 )
-
-                return render(request, 'accounts/snippets/google_login.html', context={'user': user})
+                return render(
+                    request,
+                    'accounts/snippets/google_login.html',
+                    context={'user': user}
+                )
 
         except Exception as err:
             print(err)
@@ -312,10 +275,6 @@ class RequestUserFilter(logging.Filter):
         return record.user
 
 
-# def redir_to_fb_login(request, *args, **kwargs):
-#     return redirect('/api/users/o/fb-sighn-in-test/')
-
-
 def fb_auth_view(request, *args, **kwargs):
     '''
     To connect our app with Facebook or any other social media we just
@@ -324,11 +283,9 @@ def fb_auth_view(request, *args, **kwargs):
     http://django-social-auth.readthedocs.org/en/latest/configuration.html
     & http://django-social-auth.readthedocs.org/en/latest/backends/facebook.html
 
-        .. note:: 
+        .. note::
             can be used to parse a valid JSON string &
             convert it into a Python Dictionary
-
-            csrf token is inside html
     '''
     user = request.user
     raw_data = request.body
@@ -336,18 +293,18 @@ def fb_auth_view(request, *args, **kwargs):
     decoded_string = raw_data.decode()
     condition = len(decoded_string) > 0
     if not condition:
-        return render(request, 'accounts/snippets/fb_login.html', context={'user': user})
+        return render(request, 'accounts/snippets/fb_login.html',
+                      context={'user': user})
     json_data = json.loads(raw_data)
 
-    # print(json_data) # ++++
     user_data = json_data.get('response')
     email = user_data.get('email')
     username = user_data.get('name')
 
-    #######################################################################
+    # *** just to test authtoken *** #
     # just to test fb_authkoken
     # auth_token = user_data.get('token')
-    ########################################################################
+
     # in case we need to grab picture
     picture_obj = user_data.get('picture')
     picture_data = picture_obj.get('data')
@@ -358,29 +315,20 @@ def fb_auth_view(request, *args, **kwargs):
         username=username
     )
 
-    print(f"This is result: {result}")
-
-    ################### *** new user *** #############################
-    if result == None:
-
-        # print(new_user_data) ## +++
-        # creates new user object & assighn password automatically
+    if result is None:
+        # creates new user object & assign password automatically
         data = dict()
         data['username'] = username
         data['email'] = email
         data['image'] = picture_url
 
         new_user = Social_Auth.register_social_user(data)
-        print(new_user)
-
-    ################################################
-
         messages.success(
             request,
             f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
         )
         return redirect('/accounts/register-fbv/')
-    ################################################
+
     if isinstance(result, CustomUser):
 
         user = result
@@ -393,12 +341,12 @@ def fb_auth_view(request, *args, **kwargs):
             request,
             f'U\'ve just successfully logined (^_-)≡☆;;;'
         )
+        return render(request, 'accounts/snippets/fb_login.html',
+                      context={'user': user})
 
-        # return redirect('/accounts/login-success/')
-        print(f'CustomUser: {user}')
-        return render(request, 'accounts/snippets/fb_login.html', context={'user': user})
+    return render(request, 'accounts/snippets/fb_login.html',
+                  context={'user': user})
 
-    return render(request, 'accounts/snippets/fb_login.html', context={'user': user})
 
 @csrf_protect
 def twitter_auth_view(request, *args, **kwargs):
@@ -406,7 +354,7 @@ def twitter_auth_view(request, *args, **kwargs):
     OAuth JS SDK form Oauth.io integrated into html <script>
     in order to send request to Twitter API and get appropriate response
     https://oauth.io/
-        .. note:: 
+        .. note::
             can be used to parse a valid JSON string &
             convert it into a Python Dictionary
 
@@ -417,8 +365,6 @@ def twitter_auth_view(request, *args, **kwargs):
 
     access_token_key = os.environ.get('ACCESS_TOKEN_KEY')
     access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
-    
-    print(access_token_key, access_token_secret)
 
     serializer = serializer_class()
     tokens = {}
@@ -426,12 +372,7 @@ def twitter_auth_view(request, *args, **kwargs):
     tokens['access_token_secret'] = access_token_secret
 
     # result will an obj
-    result = serializer.validate(
-        tokens
-    )
-
-    print(f"This is result of validation VIEW: {result}")
-
+    result = serializer.validate(tokens)
     # user_id = user_data.get('id_str')
     # provider = user_data.get('twitter')
 
@@ -440,47 +381,24 @@ def twitter_auth_view(request, *args, **kwargs):
         result['username'] = result.get('screen_name')
         resut['email'] = result.get('email')
         data['image'] = result.get('profile_image_url')
-
         new_user = Social_Auth.register_social_user(user_data)
-        print(new_user)
 
         messages.success(
             request,
             f'U\'ve just created the next user: {new_user.username} (^_-)≡☆'
         )
-
         return redirect('/accounts/register-fbv/')
 
-    ################################################
     if isinstance(result, CustomUser):
-
         user = result
         login(request, user, backend='accounts.backends.EmailBackend')
-
-        print(f"AUTHENTICATED: {user.is_authenticated}")
-        print(user)
 
         messages.success(
             request,
             f'U\'ve just successfully logined (^_-)≡☆;;;'
         )
+        return render(request, 'accounts/snippets/twitter_login.html',
+                      context={'user': user})
 
-        
-        print(f'CustomUser: {user}')
-        # return redirect('/accounts/login-success/')
-        return render(request, 'accounts/snippets/twitter_login.html', context={'user': user})
-    ################################################
-
-    return render(request, 'accounts/snippets/twitter_login2.html', context={'user': user})
-
-
-class GoogleSocialAuthTemplateView(TemplateView, APIView):
-
-    serializer_class = GoogleSocialAuthSerializer
-    template_name = 'accounts/snippets/google_login.html'
-
-    def get(self, request, *args, **kwargs):
-        print(args)
-        print(kwargs)
-        return print(request.body)
-        return print(request.__dict__)
+    return render(request, 'accounts/snippets/twitter_login2.html',
+                  context={'user': user})

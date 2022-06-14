@@ -2,11 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Product
-
-
+from django.contrib.auth.admin import UserAdmin
 # admin.site.register(Product)
 
-from django.contrib.auth.admin import UserAdmin
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

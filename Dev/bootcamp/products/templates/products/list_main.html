@@ -156,13 +156,22 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: 5px">
+                <!-- <div style="margin-top: 5px">
                     <a href="{%url 'products:detailed_view' product.id%}" 
                         class="btn-info btn-sm"
                         type="button"
                         id="detail_btn"
                     >
                         Details
+                    </a> -->
+                    <!-- alternatively -->
+                    <div style="margin-top: 5px">
+                        <a href="{{ product.get_absolute_url }}"
+                            class="btn-info btn-sm"
+                            type="button"
+                            id="detail_btn"
+                        >
+                            Details
                     </a>
                 </div>
                 <!-- add if user.is_authenticated  #e7bc0d -->

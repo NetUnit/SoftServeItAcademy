@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-######### *** file fields *** #########
+# *** file fields *** #
 from django.core.files.base import ContentFile
 from mimetypes import guess_type
 import io
@@ -11,13 +11,19 @@ import uuid
 import pickle
 from io import BytesIO
 
-######### *** path *** #########
+# *** path *** #
 import pathlib
+
 
 class CustomImageField(serializers.ImageField):
     """
-    A Django REST framework field for handling image-uploads through raw post data.
-    It uses base64 for encoding and decoding the contents of the file.
+    ===========================================================
+    This class redefines out of a box ImageField for db record
+    ===========================================================
+    
+    A Django REST framework field for handling image-uploads
+    through the raw post data. It uses base64 for encoding &
+    decoding the contents of the file.
 
     Heavily based on
     https://github.com/tomchristie/django-rest-framework/pull/1268
@@ -36,13 +42,14 @@ class CustomImageField(serializers.ImageField):
             path = pathlib.Path(media_path)
             if not path.exists():
                 raise Http404(_('The path isn\'t valid'))
-            
+
             with open(path, 'rb') as file:
                 # getting in-memory file-like object
                 file_like = file.read()
                 print(file_like)
                 # Generate file name:
-                file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.                                              
+                # 12 characters are more than enough.
+                file_name = str(uuid.uuid4())[:12]
                 # Get the file name extension:
                 file_extension = self.get_file_extension(data)
                 complete_file_name = f'{file_name}.{file_extension}'

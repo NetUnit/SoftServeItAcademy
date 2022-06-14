@@ -12,12 +12,12 @@ from .views import (
     CustomUserLoginView,
 )
 
-from accounts.api.views import(
+from accounts.api.views import (
     # API views
     GoogleSocialAuthAPIView,
     FBSocialAuthAPIView,
     TwitterSocialAuthAPIView,
-    # scial auth views
+    # social auth views
     google_auth_view,
     fb_auth_view,
     twitter_auth_view,
@@ -31,29 +31,25 @@ app_name = 'accounts_api'
 urlpatterns = [
     re_path(r'^user/sighn-up/$', CustomUserCreateView.as_view(), name='user-create'),
     re_path(r'^user/sighn-in/$', CustomUserLoginView.as_view(), name='user-login'),
-    
-    ### JWT Authnetication urls ###
+
+    # *** JWT Authnetication urls *** #
     re_path(r'^auth/token/$', obtain_jwt_token),
     re_path(r'^auth/token-verify/$', verify_jwt_token),
     re_path(r'^auth/token-refresh/$', refresh_jwt_token),
 
-    ### Token Authnetication urls ###
+    # *** Token Authnetication urls *** #
     # registration view already exists
     # use postman to send POST requests
     re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
 
-    ### OAuth2 urls ###
+    # *** OAuth2 urls *** #
     # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
     re_path(r'^o/google-sighn-in-test/$', GoogleSocialAuthAPIView.as_view(), name='google-user-endpoint-test'),
     re_path(r'^o/fb-sighn-in-test/$', FBSocialAuthAPIView.as_view(), name='fb-user-endpoint-test'),
     re_path(r'^o/twitter-sighn-in-test/$', TwitterSocialAuthAPIView.as_view(), name='twitter-user-endpoint-test'),
 
-    ### Social Auth urls ###
+    # *** Social Auth urls *** #
     re_path(r'^o/google-sighn-in/$', google_auth_view, name='google-user-login'),
     re_path(r'^o/fb-sighn-in/$', fb_auth_view, name='fb-user-login'),
     re_path(r'^o/twitter-sighn-in/$', twitter_auth_view, name='twitter-user-login'),
-
-    ### redirect urls ###
-    # re_path(r'^o/fb-sighn-in-test-redir/$', redir_to_fb_login, name='fb-user-login-test-redir'),
-
 ]

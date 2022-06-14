@@ -16,24 +16,6 @@ import logging
 import datetime
 import dotenv
 
-# google app settings
-# os.environ['GOOGLE_CLIENT_ID']="1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com"
-# os.environ['GOOGLE_CLIENT_SECRET']="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"
-
-# # fb app settings
-# os.environ['FB_CLIENT_ID']="fbm_1026623988292715"
-# os.environ['FB_CLIENT_SECRET']="083c9d973b672ac9c363a20ad799adbc"
-
-# twitter app settings
-# os.environ['TWITTER_API_KEY']="oxjqJpV9wLvlFtjgAHeRN06Fi"
-# os.environ['TWITTER_CONSUMER_SECRET']="SMVGSO8aNCP1sWhDFHY7iZkH5kcHYkKHL4PgwgUWNnIRKxY1Af"
-# os.environ['ACCESS_TOKEN_KEY'] = "787326616955457536-75g66y9hLLprwdYZ9zhTqJs9MHYk5Da" 
-# os.environ['ACCESS_TOKEN_SECRET'] = "cGEGyaE0h1AU724CWZj7acN1GgyIU32OGONA84ZcYuPm7"
-
-
-FB_LOGIN_APP_ID = 'fbm_1026623988292715'
-FB_LOGIN_APP_SECRET = '083c9d973b672ac9c363a20ad799adbc'
-
 AUTH_PROVIDERS = (
     'google',
     'facebook',
@@ -44,7 +26,7 @@ AUTH_PROVIDERS = (
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# reading key-value pairs from a .env file & set them as environment variables. 
+# reading key-value pairs from a .env file & set them as environment variables.
 # helps in the development of applications following the 12-factor principles.
 DOT_ENV = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(DOT_ENV):
@@ -57,47 +39,40 @@ if os.path.isfile(DOT_ENV):
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-oy89dwyz7o+&db$sk!xrlfi#g3x5y-*-riqf5fjh(n7h%e$^d('
 
-# SECURITY WARNING: don't run with debug turned on in production!
 
-# disable if want to render errortemaplates
+# SECURITY WARNING: don't run with debug turned on in production!
+# disable for rendering error temaplates
 DEBUG = True
-# ALLOWED_HOSTS =  []
 
 # DEBUG = False
-ALLOWED_HOSTS =  ['*']
+ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
-
+# ALLOWED_HOSTS =  []
 
 # Application definition
 INSTALLED_APPS = [
     'rest_framework',
-    'whitenoise.runserver_nostatic',                            # customized (added)
+    'whitenoise.runserver_nostatic',  # customized (added)
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
-    'errortemplates',                                         # custom error templates
-    # apps
-    'products',                                                 # app#1
-    'manufacturer',                                             # app#2
-    #'accounts',                                                # app#5 ## equals 'accounts.apps.AccountsConfig' 
-    'profiles',                                                 # app#3
-    'emails',                                                   # app#4
-    'orders',                                                   # app#5
-    'crispy_forms',                                             # crispy_forms for temapltes
-    'paypal.standard.ipn',                                      # paypal gateaway
-    ### *** api authentication *** ###
-    'rest_framework.authtoken', #+++
+    'accounts.apps.AccountsConfig',  # app#1 - auth
+    'errortemplates',  # custom error templates
+    'products',  # app#2
+    'manufacturer',  # app#3
+    'orders',  # app#4
+    'profiles',  # app#5
+    'emails',  # app#6
+    'crispy_forms',  # crispy_forms for templates
+    'paypal.standard.ipn',  # paypal gateaway
+    # *** api authentication *** #
+    'rest_framework.authtoken',
     'rest_framework_jwt',
-    ## oauth2 provider 
     'oauth2_provider',
-    ## social django
-    'social_django' ## ++
-    # 'facebook-login'
-
+    'social_django'
 ]
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -113,7 +88,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'accounts.backends.EmailBackend',
-    # 'facebook_login.auth_backends.FacebookAuthBackend'
+    # 'facebook_login.auth_backends.FacebookAuthBackend',
     # 'oauth2_provider.backends.GoogleOAuth2'
     ]
 
@@ -130,7 +105,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'bootcamp.middleware.CustomExceptionMiddleware',
-    #'bootcamp.middleware.SimpleMiddleware',
+    # 'bootcamp.middleware.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'bootcamp.urls'
@@ -139,30 +114,21 @@ ROOT_URLCONF = 'bootcamp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # setup other roots to specified template sources 
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                # os.path.join(BASE_DIR, 'products/templates'),                             # additional path in order to avoid app/'some_template.html'
+        # setup other roots to specified template sources
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            # os.path.join(BASE_DIR, 'products/templates'),  # additional path
         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                # sets the request variable in the context
                 'django.template.context_processors.debug',
-                # this sets the request variable in the context
-                'django.template.context_processors.request', 
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'bootcamp.context_processors.products',                                         # custom context for products app
-                'bootcamp.context_processors.footer_app_name',                                  # custom context for products app (manual APP_NAME_1)
-                'bootcamp.context_processors.root',                                             # custom context for getting path to a webpage
-                # 'bootcamp.context_processors.appname',                                        # custom context for products app
-                # 'products.context_processors.appname',                                        # custom context for getting app_name
-                # 'products.context_processors.context_appname',
-                # 'bootcamp.context_processors.context_appname',
-                # 'bootcamp.context_processors.resolver_context_processor',
-                # 'products.context_processors.resolver_context_processor',
-                'bootcamp.context_processors.detailed_method',
-                #'bootcamp.context_processors.get_app_from_urls'                                # custom app_info_1 grabbed from urls.py
-                
+                'bootcamp.context_processors.footer_app_name',  # custom context for each app
+                'bootcamp.context_processors.root',  # custom context for getting path to a webpage
             ],
         },
     },
@@ -176,9 +142,9 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'panda_hardware2',                              
+        'NAME': 'panda_hardware',
         'USER': 'postgres',
-        'PASSWORD': '7875',                                  
+        'PASSWORD': '7875',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -242,7 +208,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        # handles any exceptions that occur due to 
+        # handles any exceptions that occur due to
         # Cross-Site Request Forgery (CSRF) attacks
         'django.request': {
             'level': 'DEBUG',
@@ -268,26 +234,25 @@ USE_TZ = True
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny', # won't require auth at all
+        'rest_framework.permissions.AllowAny',  # won't require auth at all
         # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly' ##-- won't require auth but read only methods
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly' #-- won't require auth but read only methods
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-        # 'accounts.backends.JWTAuthentication'
-        #'rest_framework.authentication.SessionAuthentication',
-        #'rest_framework.authentication.BasicAuthentication',
+        # 'accounts.backends.JWTAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
     )
 }
 
 
-
-#### *** JWT Authentication SETTINGS *** #####
+# *** JWT Authentication SETTINGS *** #
 # additional settings that you can override similar to
-# # how you'd do it with Django REST framework
+# how you'd do it with Django REST framework
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
     'rest_framework_jwt.utils.jwt_encode_handler',
@@ -315,10 +280,8 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
-
     'JWT_ALLOW_REFRESH': False,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
     'JWT_AUTH_COOKIE': None,
 }
@@ -333,22 +296,19 @@ STATIC_URL = '/static/'
 
 # STATICFILES_DIRS setting should not contain the STATIC_ROOT setting.
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'staticfiles'),
     # os.path.join('/staticfiles/')
 ]
-# STATICFILES_DIRS = [
-#    os.path.join('/var/www/static/'),
-# ]
 
-### *** Django & app realted files *** ###
+# *** Django & app realted files *** #
 # Cloud storages: Cloudfront, Google Cloud Storage, django-storages, Whitenoise
 STATIC_ROOT = os.path.join(BASE_DIR, 'cdn_test/static/')
 # allows to load static files and use them like this:
 # {% load static %}
 # <img src="{% static "images/hi.jpg" %}" alt="Hi!"
 
-### *** User uploaded files *** ###
-#any file field upload by deafault
+# *** User uploaded files *** #
+# any file field upload by deafault
 MEDIA_ROOT = os.path.join(BASE_DIR, 'cdn_test/')
 PROTECTED_MEDIA = os.path.join(BASE_DIR, 'cdn_test/')
 
@@ -356,17 +316,14 @@ MEDIA_URL = '/media/'
 
 # creates folders for different static roots
 if DEBUG:
-    os.makedirs(STATIC_ROOT,  exist_ok = True),
-    os.makedirs(MEDIA_ROOT,  exist_ok = True),
-    os.makedirs(PROTECTED_MEDIA,  exist_ok = True),
-
+    os.makedirs(STATIC_ROOT, exist_ok=True),
+    os.makedirs(MEDIA_ROOT, exist_ok=True),
+    os.makedirs(PROTECTED_MEDIA, exist_ok=True),
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
@@ -374,36 +331,24 @@ PRODUCTS_GROUP = 'THE PRODUCT STORE'
 PRODUCTS_TAGLINE = 'The latest incomes of products/manufacturers/prices/updates'
 
 # setup as automated in context processors
-# ROOT_PAGE = 'root url'
-# ROOT_TAGLINE = 'root tagline'
-
-
 MAIN_PAGE = 'BOOTCAMP/MAIN PAGE'
 MAIN_PAGE_TAGLINE = 'bootcamp main page tagline'
 COMPANY_NAME_TAGLINE = 'Panda Hardware LLC'
 
-
 APP_NAME_1 = 'PRODUCTS'
 APP_NAME_1_TAGLINE = 'products tagline'
-
 
 APP_NAME_2 = 'ACCOUNTS'
 APP_NAME_2_TAGLINE = 'accounts tagline'
 
-
 APP_NAME_3 = 'PROFILES'
 APP_NAME_3_TAGLINE = 'profiles tagline'
-
 
 APP_NAME_4 = 'MANUFACTURERS'
 APP_NAME_4_TAGLINE = 'manufacturers tagline'
 
-
 APP_NAME_5 = 'ORDERS'
 APP_NAME_5_TAGLINE = 'orders tagline'
-
-
-METHOD = 'METHODS'
 
 # django-paypal settings
 PAYPAL_RECEIVER_EMAIL = 'myXbox@bigmir.net'

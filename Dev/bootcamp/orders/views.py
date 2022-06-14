@@ -1,8 +1,11 @@
 from django.contrib.auth.models import AnonymousUser
 from django.http.response import HttpResponse, JsonResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse_lazy, reverse
 from django.http import  JsonResponse
+from django.urls import (
+    reverse_lazy,
+    reverse
+)
 
 # from orders.models import Order
 from .models import Product, Order, CustomUser
@@ -73,44 +76,45 @@ def order_remove_view(request, order_id, *args, **kwargs):
 
 # @login_required(login_url=f'/accounts/check-user-auth/')
 def cart_clean_view(request, *args, **kwargs):  # add these later: product_id, user_id,
-    try:
         #condition = user_id is not None
         user = request.user
         user_id = user.id
         # print(user_id)
 
         Order.delete_all(user_id)
-
-       #order = Order.objects.all().filter(user_id=user_id)
+        # order = Order.objects.all().filter(user_id=user_id)
         # print(order)
 
         # print(Order.delete_all(user_id))
 
         messages.success(request, f'Your cart is empty now (-ˍ-。)')
-        return redirect(f'/order/cart//user/{user_id}')
-    except Exception as error:
-        print(error)
-
-
+        return redirect(f'/order/cart/user/{user_id}')
+    
 def cart_view(request, user_id=None, *args, **kwargs):
     '''
         context#6 corresponds to get_absolute_url() 
         method & shows limited acces from admin session 
         to a cart of selected user
-        :returns: BOOl value if admin access user's cart
-    
+
+        :returns: context value with main key-value
+        pairs connected to user's cart data
+
+        .. note:: 
+            limited rights if admin accesses user's cart
+            with not_admin_url meant user_id is not
+            admin's id. admin cannot remove or change
+            cart items.    
     '''
-    # context#1
-    user = CustomUser.get_user_by_id(user_id)
+    # context #1
+    user = request.user
     basket = Order.cart_items_amount(user_id)
-    # order = list(basket.keys())[0]
-    
+
     # context#2
     products_amount = Order.products_amount(user_id)
-
+    # print(products_amount)
     # context#3 total_value_price
     total_value = Order.total_value(user_id)
-
+    # print(total_value)
     # context#4 discount
     disc_ratio = Order.get_discount(user_id)
     discount = int(disc_ratio * 100)
@@ -118,10 +122,12 @@ def cart_view(request, user_id=None, *args, **kwargs):
     # context#5 price after discount
     discounted = total_value - total_value * disc_ratio
 
-    # context#6 limitedacces from admin to user's cart
+    # context#6 limited access from admin to user's cart
+    print(request.user.id)
     not_admin_url = user_id == str(request.user.id)
-    
-    context = {'basket': basket,
+
+    context = {
+               'basket': basket,
                'products_amount': products_amount,
                'total_value': total_value,
                'discount': discount,
@@ -131,7 +137,6 @@ def cart_view(request, user_id=None, *args, **kwargs):
                }
 
     return render(request, 'orders/cart.html', context)
-
 
 @login_required(login_url=f'/accounts/check-user-auth/')
 def process_payment_view(request, *args, **kwargs):
@@ -164,7 +169,7 @@ def process_payment_view(request, *args, **kwargs):
         date = datetime.date.today()
         
         # check amounts
-        #[print(item.amounts) for item in list(invoice_basket.keys())]
+        # [print(item.amounts) for item in list(invoice_basket.keys())]
         # 'amount': '%.2f' % order.get_total_value().quantize(Decimal('1.000'))
 
         paypal_dict = {
@@ -196,10 +201,9 @@ def process_payment_view(request, *args, **kwargs):
         pass
 
 
-
 def order_download_view(request, user_id, *args, **kwargs):
     '''
-        Download the order media if it exists:
+    Download the order media if it exists:
     '''
     
     # orders = Order.get_orders_by_user(user_id)
@@ -274,8 +278,6 @@ class PaypalFormView(FormView):
             print(err)
             pass
 
-
-
 def payment_complete_view(request):
     try:
         body = json.loads(request.body)
@@ -297,10 +299,10 @@ class PaypalCancelView(TemplateView):
 def api_process_payment_view(request, *args, **kwargs):
 
     '''
-        returns a JSON data that 
-        contains all payment attributes,
-        for further processing via test.js
-        script
+    returns a JSON data that 
+    contains all payment attributes,
+    for further processing via test.js
+    script
 
     '''
     try:
@@ -338,9 +340,6 @@ def api_process_payment_view(request, *args, **kwargs):
     except Exception as err:
         print(err)
         pass
-
-
-
 
 #################### *** API PAYPAL RETURN *** ####################
 

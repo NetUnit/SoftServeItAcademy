@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
@@ -9,19 +8,28 @@ from .twitter import Twitter
 from bootcamp.settings import LOGGER
 import os
 
-# generate password imports 
+from bootcamp.settings import AUTH_PROVIDERS
+from rest_framework_jwt.settings import api_settings
+from django.http import HttpResponse
+import datetime
+from django.utils import timezone
+from rest_framework_jwt import compat
+# from compat import set_cookie_with_token
+# from rest_framework_jwt.compat import set_cookie_with_token
+
+# generate password imports
 import random
 import string
 
 from rest_framework.fields import (
-    CharField, 
+    CharField,
     EmailField
     )
 
 from rest_framework.serializers import (
     CharField,
     ModelSerializer,
-    SerializerMethodField, 
+    SerializerMethodField,
     ValidationError
     )
 
@@ -36,6 +44,7 @@ from django.contrib.auth import authenticate, login
 import json
 from .register import register_social_user
 
+
 class CustomUserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -44,23 +53,21 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'password',
-
         ]
 
     def create(self, validated_data):
         '''
-            Password hashing is implemented with model behavior.
-            Just use the data dict as a variable
-            :returns: new user object created & via POST method
+        Password hashing is implemented with model behavior.
+        Just use the data dict as a variable
+        :returns: new user object created & via POST method
         '''
         model = CustomUser()
         user = model.create_user(data=validated_data)
         if not user:
             raise ValidationError(
-                {'detail': 'User hasn\'t been created ヽ(冫、)ﾉ',}
+                {'detail': 'User hasn\'t been created ヽ(冫、)ﾉ'}
             )
         user.save()
-        # print(user.__dict__)
         return user
 
     def validate(self, data):
@@ -74,14 +81,15 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
             )
         print(data)
         return data
-        
+
+
 class CustomUserLoginSerializer(serializers.ModelSerializer):
     username = CharField(required=False, allow_blank=True,
-                        allow_null=True, max_length=42
-                    )
-    email = EmailField(label='Email Address', required=False, allow_blank=True)
+                         allow_null=True, max_length=42)
+    email = EmailField(label='Email Address', required=False,
+                       allow_blank=True)
     token = CharField(allow_blank=True, read_only=True)
-    
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -91,16 +99,14 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
             'token'
         ]
 
-        extra_kwargs = {'password':
-                {'write_only': True}
-            }
+        extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, data):
         '''
-            we can also assighn other than rest_framework.authtoken
-            here.
-            :returns: validated data that comes from a client when auth process
-            :raise Vlidation Error: no user obj in the db or wrong auth data
+        we can also assighn other than rest_framework.authtoken
+        here.
+        :returns: validated data that comes from a client when auth process
+        :raise Vlidation Error: no user obj in the db or wrong auth data
         '''
         email = data.get('email')
         username = data.get('username')
@@ -111,7 +117,7 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
 
         data = dict(data)
         user_exists = CustomUser.user_exists(data)
-            
+
         if not user_exists:
             raise serializers.ValidationError(
                 {'detail': 'Email/Username are not valid ʅ(°_°)ʃ', }
@@ -121,12 +127,10 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
             Q(email=email) |
             Q(username=username)
         ).distinct()
-        
+
         user = user.exclude(email__isnull=True)
-        print(user)
         user = user.first()
-        print(user)
-        #print(data.get('password'))
+
         if not user:
             raise serializers.ValidationError(
                 {'detail': 'User wasn\'tfound (° -°）', }
@@ -138,31 +142,19 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
                 {'detail': 'Hmm ... passsword wasn\'t correct (° -°）', }
             )
         token = Token.objects.filter(user=user).get()
-        print(token)
+
         if token:
             data['token'] = token.key
         return data
-    
 
-
-from bootcamp.settings import AUTH_PROVIDERS
-from rest_framework_jwt.settings import api_settings
-from django.http import HttpResponse
-import datetime
-from django.utils import timezone
-
-# from rest_framework_jwt.compat import set_cookie_with_token
-from rest_framework_jwt import compat
-# from compat import set_cookie_with_token
 
 class SocialAuth:
-
     '''
         ===========================================================
         Represents replicable logic responsible for Social Auth
         ===========================================================
 
-        .. note:: 
+        .. note::
             CustomUser - auth user model for authentication
     '''
     @staticmethod
@@ -175,43 +167,31 @@ class SocialAuth:
         print(f"This is data: {data} is serializer")
         # generates user password
         _password = ''.join(
-            [random.choice(string.digits + 
-            string.ascii_letters + 
-            string.punctuation) for i in range(0, 10)]
-            )
+            [random.choice(string.digits +
+                           string.ascii_letters +
+                           string.punctuation) for i in range(0, 10)]
+        )
 
-        # print(f"This is user password: {_password}") ## +++ password
-        ##############################################################
-        # *** build logic with sending the password to the email  before hashing it *** 
-
-        '''
-            sends data to users email ("e.g." password or login data)
-            :returns: dict with prepared data for registartion
-            https://realpython.com/python-send-email/
-        '''
-    
+        # *** !!! FOR LATER !!! *** #
+        # *** build logic with sending the password to the email before
+        # hashing it ***
+        # sends data to users email ("e.g." password or login data)
+        # :returns: dict with prepared data for registartion
+        # https://realpython.com/python-send-email/
         # ---> send password here logic
-        ##############################################################
 
         # creates user and hash the password here
-        print(_password)
         data['password'] = _password
-        
-        ## user = user.create_user(data)
+        # user = user.create_user(data)
         return data
-        ## return user
-        # return data
 
-    # make the same with auth2_provider_model 
+    # make the same with auth2_provider_model
     @staticmethod
     def check_user_exists(email=None, username=None):
         '''
-            checks whether user object with such email already exists in the db
-            :returns: user object id exists or None if opposite
+        checks whether user object with such email already exists in the db
+        :returns: user object id exists or None if opposite
         '''
-        # print(email)
-        # print(username)
-
         user = CustomUser.objects.filter(
                     Q(email=email) |
                     Q(username=username)
@@ -222,8 +202,10 @@ class SocialAuth:
         user = user.first()
         return user if user_exists else None
 
-    # build authentication here with JWT token  
-    # integrate with with auth2_provider_model
+    # *** !!! FOR LATER !!! *** #
+    # build authentication here with JWT token
+    # integrate with auth2_provider_model
+
 
 class GoogleSocialAuthSerializer(serializers.Serializer):
 
@@ -231,15 +213,15 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
 
     def validate_auth_token(self, auth_token):
         '''
-            validates acquired with google lib token
-            checks if token is not outdated.
-            checks if request is being sent with 'Django Bootcamp'
-            & GOOGLE_CLIENT_ID isn't fake
-            :returns: user obj or new user object if such user isnt exist in the db
+        validates acquired with google lib token
+        checks if token is not outdated.
+        checks if request is being sent with 'Django Bootcamp'
+        & GOOGLE_CLIENT_ID isn't fake
+        :returns: user obj or new user object if such user isnt exist in the db
 
-            .. note:: 
-                google-auth lib used to achieve Token, GoogleUser and validation
-                querying the Google oauth2 api
+        .. note::
+            google-auth lib used to achieve Token, GoogleUser and validation
+            querying the Google oauth2 api
         '''
         try:
             print(auth_token)
@@ -253,11 +235,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 {'detail': 'Token is either invalid or expired (︶︹︺)', }
             )
 
-        ## user data is str -- thats why code below doesn't work
-
         try:
-            # user_data['aud'] = 1089815522327-308m9crjd7u9g4t5j7qsrhttef305l1a.apps.googleusercontent.com
-            # print(user_data['aud'] == os.environ.get('GOOGLE_CLIENT_ID')) ## True
             if google_user_data['aud'] != os.environ.get(
                 'GOOGLE_CLIENT_ID'
             ):
@@ -270,12 +248,12 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             )
             LOGGER.warning(f'{identifier}')
             raise identifier
-        
-        # assighn user_id/provider if other thah Customuser is saved
+
+        # assign user_id/provider if other thah Customuser is saved
         user_id = google_user_data.get('sub')
         provider = ''.join(
             [provider for provider in AUTH_PROVIDERS
-            if len(google_user_data['iss'].split(provider)) > 1]
+             if len(google_user_data['iss'].split(provider)) > 1]
         )
 
         data = dict()
@@ -287,7 +265,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         # data['user_id'] = user_id
         # data['provider'] = provider
         # print(f"this is username: {username}") ## +++
-        
+
         user = SocialAuth.check_user_exists(
             email=data['email'],
             username=data['username']
@@ -297,63 +275,22 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             return data
         return user
 
-    def get_now(self) -> datetime:
-        return timezone.now()
-
-    # assighn date 
-    def user_record_login(self, user: CustomUser) -> CustomUser:
-        user.last_login = self.get_now()
-        user.save()
-        return user
-
-    # to dict user
-    def get_user(self, user: CustomUser):
-
-        return {
-            'id': user.id,
-            'username': user.username,
-            'email': user.email
-        }
-
-    def jwt_login(self, response: HttpResponse, user: CustomUser) -> HttpResponse:
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER ## ++
-        
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER ## ++
-        
-        payload = jwt_payload_handler(user) ## ++
-        # print(payload)
-        # payload = json.loads(str(payload))
-
-        # token = jwt_encode_handler(payload) ## ++
-        # print(token)
-
-        # if api_settings.JWT_AUTH_COOKIE:
-        #     set_cookie_with_token(response, api_settings.JWT_AUTH_COOKIE, token)
-
-        self.user_record_login(user=user)
-        return response
-
-    def some_function(self,  user: CustomUser) -> CustomUser:
-        self.user_record_login(user=user)
-        response = Response(data=serializer.get_user(user=user)) 
-        response = serializer.jwt_login(response=response, user=user)
-
 
 class FBSocialAuthSerializer(serializers.Serializer):
     '''
-        Handles Serialization of Facebook Auth Data
-        checks if access_token is not outdated.
-        access token is an opaque string that identifies a user, app, or Page
-        & can be used by the app to make graph API calls. 
-        When someone connects with an app using Facebook Login and approves the
-        request for permissions, the app obtains an access token that provides 
-        temporary, secure access to Facebook APIs.
-        :returns: user obj or new user object if such user isnt exist in the db
-        :raises: ValidationError if Token is either fake or expired
+    Handles Serialization of Facebook Auth Data
+    checks if access_token is not outdated.
+    access token is an opaque string that identifies a user, app, or Page
+    & can be used by the app to make graph API calls.
+    When someone connects with an app using Facebook Login and approves the
+    request for permissions, the app obtains an access token that provides
+    temporary, secure access to Facebook APIs.
+    :returns: user obj or new user object if such user isnt exist in the db
+    :raises: ValidationError if Token is either fake or expired
 
-        .. note:: 
-            facebook-sdk lib used to achieve user data and validation
-            querying the FB GraphAPI
+    .. note::
+        facebook-sdk lib used to achieve user data and validation
+        querying the FB GraphAPI
     '''
     auth_token = serializers.CharField()
 
@@ -371,16 +308,13 @@ class FBSocialAuthSerializer(serializers.Serializer):
 
             # None if user doesn't exists in db
             if user is None:
-
                 # user_id = user_data['id']
-
                 user = SocialAuth.register_social_user(
                     # user_id=user_id,
                     email=email,
                     username=username,
                     # provider=provider
                 )
-
             return user
 
         except Exception:
@@ -390,27 +324,28 @@ class FBSocialAuthSerializer(serializers.Serializer):
             LOGGER.warning(f'{identifier}')
             raise identifier
 
+
 class TwitterSocialAuthSerializer(serializers.Serializer):
     '''
-        Handles Serialization of user object obtained
-        via retrieved Twiter Auth Data.
-        As access tokens provide info about user from Twitter API
-        2 parameter fields has been set   
-        Checks also if request is being sent with 'Django Bootcamp'
-        with validate_twitter_auth_tokens() and cosumer keys 
-        passed to last, consumer keys aren't fake
-        :returns: user obj or new user data if such user isnt exists
-        in the db
-        :raises: ValidationError if Token is either fake or expired
+    Handles Serialization of user object obtained
+    via retrieved Twiter Auth Data.
+    As access tokens provide info about user from Twitter API
+    2 parameter fields has been set
+    Checks also if request is being sent with 'Django Bootcamp'
+    with validate_twitter_auth_tokens() and cosumer keys
+    passed to last, consumer keys aren't fake
+    :returns: user obj or new user data if such user isnt exists
+    in the db
+    :raises: ValidationError if Token is either fake or expired
 
-            .. note::
+    .. note::
 
-                parsing the db with received data from twiiter API
-                & checks wheteher such user already exist
+        parsing the db with received data from twiiter API
+        & checks wheteher such user already exist
 
-                creates new user object, assighns psw automatically
-                & sends it to user's email if such a user not present in 
-                the db
+        creates new user object, assighns psw automatically
+        & sends it to user's email if such a user not present in
+        the db
     '''
     access_token_key = serializers.CharField()
     access_token_secret = serializers.CharField()
@@ -418,7 +353,7 @@ class TwitterSocialAuthSerializer(serializers.Serializer):
     def validate(self, attrs):
 
         try:
-            access_token_key  = attrs.get('access_token_key')
+            access_token_key = attrs.get('access_token_key')
             access_token_secret = attrs.get('access_token_secret')
 
             user_data = Twitter.validate_twitter_auth_tokens(
@@ -441,7 +376,7 @@ class TwitterSocialAuthSerializer(serializers.Serializer):
             if result is None:
                 return user_data
             return result
-        
+
         except Exception as err:
             print(err)
             identifier = serializers.ValidationError(

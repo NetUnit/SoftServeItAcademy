@@ -20,20 +20,22 @@ from bootcamp.settings import (
 class Order(models.Model):
         
     '''
-        This class represents the order that'll be added to a cart
-        
-        Args:
-            param 'product': Outlines the product that will be added to a cart
-            type: Foreign Key - constraint that references to a primary key of Product.id fields
-            param 'created_at': outlines the creation date of a product
-            type: datetime field
-            param user: outlines the user that is adding a product to a cart
-            type: Foreign Key - constraint that references to a primary key of User.id fields
+    This class represents the order that'll be added to a cart
+    
+    Args:
+        :param 'product': Outlines the product that will be added to a cart
+        :type 'product': Foreign Key - constraint that references to a primary
+            key of Product.id fields
+        :param 'created_at': outlines the creation date of a product
+        :type 'created_at': datetime field
+        :param user: outlines the user that is adding a product to a cart
+        :type 'product': Foreign Key - constraint that references to a primary
+        key of User.id fields
 
-        NOTE: logging here is implement via
-              catching errors db errors and
-              raisisng Http errors with 'str'
-              custom message
+    ..note:: logging here is implement via
+            catching errors db errors and
+            raisisng Http errors with 'str'
+            custom message
     '''
 
     #id is the autofield
@@ -44,8 +46,8 @@ class Order(models.Model):
     # 1
     def __str__(self):
         '''
-            Magic method aims to show basic info about the order object
-            :returns: order id, converted creted time & user if such exists
+        Magic method aims to show basic info about the order object
+        :returns: order id, converted creted time & user if such exists
         '''
         is_user = lambda user: f'-{self.user}' if self.user != None else ''
         convert_time = lambda created_at: f'-{self.created_at.strftime("%d/%m/%Y")}' if True else ''
@@ -56,15 +58,21 @@ class Order(models.Model):
     # 2
     def __repr__(self):
         '''
-            This magic method is redefined to show class name and id
-            :returns: class, id
+        This magic method is redefined to show class name and id
+        :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
     #3 
     def get_absolute_url(self, *args):
+        '''
+        redefines the model's class with an object-editing page 
+        feature: “View on site” link in the admin app.
+        jump directly to the object’s public view, as given by
+        get_absolute_url()
+        :returns: user's cart identified by user_id
+        '''
         if self.user is None:
-        
             message = f'User\'s cart wasn\'t found'
             print(message)
             LOGGER.warning(message)
@@ -73,14 +81,14 @@ class Order(models.Model):
             'orders:cart_view',
             args=[str(self.user.id)]
             )
-        
+
     # 4
     @staticmethod
     def create(product):
         '''
-            This magic method is redefined to create order based on particular product 
-            and saved to db
-            :return: order object
+        This magic method is redefined to create order based on particular product 
+        and saved to db
+        :returns: order object
         '''
         order = Order(product=product)
         try:
@@ -89,14 +97,14 @@ class Order(models.Model):
         except (IntegrityError, AttributeError, DataError, ValueError):
             LOGGER.warning('Wrong attributes or relational integrity error')
             pass
-    
+
     # 5
     @staticmethod
     def get_all(user_id=None):
         '''
-            This method gets all orders from the db
-            return: queryset of product objects converted
-            to a list
+        This method gets all orders from the db
+        return: queryset of product objects converted
+        to a list
         '''
         condition = len([
             product for product in Product.get_all()
@@ -109,8 +117,8 @@ class Order(models.Model):
     @staticmethod
     def get_by_id(order_id):
         '''
-            param order_id: SERIAL: the id of an Order to be found in the DB
-            return: product object or None if the order with such ID does not exist
+        :param order_id: SERIAL: the id of an Order to be found in the DB
+        returns: product object or None if the order with such ID does not exist
         '''
         try:
             order = Order.objects.get(pk=order_id)
@@ -124,8 +132,8 @@ class Order(models.Model):
     @staticmethod
     def delete_by_id(order_id):
         '''
-            param user_id: SERIAL: id of the authenticated user
-            return: delete all objects found in the db (clean the db)
+        :param user_id: SERIAL: id of the authenticated user
+        return: delete all objects found in the db (clean the db)
         '''
         try:
             order = Order.objects.get(pk=order_id)
@@ -142,8 +150,8 @@ class Order(models.Model):
     @staticmethod
     def delete_all(user_id=None):
         '''
-            param user_id: SERIAL: the id of an Order to be found in the DB
-            return: delete all objects found in the db (clean the db)
+        :param user_id: SERIAL: the id of an Order to be found in the DB
+        return: delete all objects found in the db (clean the db)
         '''
         product_exist = len([
             product for product in Product.get_all()
@@ -162,12 +170,11 @@ class Order(models.Model):
     @staticmethod
     def get_orders_by_user(user_id=None):
         '''
-            :returns: empty qs of orders by user
-                empty qs when user does not exist
-            NOTE: We can attach ip condition here for later
-                  for anonymous users, to have several of them
-                  and allow them to create cart
-        
+        :returns: empty qs of orders by user
+            empty qs when user does not exist
+        ..note:: We can attach ip condition here for later
+            for anonymous users, to have several of them
+            and allow them to create cart
         '''
         return Order.objects.all().filter(user_id=user_id)
 
@@ -236,13 +243,13 @@ class Order(models.Model):
         disc_ratio = disc_ratio if not max_disc else 0.5
         return disc_ratio
     
-    ## *** RECEIPT ADDITIONAL FUNCTIONALITY *** ##
+    # *** RECEIPT ADDITIONAL FUNCTIONALITY *** #
     # 14
     def get_value_per_amount(self, user_id=None):
         ''' 
-            instantiate form Order class to use this method
-            param user_id: SERIAL: the id of an Order to be found in the DB
-            returns: total amount per single item 
+        instantiate form Order class to use this method
+        param user_id: SERIAL: the id of an Order to be found in the DB
+        returns: total amount per single item 
         '''
         basket = Order.cart_items_amount(user_id)
         amounts = [k.product.price * v  for k, v in basket.items()]
@@ -253,7 +260,7 @@ class Order(models.Model):
     # 15
     def calculate_shipping(self, user_id=None):
         ''' 
-            NOTE: elaborate shipping formula aforehand (company policy)
+        ..note:: elaborate shipping formula aforehand (company policy)
 
             param user_id: SERIAL: the id of an Order to be found in the DB
             returns: shipping price for cart
@@ -266,5 +273,3 @@ class Order(models.Model):
             pass
         except (DataError, TypeError, ValueError):
             raise ValidationError(_('Check if field entries r correct'))
-
-

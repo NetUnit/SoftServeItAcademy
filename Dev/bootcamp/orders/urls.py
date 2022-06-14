@@ -22,7 +22,7 @@ app_name = 'orders'
 
 urlpatterns = [
     
-    re_path(r'order/cart/user/(?P<user_id>\d+)/$', cart_view, name='cart_view'),
+    re_path(r'order/cart/user/(?:(?P<user_id>\w+)/)?$', cart_view, name='cart_view'),
 
     # ############# *** DeatailedView + API *** ###############
     #re_path(r'^order/(?P<order_id>\d+)/$', order_detailed_view, name='detailed_view'),
@@ -45,7 +45,7 @@ urlpatterns = [
 
     # re_path(r'^order/payment-done/$', TemplateView.as_view(template_name="orders/payment_done.html"), name='payment_done'),
     # re_path(r'^order/payment-canceled/$', TemplateView.as_view(template_name="orders/payment_canceled.html"), name='payment_canceled'),
-
+    
     ## set 2
     # ############# *** Order Pay View *** ###############
     path('paypal-payment/', PaypalFormView.as_view(), name='paypal-payment'),

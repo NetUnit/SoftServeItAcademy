@@ -15,15 +15,20 @@ class Manufacturer(models.Model):
     This class represents the manufacturer of a certain product
     ===========================================================
     Attrs:
-    :param name: Describes the comapny name
-    :type name: str max_length = 40
-    :param country: Depicts the manufacturer's country of origin
-    :type country: str max_length = 20
-    :param year: depicts the foundation year year of a company
-    :type date: 
+        :param name: Describes the comapny name
+        :type name: str max_length = 40
+        :param country: Depicts the manufacturer's country of origin
+        :type country: str max_length = 20
+        :param year: depicts the foundation year year of a company
+        :type year: 'datetime.date'
 
-    .. note:: 
-        Put some notes here...
+    .. note::
+        Manufacturer is associated through many-to-many relationship
+        with Product
+
+        :Example:
+        manufacturer.products.get(id=1) --> product1
+        manufacturer.products.all() --> manufacturer1
     '''
 
     title = models.CharField(max_length=40, blank=False)
@@ -34,25 +39,25 @@ class Manufacturer(models.Model):
         upload_to='protected/manufacturers/',
         null=True,
         blank=True
-        )
+    )
 
     class Meta:
         ordering = ('id',) 
 
     def __str__(self):
         '''
-            Magic method aims to show basic info about a manufacturer
-            :returns: manufacturer.title,  manufacturer.country,  manufacturer.year
+        Magic method aims to show basic info about a manufacturer
+        :returns: manufacturer.title,  manufacturer.country,  manufacturer.year
 
         '''
         return f'{self.title} LTD'
 
-    
+
     def __repr__(self):
         '''
-            This megic method is redefined in order to show class name and id 
-            of a certain product object
-            :returns: class, id
+        This megic method is redefined in order to show class name and id 
+        of a certain product object
+        :returns: class, id
         '''
         return f'{self.__class__.__name__}(id={self.id})'
 
@@ -60,7 +65,7 @@ class Manufacturer(models.Model):
         return reverse_lazy(
             'manufacturer:get_products_manufacturer',
             args=[str(self.id)]
-            )
+        )
 
     @staticmethod
     def get_by_id(manufacturer_id):

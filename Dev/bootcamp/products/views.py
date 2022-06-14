@@ -42,7 +42,6 @@ class HomePageView(TemplateView):
 # dynamic id from url + error handling method#1
 def product_detailed_view(request, product_id, *args, **kwargs):
     try:
-
         product = get_object_or_404(Product,  pk=product_id)
         image = product.image
 
@@ -55,7 +54,8 @@ def product_detailed_view(request, product_id, *args, **kwargs):
         # ex3: using all() + filter
         # obj = Product.objects.all().filter(pk=product_id)[0]
     except Product.DoesNotExist:
-        raise Http404 # this would render html page with HTTP status code
+        # this would render html page with HTTP status code
+        raise Http404(u'Product wasn\'t found')
     
     ## optional, when not using template for rendering data (day#2)
     # return HttpResponse(f"Here is a product detailed view of: {obj.id}")
@@ -132,11 +132,11 @@ from products.forms import ProductCreationForm
 @staff_member_required(login_url=f'/accounts/check-user-auth/')
 def product_create_view(request, *args, **kwargs): ### add user_id here from frontend
     '''
-        in this method we r not gonna grab the user_id
-        from the url, but instatly take it from the
-        request session and write to the db (as a primary key)
-        field manufacturers are manually added to the intermediate table
-        through models add() method
+    in this method we r not gonna grab the user_id
+    from the url, but instatly take it from the
+    request session and write to the db (as a primary key)
+    field manufacturers are manually added to the intermediate table
+    through models add() method
 
     '''
     try:
