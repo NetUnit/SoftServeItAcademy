@@ -122,7 +122,7 @@ class CustomUser(AbstractUser):
     @property
     def first_login(self):
         '''
-            @proprty decorator allows to call CustomUser model 
+            @property decorator allows to call CustomUser model 
             methods as if they were normal model attributes
         '''
         first_login = True
@@ -132,6 +132,28 @@ class CustomUser(AbstractUser):
     @first_login.setter
     def first_login(self, value):
         self._first_login = value
+
+    @property
+    def access_token_key(self):
+        '''
+            @property decorator allows to call CustomUser model 
+            methods as if they were normal model attributes
+        '''
+        return self._access_token_key
+
+    @access_token_key.setter
+    def access_token_key(self, value):
+        # print(f"Token: {value}")
+        self._access_token_key = value
+
+    @property
+    def access_token_secret(self):
+        return self._access_token_secret
+
+    @access_token_secret.setter
+    def access_token_secret(self, value):
+        # print(f"Token secret: {value}")
+        self._access_token_secret = value
 
     @staticmethod
     def get_user_by_id(user_id=None):

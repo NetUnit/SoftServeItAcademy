@@ -13,10 +13,15 @@ from .views import (
 )
 
 from accounts.api.views import(
+    # API views
+    GoogleSocialAuthAPIView,
+    FBSocialAuthAPIView,
+    TwitterSocialAuthAPIView,
+    # scial auth views
     google_auth_view,
     fb_auth_view,
     twitter_auth_view,
-    redir_to_fb_login,
+    # redir_to_fb_login,
 )
 
 from rest_framework.authtoken.views import obtain_auth_token
@@ -39,13 +44,16 @@ urlpatterns = [
 
     ### OAuth2 urls ###
     # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
+    re_path(r'^o/google-sighn-in-test/$', GoogleSocialAuthAPIView.as_view(), name='google-user-endpoint-test'),
+    re_path(r'^o/fb-sighn-in-test/$', FBSocialAuthAPIView.as_view(), name='fb-user-endpoint-test'),
+    re_path(r'^o/twitter-sighn-in-test/$', TwitterSocialAuthAPIView.as_view(), name='twitter-user-endpoint-test'),
 
     ### Social Auth urls ###
-    re_path(r'^o/google-sighn-in-test/$', google_auth_view, name='google-user-login-test'),
-    re_path(r'^o/fb-sighn-in-test/$', fb_auth_view, name='fb-user-login-test'),
-    re_path(r'^o/twitter-sighn-in-test/$', twitter_auth_view, name='twitter-user-login-test'),
+    re_path(r'^o/google-sighn-in/$', google_auth_view, name='google-user-login'),
+    re_path(r'^o/fb-sighn-in/$', fb_auth_view, name='fb-user-login'),
+    re_path(r'^o/twitter-sighn-in/$', twitter_auth_view, name='twitter-user-login'),
 
     ### redirect urls ###
-    re_path(r'^o/fb-sighn-in-test-redir/$', redir_to_fb_login, name='fb-user-login-test-redir'),
+    # re_path(r'^o/fb-sighn-in-test-redir/$', redir_to_fb_login, name='fb-user-login-test-redir'),
     
 ]

@@ -106,7 +106,7 @@
   // Responsible for the authentication also
 
   function formData(IdToken, User, Email) {
-    var url = "{% url 'accounts_api:google-user-login-test' %}"
+    var url = "{% url 'accounts_api:google-user-login' %}"
 
     fetch(url, {
         method: 'POST',
