@@ -384,3 +384,10 @@ class TwitterSocialAuthSerializer(serializers.Serializer):
             )
             LOGGER.warning(f'{identifier}')
             raise identifier
+
+class TokenAuthSerializer(serializers.Serializer):
+
+    auth_token = serializers.CharField()
+
+    def validate(self, attrs):
+        return attrs

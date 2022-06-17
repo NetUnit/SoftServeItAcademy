@@ -21,7 +21,8 @@ from accounts.api.views import (
     google_auth_view,
     fb_auth_view,
     twitter_auth_view,
-    # redir_to_fb_login,
+    TokenAuthView
+
 )
 
 from rest_framework.authtoken.views import obtain_auth_token
@@ -41,6 +42,7 @@ urlpatterns = [
     # registration view already exists
     # use postman to send POST requests
     re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),
+    re_path(r'authtoken/sighn-in/', TokenAuthView.as_view(), name='token-auth-view'),
 
     # *** OAuth2 urls *** #
     # re_path(r'^authtoken-get/$', obtain_auth_token, name='obtain-auth-token'),

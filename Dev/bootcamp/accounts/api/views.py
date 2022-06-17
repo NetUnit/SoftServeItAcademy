@@ -51,7 +51,8 @@ from .serializers import (
     GoogleSocialAuthSerializer,
     FBSocialAuthSerializer,
     TwitterSocialAuthSerializer,
-    SocialAuth
+    TokenAuthSerializer,
+    SocialAuth,
 )
 
 from rest_framework.permissions import (
@@ -66,7 +67,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from rest_framework.status import (
     HTTP_200_OK,
-    HTTP_400_BAD_REQUEST
+    HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+    HTTP_400_BAD_REQUEST,
 )
 
 from django.contrib.auth import authenticate, login
@@ -402,3 +404,33 @@ def twitter_auth_view(request, *args, **kwargs):
 
     return render(request, 'accounts/snippets/twitter_login2.html',
                   context={'user': user})
+
+
+class TokenAuthView(APIView):
+
+    permission_classes = [AllowAny]
+    serializer_class = TokenAuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        '''
+        is_valid perform validation of input data and confirm
+        that this data contain all required fields and all fields
+        have correct types
+        '''
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        auth_token = serializer.validated_data.get('auth_token')
+        user = authenticate(request, token=auth_token)
+        if user is None:
+            return Response(
+                {
+                    "error": serializer.errors,
+                    "status": (f"{HTTP_203_NON_AUTHORITATIVE_INFORMATION}"
+                               f"NON AUTHORITATIVE INFORMATION"),
+                }
+            )
+        # instantiate Google View in order to use it's method
+        remove = GoogleSocialAuthAPIView()
+        user.__delattr__('backend')
+        user_data = remove.remove_excessive_fields(user)
+        return Response(user_data, status=HTTP_200_OK)
