@@ -25,10 +25,10 @@ class Person:
         self.id = id
         self.salary = salary
 
-    def _setattr(self):
-        setattr(self, 'money', 100000)
+    def _setattr(self, name, value):
+        setattr(self, name, value)
 
 instance = Person()
-instance._setattr()
+instance._setattr('money', 100000)
 print(instance.__dict__)
 # >>> {'id': 10, 'salary': 5000, 'money': 100000}

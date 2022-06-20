@@ -28,7 +28,11 @@
       console.log('statusChangeCallback');
       console.log(response);                   // The current login status of the person.
       if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-        testAPI();  
+
+        var accessToken = response.authResponse.accessToken;
+        alert("This is id token: " + accessToken)
+
+        testAPI( accessToken);  
       } else {                                 // Not logged into your webpage or we are unable to tell.
         document.getElementById('status').innerHTML = 'Please log ' +
           'into this webpage.'
@@ -51,6 +55,7 @@
 
       FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
         statusChangeCallback(response);        // Returns the login status.
+      
       });
     };
 
@@ -59,7 +64,7 @@
     // picture / profile picture
     // response.email;
 
-    function testAPI() {                      
+    function testAPI(accessToken) {                      
       console.log('Welcome!  Fetching your information.... ');
       FB.api('/me', {"fields": "id,name,email,picture"}, function(response) {
         console.log('Successful login for: ' + response.name);
@@ -73,9 +78,10 @@
 
           alert("This is response from FBGraphAPI: " + Response + 
           "\n\nUser: " + User + 
-          "\n\nEmail: " + Email)
+          "\n\nEmail: " + Email +
+          "\n\nEmail: " + accessToken)
 
-          FinalizeResponse(Response, User, Email)
+          FinalizeResponse(Response, User, Email, accessToken)
       });
     }
 
@@ -108,7 +114,7 @@
   var email = '{{ user.email }}'
   var user = '{{ user }}'
 
-  function formData(Response, User, Email) {
+  function formData(Response, User, Email, accessToken) {
     var url = "{% url 'accounts_api:fb-user-login' %}"
 
     fetch(url, {
@@ -118,11 +124,11 @@
             'X-CSRFToken': csrftoken,
         },
         // redirect: 'follow', // manual, *follow, error
-        body:JSON.stringify({'response': Response, 'User': User, 'Email': Email})
+        body:JSON.stringify({'response': Response, 'User': User, 'Email': Email, "accessToken": accessToken})
     })
   }
 
-  function FinalizeResponse(Response, User, Email) {
+  function FinalizeResponse(Response, User, Email, accessToken) {
 
     var url1 = "{% url 'accounts:profile' %}"
     var url2 = "{% url 'accounts:login-success' %}"
@@ -137,7 +143,7 @@
         "\n\n and logout from: " + user)) { 
         
         // Save it!
-        formData(Response, User, Email);
+        formData(Response, User, Email, accessToken);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
       } else {
@@ -161,7 +167,7 @@
 
       if (confirm('3. U will be signedin as: ' + User)) {
         // Save it!
-        formData(Response, User, Email);
+        formData(Response, User, Email, accessToken);
         alert('U\'ve signed in as: ' + User);
         location.replace(url2);
       } else {

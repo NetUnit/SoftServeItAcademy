@@ -31,6 +31,9 @@ import dotenv
 # os.environ['ACCESS_TOKEN_SECRET'] = "cGEGyaE0h1AU724CWZj7acN1GgyIU32OGONA84ZcYuPm7"
 
 
+FB_LOGIN_APP_ID = 'fbm_1026623988292715'
+FB_LOGIN_APP_SECRET = '083c9d973b672ac9c363a20ad799adbc'
+
 AUTH_PROVIDERS = (
     'google',
     'facebook',
@@ -93,6 +96,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     ## social django
     'social_django' ## ++
+    # 'facebook-login'
 
 ]
 
@@ -109,6 +113,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'accounts.backends.EmailBackend',
+    # 'facebook_login.auth_backends.FacebookAuthBackend'
     # 'oauth2_provider.backends.GoogleOAuth2'
     ]
 
@@ -176,7 +181,7 @@ WSGI_APPLICATION = 'bootcamp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'panda_hardware2',                                     
+        'NAME': 'panda_hardware2',                              
         'USER': 'postgres',
         'PASSWORD': '7875',                                  
         'HOST': 'localhost',

@@ -1,44 +1,31 @@
 import google
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from rest_framework.serializers import ValidationError
 
 
 class Google:
-    ''' 
-        Google class to fetch the user info and return it 
+    '''
+    Google class to fetch user info and return it
     '''
 
     @staticmethod
     def validate(auth_token):
-        
-        # print(auth_token)
-        # print(requests.Request())
+        '''
+        Querying the Google oauth2 api to fetch the user info
+        :returns: google info
+        '''
 
-        '''
-            Querying the Google oauth2 api to fetch the user info
-            :returns: google info
-        '''
-        
-        print(f"This is auth_token_in google: {auth_token}") ### +++
-        
         try:
-            idinfo = id_token.verify_oauth2_token(
+            id_info = id_token.verify_oauth2_token(
                 auth_token, requests.Request()
             )
-
-            print(f'This is id_info: {idinfo}')
-            
-            request = requests.Request()
-
-            # This is request in API View
-            print(f"This is request from google: {request.__dict__.get('session').__dict__}")
-            
-            if 'accounts.google.com' in idinfo['iss']:
-                return idinfo
-            
-        except Exception as err:
-            print(err)
-            return 'Token is either invalid or expired: class ---> Google'
-    
-    # @staticmethod
-    # def authenticate(auth_token):
+            # the whole google user data from Google API
+            # print(f"This is id_info: {id_info}")
+            if 'accounts.google.com' in id_info['iss']:
+                return id_info
+            return 'Something bad with provider (￣□￣」)'
+        except Exception:
+            g_identifier = ValidationError(
+                {'detail': 'Token is either invalid or expired (；⌣̀_⌣́)'}
+            )

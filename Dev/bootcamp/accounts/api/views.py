@@ -247,7 +247,7 @@ def google_auth_view(request, *args, **kwargs):
             # print(f'This are decoded string2: {decoded_string}')
             # print(True)
             token = decoded_string.get('IdToken')
-            #print(token)
+            # print(token)
 
             # result is user data from google db
             result = serializer.validate_auth_token(token)
@@ -332,6 +332,7 @@ def fb_auth_view(request, *args, **kwargs):
     '''
     user = request.user
     raw_data = request.body
+    print(raw_data)
     decoded_string = raw_data.decode()
     condition = len(decoded_string) > 0
     if not condition:
@@ -400,7 +401,6 @@ def fb_auth_view(request, *args, **kwargs):
     return render(request, 'accounts/snippets/fb_login.html', context={'user': user})
 
 @csrf_protect
-
 def twitter_auth_view(request, *args, **kwargs):
     '''
     OAuth JS SDK form Oauth.io integrated into html <script>
