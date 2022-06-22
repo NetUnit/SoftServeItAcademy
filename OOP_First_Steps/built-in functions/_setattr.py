@@ -1,13 +1,16 @@
 class Person:
 
     '''
-    setattr() function sets the value of the attribute of an obje
-    setattr(obj, name, value) - takes 3 parameters
+    ===================================================================
+    This class represents methods to test * setattr() built-in function
+    ===================================================================
+
+    setattr() function sets the value of the attribute of an object
+    setattr(obj, name, value) - takes 3 parameters:
 
     :param obj: object whose attribute has to be set
     :param name: attribute name
     :param value: value given to the attribute
-
 
     :type obj: <class 'type'>
     :type name: str

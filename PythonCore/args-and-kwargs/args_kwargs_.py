@@ -26,7 +26,6 @@ class GetTestArgs():
           https://prnt.sc/uko8ld 
 
     '''
-
     def max_min_number(self, *numbers):
         return max(numbers)
 
@@ -44,6 +43,14 @@ class GetTestArgs():
 
         lst2 = [int(i) for i in str(digits2)]
         return sum(lst2)/len(lst2)
+    
+    def some_args(self, *args):
+        '''
+        args is a tuple of params
+        we can refer to it's value by variable name
+        for instance ('100500',)
+        '''
+        return param1
 
 
 class GetTestKwargs():
@@ -85,7 +92,9 @@ if __name__ == "__main__":
     digits1 = input('Enter your the firts aisle of digits: ')
     digits2 = input('Enter the second aisle of digits: ')
     print(args_inst.args_arithmetic_mean(digits1, digits2))
-    
+    param1 = '100500'
+    print(args_inst.some_args(param1))
+
     # test kwargs
     kwargs_inst = GetTestKwargs()
     kwargs_inst.print_pet_names(
