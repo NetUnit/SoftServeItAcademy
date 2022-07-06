@@ -55,5 +55,5 @@ urlpatterns = [
 
     ### redirect urls ###
     # re_path(r'^o/fb-sighn-in-test-redir/$', redir_to_fb_login, name='fb-user-login-test-redir'),
-    
+
 ]

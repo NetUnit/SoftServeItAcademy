@@ -14,6 +14,9 @@ import time
 from bootcamp.settings import LOGGER
 from bootcamp.forms import ProcessContactForm
 
+# RequestContext imports
+from django.template import RequestContext, Template
+
 def some_middleware_view(request, get_response, *args, **kwargs):
     return print(f'{get_response}')
 
@@ -251,6 +254,43 @@ def feedback_form_view(request, *args, **kwargs):
     form = ProcessContactForm()
     context = {'form': form}
     return render (request, 'accounts/feedback_form_as_p.html', context)
+
+def ip_address_processor(request):
+    return {"ip_address": request.META.get('REMOTE_ADDR')}
+
+
+def test_request_context_view(request, *args, **kwargs):
+    '''
+    Django comes with a special Context class, django.template.RequestContext,
+    which works a little differently than the usual django.template.Context.
+    It accepts HttpRequest as the first arg. 
+        For example:
+
+        c = RequestContext(request, {
+            'foo': 'bar',
+        })
+    The second thing is it automatically fills the context with several variables
+    according to the context_processors engine configuration option.
+
+    '''
+    # instantiating template obj 
+    template = Template('User: {{ username }} | Email: {{ email }} | IP: {{ ip_address }}')
+
+    request_context = RequestContext(
+        request,
+        {
+            'username': 'User: ',
+            'email': 'Email: ',
+            'ip_address': 'IP: '
+        },
+        # assign 3rd positional arg to Req Context
+        [ip_address_processor])
+
+    # assign var username to request context
+    request_context.push({'username': "NetUnit"})
+    # assign var email to request context
+    request_context.push({'email': "andriyproniyk@gmail.com"})
+    return HttpResponse(template.render(request_context))
 
 
 
