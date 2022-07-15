@@ -19,6 +19,7 @@ class Product(models.Model):
     This class represents the product object outlined in the db
     ===========================================================
     Attrs:
+        :param id: = models.AutoField()
         :param title: Describes the products title
         :type title: str, max_length = 220
         :param content: product description
@@ -66,14 +67,19 @@ class Product(models.Model):
     )
 
     class Meta:
-        ordering = ('id',)
+        ordering = ('id')
 
     def __str__(self):
         '''
         Magic method aims to show basic info about a Product
         :returns: product name and price
+
+        ..note:
+            price is null only when hardcoded from postgres
         '''
-        if_price = lambda price: f': {str(self.price)}$' if self.price is not None else ''
+        if_price = 0
+        if self.price is not None:
+            if_price = lambda price: f': {str(self.price)}$'
         return f'{self.title}' + if_price(self.price)
 
     def __repr__(self):
@@ -182,7 +188,7 @@ class Product(models.Model):
         :type content: str
         :param price: shows a product's price
         :type price: int default=10
-        :returns: None
+        :returns: updated model object
         '''
         self.__dict__.update(**kwargs)
         self.save()

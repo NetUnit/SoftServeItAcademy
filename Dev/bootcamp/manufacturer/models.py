@@ -15,6 +15,7 @@ class Manufacturer(models.Model):
     This class represents the manufacturer of a certain product
     ===========================================================
     Attrs:
+        :param id: = models.AutoField()
         :param name: Describes the comapny name
         :type name: str max_length = 40
         :param country: Depicts the manufacturer's country of origin

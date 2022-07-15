@@ -58,3 +58,16 @@ class ProcessContactForm(forms.Form):
     def clean(self):
         email = self.cleaned_data.get('email')
         feedback = self.cleaned_data.get('feedback')
+
+
+# search form to drag a keyword matched to the DB
+class ItemSearchForm(forms.Form):
+    
+    searched = forms.CharField(max_length=220)
+
+    widgets = {
+        'searched': forms.TextInput(attrs={'placeholder': 'Search Items...'}),
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(forms.Form, self).__init__(*args, **kwargs)
