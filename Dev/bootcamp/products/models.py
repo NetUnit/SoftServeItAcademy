@@ -27,7 +27,7 @@ class Product(models.Model):
         :param price: price of the product
         :type price: int
         :manufacturers: reflects definition of "many-to-many" relationship
-        :type manufacturers: field
+        :type manufacturers: 'many-to-many' field
         :param image: restricted to image formats only
         :type image: files.ImageFieldFile
         :param media: restricted to file formats compliant with db
@@ -67,7 +67,7 @@ class Product(models.Model):
     )
 
     class Meta:
-        ordering = ('id')
+        ordering = ('id',)
 
     def __str__(self):
         '''

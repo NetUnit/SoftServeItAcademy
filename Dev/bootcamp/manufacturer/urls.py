@@ -1,7 +1,6 @@
 from django.conf.urls import include
 from django.urls import path, re_path
 from manufacturer.views import (
-
     manufacturer_create_view,
     manufacturer_list_view,
     manufacturer_detailed_view,
@@ -17,27 +16,41 @@ from django.conf import settings
 app_name = 'manufacturer'
 
 urlpatterns = [
-    
-    ############# *** ManufacturerDeatailedView + API *** ###############
-    re_path(r'^manufacturers/(?P<manufacturer_id>\d+)/$', manufacturer_detailed_view, name='detailed_view'),
-    re_path(r'^api/manufacturers/(?P<manufacturer_id>\d+)/$', api_manufacturer_detailed_view, name='api_detailed_view'),
 
-    ############# *** ManufacturerListView *** ###############
-    re_path(r'^manufacturers/list/$', manufacturer_list_view, name='manufacturer_list_view'),
+    # *** ManufacturerDeatailedView #
+    re_path(r'^manufacturers/(?P<manufacturer_id>\d+)/$',
+            manufacturer_detailed_view, name='detailed_view'),
+    # *** API View *** #
+    re_path(r'^api/manufacturers/(?P<manufacturer_id>\d+)/$',
+            api_manufacturer_detailed_view, name='api_detailed_view'),
 
-    ################ *** Create View *** #################
-    re_path(r'^manufacturers/create/$', manufacturer_create_view, name='manufacturer_create_view'),
+    # *** ManufacturerListView *** #
+    re_path(
+        r'^manufacturers/list/$',
+        manufacturer_list_view,
+        name='manufacturer_list_view'),
 
-    ############# *** ManufacturerUpdateView *** ###############
-    re_path(r'^manufacturers/update/(?P<manufacturer_id>\d+)/$', manufacturer_update_view, name='manufacturer_update_view'),
+    # *** Create View *** #
+    re_path(
+        r'^manufacturers/create/$',
+        manufacturer_create_view,
+        name='manufacturer_create_view'),
 
-    ############# *** ManufacturerDeleteView *** ###############
-    re_path(r'^manufacturers/delete/(?P<manufacturer_id>\d+)/$', manufacturer_delete_view, name='manufacturer_delete_view'),
+    # *** ManufacturerUpdateView *** #
+    re_path(r'^manufacturers/update/(?P<manufacturer_id>\d+)/$',
+            manufacturer_update_view, name='manufacturer_update_view'),
 
-    ################## *** media download product *** ###############
-    re_path(r'^manufacturers/media-download/(?P<manufacturer_id>\d+)/$', media_download_view, name='media_download_view'),
+    # *** ManufacturerDeleteView *** #
+    re_path(r'^manufacturers/delete/(?P<manufacturer_id>\d+)/$',
+            manufacturer_delete_view, name='manufacturer_delete_view'),
 
-    ################## *** get products manufacturer *** ###############
-    re_path(r'^manufacturers/get-products-manufacturer/(?P<manufacturer_id>\d+)/$', get_products_manufacturer, name='get_products_manufacturer')
+    # *** media download product *** #
+    re_path(r'^manufacturers/media-download/(?P<manufacturer_id>\d+)/$',
+            media_download_view, name='media_download_view'),
 
+    # *** get products manufacturer *** #
+    re_path(
+        r'^manufacturers/get-products-manufacturer/(?P<manufacturer_id>\d+)/$',
+        get_products_manufacturer,
+        name='get_products_manufacturer')
 ]
