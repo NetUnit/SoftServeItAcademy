@@ -54,7 +54,7 @@ class Manufacturer(models.Model):
     def __str__(self):
         '''
         Magic method aims to show basic info about a manufacturer
-        :returns: manufacturer.title,  manufacturer.country,  manufacturer.year
+        :returns: manufacturer.title, manufacturer.country, manufacturer.year
 
         '''
         return f'{self.title} LTD'
