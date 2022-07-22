@@ -420,7 +420,9 @@ class TokenAuthView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         auth_token = serializer.validated_data.get('auth_token')
+        # print(auth_token)
         user = authenticate(request, token=auth_token)
+        # print(user)
         if user is None:
             return Response(
                 {

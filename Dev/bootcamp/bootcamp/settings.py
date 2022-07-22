@@ -88,6 +88,8 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'accounts.backends.EmailBackend',
+    'accounts.backends.TokenAuthBackend',
+
     # 'facebook_login.auth_backends.FacebookAuthBackend',
     # 'oauth2_provider.backends.GoogleOAuth2'
     ]
