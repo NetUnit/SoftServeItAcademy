@@ -166,7 +166,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin, mixins.UpdateModelMixin,
     )
 
     permission_classes = [
-        # IsAuthenticated,
+        IsAuthenticated,
         # IsAuthenticatedOrReadOnly,
         # IsOwnerOrReadOnly,
         # AllowAny
@@ -185,7 +185,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin, mixins.UpdateModelMixin,
     def get_queryset(self):
         qs = Product.objects.all()
         query = self.request.GET.get('q')
-        # print(query)
+        # print(qs)
         if query is not None:
             qs = qs.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
@@ -233,7 +233,7 @@ class ProductMixinAPIView(mixins.CreateModelMixin, mixins.UpdateModelMixin,
         view = self.get_view_name()
         request = self.request
         permission_to_create = permission.has_permission(request, view)
-        permission_need = request.method in ['PUT', 'POST', 'PATCH']
+        permission_need = request.method in ['PUT', 'POST', 'PATCH', 'DELETE']
         if not permission_to_create and permission_need:
             raise NotAuthenticated(
                 _('This is allowed for authenticated users only ( ´･･)ﾉ(._.`)')

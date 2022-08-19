@@ -291,6 +291,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         self._kwargs["partial"] = True
+        print(data)
         title = data.get('title')
         if not title:
             raise TitleAbsenceError()
