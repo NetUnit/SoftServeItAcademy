@@ -127,6 +127,7 @@ class ProductAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         api_data = self.request.data
         image = api_data.get("image")
+        user = self.request.user
         serializer.save(user=self.request.user, image=image)
 
 
